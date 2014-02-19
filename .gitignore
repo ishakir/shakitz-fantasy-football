@@ -14,3 +14,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore any .project file created by aptana
+.project
+
+# And let's not lock our Gemfile, let's go free man
+Gemfile.lock
