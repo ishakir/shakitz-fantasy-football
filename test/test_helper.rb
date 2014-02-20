@@ -13,4 +13,20 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures = true
 
   # Add more helper methods to be used by all tests here...
+  def get_assigns(action, variable) 
+    
+    get action
+    return assigns(variable)
+    
+  end
+  
+  def assert_assigns_not_nil(action, variable, message = nil)
+    
+    get action
+    instance_variable = assigns(variable)
+    
+    assert_not_nil instance_variable, message
+    
+  end
+  
 end
