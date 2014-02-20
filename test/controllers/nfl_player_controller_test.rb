@@ -4,22 +4,19 @@ class NflPlayerControllerTest < ActionController::TestCase
   
   test "should get unpicked" do
     
-    get :unpicked
-    assert_response :success
+    can_view_action :unpicked
     
   end
   
   test "should return the right template" do
     
-    get :unpicked
-    assert_template :unpicked
+    can_view_template :unpicked
     
   end
   
   test "should return the right layout for the template" do
     
-    get :unpicked
-    assert_template layout: "layouts/application"
+    can_view_layout :unpicked, "layouts/application"
     
   end
   
