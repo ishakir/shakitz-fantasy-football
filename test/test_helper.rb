@@ -27,4 +27,19 @@ class ActiveSupport::TestCase
     
   end
   
+  def can_view_action(action)
+    get action
+    assert_response :success 
+  end
+  
+  def can_view_template(action)
+    get action
+    assert_template action
+  end
+  
+  def can_view_layout(action, template)
+    get action
+    assert_template layout: template
+  end
+  
 end
