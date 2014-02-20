@@ -23,9 +23,7 @@ class ActiveSupport::TestCase
   def assert_assigns_not_nil(action, variable, message = nil)
     
     get action
-    instance_variable = assigns(variable)
-    
-    assert_not_nil instance_variable, message
+    assert_not_nil assigns(variable), message
     
   end
   
