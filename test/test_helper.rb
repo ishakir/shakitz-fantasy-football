@@ -13,16 +13,16 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures = true
 
   # Add more helper methods to be used by all tests here...
-  def get_assigns(action, variable) 
+  def get_assigns(action, variable, params = nil) 
     
-    get action
+    get action, params
     return assigns(variable)
     
   end
   
-  def assert_assigns_not_nil(action, variable, message = nil)
+  def assert_assigns_not_nil(action, variable, params = nil, message = nil)
     
-    get action
+    get action, params
     assert_not_nil assigns(variable), message
     
   end
@@ -37,9 +37,9 @@ class ActiveSupport::TestCase
     assert_template action
   end
   
-  def can_view_layout(action, template, params=nil)
+  def can_view_layout(action, layout, params=nil)
     get action, params
-    assert_template layout: template
+    assert_template layout: layout
   end
   
 end
