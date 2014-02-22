@@ -4,4 +4,11 @@ class NflPlayerController < ApplicationController
     @players = NflPlayer.all
   end
   
+  def show
+    
+    id = params[:id]
+    @player = NflPlayer.find(id)
+    
+  end
+  
 end
