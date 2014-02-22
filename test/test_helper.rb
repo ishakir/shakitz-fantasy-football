@@ -27,18 +27,18 @@ class ActiveSupport::TestCase
     
   end
   
-  def can_view_action(action)
-    get action
+  def can_view_action(action, params=nil)
+    get action, params
     assert_response :success 
   end
   
-  def can_view_template(action)
-    get action
+  def can_view_template(action, params=nil)
+    get action, params
     assert_template action
   end
   
-  def can_view_layout(action, template)
-    get action
+  def can_view_layout(action, template, params=nil)
+    get action, params
     assert_template layout: template
   end
   
