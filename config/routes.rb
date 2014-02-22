@@ -1,5 +1,12 @@
 Footbawwl::Application.routes.draw do
+  
+  # All the routes for nfl player
   get "nfl_player/unpicked"
+  
+  # All the routes for user
+  get "user/viewall"
+  get "user/show/:id" => "user#show", as: :showuser
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
