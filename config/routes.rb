@@ -1,6 +1,17 @@
 Footbawwl::Application.routes.draw do
-  get "user/viewall"
+  
+  #gets
+  get "user/create"
+  get "user/update"
+  get "user/show" => "user#show", as: :showalluser
   get "user/show/:id" => "user#show", as: :showuser
+  
+  #posts
+  post "user/create" => "user#create", as: :newuser
+  post "user/delete" => "user#delete", as: :deleteuser
+  post "user/update" => "user#update", as: :updateuser
+  
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
