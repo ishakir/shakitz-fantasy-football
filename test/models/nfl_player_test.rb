@@ -93,4 +93,13 @@ class NflPlayerTest < ActiveSupport::TestCase
     
   end
   
+  test "can't create NflPlayer with a string that's the empty string" do
+    
+    player = NflPlayer.create(:name => "")
+    lastPlayer = NflPlayer.last
+    
+    assert_equal lastPlayer.name, "Matthew Staffpick", "Player with invalid name was created!"
+    
+  end
+  
 end

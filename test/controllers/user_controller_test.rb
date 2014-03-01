@@ -6,27 +6,25 @@ class UserControllerTest < ActionController::TestCase
   
   # CREATE
   test "should get create" do
-    can_view_action(:create)
+    can_view_action(:create, {:username => "Dummy User"})
   end
   
   test "should return correct create template" do
-    can_view_template(:create)
+    can_view_template(:create, {:username => "Dummy User"})
   end
   
   test "should return correct create layout" do
-    can_view_layout(:create, "layouts/application")
+    can_view_layout(:create, "layouts/application", {:username => "Dummy User"})
   end
   
   test "should create new user" do
-    newname = "John Doriando"
-    post :create, {:username => newname}
-    assert User.exists?(name: newname), "Failed to create new user"
+    new_name = "John Doriando"
+    can_create_entity_obj(:success, :create, {:username => new_name}, "user")
   end
   
   test "should fail to create new user" do
     nullname = ""
-    response = post :create, {:username => nullname}
-    puts(response)
+    can_create_entity_obj(:error, :create, {:username=>""}, "empty user")
   end
   
   # DELETE
@@ -43,14 +41,27 @@ class UserControllerTest < ActionController::TestCase
     can_view_layout(:delete, "layouts/application", {:id=>defaultID})
   end
   
-  test "should delete new user" do
-    post :delete, {:id=>defaultID}
-    assert_raise ActiveRecord::RecordNotFound do
-       User.find(defaultID)
-     end
+  test "should delete user" do
+    can_del_ent_obj(:delete, {:id=>defaultID})
+  end
+  
+  test "should fail to delete imaginary user" do
+    fail_del_ent_obj(:delete, {:id=>5}, "user")
   end
   
   # READ/SHOW
+  
+  test "should get show with no id" do
+    can_view_action(:show)
+  end
+  
+  test "should return correct show template with no id" do
+   can_view_template(:show) 
+  end
+  
+  test "should return correct show layout with no id" do
+    can_view_layout(:show, "layouts/application")
+  end
   
   test "should get show" do
     can_view_action(:show, {:id=>defaultID})
@@ -65,38 +76,27 @@ class UserControllerTest < ActionController::TestCase
   end
   
   test "should get list of users" do
-    get :show
-    users = assigns(:users)
-    assert users.length > 1, "One or less users were listed"
+    can_get_entity_list(:show, :users, "users")
   end
   
   test "should show user Mike Sharwood" do
-    get :show, {:id=>defaultID} #:id=>1
-    mikeUser = assigns(:user)    
-    assert_equal mikeUser.name, "Mike Sharwood", "Failed to show user Mike Sharwood"
+    can_get_entity_row_name(:show, {:id=>defaultID}, :user, "Mike Sharwood")
   end
   
   test "should see user object from show page is not nil" do
-    get :show
-    assert_not_nil assigns(:users), "User object from view page is nil"
+    can_see_entity_obj_not_nil(:show, :users, "User")
   end
   
   test "should see user object from view page has two users" do
-    get :show
-    users = assigns(:users)
-    assert_equal users.length, 2, "Incorrect number of user objects shown"
+    can_see_entity_obj_num_is(:show, :users, 2, "user")
   end
   
   test "should see user object from view page first entry is Mike Sharwood" do
-    get :show
-    mikeUser = assigns(:users)[0]
-    assert_equal mikeUser.name, "Mike Sharwood", "First user object entry on view page is not Mike Sharwood"
+    can_see_entity_row_index_eq(:show, :users, 0, "Mike Sharwood", "user")
   end
   
   test "should see user object from view page second entry is Imran Wright" do
-    get :show
-    imranUser = assigns(:users)[1]
-    assert_equal imranUser.name, "Imran Wright", "Second user object entry on view page is not Imran Wright"
+    can_see_entity_row_index_eq(:show, :users, 1, "Imran Wright", "user")
   end
   
   # UPDATE
@@ -114,8 +114,11 @@ class UserControllerTest < ActionController::TestCase
   end
   
   test "should edit user" do
-    mikeUser = User.find(1).name
-    post :update, {:id => 1, :name => "Timothy Perkins"}
-    assert mikeUser != User.find(1).name, "Failed to update user Mike Sharwood"
+    can_edit_entity_obj_name(:update, {:id => 1, :name => "Timothy Perkins"}, User, "Mike Sharwood", "user")
   end
+  
+  test "should fail to edit non-existent user" do
+    fail_edit_fake_entity_row_obj(:update, {:id => 5, :name => "Biggity Boo"}, "user")
+  end
+
 end
