@@ -10,7 +10,7 @@ class UserController < ApplicationController
   
   def create
     username = params[:username]
-    User.create("name" => username)
+    User.create!("name" => username)
   end
   
   def delete
