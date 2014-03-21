@@ -23,7 +23,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     name = player.name
     expectedName = "Marshawn Lunch"
     
-    assert_equal name, expectedName, "Found name '#{name}', expecting #{expectedName}"
+    assert_equal expectedName, name, "Found name '#{name}', expecting #{expectedName}"
     
   end
   
@@ -34,7 +34,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     player = NflPlayer.find(expectedId)
     id = player.id
     
-    assert_equal id, expectedId, "Found id '#{id}', expecting #{expectedId}"
+    assert_equal expectedId, id, "Found id '#{id}', expecting #{expectedId}"
     
   end
   
@@ -47,7 +47,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     player = NflPlayer.last
     name = player.name
     
-    assert_equal name, expectedName, "Found name '#{name}', expecting #{expectedName}"
+    assert_equal expectedName, name, "Found name '#{name}', expecting #{expectedName}"
     
   end
   
@@ -61,7 +61,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     alsoThePlayer = NflPlayer.find(1)
     name = alsoThePlayer.name
     
-    assert_equal name, newName, "Found name '#{name}', expecting #{newName}"
+    assert_equal newName, name, "Found name '#{name}', expecting #{newName}"
     
   end
   
@@ -98,7 +98,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     player = NflPlayer.create(:name => "")
     lastPlayer = NflPlayer.last
     
-    assert_equal lastPlayer.name, "Matthew Staffpick", "Player with invalid name was created!"
+    assert_equal "Matthew Staffpick", lastPlayer.name, "Player with invalid name was created!"
     
   end
   
