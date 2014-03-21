@@ -2,10 +2,8 @@
 
 one:
   id: 1
-  touchdown: 1
   nfl_player_id: 1
 
 two:
   id: 2
-  touchdown: 1
   nfl_player_id: 2
