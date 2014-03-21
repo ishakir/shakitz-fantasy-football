@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# Player with id 1 has a gw team for each week
+<% 17.times do |n| %>
+gwteam_1_<%= n %>:
+  id: <%= n %>
+  gameweek: <%= n %>
+  user_id: 1
+<% end %>
+
+# Player with id 2 has no gw teams :(
