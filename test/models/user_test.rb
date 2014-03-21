@@ -10,6 +10,7 @@ class UserTest < ActiveSupport::TestCase
     user = User.find(1)
     assert_respond_to(user, :name)
   end
+  
   test "can add user" do
     User.create("name" => "Test User")
     lastEntry = User.last
@@ -44,6 +45,34 @@ class UserTest < ActiveSupport::TestCase
     assert_raise ActiveRecord::RecordNotFound do
        User.find(2)
      end
+  end
+  
+  test "User one has the correct number of gameweek teams" do
+    user = User.find(1)
+    assert_equal user.game_week_teams.length, 17, "Incorrect number of gameweek teams for user one"
+  end
+  
+  test "User two has the correct number of gameweek teams" do
+    user = User.find(2)
+    assert_equal user.game_week_teams.length, 0, "Incorrect number of gameweek teams for user two"
+  end
+  
+  test "We delete a user and all his gameweek teams are deleted" do
+    user = User.find(1)
+    user.destroy
+    
+    assertion = true
+    17.times do |n|
+      begin
+        GameWeekTeam.find(n)
+        assertion = assertion && false
+      rescue ActiveRecord::RecordNotFound
+        assertion = assertion && true
+      end
+    end
+    
+    assert assertion, "ERROR: Found some of the gameweek teams, even when we deleted their user"
+    
   end
   
 end
