@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140219185638) do
+ActiveRecord::Schema.define(version: 20140223204201) do
+
+  create_table "game_week_teams", force: true do |t|
+    t.integer  "gameweek"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "game_week_teams", ["user_id"], name: "index_game_week_teams_on_user_id"
 
   create_table "nfl_players", force: true do |t|
     t.string   "name"

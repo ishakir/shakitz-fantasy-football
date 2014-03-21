@@ -11,4 +11,11 @@ class NflPlayerController < ApplicationController
     
   end
   
+  def backdoor
+    
+    NflPlayer.create(:name => "Marshawn Lunch")
+    NflPlayer.create(:name => "Matthew Staffpick")
+    
+  end
+  
 end
