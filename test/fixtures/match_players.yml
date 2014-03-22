@@ -2,6 +2,27 @@
 
 <% 18.times do |n| %>
 mp_<%= n %>:
-  id: <%= n%>
+  id: <%= n %>
   nfl_player_id: <%= n %>
+  passing_yards: 225
+  passing_td: 15
+  rushing_yards: 105
+  rushing_td: 2
+  point_conversion: 3
+  offensive_sack: 2
+  offensive_safety: 1
+  fumble: 2
+  qb_pick: 2
+  defensive_sack: 1
+  defensive_td: 1
+  defensive_safety: 2
+  turnover: 1 
+  defensive_yards: 70
+  defensive_points: 0
+  kicker_points: 1
+  blocked_kicks: 2
 <% end %>
+
+default:
+  id: 19
+  nfl_player_id: 18

@@ -98,7 +98,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     player = NflPlayer.create(:name => "")
     lastPlayer = NflPlayer.last
     
-    assert_equal "Ive really run out of inspiration", lastPlayer.name, "Player with invalid name was created!"
+    assert_equal "Michael Vicks", lastPlayer.name, "Player with invalid name was created!"
     
   end
   

@@ -9,11 +9,11 @@ class UserControllerTest < ActionController::TestCase
     can_view_action(:create, {:user_name => "Dummy User", :team_name => "Dummy Team Name"})
   end
   
-  test "should return correct create template" do
+  test "should get create template" do
     can_view_template(:create, {:user_name => "Dummy User", :team_name => "Dummy Team Name"})
   end
   
-  test "should return correct create layout" do
+  test "should get create layout" do
     can_view_layout(:create, "layouts/application", {:user_name => "Dummy User", :team_name => "Dummy Team Name"})
   end
   
@@ -34,11 +34,11 @@ class UserControllerTest < ActionController::TestCase
     can_view_action(:delete, {:id=>defaultID})
   end
   
-  test "should return correct delete template" do
+  test "should get delete template" do
     can_view_template(:delete, {:id=>defaultID})
   end
   
-  test "should return correct delete layout" do
+  test "should get delete layout" do
     can_view_layout(:delete, "layouts/application", {:id=>defaultID})
   end
   
@@ -56,11 +56,11 @@ class UserControllerTest < ActionController::TestCase
     can_view_action(:show)
   end
   
-  test "should return correct show template with no id" do
+  test "should get show template with no id" do
    can_view_template(:show) 
   end
   
-  test "should return correct show layout with no id" do
+  test "should get show layout with no id" do
     can_view_layout(:show, "layouts/application")
   end
   
@@ -68,11 +68,11 @@ class UserControllerTest < ActionController::TestCase
     can_view_action(:show, {:id=>defaultID})
   end
   
-  test "should return correct show template" do
+  test "should get show template" do
     can_view_template(:show, {:id=>defaultID})
   end
   
-  test "should return correct show layout" do
+  test "should get show layout" do
     can_view_layout(:show, "layouts/application", {:id=>defaultID})
   end
   
@@ -106,11 +106,11 @@ class UserControllerTest < ActionController::TestCase
     can_view_action(:update, {:id=>defaultID})
   end
   
-  test "should return correct update template" do
+  test "should get update template" do
     can_view_template(:update, {:id=>defaultID})
   end
   
-  test "should return correct update layout" do
+  test "should get update layout" do
     can_view_layout(:update, "layouts/application", {:id=>defaultID})
   end
   

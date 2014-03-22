@@ -2,9 +2,9 @@
 
 # Player with id 1 has a gw team for each week
 <% 17.times do |n| %>
-gwteam_1_<%= n %>:
-  id: <%= n %>
-  gameweek: <%= n %>
+gwteam_1_<%= n+1 %>:
+  id: <%= n+1 %>
+  gameweek: <%= n+1 %>
   user_id: 1
 <% end %>
 

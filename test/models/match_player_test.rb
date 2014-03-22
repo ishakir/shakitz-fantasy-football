@@ -16,7 +16,7 @@ class MatchPlayerTest < ActiveSupport::TestCase
   end
   
   test "can see player stat is default from start" do
-    obj = MatchPlayer.find(1).attributes
+    obj = MatchPlayer.find(19).attributes
     obj.each do |key, value|
       if(key != "id" && key != "nfl_player_id" && key != "created_at" && key != "updated_at")
         assert_equal 0, value, "Incorrect default value, was #{value}"
