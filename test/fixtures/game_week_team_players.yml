@@ -2,6 +2,7 @@
 
 <% 10.times do |n| %>
 gwteamplayer_in_<%= n %>:
+  id: <%= n %>
   game_week_team_id: 1
   match_player_id: <%= n %>
   playing: true
@@ -9,6 +10,7 @@ gwteamplayer_in_<%= n %>:
 
 <% 8.times do |n| %>
 gwteamplayer_out_<%= 10 + n %>:
+  id: <%= 10 + n %>
   game_week_team_id: 1
   match_player_id: <%= 10 + n %>
   playing: false
@@ -16,6 +18,7 @@ gwteamplayer_out_<%= 10 + n %>:
 
 <% 8.times do |n| %>
 gwteamplayer_out_<%= n + 18 %>:
+  id: <%= 18 + n %>
   game_week_team_id: 2
   match_player_id: <%= n %>
   playing: false
@@ -23,6 +26,7 @@ gwteamplayer_out_<%= n + 18 %>:
 
 <% 10.times do |n| %>
 gwteamplayer_in_<%= n + 26 %>:
+  id: <%= 28 + n %>
   game_week_team_id: 2
   match_player_id: <%= n + 8 %>
   playing: true

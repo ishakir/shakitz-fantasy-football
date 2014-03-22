@@ -1,5 +1,9 @@
 class NflPlayer < ActiveRecord::Base
   
   validates :name, presence: true
-  has_many :match_player
+  
+  belongs_to :nfl_team
+  
+  has_many :match_players
+
 end

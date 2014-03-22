@@ -121,5 +121,9 @@ class UserControllerTest < ActionController::TestCase
   test "should fail to edit non-existent user" do
     fail_edit_fake_entity_row_obj(:update, {:id => 5, :name => "Biggity Boo"}, "user")
   end
+  
+  test "should edit team name" do
+    can_edit_entity_obj_team_name(:update, {:id => 1, :team_name => "Changed Team Name"}, User, "Mike's Picks", "user")
+  end
 
 end

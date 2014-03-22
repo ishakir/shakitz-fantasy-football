@@ -3,66 +3,82 @@
 one:
   id: 1
   name: Marshawn Lunch
+  nfl_team_id: 1
 
 two:
   id: 2
   name: Matthew Staffpick
+  nfl_team_id: 2
   
 three:
   id: 3
   name: Sean McCoys
+  nfl_team_id: 1
   
 four:
   id: 4
   name: Adrian Imranson
+  nfl_team_id: 2
   
 five:
   id: 5
   name: Ray Pasta
+  nfl_team_id: 1
   
 six:
   id: 6
   name: Eddy Velcrowy
+  nfl_team_id: 2
   
 seven:
   id: 7
   name: Antonio Yellow
+  nfl_team_id: 1
   
 eight:
   id: 8
   name: Calvin Johansson
+  nfl_team_id: 2
   
 nine:
   id: 9
   name: Admiral Nelson
+  nfl_team_id: 1
   
 ten:
   id: 10
   name: Demaryius the Tank Engine
+  nfl_team_id: 2
   
 eleven:
   id: 11
   name: John (Who is the?) Kuhn
+  nfl_team_id: 1
   
 twelve:
   id: 12
   name: Anquan Boulder
+  nfl_team_id: 2
   
 thirteen:
   id: 13
   name: Drew Beees
+  nfl_team_id: 1
   
 fourteen:
   id: 14
   name: Tony Yolo
+  nfl_team_id: 2
   
 fifteen:
   id: 15
   name: Matt Crater
+  nfl_team_id: 1
   
 sixteen:
   id: 16
   name: Richard Shoeman
+  nfl_team_id: 2
   
 seventeen:
   id: 17
@@ -71,3 +87,10 @@ seventeen:
 eighteen:
   id: 18
   name: Michael Vicks
+  name: One more name
+  nfl_team_id: 1
+  
+eighteen:
+  id: 18
+  name: Ive really run out of inspiration
+  nfl_team_id: 2

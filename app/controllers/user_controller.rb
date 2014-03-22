@@ -22,7 +22,7 @@ class UserController < ApplicationController
     @user = User.find(params[:id])
     #we need to specifically permit the use of a value in the params
     #we can also do: params[:user], permit[:name] if we have a parent object
-    if @user.update_attributes(params.permit(:name))
+    if @user.update_attributes(params.permit(:name, :team_name))
       flash[:success] = "Successfully edited user " + @user.name
       #handle success
     else

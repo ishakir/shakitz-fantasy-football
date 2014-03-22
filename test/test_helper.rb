@@ -92,7 +92,14 @@ class ActiveSupport::TestCase
     pre_edit_obj = ent_obj.find(params[:id])
     post action, params
     row_obj = ent_obj.find(params[:id])
-    assert pre_edit_obj.name != row_obj.name, "Failed to update " + obj_name + " " + exp_row_name
+    assert_not_equal pre_edit_obj.name, row_obj.name, "Failed to update " + obj_name + " " + exp_row_name
+  end
+  
+  def can_edit_entity_obj_team_name(action, params, ent_obj, exp_row_name, obj_name)
+    pre_edit_obj = ent_obj.find(params[:id])
+    post action, params
+    row_obj = ent_obj.find(params[:id])
+    assert_not_equal pre_edit_obj.team_name, row_obj.team_name, "Failed to update " + obj_name + " " + exp_row_name
   end
   
   def fail_edit_fake_entity_row_obj(action, params, obj_name)
