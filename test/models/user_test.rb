@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  
+ 
+  season_length = 17
+
   def setup #not sure if this can be called something else
     #@user = user.new
   end
@@ -78,7 +80,7 @@ class UserTest < ActiveSupport::TestCase
     user.destroy
     
     assertion = true
-    17.times do |n|
+    season_length.times do |n|
       begin
         GameWeekTeam.find(n)
         assertion = assertion && false
