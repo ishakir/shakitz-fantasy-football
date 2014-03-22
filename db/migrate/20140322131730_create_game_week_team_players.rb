@@ -4,7 +4,7 @@ class CreateGameWeekTeamPlayers < ActiveRecord::Migration
       t.references :game_week_team, index: true
       t.references :match_player, index: true
       t.boolean :playing
-
+      #test if i can commit now
       t.timestamps
     end
   end
