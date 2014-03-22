@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223204201) do
+ActiveRecord::Schema.define(version: 20140322131730) do
+
+  create_table "game_week_team_players", force: true do |t|
+    t.integer  "game_week_team_id"
+    t.integer  "match_player_id"
+    t.boolean  "playing"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "game_week_team_players", ["game_week_team_id"], name: "index_game_week_team_players_on_game_week_team_id"
+  add_index "game_week_team_players", ["match_player_id"], name: "index_game_week_team_players_on_match_player_id"
 
   create_table "game_week_teams", force: true do |t|
     t.integer  "gameweek"
