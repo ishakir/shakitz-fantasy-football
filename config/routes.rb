@@ -1,5 +1,10 @@
 Footbawwl::Application.routes.draw do
   
+  get "match_player/rushing"
+  get "match_player/passing"
+  get "match_player/defense"
+  get "match_player/kicker"
+  get "match_player/show"
  # All the routes for user  get "user/create"
   get "user/update"
   get "user/show" => "user#show", as: :showalluser
