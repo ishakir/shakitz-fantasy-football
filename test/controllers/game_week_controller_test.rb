@@ -65,7 +65,7 @@ class GameWeekControllerTest < ActionController::TestCase
   
   test "should get number of team points for gameweek 1" do
     points = get_assigns :get_gw_team_points, :tally, {:uid => 1, :gw => 1}
-    assert_equal GW_staffordpicks_points, points, "Incorrect points total" 
+    assert_equal GW_staffordpicks_points, points, "Incorrect points total for gameweek 1" 
   end
   
   test "should get a roster" do
@@ -83,4 +83,8 @@ class GameWeekControllerTest < ActionController::TestCase
     assert_respond_to match_player, :qb_pick, "Elements of @roster not match players!"
   end
   
+  test "should get total team points" do
+    points = get_assigns(:get_total_team_points, :points, {:uid=>1})
+    assert_equal GW_staffordpicks_points*Number_of_gw_teams, points, "Failed to get total team points"
+  end
 end

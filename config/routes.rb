@@ -1,5 +1,6 @@
 Footbawwl::Application.routes.draw do
   
+  get "game_week/get_total_team_points"
   get "game_week/get_gw_team_points"
   get "game_week/get_gw_roster"
   get "game_week/get_gw_player_points"

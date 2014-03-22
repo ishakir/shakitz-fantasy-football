@@ -1,14 +1,22 @@
 class GameWeekController < ApplicationController
   
   def get_gw_team_points
-    
     gw_obj = get_game_week_team_from(params)
     
     @tally = 0
     gw_obj.match_players.each do |player|
       @tally += calculate_player_points_tally(player)
     end
-    
+  end
+  
+  def get_total_team_points
+    teams = get_user_team(params[:uid])
+    @points = 0
+    teams.each do |team|
+      team.match_players.each do |player|
+        @points += calculate_player_points_tally(player)
+      end
+    end
   end
   
   def calculate_player_points_tally(player)
@@ -38,20 +46,18 @@ class GameWeekController < ApplicationController
           #do nothing
         end
     end  
-    return tally
+    tally
   end
 
   def get_gw_roster
-    
     game_week_team = get_game_week_team_from(params)
-    @roster = game_week_team.match_players
-    
+    @roster = game_week_team.match_players   
   end
 
   def get_gw_player_points
-  
   end
   
+  #REFACTOR TO MAKE MORE GENERIC
   def validate_arguments(params)
     if(!params.has_key?("uid"))
       raise ArgumentError, "Expecting 'uid' in params, but could not find it"
@@ -61,8 +67,12 @@ class GameWeekController < ApplicationController
     end
   end
   
+  def get_user_team(uid)
+      t_obj = GameWeekTeam.where("user_id = ?", uid)
+      t_obj
+  end
+  
   def get_game_week_team_from(params)
-    
     validate_arguments(params)
     
     user_id = params["uid"]
@@ -75,8 +85,7 @@ class GameWeekController < ApplicationController
     end
     
     # Return gw_obj
-    gw_obj
-    
+    gw_obj  
   end
 
 end
