@@ -50,25 +50,39 @@ class GameWeekTeamTest < ActiveSupport::TestCase
     
   end
   
-  test "a game week team has a number of match players some of which are playing" do
+  test "can get all the gameweekteam players in a game week team" do
     
     gameweekteam = GameWeekTeam.find(1)
     gwt_players = gameweekteam.game_week_team_players
     
-    players_playing = Array.new
-    players_not_playing = Array.new
+    assert_equal gwt_players.size, 18, "GameWeekTeam has the wrong number of game week team players!"
     
-    # Go through each game_week_team_player and put it's match player into the corresponding list
-    gwt_players.each do |gwt_player|
-      if(gwt_player.playing)
-        players_playing.push(gwt_player.match_player)
-      else
-        players_not_playing.push(gwt_player.match_player)
-      end
-    end
+  end
+  
+  test "can get all the matchplayers in a gameweekteam" do
     
-    assert_equal players_playing.size, 10, "GameWeekTeam has the wrong number of match players playing"
-    assert_equal players_not_playing.size, 8, "GameWeekTeam has the wrong number of match players not playing"
+    gwt = GameWeekTeam.find(1)
+    match_players = gwt.match_players
+    
+    assert_equal match_players.size, 18, "GameWeekTeam has the wrong number of match players!"
+    
+  end
+  
+  test "can get all the players who are playing in a gameweek team" do
+    
+    gameweekteam = GameWeekTeam.find(1)
+    players_playing = gameweekteam.match_players_playing
+    
+    assert_equal players_playing.size, 10, "GameWeekTeam has the wrong number of match players who are playing!"
+    
+  end
+  
+  test "can get all the players who are not playing in a gameweek team" do
+    
+    gameweekteam = GameWeekTeam.find(1)
+    players_not_playing = gameweekteam.match_players_benched
+    
+    assert_equal players_not_playing.size, 8, "GameWeekTeam has the wrong number of match players who aren't playing!"
     
   end
   
