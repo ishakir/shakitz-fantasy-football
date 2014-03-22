@@ -6,25 +6,26 @@ class UserControllerTest < ActionController::TestCase
   
   # CREATE
   test "should get create" do
-    can_view_action(:create, {:username => "Dummy User"})
+    can_view_action(:create, {:user_name => "Dummy User", :team_name => "Dummy Team Name"})
   end
   
   test "should return correct create template" do
-    can_view_template(:create, {:username => "Dummy User"})
+    can_view_template(:create, {:user_name => "Dummy User", :team_name => "Dummy Team Name"})
   end
   
   test "should return correct create layout" do
-    can_view_layout(:create, "layouts/application", {:username => "Dummy User"})
+    can_view_layout(:create, "layouts/application", {:user_name => "Dummy User", :team_name => "Dummy Team Name"})
   end
   
   test "should create new user" do
     new_name = "John Doriando"
-    can_create_entity_obj(:success, :create, {:username => new_name}, "user")
+    team_name = "I love Stafford"
+    can_create_entity_obj(:success, :create, {:user_name => new_name, :team_name => team_name}, "user")
   end
   
   test "should fail to create new user" do
     nullname = ""
-    can_create_entity_obj(:error, :create, {:username=>""}, "empty user")
+    can_create_entity_obj(:error, :create, {:user_name=>""}, "empty user")
   end
   
   # DELETE

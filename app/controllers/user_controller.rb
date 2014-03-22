@@ -9,8 +9,9 @@ class UserController < ApplicationController
   end
   
   def create
-    username = params[:username]
-    User.create!("name" => username)
+    username = params[:user_name]
+    teamname = params[:team_name]
+    User.create!("name" => username, "team_name" => teamname)
   end
   
   def delete
