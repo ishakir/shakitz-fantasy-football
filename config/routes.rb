@@ -21,7 +21,6 @@ Footbawwl::Application.routes.draw do
   # All the routes for nfl player
   get "nfl_player/unpicked"
   get "nfl_player/show/:id" => "nfl_player#show", as: :showplayer
-  post "nfl_player/backdoor"
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

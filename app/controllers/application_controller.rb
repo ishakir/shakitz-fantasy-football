@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
     render :file => "#{Rails.root}/public/500", :layout => false, :status => :exception
   end
   
+  rescue_from ArgumentError do
+    render :file => "#{Rails.root}/public/422", :layout => false, :status => :unprocessable_entity
+  end
+  
 end

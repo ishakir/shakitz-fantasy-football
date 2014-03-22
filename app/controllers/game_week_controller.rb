@@ -1,12 +1,14 @@
 class GameWeekController < ApplicationController
+  
   def get_gw_team_points
-    uid = params[:uid]
-    gw = params[:gw]
-    gw_obj = GameWeekTeam.find_by user_id: uid, gameweek: gw
+    
+    gw_obj = get_game_week_team_from(params)
+    
     @tally = 0
     gw_obj.match_players.each do |player|
       @tally += calculate_player_points_tally(player)
     end
+    
   end
   
   def calculate_player_points_tally(player)
@@ -40,9 +42,41 @@ class GameWeekController < ApplicationController
   end
 
   def get_gw_roster
+    
+    game_week_team = get_game_week_team_from(params)
+    @roster = game_week_team.match_players
+    
   end
 
   def get_gw_player_points
   
   end
+  
+  def validate_arguments(params)
+    if(!params.has_key?("uid"))
+      raise ArgumentError, "Expecting 'uid' in params, but could not find it"
+    end
+    if(!params.has_key?("gw"))
+      raise ArgumentError, "Expecting 'gw' in params, but could not find it"
+    end
+  end
+  
+  def get_game_week_team_from(params)
+    
+    validate_arguments(params)
+    
+    user_id = params["uid"]
+    game_week = params["gw"]
+    
+    gw_obj = GameWeekTeam.find_by user_id: user_id, gameweek: game_week
+    
+    if(gw_obj == nil)
+      raise ActiveRecord::RecordNotFound, "Query with uid '#{user_id}' and game week '#{game_week}' returned nothing"
+    end
+    
+    # Return gw_obj
+    gw_obj
+    
+  end
+
 end
