@@ -102,4 +102,11 @@ class NflPlayerTest < ActiveSupport::TestCase
     
   end
   
+  test "an NFL Player has an NFL team" do
+    player = NflPlayer.find(2)
+    team = player.nfl_team
+    
+    assert_equal team.name, "DETROIT!"
+  end
+  
 end
