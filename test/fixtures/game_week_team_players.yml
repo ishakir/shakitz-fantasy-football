@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 10.times do |n| %>
+gwteamplayer_in_<%= n %>:
+  game_week_team_id: 1
+  match_player_id: <%= n %>
+  playing: true
+<% end %>
+
+<% 8.times do |n| %>
+gwteamplayer_out_<%= 10 + n %>:
+  game_week_team_id: 1
+  match_player_id: <%= 10 + n %>
+  playing: false
+<% end %>
+
+<% 8.times do |n| %>
+gwteamplayer_out_<%= n + 18 %>:
+  game_week_team_id: 2
+  match_player_id: <%= n %>
+  playing: false
+<% end %>
+
+<% 10.times do |n| %>
+gwteamplayer_in_<%= n + 26 %>:
+  game_week_team_id: 2
+  match_player_id: <%= n + 8 %>
+  playing: true
+<% end %>

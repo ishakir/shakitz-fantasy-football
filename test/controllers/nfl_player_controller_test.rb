@@ -35,7 +35,7 @@ class NflPlayerControllerTest < ActionController::TestCase
   test "should assign players as a list of size 2" do
     
     players = get_assigns(:unpicked, :players)
-    assert_equal players.size, 2, "List of NFL players is the wrong size"
+    assert_equal players.size, Number_of_nfl_players, "List of NFL players is the wrong size"
     
   end
   

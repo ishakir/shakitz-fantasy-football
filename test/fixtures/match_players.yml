@@ -1,9 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  id: 1
-  nfl_player_id: 1
-
-two:
-  id: 2
-  nfl_player_id: 2
+<% 18.times do |n| %>
+mp_<%= n %>:
+  id: <%= n%>
+  nfl_player_id: <%= n %>
+<% end %>

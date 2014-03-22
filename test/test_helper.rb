@@ -12,6 +12,13 @@ class ActiveSupport::TestCase
   fixtures :all
   self.use_instantiated_fixtures = true
 
+  # Helper constants
+  Number_of_game_week_teams = 17
+  Number_of_nfl_players = 18
+  Number_of_game_week_players = 18
+  Number_match_players = 2
+  Number_of_users = 2
+
   # Add more helper methods to be used by all tests here...
   def get_assigns(action, variable, params = nil) 
     get action, params
