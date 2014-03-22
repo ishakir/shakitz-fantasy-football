@@ -52,11 +52,11 @@ class GameWeekControllerTest < ActionController::TestCase
   end
   
   test "should get get_gw_team_points layout" do
-    can_view_layout :get_gw_team_points, "layouts/application", {:uid =>1, :gw=>1}
+    can_view_layout :get_gw_team_points, "layouts/application", {:uid => 1, :gw => 1}
   end
   
   test "should get get_gw_roster layout" do
-    can_view_layout :get_gw_roster, "layouts/application"
+    can_view_layout :get_gw_roster, "layouts/application", {:uid => 1, :gw => 1}
   end
   
   test "should get get_gw_player_points layout" do

@@ -83,14 +83,10 @@ sixteen:
 seventeen:
   id: 17
   name: Sun
-  
-eighteen:
-  id: 18
-  name: Michael Vicks
-  name: One more name
   nfl_team_id: 1
   
 eighteen:
   id: 18
-  name: Ive really run out of inspiration
+  name: Michael Vicks
   nfl_team_id: 2
+
