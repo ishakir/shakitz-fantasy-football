@@ -5,7 +5,6 @@ class CreateGameWeekTeamPlayers < ActiveRecord::Migration
       t.references :match_player, index: true
       t.boolean :playing
       
-      # I am also testing
       t.timestamps
     end
   end
