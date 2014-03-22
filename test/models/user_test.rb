@@ -11,8 +11,13 @@ class UserTest < ActiveSupport::TestCase
     assert_respond_to(user, :name)
   end
   
+  test "can request team name" do
+    user = User.find(1)
+    assert_respond_to(user, :team_name)
+  end
+  
   test "can add user" do
-    User.create("name" => "Test User")
+    User.create(:name => "Test User", :team_name => "Test Team Name")
     lastEntry = User.last
     assert_equal "Test User", lastEntry.name
   end
@@ -20,6 +25,17 @@ class UserTest < ActiveSupport::TestCase
   test "can find user" do
     user = User.where(:name => "Imran Wright").first
     assert_equal "Imran Wright", user.name
+  end
+  
+  test "can find user's team name" do
+    user = User.where(:name => "Imran Wright").first
+    assert_equal user.team_name, "Destroyers"
+  end
+  
+  test "can not save without a team name" do
+    user = User.new
+    user.name = "Andy Neilson"
+    assert !user.save
   end
   
   test "can not save without name" do
