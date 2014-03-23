@@ -3,43 +3,34 @@ require 'test_helper'
 class NflPlayerTest < ActiveSupport::TestCase
   
   test "we can request the players name" do
-    
     player = NflPlayer.find(1)
     assert_respond_to player, :name, "NflPlayer won't respond to 'name' method"
-    
   end
   
   test "we can request the players id" do
-    
     player = NflPlayer.find(2)
     assert_respond_to player, :id, "NflPlayer won't respond to 'id' method"
-    
   end
   
   test "we can check an existing players name is correct" do
-    
     player = NflPlayer.find(1)
     
     name = player.name
     expectedName = "Marshawn Lunch"
     
     assert_equal expectedName, name, "Found name '#{name}', expecting #{expectedName}"
-    
   end
   
   test "we can check an existing players id" do
-    
     expectedId = 2
     
     player = NflPlayer.find(expectedId)
     id = player.id
     
     assert_equal expectedId, id, "Found id '#{id}', expecting #{expectedId}"
-    
   end
   
   test "the players name is the same as set on create" do
-    
     expectedName = "Aaron Brodgers"
     
     NflPlayer.create('name' => expectedName)
@@ -48,11 +39,9 @@ class NflPlayerTest < ActiveSupport::TestCase
     name = player.name
     
     assert_equal expectedName, name, "Found name '#{name}', expecting #{expectedName}"
-    
   end
   
   test "we can update a player's name" do
-    
     player = NflPlayer.find(1)
     
     newName = "Marshawn Launch"
@@ -107,6 +96,13 @@ class NflPlayerTest < ActiveSupport::TestCase
     team = player.nfl_team
     
     assert_equal team.name, "DETROIT!"
+  end
+  
+  test "an NFL Player has an NFL type" do
+    player = NflPlayer.find(2)
+    type = player.nfl_player_type
+    
+    assert_equal type.position_type, "QB"
   end
   
 end

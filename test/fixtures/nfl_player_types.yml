@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  position_type: "QB"
+
+two:
+  id: 2
+  position_type: "WR"
+
+three:
+  id: 3
+  position_type: "TE"
+
+four:
+  id: 4
+  position_type: "RB"
+
+five:
+  id: 5
+  position_type: "K"
+
+six:
+  id: 6
+  position_type: "D"
