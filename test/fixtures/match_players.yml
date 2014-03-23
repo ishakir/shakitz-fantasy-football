@@ -4,6 +4,7 @@
 mp_<%= n %>:
   id: <%= n %>
   nfl_player_id: <%= n %>
+  game_week_id: 1
   passing_yards: 225
   passing_td: 15
   rushing_yards: 105
@@ -26,3 +27,4 @@ mp_<%= n %>:
 default:
   id: 19
   nfl_player_id: 18
+  game_week_id: 2

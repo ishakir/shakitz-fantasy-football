@@ -1,5 +1,7 @@
 class GameWeekController < ApplicationController
   
+  include ApplicationHelper
+  
   def get_gw_team_points
     
     gw_obj = get_game_week_team_from(params)
@@ -62,21 +64,27 @@ class GameWeekController < ApplicationController
   end
   
   def get_game_week_team_from(params)
-    
     validate_arguments(params)
     
     user_id = params["uid"]
     game_week = params["gw"]
     
-    gw_obj = GameWeekTeam.find_by user_id: user_id, gameweek: game_week
+    get_game_week_team(user_id, game_week)
+  end
+  
+  def get_game_week_team(user_id, game_week)
+    gwt_obj_list = GameWeekTeam.where(:user_id => user_id).includes(:game_week).where("game_weeks.number" => game_week)
     
-    if(gw_obj == nil)
-      raise ActiveRecord::RecordNotFound, "Query with uid '#{user_id}' and game week '#{game_week}' returned nothing"
+    # There should only we one of these
+    no_of_gwt_objs = gwt_obj_list.size
+    if(no_of_gwt_objs == 0)
+      raise ActiveRecord::RecordNotFound, "Didn't find a record with user_id '#{user_id}' and game week '#{game_week}'"
+    elsif(no_of_gwt_objs > 1)
+      raise ApplicationHelper::IllegalStateError, "Found #{no_of_gwt_objs} game week teams with uid '#{user_id}' and game week '#{game_week}'"
     end
     
     # Return gw_obj
-    gw_obj
-    
+    gwt_obj_list.first
   end
 
 end

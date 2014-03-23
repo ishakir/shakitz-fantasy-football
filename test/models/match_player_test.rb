@@ -18,7 +18,7 @@ class MatchPlayerTest < ActiveSupport::TestCase
   test "can see player stat is default from start" do
     obj = MatchPlayer.find(19).attributes
     obj.each do |key, value|
-      if(key != "id" && key != "nfl_player_id" && key != "created_at" && key != "updated_at")
+      if(key != "id" && key != "nfl_player_id" && key != "game_week_id" && key != "created_at" && key != "updated_at")
         assert_equal 0, value, "Incorrect default value, was #{value}"
       end
     end
@@ -41,6 +41,11 @@ class MatchPlayerTest < ActiveSupport::TestCase
     gwps = mp.game_week_team_players
     gwp = gwps[1]
     assert !gwp.playing, "Expected match player to bot be playing in gameweek team in week 2!"
+  end
+  
+  test "match player has a game week" do
+    match_player = MatchPlayer.find(1)
+    assert_equal match_player.game_week.number, 1, "MatchPlayer has the wrong GameWeek number!"
   end
   
 end

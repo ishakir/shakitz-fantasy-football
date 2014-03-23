@@ -86,4 +86,9 @@ class GameWeekTeamTest < ActiveSupport::TestCase
     
   end
   
+  test "match player has a game week" do
+    game_week_team = GameWeekTeam.find(16)
+    assert_equal game_week_team.game_week.number, 16, "GameWeekTeam has the wrong GameWeek number!"
+  end
+  
 end

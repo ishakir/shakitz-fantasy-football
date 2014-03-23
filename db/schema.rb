@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322154200) do
+ActiveRecord::Schema.define(version: 20140323172229) do
 
   create_table "game_week_team_players", force: true do |t|
     t.integer  "game_week_team_id"
@@ -27,14 +27,20 @@ ActiveRecord::Schema.define(version: 20140322154200) do
   create_table "game_week_teams", force: true do |t|
     t.integer  "gameweek"
     t.integer  "user_id"
+    t.integer  "game_week_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "game_week_teams", ["user_id"], name: "index_game_week_teams_on_user_id"
 
+  create_table "game_weeks", force: true do |t|
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "match_players", force: true do |t|
-    t.integer  "nfl_player_id"
     t.integer  "passing_yards",    default: 0
     t.integer  "passing_td",       default: 0
     t.integer  "rushing_yards",    default: 0
@@ -52,6 +58,8 @@ ActiveRecord::Schema.define(version: 20140322154200) do
     t.integer  "defensive_points", default: 0
     t.integer  "kicker_points",    default: 0
     t.integer  "blocked_kicks",    default: 0
+    t.integer  "game_week_id"
+    t.integer  "nfl_player_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
