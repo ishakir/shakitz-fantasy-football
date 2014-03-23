@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140323172229) do
+ActiveRecord::Schema.define(version: 20140323185708) do
 
   create_table "game_week_team_players", force: true do |t|
     t.integer  "game_week_team_id"
@@ -64,11 +64,18 @@ ActiveRecord::Schema.define(version: 20140323172229) do
     t.datetime "updated_at"
   end
 
-  create_table "nfl_players", force: true do |t|
-    t.string   "name"
+  create_table "nfl_player_types", force: true do |t|
+    t.string   "position_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "nfl_players", force: true do |t|
+    t.string   "name"
     t.integer  "nfl_team_id"
+    t.integer  "nfl_player_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "nfl_teams", force: true do |t|

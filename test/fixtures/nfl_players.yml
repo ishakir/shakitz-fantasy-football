@@ -4,89 +4,108 @@ one:
   id: 1
   name: Marshawn Lunch
   nfl_team_id: 1
+  nfl_player_type_id: 4
+
 
 two:
   id: 2
   name: Matthew Staffpick
   nfl_team_id: 2
+  nfl_player_type_id: 1
   
 three:
   id: 3
   name: Sean McCoys
   nfl_team_id: 1
+  nfl_player_type_id: 2
   
 four:
   id: 4
   name: Adrian Imranson
   nfl_team_id: 2
+  nfl_player_type_id: 5
   
 five:
   id: 5
   name: Ray Pasta
   nfl_team_id: 1
+  nfl_player_type_id: 3
   
 six:
   id: 6
   name: Eddy Velcrowy
   nfl_team_id: 2
+  nfl_player_type_id: 4
   
 seven:
   id: 7
   name: Antonio Yellow
   nfl_team_id: 1
-  
+  nfl_player_type_id: 4
+ 
 eight:
   id: 8
   name: Calvin Johansson
   nfl_team_id: 2
+  nfl_player_type_id: 4
   
 nine:
   id: 9
   name: Admiral Nelson
   nfl_team_id: 1
+  nfl_player_type_id: 3
   
 ten:
   id: 10
   name: Demaryius the Tank Engine
   nfl_team_id: 2
+  nfl_player_type_id: 6
   
 eleven:
   id: 11
   name: John (Who is the?) Kuhn
   nfl_team_id: 1
+  nfl_player_type_id: 6
   
 twelve:
   id: 12
   name: Anquan Boulder
   nfl_team_id: 2
+  nfl_player_type_id: 3
   
 thirteen:
   id: 13
   name: Drew Beees
   nfl_team_id: 1
+  nfl_player_type_id: 1
   
 fourteen:
   id: 14
   name: Tony Yolo
   nfl_team_id: 2
+  nfl_player_type_id: 2
   
 fifteen:
   id: 15
   name: Matt Crater
   nfl_team_id: 1
+  nfl_player_type_id: 2
   
 sixteen:
   id: 16
   name: Richard Shoeman
   nfl_team_id: 2
+  nfl_player_type_id: 5
   
 seventeen:
   id: 17
   name: Sun
   nfl_team_id: 1
+  nfl_player_type_id: 2
   
 eighteen:
   id: 18
   name: Michael Vicks
   nfl_team_id: 2
+  nfl_player_type_id: 1
 

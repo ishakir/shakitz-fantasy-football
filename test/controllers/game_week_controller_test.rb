@@ -2,6 +2,12 @@ require 'test_helper'
 
 class GameWeekControllerTest < ActionController::TestCase
   
+  # Total team points
+  test "should get total team points" do
+    points = get_assigns(:get_total_team_points, :points, {:uid=>1})
+    assert_equal GW_staffordpicks_points*Number_of_gw_teams, points, "Failed to get total team points"
+  end
+  
   # Gameweek team points
   test "should get get_gw_team_points" do
     can_view_action :get_gw_team_points, {:uid => 1, :gw => 1}
@@ -57,7 +63,7 @@ class GameWeekControllerTest < ActionController::TestCase
     get :get_gw_roster
     assert_response :unprocessable_entity
   end
-  
+
   test "should get a roster" do
     assert_assigns_not_nil(:get_gw_roster, :roster, {:uid => 1, :gw => 1})
   end
@@ -85,7 +91,5 @@ class GameWeekControllerTest < ActionController::TestCase
   test "should get get_gw_player_points layout" do
     can_view_layout :get_gw_player_points, "layouts/application"
   end
-  
-  # Swap playing with benched
   
 end
