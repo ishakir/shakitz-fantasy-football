@@ -21,6 +21,8 @@ class ActiveSupport::TestCase
   Player_points = 74
   GW_staffordpicks_points = 1332
   Number_of_gw_teams = 2
+  Rostersize = 18
+
 
   # Add more helper methods to be used by all tests here...
   def get_assigns(action, variable, params = nil) 
