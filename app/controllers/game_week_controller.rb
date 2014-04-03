@@ -57,6 +57,13 @@ class GameWeekController < ApplicationController
   end
 
   def get_gw_player_points
+    pid = params[:pid]
+    gw = params[:gw]
+    p_list = MatchPlayer.where(:nfl_player_id => pid).includes(:game_week).where("game_weeks.number" => gw)
+    if(p_list[0] == nil )
+      return;
+    end
+    @points = calculate_player_points_tally(p_list[0])
   end
   
   def get_user_team(uid)

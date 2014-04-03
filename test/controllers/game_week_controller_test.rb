@@ -70,7 +70,7 @@ class GameWeekControllerTest < ActionController::TestCase
   
   test "should get a roster of the correct size" do
     roster = get_assigns(:get_gw_roster, :roster, {:uid => 1, :gw => 1})
-    assert_equal roster.size, 18
+    assert_equal roster.size, Rostersize
   end
   
   test "roster should consist of match_players" do
@@ -92,4 +92,8 @@ class GameWeekControllerTest < ActionController::TestCase
     can_view_layout :get_gw_player_points, "layouts/application"
   end
   
+  test "should get Marshawn Lunch's stats for gameweek 1" do
+    p_points = get_assigns(:get_gw_player_points, :points, {:pid => 1, :gw => 1})
+    assert_equal Player_points, p_points
+  end
 end
