@@ -47,11 +47,6 @@ class ActiveSupport::TestCase
     get action, params
     assert_template layout: layout
   end
-  
-  def can_create_entity_obj(expected_response, action, params, ent_name)
-    post action, params
-    assert_response(expected_response, "Failed to create " + ent_name)
-  end
     
   def can_get_entity_list(action, ent_obj, obj_name)
     entity_obj = get_assigns(action, ent_obj)
@@ -75,19 +70,6 @@ class ActiveSupport::TestCase
   def can_see_entity_row_index_eq(action, ent_obj, i, exp_row_name, obj_name)
     assert_equal get_assigns(action, ent_obj)[i].name, exp_row_name, "#{i} " + obj_name + " object entry on view page is not" + exp_row_name
   end
-  
-  def can_del_ent_obj(action, params)
-    post action, params
-    assert_raise ActiveRecord::RecordNotFound do
-       User.find(params[:id])
-     end
-  end
-  
-  def fail_del_ent_obj(actions, param, obj_name)
-    post actions, param
-    assert_response(:missing, "Managed to delete imaginary " + obj_name)
-  end
-    
   
   def can_edit_entity_obj_name(action, params, ent_obj, exp_row_name, obj_name)
     pre_edit_obj = ent_obj.find(params[:id])

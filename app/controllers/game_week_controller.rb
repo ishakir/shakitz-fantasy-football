@@ -59,23 +59,13 @@ class GameWeekController < ApplicationController
   def get_gw_player_points
   end
   
-  #REFACTOR TO MAKE MORE GENERIC
-  def validate_arguments(params)
-    if(!params.has_key?("uid"))
-      raise ArgumentError, "Expecting 'uid' in params, but could not find it"
-    end
-    if(!params.has_key?("gw"))
-      raise ArgumentError, "Expecting 'gw' in params, but could not find it"
-    end
-  end
-  
   def get_user_team(uid)
-      t_obj = GameWeekTeam.where("user_id = ?", uid)
-      t_obj
+    GameWeekTeam.where("user_id = ?", uid)
   end
   
   def get_game_week_team_from(params)
-    validate_arguments(params)
+    
+    validate_all_parameters(["uid", "gw"], params)
     
     user_id = params["uid"]
     game_week = params["gw"]

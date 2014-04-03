@@ -16,8 +16,8 @@ Footbawwl::Application.routes.draw do
   
   #posts
   post "user/create" => "user#create", as: :newuser
-  post "user/delete" => "user#delete", as: :deleteuser
   post "user/update" => "user#update", as: :updateuser
+  delete "user/delete" => "user#delete", as: :deleteuser
   
   # All the routes for nfl player
   get "nfl_player/unpicked"
