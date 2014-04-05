@@ -1,11 +1,30 @@
 footbawwl
 =========
 
-Some serious footbawwl in here
+Some serious footbawwl in here.
 
-A note on terminology, there is a distinction to be made between:
+A web server for hosting a fantasy American Football competition. Allows creation of users with a team name, selection of players and automated updates of player stats and scores.
 
-* "player": Which refers to an NFL team member or free agent
-* "member": A participant in the league. They may be "playing" fantasy football, but let's not use the word player to describe them, for the sake of all of us buddy
+Installation
+============
 
-It's time.
+You will need [rails](http://rubyonrails.org/download) before you can do anything. Once you have done that:
+
+- Clone the repository:
+
+```git clone git://github.com/ishakir/footbawwl```
+
+- Change into the directory created:
+
+```cd footbawwl```
+
+- And start the rails server
+
+```rails server```
+
+Contributing
+============
+
+If you're interested in contributing please get in contact with ishakir or powdermike, we're putting this together in our spare time, so any help would be most welcome!
+
+    
