@@ -1,68 +1,66 @@
 require 'test_helper'
 
 class NflPlayerTypeTest < ActiveSupport::TestCase
-  
-  test "should get player type position" do
+  test 'should get player type position' do
     position_type = NflPlayerType.find(1)
     assert_respond_to position_type, :position_type, "NflPlayerType won't respond to 'position_type' method"
   end
-  
-  test "should get player type id" do
+
+  test 'should get player type id' do
     position_type = NflPlayerType.find(2)
     assert_respond_to position_type, :id, "NflPlayerType won't respond to 'id' method"
   end
-  
-  test "should fail when adding a player type with no type" do
+
+  test 'should fail when adding a player type with no type' do
     player_type = NflPlayerType.new
     assert !player_type.save
   end
-  
-  test "should fail when adding a player type with empty string" do
+
+  test 'should fail when adding a player type with empty string' do
     player_type = NflPlayerType.new
-    player_type.position_type = ""
+    player_type.position_type = ''
     assert !player_type.save
   end
-  
-  test "should allow position type QB" do
+
+  test 'should allow position type QB' do
     player_type = NflPlayerType.new
-    player_type.position_type = "QB"
+    player_type.position_type = 'QB'
     assert player_type.save
   end
-  
-  test "should allow position type RB" do
+
+  test 'should allow position type RB' do
     player_type = NflPlayerType.new
-    player_type.position_type = "RB"
+    player_type.position_type = 'RB'
     assert player_type.save
   end
-  
-  test "should allow position type WR" do
+
+  test 'should allow position type WR' do
     player_type = NflPlayerType.new
-    player_type.position_type = "WR"
+    player_type.position_type = 'WR'
     assert player_type.save
   end
-  
-  test "should allow position type TE" do
+
+  test 'should allow position type TE' do
     player_type = NflPlayerType.new
-    player_type.position_type = "TE"
+    player_type.position_type = 'TE'
     assert player_type.save
   end
-  
-  test "should allow position type K" do
+
+  test 'should allow position type K' do
     player_type = NflPlayerType.new
-    player_type.position_type = "K"
+    player_type.position_type = 'K'
     assert player_type.save
   end
-  
-  test "should allow position type D" do
+
+  test 'should allow position type D' do
     player_type = NflPlayerType.new
-    player_type.position_type = "D"
+    player_type.position_type = 'D'
     assert player_type.save
   end
-  
+
   test "shouldn't allow position type MB" do
     player_type = NflPlayerType.new
-    player_type.position_type = "MB"
+    player_type.position_type = 'MB'
     assert !player_type.save
   end
-  
 end
