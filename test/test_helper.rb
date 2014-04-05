@@ -18,8 +18,11 @@ class ActiveSupport::TestCase
   Number_of_game_week_players = 18
   Number_match_players = 2
   Number_of_users = 2
-  Player_points = 74
-  GW_staffordpicks_points = 1332
+  Match_Player_one_points = 74
+  Match_Player_two_points = 12
+  GW_staffordpicks_points = Match_Player_one_points * 10
+  GW_two_points = Match_Player_two_points * 10
+  User_one_points = GW_staffordpicks_points + GW_two_points
   Number_of_gw_teams = 2
   Rostersize = 18
 

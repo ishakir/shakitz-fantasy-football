@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class NflPlayerTypeTest < ActiveSupport::TestCase
+  
   test "should get player type position" do
     position_type = NflPlayerType.find(1)
     assert_respond_to position_type, :position_type, "NflPlayerType won't respond to 'position_type' method"
@@ -21,4 +22,47 @@ class NflPlayerTypeTest < ActiveSupport::TestCase
     player_type.position_type = ""
     assert !player_type.save
   end
+  
+  test "should allow position type QB" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "QB"
+    assert player_type.save
+  end
+  
+  test "should allow position type RB" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "RB"
+    assert player_type.save
+  end
+  
+  test "should allow position type WR" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "WR"
+    assert player_type.save
+  end
+  
+  test "should allow position type TE" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "TE"
+    assert player_type.save
+  end
+  
+  test "should allow position type K" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "K"
+    assert player_type.save
+  end
+  
+  test "should allow position type D" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "D"
+    assert player_type.save
+  end
+  
+  test "shouldn't allow position type MB" do
+    player_type = NflPlayerType.new
+    player_type.position_type = "MB"
+    assert !player_type.save
+  end
+  
 end

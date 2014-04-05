@@ -7,4 +7,15 @@ class NflTeamTest < ActiveSupport::TestCase
     assert_equal team.nfl_players.size, 9
   end
   
+  test "NFL team cannot be created without a name" do
+    team = NflTeam.new
+    assert !team.save
+  end
+  
+  test "NFL team can be created with a name" do
+    team = NflTeam.new
+    team.name = "San Didrego Udon"
+    assert team.save
+  end
+  
 end

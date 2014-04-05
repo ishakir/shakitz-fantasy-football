@@ -33,7 +33,7 @@ class NflPlayerTest < ActiveSupport::TestCase
   test "the players name is the same as set on create" do
     expectedName = "Aaron Brodgers"
     
-    NflPlayer.create('name' => expectedName)
+    NflPlayer.create(:name => expectedName, :nfl_player_type => NflPlayerType.find(1))
     
     player = NflPlayer.last
     name = player.name
@@ -69,6 +69,7 @@ class NflPlayerTest < ActiveSupport::TestCase
   test "can't save NflPlayer without a name" do
     
     player = NflPlayer.new
+    player.nfl_player_type = NflPlayerType.find(1)
     assert !player.save, "Saved without a name!"
     
   end
@@ -77,6 +78,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     
     player = NflPlayer.new
     player.name = ""
+    player.nfl_player_type = NflPlayerType.find(1)
     
     assert !player.save, "Saved with name as the empty string!"
     
@@ -84,7 +86,7 @@ class NflPlayerTest < ActiveSupport::TestCase
   
   test "can't create NflPlayer with a string that's the empty string" do
     
-    player = NflPlayer.create(:name => "")
+    player = NflPlayer.create(:name => "", :nfl_player_type => NflPlayerType.find(1))
     lastPlayer = NflPlayer.last
     
     assert_equal "Michael Vicks", lastPlayer.name, "Player with invalid name was created!"
@@ -103,6 +105,12 @@ class NflPlayerTest < ActiveSupport::TestCase
     type = player.nfl_player_type
     
     assert_equal type.position_type, "QB"
+  end
+  
+  test "can't create NFLPlayer without NflPlayerType" do
+    player = NflPlayer.new
+    player.name = "My Dummy Name"
+    assert !player.save
   end
   
 end

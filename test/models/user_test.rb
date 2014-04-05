@@ -72,7 +72,7 @@ class UserTest < ActiveSupport::TestCase
   
   test "User two has the correct number of gameweek teams" do
     user = User.find(2)
-    assert_equal user.game_week_teams.length, 0, "Incorrect number of gameweek teams for user two"
+    assert_equal user.game_week_teams.length, 1, "Incorrect number of gameweek teams for user two"
   end
   
   test "We delete a user and all his gameweek teams are deleted" do
@@ -91,6 +91,11 @@ class UserTest < ActiveSupport::TestCase
     
     assert assertion, "ERROR: Found some of the gameweek teams, even when we deleted their user"
     
+  end
+  
+  test "Can get users total points" do
+    user = User.find(1)
+    assert_equal User_one_points, user.points, "Failed to get total team points"
   end
   
 end

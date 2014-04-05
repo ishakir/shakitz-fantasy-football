@@ -3,21 +3,28 @@ require 'test_helper'
 class GameWeekTeamTest < ActiveSupport::TestCase
   
   test "we can't create a gameweek team without a user" do
-    gameweekteam = GameWeekTeam.new
-    gameweekteam.gameweek = 1
+    game_week_team = GameWeekTeam.new
+    game_week_team.game_week = GameWeek.find(1)
     
-    assert !gameweekteam.save, "Able to save gameweekteam without a user"
+    assert !game_week_team.save, "Able to save gameweekteam without a user"
+  end
+  
+  test "we can't create a gameweek team without a game week" do
+    game_week_team = GameWeekTeam.new
+    game_week_team.user = User.find(1)
+    
+    assert !game_week_team.save
   end
   
   test "we can associate a gameweek team with a user via object" do
     usertwo = User.find(2)
-    GameWeekTeam.create(:gameweek => 1, :user => usertwo)
-    assert_equal usertwo.game_week_teams.size, 1, "User two's no. of gameweek teams not updated"
+    GameWeekTeam.create(:game_week => GameWeek.find(2), :user => usertwo)
+    assert_equal usertwo.game_week_teams.size, 2, "User two's no. of gameweek teams not updated"
   end
   
   test "we can associate a gameweek team with a user via id" do
-    GameWeekTeam.create(:gameweek => 1, :user_id => 2)
-    assert_equal User.find(2).game_week_teams.size, 1, "User two's no. of gameweek teams not updated"
+    GameWeekTeam.create(:game_week => GameWeek.find(3), :user_id => 2)
+    assert_equal User.find(2).game_week_teams.size, 2, "User two's no. of gameweek teams not updated"
   end
   
   test "we change the user a gameweek team is associated with and the user who lost it has less gameweeks" do
@@ -31,7 +38,7 @@ class GameWeekTeamTest < ActiveSupport::TestCase
     gameweekteam = GameWeekTeam.find(1)
     gameweekteam.update(:user_id => 2)
     
-    assert_equal User.find(2).game_week_teams.size, 1, "User two's no of gameweek teams not updated"
+    assert_equal User.find(2).game_week_teams.size, 2, "User two's no of gameweek teams not updated"
   end
   
   test "we delete a game week team and the associated user has one less gameweek team" do
@@ -89,6 +96,16 @@ class GameWeekTeamTest < ActiveSupport::TestCase
   test "match player has a game week" do
     game_week_team = GameWeekTeam.find(16)
     assert_equal game_week_team.game_week.number, 16, "GameWeekTeam has the wrong GameWeek number!"
+  end
+  
+  test "should get number of team points for gameweek 1" do
+    game_week_team = GameWeekTeam.find(1)
+    assert_equal GW_staffordpicks_points, game_week_team.points, "Incorrect points total" 
+  end
+  
+  test "should get number of team points for gameweek 2" do
+    game_week_team = GameWeekTeam.find(2)
+    assert_equal GW_two_points, game_week_team.points
   end
   
 end

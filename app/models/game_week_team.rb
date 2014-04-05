@@ -1,13 +1,14 @@
 class GameWeekTeam < ActiveRecord::Base
   
-  validates :user, presence: true
-  
   belongs_to :user
   belongs_to :game_week
   
   has_many :game_week_team_players
   has_many :match_players, through: :game_week_team_players
   
+  validates :user, presence: true
+  validates :game_week, presence: true 
+ 
   def match_players_playing
     match_players_by_status(true)
   end
@@ -23,6 +24,13 @@ class GameWeekTeam < ActiveRecord::Base
     gwt_players.map do |gwtp|
       gwtp.match_player
     end
+  end
+  
+  def points
+    # This is a functional "fold"
+    match_players_playing.inject(0) { |sum, player|
+      sum + player.points
+    }
   end
 
 end

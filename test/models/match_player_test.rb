@@ -16,7 +16,7 @@ class MatchPlayerTest < ActiveSupport::TestCase
   end
   
   test "can see player stat is default from start" do
-    obj = MatchPlayer.find(19).attributes
+    obj = MatchPlayer.find(37).attributes
     obj.each do |key, value|
       if(key != "id" && key != "nfl_player_id" && key != "game_week_id" && key != "created_at" && key != "updated_at")
         assert_equal 0, value, "Incorrect default value, was #{value}"
@@ -40,12 +40,41 @@ class MatchPlayerTest < ActiveSupport::TestCase
     mp = MatchPlayer.find(1)
     gwps = mp.game_week_team_players
     gwp = gwps[1]
-    assert !gwp.playing, "Expected match player to bot be playing in gameweek team in week 2!"
+    assert !gwp.playing, "Expected match player to not be playing in gameweek team in week 2!"
   end
   
   test "match player has a game week" do
     match_player = MatchPlayer.find(1)
     assert_equal match_player.game_week.number, 1, "MatchPlayer has the wrong GameWeek number!"
+  end
+  
+  test "should get Marshawn Lunch's points for gameweek 1" do
+    lunch_gw_one = MatchPlayer.find(1)
+    assert_equal Match_Player_one_points, lunch_gw_one.points
+  end
+  
+  test "should get Marshawn Lunch's points for gameweek 2" do
+    lunch_gw_two = MatchPlayer.find(18)
+    assert_equal Match_Player_two_points, lunch_gw_two.points
+  end
+  
+  test "cannot create match player without game week" do
+    match_player = MatchPlayer.new
+    match_player.nfl_player = NflPlayer.find(1)
+    assert !match_player.save
+  end
+  
+  test "cannot create match player without nfl player" do
+    match_player = MatchPlayer.new
+    match_player.game_week = GameWeek.find(5)
+    assert !match_player.save
+  end
+  
+  test "can create match player with simply nfl player and game week" do
+    match_player = MatchPlayer.new
+    match_player.nfl_player = NflPlayer.find(1)
+    match_player.game_week = GameWeek.find(5)
+    assert match_player.save
   end
   
 end

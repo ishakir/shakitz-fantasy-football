@@ -5,7 +5,7 @@ class GameWeekControllerTest < ActionController::TestCase
   # Total team points
   test "should get total team points" do
     points = get_assigns(:get_total_team_points, :points, {:uid=>1})
-    assert_equal GW_staffordpicks_points*Number_of_gw_teams, points, "Failed to get total team points"
+    assert_equal User_one_points, points, "Failed to get total team points"
   end
   
   # Gameweek team points
@@ -24,6 +24,11 @@ class GameWeekControllerTest < ActionController::TestCase
   test "should get number of team points for gameweek 1" do
     points = get_assigns :get_gw_team_points, :tally, {:uid => 1, :gw => 1}
     assert_equal GW_staffordpicks_points, points, "Incorrect points total" 
+  end
+  
+  test "should get number of team points for gameweek 2" do
+    points = get_assigns :get_gw_team_points, :tally, {:uid => 1, :gw => 2}
+    assert_equal GW_two_points, points, "Incorrect points total"
   end
 
   # Gameweek roster
@@ -94,6 +99,6 @@ class GameWeekControllerTest < ActionController::TestCase
   
   test "should get Marshawn Lunch's stats for gameweek 1" do
     p_points = get_assigns(:get_gw_player_points, :points, {:pid => 1, :gw => 1})
-    assert_equal Player_points, p_points
+    assert_equal Match_Player_one_points, p_points
   end
 end

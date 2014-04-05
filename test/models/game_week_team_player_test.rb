@@ -20,4 +20,53 @@ class GameWeekTeamPlayerTest < ActiveSupport::TestCase
     
   end
   
+  test "can't create game week team player without game week team" do
+    match_player = MatchPlayer.create(:nfl_player => NflPlayer.find(8))
+    
+    game_week_team_player = GameWeekTeamPlayer.new
+    game_week_team_player.match_player = match_player
+    
+    assert !game_week_team_player.save, "Able to save GameWeekTeamPlayer without GameWeekTeam!"
+    
+  end
+  
+  test "can't create game week team player without match player" do
+    game_week_team = GameWeekTeam.create(:game_week => GameWeek.find(9), :user => User.find(1))
+    
+    game_week_team_player = GameWeekTeamPlayer.new
+    game_week_team_player.game_week_team = game_week_team
+    
+    assert !game_week_team_player.save, "Able to save GameWeekTeamPlayer without MatchPlayer"
+    
+  end
+  
+  test "validates gameweek must be the same for team and match player" do
+    
+    # Create a GameWeekTeam and MatchPlayer
+    game_week_team = GameWeekTeam.create(:game_week => GameWeek.find(9), :user => User.find(1))
+    match_player = MatchPlayer.create(:game_week => GameWeek.find(8), :nfl_player => NflPlayer.find(8))
+    
+    game_week_team_player = GameWeekTeamPlayer.new
+    game_week_team_player.game_week_team = game_week_team
+    game_week_team_player.match_player = match_player
+    
+    assert !game_week_team_player.save, "Able to save gwtp with mp and gwt having different gameweeks!"
+    
+    
+  end
+  
+  test "allows creation if gameweek is the same for team and match player" do
+    
+    # Create a GameWeekTeam and MatchPlayer
+    game_week_team = GameWeekTeam.create(:game_week => GameWeek.find(3), :user => User.find(1))
+    match_player = MatchPlayer.create(:game_week => GameWeek.find(3), :nfl_player => NflPlayer.find(16))
+    
+    game_week_team_player = GameWeekTeamPlayer.new
+    game_week_team_player.game_week_team = game_week_team
+    game_week_team_player.match_player = match_player
+    
+    assert game_week_team_player.save, "Unable to save gwtp, despite mp and gwt having same gameweeks!"
+    
+  end
+  
 end

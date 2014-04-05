@@ -8,4 +8,7 @@ gwteam_1_<%= n %>:
   user_id: 1
 <% end %>
 
-# Player with id 2 has no gw teams :(
+gwteam_user_2:
+  id: 18
+  game_week_id: 1
+  user_id: 2

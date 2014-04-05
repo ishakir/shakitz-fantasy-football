@@ -1,5 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# Gameweek team 1 contains match players for each NFL Player in GW 1
+# The first 10 are playing
 <% 10.times do |n| %>
 gwteamplayer_in_<%= n %>:
   id: <%= n %>
@@ -8,6 +10,7 @@ gwteamplayer_in_<%= n %>:
   playing: true
 <% end %>
 
+# The second 8 are not playing
 <% 8.times do |n| %>
 gwteamplayer_out_<%= 10 + n %>:
   id: <%= 10 + n %>
@@ -16,18 +19,39 @@ gwteamplayer_out_<%= 10 + n %>:
   playing: false
 <% end %>
 
+# Similar for Gameweek team 2
+# The first 8 are not playing
 <% 8.times do |n| %>
 gwteamplayer_out_<%= n + 18 %>:
   id: <%= 18 + n %>
   game_week_team_id: 2
+  match_player_id: <%= 18 + n %>
+  playing: false
+<% end %>
+
+# The next 10 are playing
+<% 10.times do |n| %>
+gwteamplayer_in_<%= n + 26 %>:
+  id: <%= 26 + n %>
+  game_week_team_id: 2
+  match_player_id: <%= n + 26 %>
+  playing: true
+<% end %>
+
+
+# User two has exactly the same gameweek team for week 1, and user 1 does for week 2
+<% 8.times do |n| %>
+gwteamplayer_out_<%= n + 36 %>:
+  id: <%= n + 36 %>
+  game_week_team_id: 18
   match_player_id: <%= n %>
   playing: false
 <% end %>
 
 <% 10.times do |n| %>
-gwteamplayer_in_<%= n + 26 %>:
-  id: <%= 28 + n %>
-  game_week_team_id: 2
-  match_player_id: <%= n + 8 %>
+gwteamplayer_out_<%= n + 44 %>:
+  id: <%= n + 44 %>
+  game_week_team_id: 18
+  match_player_id: <%= n + 10 %>
   playing: true
 <% end %>
