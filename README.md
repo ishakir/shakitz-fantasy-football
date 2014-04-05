@@ -22,8 +22,6 @@ You will need [rails](http://rubyonrails.org/download) before you can do anythin
 
 ```rails server```
 
-Note to self for now, likely to take more than just this, but we'll confirm that later when we try to set it up!
-
 Contributing
 ============
 
