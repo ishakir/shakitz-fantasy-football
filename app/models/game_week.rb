@@ -2,7 +2,7 @@ class GameWeek < ActiveRecord::Base
   has_many :match_players
   has_many :game_week_teams
 
-  validates :number, presence: true
+  validates_presence_of :number
   validate :number_is_in_correct_range
 
   def number_is_in_correct_range

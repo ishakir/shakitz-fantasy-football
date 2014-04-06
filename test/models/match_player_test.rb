@@ -65,10 +65,17 @@ class MatchPlayerTest < ActiveSupport::TestCase
     assert !match_player.save
   end
 
-  test 'can create match player with simply nfl player and game week' do
+  test 'can create match player' do
+    match_player = MatchPlayer.new
+    match_player.nfl_player = NflPlayer.find(19)
+    match_player.game_week = GameWeek.find(1)
+    assert match_player.save
+  end
+
+  test "can't create match player if another has same game_week and nfl_player" do
     match_player = MatchPlayer.new
     match_player.nfl_player = NflPlayer.find(1)
-    match_player.game_week = GameWeek.find(5)
-    assert match_player.save
+    match_player.game_week = GameWeek.find(1)
+    assert !match_player.save
   end
 end

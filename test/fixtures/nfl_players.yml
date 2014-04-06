@@ -109,3 +109,8 @@ eighteen:
   nfl_team_id: 2
   nfl_player_type_id: 1
 
+nineteen:
+  id: 19
+  name: Some Other Player
+  nfl_team_id: 2
+  nfl_player_type_id: 1

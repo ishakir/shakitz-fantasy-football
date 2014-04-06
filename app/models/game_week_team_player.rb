@@ -2,8 +2,8 @@ class GameWeekTeamPlayer < ActiveRecord::Base
   belongs_to :game_week_team
   belongs_to :match_player
 
-  validates :game_week_team, presence: true
-  validates :match_player, presence: true
+  validates_presence_of :game_week_team
+  validates_presence_of :match_player
   validate :both_have_same_gameweek
 
   def both_have_same_gameweek

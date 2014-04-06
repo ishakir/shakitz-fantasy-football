@@ -4,6 +4,6 @@ class NflPlayer < ActiveRecord::Base
 
   has_many :match_players
 
-  validates :name, presence: true
-  validates :nfl_player_type, presence: true
+  validates_presence_of :name
+  validates_presence_of :nfl_player_type
 end

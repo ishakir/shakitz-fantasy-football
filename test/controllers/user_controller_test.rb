@@ -88,7 +88,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test 'should see user object from view page has two users' do
-    can_see_entity_obj_num_is(:show, :users, 2, 'user')
+    can_see_entity_obj_num_is(:show, :users, 3, 'user')
   end
 
   test 'should see user object from view page first entry is Mike Sharwood' do

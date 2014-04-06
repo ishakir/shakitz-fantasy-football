@@ -32,7 +32,7 @@ class NflPlayerTest < ActiveSupport::TestCase
   test 'the players name is the same as set on create' do
     expected_name = 'Aaron Brodgers'
 
-    NflPlayer.create(name: expected_name, nfl_player_type: NflPlayerType.find(1))
+    NflPlayer.create!(name: expected_name, nfl_player_type: NflPlayerType.find(1))
 
     player = NflPlayer.last
     name = player.name
@@ -44,7 +44,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     player = NflPlayer.find(1)
 
     new_name = 'Marshawn Launch'
-    player.update('name' => new_name)
+    player.update!('name' => new_name)
 
     also_the_player = NflPlayer.find(1)
     name = also_the_player.name
@@ -87,7 +87,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     NflPlayer.create(name: '', nfl_player_type: NflPlayerType.find(1))
     last_player = NflPlayer.last
 
-    assert_equal 'Michael Vicks', last_player.name, 'Player with invalid name was created!'
+    assert_equal 'Some Other Player', last_player.name, 'Player with invalid name was created!'
 
   end
 

@@ -9,3 +9,8 @@ two:
   id: 2
   name: Imran Wright
   team_name: Destroyers
+
+three:
+  id: 3
+  name: Another User
+  team_name: The Depressed

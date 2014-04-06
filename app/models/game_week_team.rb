@@ -5,8 +5,14 @@ class GameWeekTeam < ActiveRecord::Base
   has_many :game_week_team_players
   has_many :match_players, through: :game_week_team_players
 
-  validates :user, presence: true
-  validates :game_week, presence: true
+  validates_presence_of :user
+  validates_presence_of :game_week
+
+  validates_uniqueness_of :user, scope: :game_week, if: :user_and_game_week_are_present
+
+  def user_and_game_week_are_present
+    user.present? && game_week.present?
+  end
 
   def match_players_playing
     match_players_by_status(true)

@@ -5,8 +5,14 @@ class MatchPlayer < ActiveRecord::Base
   has_many :game_week_team_players
   has_many :game_week_teams, through: :game_week_team_players
 
-  validates :nfl_player, presence: true
-  validates :game_week, presence: true
+  validates_presence_of :nfl_player
+  validates_presence_of :game_week
+
+  validates_uniqueness_of :nfl_player, scope: :game_week, if: :player_and_game_week_are_present
+
+  def player_and_game_week_are_present
+    nfl_player.present? && game_week.present?
+  end
 
   def points
     total_points = 0

@@ -14,7 +14,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'can add user' do
-    User.create(name: 'Test User', team_name: 'Test Team Name')
+    User.create!(name: 'Test User', team_name: 'Test Team Name')
     last_entry = User.last
     assert_equal 'Test User', last_entry.name
   end
@@ -49,7 +49,7 @@ class UserTest < ActiveSupport::TestCase
   test 'can update user name' do
     new_name = 'Mike Spitz'
     user = User.find(1) # Mike Sharwood
-    user.update(name: new_name)
+    user.update!(name: new_name)
     assert_equal new_name, user.name
   end
 
