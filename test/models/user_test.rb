@@ -91,4 +91,10 @@ class UserTest < ActiveSupport::TestCase
     user = User.find(1)
     assert_equal USER_ONE_POINTS, user.points, 'Failed to get total team points'
   end
+
+  test 'username must be unique' do
+    user = User.new
+    user.name = 'Imran Wright'
+    assert !user.save
+  end
 end

@@ -8,9 +8,9 @@ class MatchPlayer < ActiveRecord::Base
   validates_presence_of :nfl_player
   validates_presence_of :game_week
 
-  validates_uniqueness_of :nfl_player, scope: :game_week, if: :player_and_game_week_are_present
+  validates_uniqueness_of :nfl_player, scope: :game_week, if: :both_are_present
 
-  def player_and_game_week_are_present
+  def both_are_present
     nfl_player.present? && game_week.present?
   end
 

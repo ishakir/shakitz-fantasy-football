@@ -72,17 +72,10 @@ class ActiveSupport::TestCase
     assert_equal get_assigns(action, ent_obj)[i].name, exp_row_name, "#{i} #{obj_name} object entry on view page is not" + exp_row_name
   end
 
-  def can_edit_entity_obj_name(action, params, ent_obj, exp_row_name, obj_name)
-    pre_edit_obj = ent_obj.find(params[:id])
-    post action, params
-    row_obj = ent_obj.find(params[:id])
-    assert_not_equal pre_edit_obj.name, row_obj.name, "Failed to update #{obj_name} #{exp_row_name}"
-  end
-
   def can_edit_entity_obj_team_name(action, params, ent_obj, exp_row_name, obj_name)
-    pre_edit_obj = ent_obj.find(params[:id])
+    pre_edit_obj = ent_obj.find(params[:user_id])
     post action, params
-    row_obj = ent_obj.find(params[:id])
+    row_obj = ent_obj.find(params[:user_id])
     assert_not_equal pre_edit_obj.team_name, row_obj.team_name, "Failed to update #{obj_name} #{exp_row_name}"
   end
 

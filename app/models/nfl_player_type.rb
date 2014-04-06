@@ -4,4 +4,5 @@ class NflPlayerType < ActiveRecord::Base
   has_many :nfl_players
 
   validates_inclusion_of :position_type, in: ALLOWED_TYPES, allow_nil: false
+  validates_uniqueness_of :position_type
 end

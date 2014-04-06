@@ -16,4 +16,10 @@ class NflTeamTest < ActiveSupport::TestCase
     team.name = 'San Didrego Udon'
     assert team.save
   end
+
+  test 'NFL team name must be unique' do
+    team = NflTeam.new
+    team.name = 'Jog On Jaguars'
+    assert !team.save
+  end
 end

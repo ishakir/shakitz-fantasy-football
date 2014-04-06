@@ -15,10 +15,9 @@ class ApplicationController < ActionController::Base
 
   def validate_at_least_number_of_parameters(expected_params, params, minimum_expected)
     parameters_found = []
+
     expected_params.each do |parameter|
-      if params.key?(parameter)
-        parameters_found.push(parameter)
-      end
+      parameters_found.push(parameter) if params.key?(parameter)
     end
 
     if parameters_found.size < minimum_expected
@@ -37,13 +36,13 @@ class ApplicationController < ActionController::Base
     render_unprocessable_entity
   end
 
+  rescue_from ActiveRecord::RecordInvalid do
+    render_unprocessable_entity
+  end
+
   # Stuff that's going to return a 500
   rescue_from ApplicationHelper::IllegalStateError do
     render_internal_server_error
-  end
-
-  rescue_from ActiveRecord::RecordInvalid do
-    render_unprocessable_entity
   end
 
   def render_unprocessable_entity

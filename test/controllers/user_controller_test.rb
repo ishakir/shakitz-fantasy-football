@@ -45,19 +45,19 @@ class UserControllerTest < ActionController::TestCase
 
   # DELETE
   test 'delete redirects to show' do
-    delete :delete, id: 1
+    delete :delete, user_id: 1
     assert_redirected_to controller: :user, action: :show
   end
 
   test 'should delete user' do
-    delete :delete, id: default_id
+    delete :delete, user_id: default_id
     assert_raise ActiveRecord::RecordNotFound do
       User.find(default_id)
     end
   end
 
   test 'should fail to delete imaginary user' do
-    delete :delete, id: 50
+    delete :delete, user_id: 50
     assert_response(:not_found)
   end
 
@@ -101,20 +101,26 @@ class UserControllerTest < ActionController::TestCase
 
   # UPDATE
   test 'update redirects to show' do
-    post :update, id: 1, team_name: 'Changed Team Name'
+    post :update, user_id: 1, team_name: 'Changed Team Name'
     assert_redirected_to controller: :user, action: :show
   end
 
   test 'should edit user' do
-    can_edit_entity_obj_name(:update, { id: 1, user_name: 'Timothy Perkins' }, User, 'Mike Sharwood', 'user')
+    user_id = 1
+
+    pre_edit_user = User.find(user_id)
+    post :update, user_id: user_id, user_name: 'Timothy Perkins'
+
+    post_edit_user = User.find(user_id)
+    assert_not_equal pre_edit_user.name, post_edit_user.name, 'Failed to update User'
   end
 
   test 'should fail to edit non-existent user' do
-    fail_edit_fake_entity_row_obj(:update, { id: 5, user_name: 'Biggity Boo' }, 'user')
+    fail_edit_fake_entity_row_obj(:update, { user_id: 5, user_name: 'Biggity Boo' }, 'user')
   end
 
   test 'should edit team name' do
-    can_edit_entity_obj_team_name(:update, { id: 1, team_name: 'Changed Team Name' }, User, "Mike's Picks", 'user')
+    can_edit_entity_obj_team_name(:update, { user_id: 1, team_name: 'Changed Team Name' }, User, "Mike's Picks", 'user')
   end
 
   test "can't edit user with no id" do
@@ -123,7 +129,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test "can't edit user without something to update" do
-    post :update, id: 1
+    post :update, user_id: 1
     assert_response :unprocessable_entity
   end
 end

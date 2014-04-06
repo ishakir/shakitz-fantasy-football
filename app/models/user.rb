@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :team_name
+  validates_uniqueness_of :name
 
   has_many :game_week_teams, dependent: :destroy
 

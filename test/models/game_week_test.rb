@@ -34,4 +34,17 @@ class GameWeekTest < ActiveSupport::TestCase
     game_week.number = 18
     assert !game_week.save
   end
+
+  test 'game week can be created' do
+    GameWeek.find(1).destroy!
+    game_week = GameWeek.new
+    game_week.number = 1
+    assert game_week.save
+  end
+
+  test 'validation of game week number' do
+    game_week = GameWeek.new
+    game_week.number = 1
+    assert !game_week.save
+  end
 end

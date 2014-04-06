@@ -55,4 +55,15 @@ class GameWeekTeamPlayerTest < ActiveSupport::TestCase
 
     assert game_week_team_player.save, 'Unable to save gwtp, despite mp and gwt having same gameweeks!'
   end
+
+  test 'validates game_week, match_player combo must be unique' do
+    game_week_team = GameWeekTeam.find(1)
+    match_player = MatchPlayer.find(2)
+
+    game_week_team_player = GameWeekTeamPlayer.new
+    game_week_team_player.game_week_team = game_week_team
+    game_week_team_player.match_player = match_player
+
+    assert !game_week_team_player.save
+  end
 end

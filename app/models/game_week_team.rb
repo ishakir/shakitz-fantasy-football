@@ -8,9 +8,9 @@ class GameWeekTeam < ActiveRecord::Base
   validates_presence_of :user
   validates_presence_of :game_week
 
-  validates_uniqueness_of :user, scope: :game_week, if: :user_and_game_week_are_present
+  validates_uniqueness_of :user, scope: :game_week, if: :both_are_present
 
-  def user_and_game_week_are_present
+  def both_are_present
     user.present? && game_week.present?
   end
 

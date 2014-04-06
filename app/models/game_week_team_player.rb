@@ -4,7 +4,12 @@ class GameWeekTeamPlayer < ActiveRecord::Base
 
   validates_presence_of :game_week_team
   validates_presence_of :match_player
+  validates_uniqueness_of :match_player, scope: :game_week_team, if: :both_are_present
   validate :both_have_same_gameweek
+
+  def both_are_present
+    game_week_team.present? && match_player.present?
+  end
 
   def both_have_same_gameweek
     return unless game_week_team.present?
@@ -16,7 +21,7 @@ class GameWeekTeamPlayer < ActiveRecord::Base
     if gwt_gw.number != mp_gw.number
       errors.add(
         :base,
-        'GameWeekTeam and MatchPlayer do not have the same game week'
+        'Game Weeks do not match!'
       )
     end
   end
