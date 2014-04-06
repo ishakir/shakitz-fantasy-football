@@ -1,2 +1,48 @@
-<h1>User#show</h1>
-<p>Find me in app/views/user/show.html.erb</p>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NFL Fantasy Footbawwl</title>
+		<meta charset="utf-8"/>
+	</head>
+	<body>
+		<h1>NFL Fantasy Footbawwl</h1>
+		<table>
+			<tr>
+				<th>User</th>
+				<th>Team Name</th>
+				<th>Points</th>
+			</tr>
+			<% @users.each do |user| %>
+			<tr>
+				<td><%= user.name %></td>
+				<td><%= user.team_name %></td>
+				<td><%= user.points %></td>
+			</tr>
+			<% end %>
+		</table>
+		<h2>Create User</h2>
+		<%= form_tag("/user/create", method: "post") do %>
+			<%= label_tag(:user_name, "Username:") %>
+			<%= text_field_tag(:user_name) %>
+			<%= label_tag(:team_name, "Team Name:") %>
+			<%= text_field_tag(:team_name) %>
+			<%= submit_tag("Create") %>
+		<% end %>
+		<h2>Update User</h2>
+		<%= form_tag("/user/update", method: "post") do %>
+			<%= label_tag(:id, "Id:") %>
+			<%= text_field_tag(:id) %>
+			<%= label_tag(:user_name, "Username:") %>
+			<%= text_field_tag(:user_name) %>
+			<%= label_tag(:team_name, "Team Name:") %>
+			<%= text_field_tag(:team_name) %>
+			<%= submit_tag("Update") %>
+		<% end %>
+		<h2>Delete User</h2>
+		<%= form_tag("/user/delete", method: "delete") do %>
+			<%= label_tag(:id, "Id:") %>
+			<%= text_field_tag(:id) %>
+			<%= submit_tag("Delete") %>
+		<% end %>
+	</body>
+</html>
