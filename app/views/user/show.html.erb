@@ -6,43 +6,18 @@
 	</head>
 	<body>
 		<h1>NFL Fantasy Footbawwl</h1>
+		<h2><%= @user.name %> - <%= @user.team_name %></h2>
 		<table>
 			<tr>
-				<th>User</th>
-				<th>Team Name</th>
+				<th>Game Week</th>
 				<th>Points</th>
 			</tr>
-			<% @users.each do |user| %>
+			<% @user.game_week_teams.each do |game_week_team| %>
 			<tr>
-				<td><%= user.name %></td>
-				<td><%= user.team_name %></td>
-				<td><%= user.points %></td>
+				<td><%= link_to game_week_team.game_week.number, controller: :user, action: :game_week_team, user_id: @user.id, game_week: game_week_team.game_week.number %></td>
+				<td><%= game_week_team.points %></td>
 			</tr>
 			<% end %>
 		</table>
-		<h2>Create User</h2>
-		<%= form_tag("/user/create", method: "post") do %>
-			<%= label_tag(:user_name, "Username:") %>
-			<%= text_field_tag(:user_name) %>
-			<%= label_tag(:team_name, "Team Name:") %>
-			<%= text_field_tag(:team_name) %>
-			<%= submit_tag("Create") %>
-		<% end %>
-		<h2>Update User</h2>
-		<%= form_tag("/user/update", method: "post") do %>
-			<%= label_tag(:id, "Id:") %>
-			<%= text_field_tag(:id) %>
-			<%= label_tag(:user_name, "Username:") %>
-			<%= text_field_tag(:user_name) %>
-			<%= label_tag(:team_name, "Team Name:") %>
-			<%= text_field_tag(:team_name) %>
-			<%= submit_tag("Update") %>
-		<% end %>
-		<h2>Delete User</h2>
-		<%= form_tag("/user/delete", method: "delete") do %>
-			<%= label_tag(:id, "Id:") %>
-			<%= text_field_tag(:id) %>
-			<%= submit_tag("Delete") %>
-		<% end %>
 	</body>
 </html>

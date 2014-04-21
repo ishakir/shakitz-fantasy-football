@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NFL Fantasy Footbawwl</title>
+		<meta charset="utf-8"/>
+	</head>
+	<body>
+		<h1>NFL Fantasy Footbawwl</h1>
+		<h2><%= @user.name %> - <%= @user.team_name %> - Week <%= @game_week_team.game_week.number %></h2>
+		
+		<h3>Active</h3>
+		<table>
+			<tr>
+				<th>Player</th>
+				<th>Points</th>
+			</tr>
+			<% @game_week_team.match_players_playing.each do |match_player| %>
+			<tr>
+				<td><%= match_player.nfl_player.name %></td>
+				<td><%= match_player.points %></td>
+			</tr>
+			<% end %>
+		</table>
+		
+		<h4>Total Points - <%= @game_week_team.points%></h4>
+		
+		<h3>Benched</h3>
+		<table>
+			<tr>
+				<th>Player</th>
+				<th>Points</th>
+			</tr>
+			<% @game_week_team.match_players_benched.each do |match_player| %>
+			<tr>
+				<td><%= match_player.nfl_player.name %></td>
+				<td><%= match_player.points %></td>
+			</tr>
+			<% end %>
+		</table>
+		
+	</body>
+</html>

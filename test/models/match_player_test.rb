@@ -49,7 +49,7 @@ class MatchPlayerTest < ActiveSupport::TestCase
   end
 
   test "should get Marshawn Lunch's points for gameweek 2" do
-    lunch_gw_two = MatchPlayer.find(18)
+    lunch_gw_two = MatchPlayer.find(19)
     assert_equal MATCH_PLAYER_TWO_POINTS, lunch_gw_two.points
   end
 

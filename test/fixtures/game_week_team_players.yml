@@ -4,18 +4,18 @@
 # The first 10 are playing
 <% 10.times do |n| %>
 gwteamplayer_in_<%= n %>:
-  id: <%= n %>
+  id: <%= n + 1 %>
   game_week_team_id: 1
-  match_player_id: <%= n %>
+  match_player_id: <%= n + 1 %>
   playing: true
 <% end %>
 
 # The second 8 are not playing
 <% 8.times do |n| %>
 gwteamplayer_out_<%= 10 + n %>:
-  id: <%= 10 + n %>
+  id: <%= 11 + n %>
   game_week_team_id: 1
-  match_player_id: <%= 10 + n %>
+  match_player_id: <%= 11 + n %>
   playing: false
 <% end %>
 
@@ -23,18 +23,18 @@ gwteamplayer_out_<%= 10 + n %>:
 # The first 8 are not playing
 <% 8.times do |n| %>
 gwteamplayer_out_<%= n + 18 %>:
-  id: <%= 18 + n %>
+  id: <%= 19 + n %>
   game_week_team_id: 2
-  match_player_id: <%= 18 + n %>
+  match_player_id: <%= 19 + n %>
   playing: false
 <% end %>
 
 # The next 10 are playing
 <% 10.times do |n| %>
 gwteamplayer_in_<%= n + 26 %>:
-  id: <%= 26 + n %>
+  id: <%= 27 + n %>
   game_week_team_id: 2
-  match_player_id: <%= n + 26 %>
+  match_player_id: <%= n + 27 %>
   playing: true
 <% end %>
 
@@ -42,16 +42,16 @@ gwteamplayer_in_<%= n + 26 %>:
 # User two has exactly the same gameweek team for week 1, and user 1 does for week 2
 <% 8.times do |n| %>
 gwteamplayer_out_<%= n + 36 %>:
-  id: <%= n + 36 %>
+  id: <%= n + 37 %>
   game_week_team_id: 18
-  match_player_id: <%= n %>
+  match_player_id: <%= n + 1 %>
   playing: false
 <% end %>
 
 <% 10.times do |n| %>
 gwteamplayer_out_<%= n + 44 %>:
-  id: <%= n + 44 %>
+  id: <%= n + 45 %>
   game_week_team_id: 18
-  match_player_id: <%= n + 10 %>
+  match_player_id: <%= n + 9 %>
   playing: true
 <% end %>

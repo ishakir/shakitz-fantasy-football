@@ -1,25 +1,21 @@
 Footbawwl::Application.routes.draw do
   
   # All the routes for the user display (League Table)
-  get "/" => "user#show"
+  get "/" => "user#show_all"
+  
+  get "/user/:user_id" => "user#show"
+  get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
   
   post "user/create" => "user#create"
   post "user/update" => "user#update"
   delete "user/delete" => "user#delete"
   
-  # All of the bwloe have not been check as part of LARGE CONTROLLER AUDIT
-  get "game_week/total_team_points"
-  get "game_week/gw_team_points"
-  get "game_week/gw_roster"
-  get "game_week/gw_player_points"
+  # All of the below have not been check as part of LARGE CONTROLLER AUDIT
   get "match_player/rushing"
   get "match_player/passing"
   get "match_player/defense"
   get "match_player/kicker"
   get "match_player/show"
- # All the routes for user  get "user/create"
-  
-  #posts
   
   # All the routes for nfl player
   get "nfl_player/unpicked"

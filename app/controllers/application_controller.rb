@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do
+  rescue_from ArgumentError do |error|
     render_unprocessable_entity
   end
 

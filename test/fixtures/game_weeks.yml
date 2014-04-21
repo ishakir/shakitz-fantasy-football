@@ -2,6 +2,6 @@
 
 <% 17.times do |n| %>
 gameweek_<%= n %>:
-  id: <%= n %>
-  number: <%= n %>
+  id: <%= n + 1 %>
+  number: <%= n + 1 %>
 <% end %>

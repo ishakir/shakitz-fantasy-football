@@ -7,7 +7,7 @@ class UserControllerTest < ActionController::TestCase
   # CREATE
   test 'create redirects to show' do
     post :create, user_name: 'Dummy User Name', team_name: 'Dummy Team Name'
-    assert_redirected_to controller: :user, action: :show
+    assert_redirected_to controller: :user, action: :show_all
   end
 
   test 'should create new user' do
@@ -46,7 +46,7 @@ class UserControllerTest < ActionController::TestCase
   # DELETE
   test 'delete redirects to show' do
     delete :delete, user_id: 1
-    assert_redirected_to controller: :user, action: :show
+    assert_redirected_to controller: :user, action: :show_all
   end
 
   test 'should delete user' do
@@ -66,43 +66,115 @@ class UserControllerTest < ActionController::TestCase
     assert_response(:unprocessable_entity)
   end
 
-  # READ/SHOW
+  # Show all users
   test 'should get show with no id' do
-    can_view_action(:show)
+    can_view_action(:show_all)
   end
 
   test 'should get show template with no id' do
-    can_view_template(:show)
+    can_view_template(:show_all)
   end
 
   test 'should get show layout with no id' do
-    can_view_layout(:show, 'layouts/application')
+    can_view_layout(:show_all, 'layouts/application')
   end
 
   test 'should get list of users' do
-    can_get_entity_list(:show, :users, 'users')
+    can_get_entity_list(:show_all, :users, 'users')
   end
 
   test 'should see user object from show page is not nil' do
-    can_see_entity_obj_not_nil(:show, :users, 'User')
+    can_see_entity_obj_not_nil(:show_all, :users, 'User')
   end
 
   test 'should see user object from view page has two users' do
-    can_see_entity_obj_num_is(:show, :users, 3, 'user')
+    can_see_entity_obj_num_is(:show_all, :users, 3, 'user')
   end
 
   test 'should see user object from view page first entry is Mike Sharwood' do
-    can_see_entity_row_index_eq(:show, :users, 0, 'Mike Sharwood', 'user')
+    can_see_entity_row_index_eq(:show_all, :users, 0, 'Mike Sharwood', 'user')
   end
 
   test 'should see user object from view page second entry is Imran Wright' do
-    can_see_entity_row_index_eq(:show, :users, 1, 'Imran Wright', 'user')
+    can_see_entity_row_index_eq(:show_all, :users, 1, 'Imran Wright', 'user')
+  end
+
+  # Show user breakdown
+  test "should reject the request if user_id is invalid" do
+    get :show, user_id: 10
+    assert_response :not_found
+  end
+  
+  test "should accept the request if user_id is valid" do
+    get :show, user_id: 1
+    assert_response :success
+  end
+  
+  test "should show correct template if user_id is valid" do
+    get :show, user_id: 1
+    assert_template :show
+  end
+  
+  test "should show correct layout if user_id is valid" do
+    get :show, user_id: 1
+    assert_template layout: 'layouts/application'
+  end
+  
+  test "should put user entity into a variable called @user" do
+    user = get_assigns :show, :user, user_id: 1
+    assert_kind_of User, user
+  end
+  
+  test "@user has the id requested" do
+    user = get_assigns :show, :user, user_id: 1
+    assert_equal 1, user.id
+  end
+  
+  # Show gameweek breakdown
+  test "should reject the request if user_id is invalid" do
+    get :game_week_team, user_id: 10, game_week: 1
+    assert_response :not_found
+  end
+  
+  test "should reject the request if game_week is invalid" do
+    get :game_week_team, user_id: 1, game_week: 50
+    assert_response :not_found
+  end
+  
+  test "should accept the request if both parameters are valid" do
+    get :game_week_team, user_id: 1, game_week: 1
+    assert_response :success
+  end
+  
+  test "should put the user into a variable called @user" do
+    user = get_assigns :game_week_team, :user, user_id: 1, game_week: 1
+    assert_kind_of User, user
+  end
+  
+  test "should get a user with the correct id" do
+    user = get_assigns :game_week_team, :user, user_id: 1, game_week: 1
+    assert_equal 1, user.id
+  end
+  
+  test "should put the game week team into a variable called @game_week_team" do
+    game_week_team = get_assigns :game_week_team, :game_week_team, user_id: 1, game_week: 1
+    assert_kind_of GameWeekTeam, game_week_team
+  end
+  
+  test "should get a game week team with the correct game week number" do
+    game_week_team = get_assigns :game_week_team, :game_week_team, user_id: 1, game_week: 1
+    assert_equal 1, game_week_team.game_week.number
+  end
+  
+  test "should get the game_week_team from the correct user" do
+    game_week_team = get_assigns :game_week_team, :game_week_team, user_id: 1, game_week: 1
+    assert_equal 1, game_week_team.user.id 
   end
 
   # UPDATE
   test 'update redirects to show' do
     post :update, user_id: 1, team_name: 'Changed Team Name'
-    assert_redirected_to controller: :user, action: :show
+    assert_redirected_to controller: :user, action: :show_all
   end
 
   test 'should edit user' do
