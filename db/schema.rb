@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140323185708) do
   add_index "game_week_team_players", ["match_player_id"], name: "index_game_week_team_players_on_match_player_id"
 
   create_table "game_week_teams", force: true do |t|
+    t.integer  "gameweek"
     t.integer  "user_id"
     t.integer  "game_week_id"
     t.datetime "created_at"

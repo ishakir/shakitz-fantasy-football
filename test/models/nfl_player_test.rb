@@ -53,42 +53,32 @@ class NflPlayerTest < ActiveSupport::TestCase
   end
 
   test 'we can delete a player' do
-
     player = NflPlayer.find(2)
-
     player.destroy
-
     assert_raise ActiveRecord::RecordNotFound do
       NflPlayer.find(2)
     end
-
   end
 
   test "can't save NflPlayer without a name" do
-
     player = NflPlayer.new
     player.nfl_player_type = NflPlayerType.find(1)
     assert !player.save, 'Saved without a name!'
-
   end
 
   test "can't save NflPlayer with a string that's the empty name" do
-
     player = NflPlayer.new
     player.name = ''
     player.nfl_player_type = NflPlayerType.find(1)
 
     assert !player.save, 'Saved with name as the empty string!'
-
   end
 
   test "can't create NflPlayer with a string that's the empty string" do
-
     NflPlayer.create(name: '', nfl_player_type: NflPlayerType.find(1))
     last_player = NflPlayer.last
 
-    assert_equal 'Some Other Player', last_player.name, 'Player with invalid name was created!'
-
+    assert_equal LAST_NFL_PLAYER_NAME_IN_FIXTURES, last_player.name, 'Player with invalid name was created!'
   end
 
   test 'an NFL Player has an NFL team' do

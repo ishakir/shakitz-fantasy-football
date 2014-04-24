@@ -24,9 +24,9 @@ class NflPlayerControllerTest < ActionController::TestCase
     assert_assigns_not_nil :unpicked, :players, "List of NFL players is nil"
   end
   
-  test "should assign players as a list of size 2" do
-    players = get_assigns(:unpicked, :players)
-    assert_equal players.size, NUMBER_OF_NFL_PLAYERS, "List of NFL players is the wrong size"
+  test "should return correct number of unpicked players" do
+    players = get_assigns(:unpicked, :unpicked_players)
+    assert_equal players.size, NUMBER_OF_UNPICKED_NFL_PLAYERS, "List of unpicked NFL players is the wrong size"
   end
   
   test "should have Marshawn Lunch as the first element of the list of players" do
@@ -70,5 +70,5 @@ class NflPlayerControllerTest < ActionController::TestCase
     player = get_assigns :show, :player, {:id => id}
     assert_equal player.id, id, "Player's id is incorrect!"
   end
-
+  
 end

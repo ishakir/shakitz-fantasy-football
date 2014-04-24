@@ -100,7 +100,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   # Show user breakdown
-  test "should reject the request if user_id is invalid" do
+  test "should reject the request to load show if user_id is invalid" do
     get :show, user_id: 10
     assert_response :not_found
   end
@@ -131,7 +131,7 @@ class UserControllerTest < ActionController::TestCase
   end
   
   # Show gameweek breakdown
-  test "should reject the request if user_id is invalid" do
+  test "should reject the request to get gameweekteam if user_id is invalid" do
     get :game_week_team, user_id: 10, game_week: 1
     assert_response :not_found
   end

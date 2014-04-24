@@ -114,3 +114,9 @@ nineteen:
   name: Some Other Player
   nfl_team_id: 2
   nfl_player_type_id: 1
+  
+twenty:
+  id: 20
+  name: Desean Foshawn
+  nfl_team_id: 3
+  nfl_player_type_id: 2
