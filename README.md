@@ -25,6 +25,6 @@ You will need [rails](http://rubyonrails.org/download) before you can do anythin
 Contributing
 ============
 
-If you're interested in contributing please get in contact with ishakir or powdermike, we're putting this together in our spare time, so any help would be most welcome!
+If you're interested in contributing please get in contact with ishakir or MikeSpitz, we're putting this together in our spare time, so any help would be most welcome!
 
     
