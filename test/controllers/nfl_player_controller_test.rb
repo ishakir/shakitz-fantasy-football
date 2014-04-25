@@ -26,12 +26,12 @@ class NflPlayerControllerTest < ActionController::TestCase
   
   test "should return correct number of unpicked players" do
     players = get_assigns(:unpicked, :unpicked_players)
-    assert_equal players.size, NUMBER_OF_UNPICKED_NFL_PLAYERS, "List of unpicked NFL players is the wrong size"
+    assert_equal NUMBER_OF_UNPICKED_NFL_PLAYERS, players.size, "List of unpicked NFL players is the wrong size"
   end
   
   test "should have Marshawn Lunch as the first element of the list of players" do
     players = get_assigns(:unpicked, :players)
-    assert_equal players[0].name, firstPlayerName, "The first player has the wrong name"
+    assert_equal firstPlayerName, players[0].name, "The first player has the wrong name"
   end
   
   ####################################
@@ -61,14 +61,14 @@ class NflPlayerControllerTest < ActionController::TestCase
   
   test "should get assigned player's correct name" do
     player = get_assigns :show, :player, {:id => 1}
-    assert_equal player.name, firstPlayerName, "Player's name is incorrect!"
+    assert_equal firstPlayerName, player.name, "Player's name is incorrect!"
   end
   
   test "should get assigned player's correct id" do
     id = 1
     
     player = get_assigns :show, :player, {:id => id}
-    assert_equal player.id, id, "Player's id is incorrect!"
+    assert_equal id, player.id, "Player's id is incorrect!"
   end
   
 end
