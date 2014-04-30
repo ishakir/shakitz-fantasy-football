@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateMatchPlayers < ActiveRecord::Migration
   def change
     create_table :match_players do |t|

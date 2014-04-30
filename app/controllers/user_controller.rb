@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class UserController < ApplicationController
   USER_ID_KEY = :user_id
   USER_NAME_KEY = :user_name
@@ -16,21 +17,21 @@ class UserController < ApplicationController
   def show_all
     @users = User.all
   end
-  
+
   def show
     validate_all_parameters([USER_ID_KEY], params)
-    
+
     user_id = params[USER_ID_KEY]
-    
+
     @user = User.find(user_id)
   end
-  
+
   def game_week_team
     validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY], params)
-    
+
     user_id = params[USER_ID_KEY]
     game_week = params[GAME_WEEK_KEY]
-    
+
     @user = User.find(user_id)
     @game_week_team = find_game_week_team(user_id, game_week)
   end
@@ -61,7 +62,7 @@ class UserController < ApplicationController
 
     user.save!
   end
-  
+
   def find_game_week_team(user_id, game_week)
     gwt_obj_list = GameWeekTeam.where(user_id: user_id).includes(:game_week).where('game_weeks.number' => game_week)
 

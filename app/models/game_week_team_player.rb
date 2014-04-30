@@ -1,10 +1,15 @@
+# -*- encoding : utf-8 -*-
 class GameWeekTeamPlayer < ActiveRecord::Base
   belongs_to :game_week_team
   belongs_to :match_player
 
-  validates_presence_of :game_week_team
-  validates_presence_of :match_player
-  validates_uniqueness_of :match_player, scope: :game_week_team, if: :both_are_present
+  validates :game_week_team,
+            presence: true
+
+  validates :match_player,
+            presence: true,
+            uniqueness: { scope: :game_week_team, if: :both_are_present }
+
   validate :both_have_same_gameweek
 
   def both_are_present

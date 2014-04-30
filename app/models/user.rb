@@ -1,7 +1,11 @@
+# -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
-  validates_presence_of :name
-  validates_presence_of :team_name
-  validates_uniqueness_of :name
+  validates :name,
+            presence: true,
+            uniqueness: true
+
+  validates :team_name,
+            presence: true
 
   has_many :game_week_teams, dependent: :destroy
 

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -17,8 +18,8 @@ class ActiveSupport::TestCase
   NUMBER_OF_UNPICKED_NFL_PLAYERS = 2
   NUMBER_OF_PLAYING = 10
   NUMBER_OF_BENCHED = 8
-  
-  LAST_NFL_PLAYER_NAME_IN_FIXTURES = "Desean Foshawn"
+
+  LAST_NFL_PLAYER_NAME_IN_FIXTURES = 'Desean Foshawn'
   MATCH_PLAYER_ONE_POINTS = 74
   MATCH_PLAYER_TWO_POINTS = 12
   GWT_STAFFORD_PICKS_POINTS = MATCH_PLAYER_ONE_POINTS * 10

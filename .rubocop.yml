@@ -1,0 +1,14 @@
+# rubocop rules for footbawwl project
+inherit_from: rubocop-todo.yml
+
+# Ignore autogened code, include a couple not named *.rb
+AllCops:
+  Include:
+    - Rakefile
+    - config.ru
+  Exclude:
+    - bin/*
+    - db/**/*
+    - db/*
+    - config/*
+    - config/**/*

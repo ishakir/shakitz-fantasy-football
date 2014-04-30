@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateGameWeekTeams < ActiveRecord::Migration
   def change
     create_table :game_week_teams do |t|

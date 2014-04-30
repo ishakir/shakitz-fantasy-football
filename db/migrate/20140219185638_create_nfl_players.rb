@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateNflPlayers < ActiveRecord::Migration
   def change
     create_table :nfl_players do |t|

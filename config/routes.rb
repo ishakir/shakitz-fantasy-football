@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 Footbawwl::Application.routes.draw do
   
   # All the routes for the user display (League Table)

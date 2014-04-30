@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'test_helper'
 
 class GameWeekTeamTest < ActiveSupport::TestCase
@@ -103,16 +104,16 @@ class GameWeekTeamTest < ActiveSupport::TestCase
     game_week_team.game_week = GameWeek.find(1)
     assert !game_week_team.save
   end
-  
-  test "a game week team has correct number of active and benched players" do
+
+  test 'a game week team has correct number of active and benched players' do
     game_week_team = GameWeekTeam.find(1)
     playing_count = 0
     benched_count = 0
     game_week_team.match_players_playing.each do |p|
-      playing_count = playing_count+1
+      playing_count += 1
     end
     game_week_team.match_players_benched.each do |benched|
-      benched_count = benched_count+1
+      benched_count += 1
     end
     assert_equal NUMBER_OF_PLAYING, playing_count
     assert_equal NUMBER_OF_BENCHED, benched_count

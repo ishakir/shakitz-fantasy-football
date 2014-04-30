@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class MatchPlayerController < ApplicationController
   def rushing
   end

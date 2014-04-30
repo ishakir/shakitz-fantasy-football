@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class GameWeekTeam < ActiveRecord::Base
   belongs_to :user
   belongs_to :game_week
@@ -5,10 +6,12 @@ class GameWeekTeam < ActiveRecord::Base
   has_many :game_week_team_players
   has_many :match_players, through: :game_week_team_players
 
-  validates_presence_of :user
-  validates_presence_of :game_week
+  validates :user,
+            presence: true,
+            uniqueness: { scope: :game_week, if: :both_are_present }
 
-  validates_uniqueness_of :user, scope: :game_week, if: :both_are_present
+  validates :game_week,
+            presence: true
 
   def both_are_present
     user.present? && game_week.present?
