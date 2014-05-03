@@ -3,8 +3,6 @@ class GameWeekTeam < ActiveRecord::Base
   belongs_to :user
   belongs_to :game_week
 
-  belongs_to :fixture
-
   has_many :game_week_team_players
   has_many :match_players, through: :game_week_team_players
 
@@ -34,6 +32,14 @@ class GameWeekTeam < ActiveRecord::Base
     gwt_players.map do |gwtp|
       gwtp.match_player
     end
+  end
+
+  def opponent
+    # "Or" is not implemented yet :/
+    fixtures = Fixture.where("home_team_id = #{id} or away_team_id = #{id}")
+    return nil if fixtures.empty?
+    fail IllegalStateException if fixtures.size > 1
+    fixtures[0].opponent_of(self)
   end
 
   def points

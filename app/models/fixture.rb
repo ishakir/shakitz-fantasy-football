@@ -34,4 +34,10 @@ class Fixture < ActiveRecord::Base
       errors.add(:teams, "Home Team user id: #{home_team_user_id} is equal to Away Team user id: #{away_team_user_id}")
     end
   end
+
+  def opponent_of(team)
+    return home_team if team.id == away_team.id
+    return away_team if team.id == home_team.id
+    fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
+  end
 end

@@ -25,7 +25,7 @@ class GameWeekTeamPlayerTest < ActiveSupport::TestCase
   end
 
   test "can't create game week team player without match player" do
-    game_week_team = GameWeekTeam.create!(game_week: GameWeek.find(9), user: User.find(2))
+    game_week_team = GameWeekTeam.find(26) # game_week_id: 9, user_id: 2
 
     game_week_team_player = GameWeekTeamPlayer.new
     game_week_team_player.game_week_team = game_week_team
@@ -35,7 +35,7 @@ class GameWeekTeamPlayerTest < ActiveSupport::TestCase
 
   test 'validates gameweek must be the same for team and match player' do
     # Create a GameWeekTeam and MatchPlayer
-    game_week_team = GameWeekTeam.create!(game_week: GameWeek.find(9), user: User.find(2))
+    game_week_team = GameWeekTeam.find(26) # game_week_id: 9, user_id: 2
     match_player = MatchPlayer.create!(game_week: GameWeek.find(8), nfl_player: NflPlayer.find(8))
 
     game_week_team_player = GameWeekTeamPlayer.new
@@ -47,7 +47,7 @@ class GameWeekTeamPlayerTest < ActiveSupport::TestCase
 
   test 'allows creation if gameweek is the same for team and match player' do
     # Create a GameWeekTeam and MatchPlayer
-    game_week_team = GameWeekTeam.create!(game_week: GameWeek.find(3), user: User.find(2))
+    game_week_team = GameWeekTeam.find(20) # game_week_id: 3, user_id: 2
     match_player = MatchPlayer.create!(game_week: GameWeek.find(3), nfl_player: NflPlayer.find(16))
 
     game_week_team_player = GameWeekTeamPlayer.new

@@ -10,7 +10,7 @@ class GameWeekTest < ActiveSupport::TestCase
 
   test 'a game week has a number of game week teams' do
     game_week = GameWeek.find(1)
-    assert_equal game_week.game_week_teams.size, 2, "GameWeek didn't have the expected number of game week teams!"
+    assert_equal NUMBER_OF_USERS, game_week.game_week_teams.size, "GameWeek didn't have the expected number of game week teams!"
   end
 
   test 'you cannot create a game week without a number' do

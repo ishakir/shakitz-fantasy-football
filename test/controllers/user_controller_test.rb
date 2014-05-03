@@ -89,7 +89,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test 'should see user object from view page has two users' do
-    can_see_entity_obj_num_is(:show_all, :users, 3, 'user')
+    can_see_entity_obj_num_is(:show_all, :users, NUMBER_OF_USERS, 'user')
   end
 
   test 'should see user object from view page first entry is Mike Sharwood' do
@@ -189,7 +189,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test 'should fail to edit non-existent user' do
-    fail_edit_fake_entity_row_obj(:update, { user_id: 5, user_name: 'Biggity Boo' }, 'user')
+    fail_edit_fake_entity_row_obj(:update, { user_id: 50, user_name: 'Biggity Boo' }, 'user')
   end
 
   test 'should edit team name' do

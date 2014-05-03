@@ -23,6 +23,9 @@
 		</table>
 		
 		<h4>Total Points - <%= @game_week_team.points%></h4>
+		<% if @game_week_team.opponent != nil %>
+			<h4>Opponent Points - <%= @game_week_team.opponent.points %></h4>
+		<% end %>
 		
 		<h3>Benched</h3>
 		<table>
@@ -37,6 +40,8 @@
 			</tr>
 			<% end %>
 		</table>
+		
+		
 		
 	</body>
 </html>

@@ -19,6 +19,8 @@ class ActiveSupport::TestCase
   NUMBER_OF_PLAYING = 10
   NUMBER_OF_BENCHED = 8
 
+  NUMBER_OF_USERS = 8
+
   LAST_NFL_PLAYER_NAME_IN_FIXTURES = 'Desean Foshawn'
   MATCH_PLAYER_ONE_POINTS = 74
   MATCH_PLAYER_TWO_POINTS = 12
@@ -26,7 +28,7 @@ class ActiveSupport::TestCase
   GWT_TWO_POINTS = MATCH_PLAYER_TWO_POINTS * 10
   USER_ONE_POINTS = GWT_STAFFORD_PICKS_POINTS + GWT_TWO_POINTS
 
-  USER_TWO_NO_GWTS = 2
+  USER_TWO_NO_GWTS = 17
 
   ROSTER_SIZE = 18
 
@@ -89,5 +91,22 @@ class ActiveSupport::TestCase
   def fail_edit_fake_entity_row_obj(action, params, obj_name)
     post action, params
     assert_response(:missing, "Managed to update non-existent #{obj_name}")
+  end
+
+  def validate_correct_no_fixtures_generated(no_users)
+    Fixture.delete_all
+    (8 - no_users).times do |n|
+      User.find(8 - n).destroy!
+    end
+
+    get :generate
+
+    # If odd, one team doesn't play per week
+    fixtures_per_gw = no_users.even? ? no_users / 2 : (no_users - 1) / 2
+    game_weeks_with_fixtures = no_users.even? ? 17 - (17 % (no_users - 1)) : 17 - (17 % no_users)
+
+    no_fixtures = fixtures_per_gw * game_weeks_with_fixtures
+
+    assert_equal no_fixtures, Fixture.all.size
   end
 end

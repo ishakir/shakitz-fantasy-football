@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 Footbawwl::Application.routes.draw do
   
+  get "fixtures/generate"
   # All the routes for the user display (League Table)
   get "/" => "user#show_all"
   

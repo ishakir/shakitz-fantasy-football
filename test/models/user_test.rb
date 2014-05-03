@@ -4,14 +4,52 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   season_length = 17
 
-  test 'user has a set of fixtures' do
+  test "user responds to team_for_game_week" do
     user = User.find(1)
-    assert_respond_to user, :fixtures
+    assert_respond_to user, :team_for_game_week
   end
 
-  test 'fixtures contains some fixtures' do
+  test 'user has a set of opponents' do
     user = User.find(1)
-    assert_kind_of Fixture, user.fixtures[0]
+    assert_respond_to user, :opponents
+  end
+
+  test "team_for_game_week gives game_week_team with correct user" do
+    user = User.find(1)
+    assert_equal user.id, user.team_for_game_week(1).user.id
+  end
+
+  test "team_for_game_week gives game_week_team with correct game_week" do
+    user = User.find(1)
+    assert_equal 1, user.team_for_game_week(1).game_week.number
+  end
+
+  test "can't give team_for_game_week zero" do
+    user = User.find(1)
+    assert_raise ArgumentError do
+      user.team_for_game_week(0)
+    end
+  end
+
+  test "can't give team_for_game_week 18" do
+    user = User.find(1)
+    assert_raise ArgumentError do
+      user.team_for_game_week(18)
+    end
+  end
+
+  test 'opponents contains some game_week_teams' do
+    user = User.find(1)
+    assert_kind_of GameWeekTeam, user.opponents[0]
+  end
+
+  test "opponents doesn't contain any nil" do
+    user = User.find(1)
+    opponents = user.opponents
+    nils = opponents.select do |game_week_team|
+      game_week_team.nil?
+    end
+    assert nils.empty?
   end
 
   test 'can request user name' do

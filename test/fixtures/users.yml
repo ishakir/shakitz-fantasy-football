@@ -14,3 +14,28 @@ three:
   id: 3
   name: Another User
   team_name: The Depressed
+
+four:
+  id: 4
+  name: Yet Another User
+  team_name: The Enlightened
+
+five:
+  id: 5
+  name: My Next User
+  team_name: The Awesomes
+
+six:
+  id: 6
+  name: Further User
+  team_name: The Coolbeans
+  
+seven:
+  id: 7
+  name: Cool User
+  team_name: The Shenanigans
+  
+eight:
+  id: 8
+  name: Cooler User
+  team_name: What A Rigmarole
