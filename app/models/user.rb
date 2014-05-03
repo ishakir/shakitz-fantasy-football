@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
 
   has_many :game_week_teams, dependent: :destroy
 
+  has_many :fixtures, through: :game_week_teams
+
   def points
     # This is a functional "fold"
     game_week_teams.reduce(0) do |sum, game_week_team|

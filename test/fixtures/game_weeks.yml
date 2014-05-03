@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 <% 17.times do |n| %>
-gameweek_<%= n %>:
+gameweek_<%= n + 1%>:
   id: <%= n + 1 %>
   number: <%= n + 1 %>
 <% end %>

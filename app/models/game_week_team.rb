@@ -3,6 +3,8 @@ class GameWeekTeam < ActiveRecord::Base
   belongs_to :user
   belongs_to :game_week
 
+  belongs_to :fixture
+
   has_many :game_week_team_players
   has_many :match_players, through: :game_week_team_players
 

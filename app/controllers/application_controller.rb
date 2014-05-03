@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
-  # Validation of parameters
+  ### Validation of controller parameters
   # params: as provided to you in a controller method
   def validate_all_parameters(expected_params, params)
     expected_params.each do |parameter|

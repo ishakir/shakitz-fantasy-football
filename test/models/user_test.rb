@@ -4,6 +4,16 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   season_length = 17
 
+  test 'user has a set of fixtures' do
+    user = User.find(1)
+    assert_respond_to user, :fixtures
+  end
+
+  test 'fixtures contains some fixtures' do
+    user = User.find(1)
+    assert_kind_of Fixture, user.fixtures[0]
+  end
+
   test 'can request user name' do
     user = User.find(1)
     assert_respond_to(user, :name)
@@ -68,7 +78,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'User two has the correct number of gameweek teams' do
     user = User.find(2)
-    assert_equal user.game_week_teams.length, 1, 'Incorrect number of gameweek teams for user two'
+    assert_equal user.game_week_teams.length, USER_TWO_NO_GWTS, 'Incorrect number of gameweek teams for user two'
   end
 
   test 'We delete a user and all his gameweek teams are deleted' do

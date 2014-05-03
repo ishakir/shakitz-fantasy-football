@@ -2,6 +2,23 @@
 require 'test_helper'
 
 class GameWeekTeamTest < ActiveSupport::TestCase
+  # No tests for creating GWT with fixture, as fixtures will be generated
+  # much later than the GWTs will be
+  test "game_week_team has a fixture" do
+    game_week_team = GameWeekTeam.find(1)
+    assert_respond_to game_week_team, :fixture
+  end
+
+  test "fixture can be a fixture" do
+    game_week_team = GameWeekTeam.find(1)
+    assert_kind_of Fixture, game_week_team.fixture
+  end
+
+  test "fixture can be nil" do
+    game_week_team = GameWeekTeam.find(5)
+    assert_nil game_week_team.fixture
+  end
+
   test "we can't create a gameweek team without a user" do
     game_week_team = GameWeekTeam.new
     game_week_team.game_week = GameWeek.find(1)
@@ -18,13 +35,13 @@ class GameWeekTeamTest < ActiveSupport::TestCase
 
   test 'we can associate a gameweek team with a user via object' do
     usertwo = User.find(2)
-    GameWeekTeam.create!(game_week: GameWeek.find(2), user: usertwo)
-    assert_equal usertwo.game_week_teams.size, 2, "User two's no. of gameweek teams not updated"
+    GameWeekTeam.create!(game_week: GameWeek.find(3), user: usertwo)
+    assert_equal usertwo.game_week_teams.size, USER_TWO_NO_GWTS + 1, "User two's no. of gameweek teams not updated"
   end
 
   test 'we can associate a gameweek team with a user via id' do
     GameWeekTeam.create!(game_week: GameWeek.find(3), user_id: 2)
-    assert_equal User.find(2).game_week_teams.size, 2, "User two's no. of gameweek teams not updated"
+    assert_equal User.find(2).game_week_teams.size, USER_TWO_NO_GWTS + 1, "User two's no. of gameweek teams not updated"
   end
 
   test 'we change the user a gameweek team is associated with and the user who lost it has less gameweeks' do

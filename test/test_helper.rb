@@ -26,6 +26,8 @@ class ActiveSupport::TestCase
   GWT_TWO_POINTS = MATCH_PLAYER_TWO_POINTS * 10
   USER_ONE_POINTS = GWT_STAFFORD_PICKS_POINTS + GWT_TWO_POINTS
 
+  USER_TWO_NO_GWTS = 2
+
   ROSTER_SIZE = 18
 
   # Add more helper methods to be used by all tests here...
