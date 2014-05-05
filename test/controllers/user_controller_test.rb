@@ -8,7 +8,7 @@ class UserControllerTest < ActionController::TestCase
   # CREATE
   test 'create redirects to show' do
     post :create, user_name: 'Dummy User Name', team_name: 'Dummy Team Name'
-    assert_redirected_to controller: :user, action: :show_all
+    assert_redirected_to controller: :user, action: :home
   end
 
   test 'should create new user' do
@@ -47,7 +47,7 @@ class UserControllerTest < ActionController::TestCase
   # DELETE
   test 'delete redirects to show' do
     delete :delete, user_id: 1
-    assert_redirected_to controller: :user, action: :show_all
+    assert_redirected_to controller: :user, action: :home
   end
 
   test 'should delete user' do
@@ -69,35 +69,35 @@ class UserControllerTest < ActionController::TestCase
 
   # Show all users
   test 'should get show with no id' do
-    can_view_action(:show_all)
+    can_view_action(:home)
   end
 
   test 'should get show template with no id' do
-    can_view_template(:show_all)
+    can_view_template(:home)
   end
 
   test 'should get show layout with no id' do
-    can_view_layout(:show_all, 'layouts/application')
+    can_view_layout(:home, 'layouts/application')
   end
 
   test 'should get list of users' do
-    can_get_entity_list(:show_all, :users, 'users')
+    can_get_entity_list(:home, :users, 'users')
   end
 
   test 'should see user object from show page is not nil' do
-    can_see_entity_obj_not_nil(:show_all, :users, 'User')
+    can_see_entity_obj_not_nil(:home, :users, 'User')
   end
 
   test 'should see user object from view page has two users' do
-    can_see_entity_obj_num_is(:show_all, :users, NUMBER_OF_USERS, 'user')
+    can_see_entity_obj_num_is(:home, :users, NUMBER_OF_USERS, 'user')
   end
 
   test 'should see user object from view page first entry is Mike Sharwood' do
-    can_see_entity_row_index_eq(:show_all, :users, 0, 'Mike Sharwood', 'user')
+    can_see_entity_row_index_eq(:home, :users, 0, 'Mike Sharwood', 'user')
   end
 
   test 'should see user object from view page second entry is Imran Wright' do
-    can_see_entity_row_index_eq(:show_all, :users, 1, 'Imran Wright', 'user')
+    can_see_entity_row_index_eq(:home, :users, 1, 'Imran Wright', 'user')
   end
 
   # Show user breakdown
@@ -175,7 +175,7 @@ class UserControllerTest < ActionController::TestCase
   # UPDATE
   test 'update redirects to show' do
     post :update, user_id: 1, team_name: 'Changed Team Name'
-    assert_redirected_to controller: :user, action: :show_all
+    assert_redirected_to controller: :user, action: :home
   end
 
   test 'should edit user' do

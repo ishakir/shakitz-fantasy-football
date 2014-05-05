@@ -11,7 +11,7 @@ class UserController < ApplicationController
     user = User.new
     update_user_entity(user, params)
 
-    redirect_to action: :show_all
+    redirect_to action: :home
   end
 
   def home
@@ -43,7 +43,7 @@ class UserController < ApplicationController
     user = User.find(params[USER_ID_KEY])
     update_user_entity(user, params)
 
-    redirect_to action: :show_all
+    redirect_to action: :home
   end
 
   def delete
@@ -52,7 +52,7 @@ class UserController < ApplicationController
     user = User.find(params[USER_ID_KEY])
     user.destroy!
 
-    redirect_to action: :show_all
+    redirect_to action: :home
   end
 
   # Subroutines
