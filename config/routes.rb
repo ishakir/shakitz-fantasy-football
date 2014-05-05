@@ -3,7 +3,7 @@ Footbawwl::Application.routes.draw do
   
   get "fixtures/generate"
   # All the routes for the user display (League Table)
-  get "/" => "user#show_all"
+  get "/" => "user#home"
   
   get "/user/:user_id" => "user#show"
   get "/user/:user_id/game_week/:game_week" => "user#game_week_team"

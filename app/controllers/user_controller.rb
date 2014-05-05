@@ -14,7 +14,7 @@ class UserController < ApplicationController
     redirect_to action: :show_all
   end
 
-  def show_all
+  def home
     @users = User.all
   end
 

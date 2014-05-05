@@ -35,7 +35,6 @@ end
 gem 'rubocop'
 gem 'magic_encoding'
 gem 'rrschedule'
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
