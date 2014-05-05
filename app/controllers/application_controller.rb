@@ -29,16 +29,16 @@ class ApplicationController < ActionController::Base
 
   ### Controller exception handling
   # Stuff that's going to return a 404
-  rescue_from ActiveRecord::RecordNotFound do |error|
+  rescue_from ActiveRecord::RecordNotFound do
     render file: "#{Rails.root}/public/404", layout: false, status: :not_found
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do |error|
+  rescue_from ArgumentError do
     render_unprocessable_entity
   end
 
-  rescue_from ActiveRecord::RecordInvalid do |error|
+  rescue_from ActiveRecord::RecordInvalid do
     render_unprocessable_entity
   end
 
