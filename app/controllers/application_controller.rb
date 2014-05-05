@@ -34,12 +34,14 @@ class ApplicationController < ActionController::Base
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do
-    render_unprocessable_entity
+  rescue_from ArgumentError do |e|
+    puts(e.backtrace)
+    #render_unprocessable_entity
   end
 
-  rescue_from ActiveRecord::RecordInvalid do
-    render_unprocessable_entity
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    puts(e.backtrace)
+    #render_unprocessable_entity
   end
 
   # Stuff that's going to return a 500

@@ -1,29 +1,20 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>NFL Fantasy Footbawwl</title>
-		<meta charset="utf-8"/>
-	</head>
-	<body>
-		<h1>NFL Fantasy Footbawwl</h1>
-		<h2><%= @user.name %> - <%= @user.team_name %></h2>
-		<table>
-			<tr>
-				<th>Game Week</th>
-				<th>Points</th>
-				<th>Opponent</th>
-			</tr>
-			<% @user.game_week_teams.each do |game_week_team| %>
-			<tr>
-				<td><%= link_to game_week_team.game_week.number, controller: :user, action: :game_week_team, user_id: @user.id, game_week: game_week_team.game_week.number %></td>
-				<td><%= game_week_team.points %></td>
-				<% if game_week_team.opponent != nil %>
-					<td><%= game_week_team.opponent.user.name %></td>
-				<% else %>
-					<td>Bye</td>
-				<% end %>
-			</tr>
-			<% end %>
-		</table>
-	</body>
-</html>
+<h1>NFL Fantasy Footbawwl</h1>
+<h2><%= @user.name %> - <%= @user.team_name %></h2>
+<table>
+	<tr>
+		<th>Game Week</th>
+		<th>Points</th>
+		<th>Opponent</th>
+	</tr>
+	<% @user.game_week_teams.each do |game_week_team| %>
+	<tr>
+		<td><%= link_to game_week_team.game_week.number, controller: :user, action: :game_week_team, user_id: @user.id, game_week: game_week_team.game_week.number %></td>
+		<td><%= game_week_team.points %></td>
+		<% if game_week_team.opponent != nil %>
+		<td><%= game_week_team.opponent.user.name %></td>
+		<% else %>
+		<td>Bye</td>
+		<% end %>
+	</tr>
+	<% end %>
+</table>

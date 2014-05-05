@@ -1,9 +1,13 @@
 # -*- encoding : utf-8 -*-
 Footbawwl::Application.routes.draw do
   
+  #Create root path to index
+  root :to=> "user#home"
+  
   get "fixtures/generate"
   # All the routes for the user display (League Table)
   get "/" => "user#home"
+
   
   get "/user/:user_id" => "user#show"
   get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
@@ -64,6 +68,7 @@ Footbawwl::Application.routes.draw do
   #     end
   #   end
 
+  resources :user
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

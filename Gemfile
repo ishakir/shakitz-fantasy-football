@@ -32,6 +32,10 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :development do
+  gem 'rails_layout'
+end
+
 gem 'rubocop'
 gem 'magic_encoding'
 gem 'rrschedule'
