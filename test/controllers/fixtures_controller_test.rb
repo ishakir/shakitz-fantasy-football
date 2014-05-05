@@ -8,34 +8,62 @@ class FixturesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "generate creates the same number of fixtures for everyone" do
-    Fixture.delete_all
-
-    get :generate
-    user1_no_opponents = User.find(1).opponents.length
-
-    assert_equal user1_no_opponents, User.find(2).opponents.length
-    assert_equal user1_no_opponents, User.find(3).opponents.length
+  # THESE could be more efficient, generate is slow so doing all validations
+  # after same generate call will improve test time, but not isolation
+  test "generate creates the same number of fixtures for everyone with 8 users" do
+    validate_everyone_plays_same_no_games(8)
   end
 
-  test "Every team is played the same number of times" do
-    Fixture.delete_all
+  test "generate creates the same number of fixtures for everyone with 7 users" do
+    validate_everyone_plays_same_no_games(7)
+  end
 
-    get :generate
-    user1_opponents = User.find(1).opponents
+  test "generate creates the same number of fixtures for everyone with 6 users" do
+    validate_everyone_plays_same_no_games(6)
+  end
 
-    fixtures_v_user2 = Array.new
-    fixtures_v_user3 = Array.new
+  test "generate creates the same number of fixtures for everyone with 5 users" do
+    validate_everyone_plays_same_no_games(5)
+  end
 
-    user1_opponents.each do |opponent|
-      if opponent.user.id == 2
-        fixtures_v_user2.push opponent
-      elsif opponent.user.id == 3
-        fixtures_v_user3.push opponent
-      end
-    end
+  test "generate creates the same number of fixtures for everyone with 4 users" do
+    validate_everyone_plays_same_no_games(4)
+  end
 
-    assert_equal fixtures_v_user2.size, fixtures_v_user3.size
+  test "generate creates the same number of fixtures for everyone with 3 users" do
+    validate_everyone_plays_same_no_games(3)
+  end
+
+  test "generate creates the same number of fixtures for everyone with 2 users" do
+    validate_everyone_plays_same_no_games(2)
+  end
+
+  test "Every team is played the same number of times with 8 users" do
+    validate_fixture_vs_spread_is_even(8)
+  end
+
+  test "Every team is played the same number of times with 7 users" do
+    validate_fixture_vs_spread_is_even(7)
+  end
+
+  test "Every team is played the same number of times with 6 users" do
+    validate_fixture_vs_spread_is_even(6)
+  end
+
+  test "Every team is played the same number of times with 5 users" do
+    validate_fixture_vs_spread_is_even(5)
+  end
+
+  test "Every team is played the same number of times with 4 users" do
+    validate_fixture_vs_spread_is_even(4)
+  end
+
+  test "Every team is played the same number of times with 3 users" do
+    validate_fixture_vs_spread_is_even(3)
+  end
+
+  test "Every team is played the same number of times with 2 users" do
+    validate_fixture_vs_spread_is_even(2)
   end
 
   test "should generate the correct number of fixtures with 8 users" do
