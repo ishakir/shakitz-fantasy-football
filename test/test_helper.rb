@@ -93,11 +93,54 @@ class ActiveSupport::TestCase
     assert_response(:missing, "Managed to update non-existent #{obj_name}")
   end
 
-  def validate_correct_no_fixtures_generated(no_users)
-    Fixture.delete_all
-    (8 - no_users).times do |n|
+  def delete_last_users(number)
+    number.times do |n|
       User.find(8 - n).destroy!
     end
+  end
+
+  def validate_fixture_vs_spread_is_even(no_users)
+    Fixture.delete_all
+    delete_last_users(NUMBER_OF_USERS - no_users)
+
+    get :generate
+
+    all_users = User.all
+    fixtures_array = Array.new(all_users.size) do
+      Array.new(all_users.size, 0)
+    end
+
+    all_users.each do |user|
+      user.opponents.each do |opponent|
+        fixtures_array[user.id - 1][opponent.user.id - 1] += 1
+      end
+    end
+
+    no_of_1_vs_2 = fixtures_array[0][1] + fixtures_array[1][0]
+    0.upto(fixtures_array.size - 1) do |n|
+      (n + 1).upto(fixtures_array.size - 1) do |m|
+        assert_equal no_of_1_vs_2, fixtures_array[n][m] + fixtures_array[m][n]
+      end
+    end
+  end
+
+  def validate_everyone_plays_same_no_games(no_users)
+    Fixture.delete_all
+    delete_last_users(NUMBER_OF_USERS - no_users)
+
+    get :generate
+
+    user_1_no_fixtures = User.find(1).opponents.size
+
+    # Check users no 2 - no_users for same number of games
+    (no_users - 1).times do |n|
+      assert_equal user_1_no_fixtures, User.find(2 + n).opponents.size
+    end
+  end
+
+  def validate_correct_no_fixtures_generated(no_users)
+    Fixture.delete_all
+    delete_last_users(NUMBER_OF_USERS - no_users)
 
     get :generate
 
