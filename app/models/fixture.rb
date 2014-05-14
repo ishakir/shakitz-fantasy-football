@@ -40,4 +40,37 @@ class Fixture < ActiveRecord::Base
     return away_team if team.id == home_team.id
     fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
   end
+
+  def winner
+    home_won = (home_team.points > away_team.points)
+    return home_team if home_won
+    return away_team unless drawn?
+    nil
+  end
+
+  def won_by?(team)
+    if team.id != home_team.id && team.id != away_team.id
+      fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
+    end
+    return false if drawn?
+    winner.id == team.id
+  end
+
+  def drawn?
+    home_team.points == away_team.points
+  end
+
+  def lost_by?(team)
+    if team.id != home_team.id && team.id != away_team.id # Separate is_playing? method?
+      fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
+    end
+    return false if drawn?
+    loser.id == team.id
+  end
+
+  def loser
+    home_lost = (away_team.points > home_team.points)
+    return home_team if home_lost
+    return away_team unless drawn?
+  end
 end

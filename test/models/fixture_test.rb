@@ -28,6 +28,41 @@ class FixtureTest < ActiveSupport::TestCase
     assert_respond_to fixture, :opponent_of
   end
 
+  test "fixture responds to won_by?" do
+    fixture = Fixture.find(1)
+    assert_respond_to fixture, :won_by?
+  end
+
+  test "fixture responds to drawn?" do
+    fixture = Fixture.find(1)
+    assert_respond_to fixture, :drawn?
+  end
+
+  test "fixture responds to lost_by?" do
+    fixture = Fixture.find(1)
+    assert_respond_to fixture, :lost_by?
+  end
+
+  test "fixture responds to winner" do
+    fixture = Fixture.find(1)
+    assert_respond_to fixture, :winner
+  end
+
+  test "winner is GameWeekTeam" do
+    fixture = Fixture.find(2)
+    assert_kind_of GameWeekTeam, fixture.winner
+  end
+
+  test "fixture responds to loser" do
+    fixture = Fixture.find(1)
+    assert_respond_to fixture, :loser
+  end
+
+  test "loser is GameWeekTeam" do
+    fixture = Fixture.find(2)
+    assert_kind_of GameWeekTeam, fixture.loser
+  end
+
   ## Validations
   test "must have a home team" do
     assert_raise ActiveRecord::RecordInvalid do
@@ -75,9 +110,73 @@ class FixtureTest < ActiveSupport::TestCase
   end
 
   test "opponent_of throws ArgumentError if team not found" do
+    fixture = Fixture.create!(home_team: GameWeekTeam.find(1), away_team: GameWeekTeam.find(18))
     assert_raise ArgumentError do
-      fixture = Fixture.create!(home_team: GameWeekTeam.find(1), away_team: GameWeekTeam.find(18))
       fixture.opponent_of(GameWeekTeam.find(2))
+    end
+  end
+
+  test "can get the winner as a game_week_team" do
+    fixture = Fixture.find(2)
+    assert 2, fixture.winner.id
+  end
+
+  test "can get the loser as a game_week_team" do
+    fixture = Fixture.find(2)
+    assert 19, fixture.loser.id
+  end
+
+  test "winner returns nil if no-one won" do
+    fixture = Fixture.find(1)
+    assert_nil fixture.winner
+  end
+
+  test "loser returns nil if no-one won" do
+    fixture = Fixture.find(1)
+    assert_nil fixture.loser
+  end
+
+  test "we can tell if a match wasn't drawn" do
+    fixture = Fixture.find(2)
+    assert !fixture.drawn?
+  end
+
+  test "we can tell if a match was drawn" do
+    fixture = Fixture.find(1)
+    assert fixture.drawn?
+  end
+
+  test "can get that one team won" do
+    fixture = Fixture.find(2)
+    assert fixture.won_by?(GameWeekTeam.find(2))
+  end
+
+  test "can get that one team did not win" do
+    fixture = Fixture.find(2)
+    assert !fixture.won_by?(GameWeekTeam.find(19))
+  end
+
+  test "won_by? throws ArgumentError if team not found" do
+    fixture = Fixture.find(1)
+    assert_raise ArgumentError do
+      fixture.won_by?(GameWeekTeam.find(2))
+    end
+  end
+
+  test "can get that one team lost" do
+    fixture = Fixture.find(2)
+    assert fixture.lost_by?(GameWeekTeam.find(19))
+  end
+
+  test "can get that one team did not lose" do
+    fixture = Fixture.find(2)
+    assert !fixture.lost_by?(GameWeekTeam.find(2))
+  end
+
+  test "lost_by? throws ArgumentError if team not found" do
+    fixture = Fixture.find(1)
+    assert_raise ArgumentError do
+      fixture.lost_by?(GameWeekTeam.find(2))
     end
   end
 end
