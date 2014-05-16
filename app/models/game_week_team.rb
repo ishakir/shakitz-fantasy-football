@@ -34,12 +34,24 @@ class GameWeekTeam < ActiveRecord::Base
     end
   end
 
-  def opponent
+  def fixture
     # "Or" is not implemented yet :/
     fixtures = Fixture.where("home_team_id = #{id} or away_team_id = #{id}")
     return nil if fixtures.empty?
     fail IllegalStateException if fixtures.size > 1
-    fixtures[0].opponent_of(self)
+    fixtures[0]
+  end
+
+  def opponent
+    return nil if fixture.nil?
+    fixture.opponent_of(self)
+  end
+
+  def head_to_head_result
+    return :won if fixture.won_by?(self)
+    return :drawn if fixture.drawn?
+    return :lost if fixture.lost_by?(self)
+    fail IllegalStateException, "fixture wasn't won, drawn or lost by this team!"
   end
 
   def points

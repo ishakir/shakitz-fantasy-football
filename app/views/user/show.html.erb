@@ -5,6 +5,7 @@
 		<th>Game Week</th>
 		<th>Points</th>
 		<th>Opponent</th>
+		<th>Won?</th>
 	</tr>
 	<% @user.game_week_teams.each do |game_week_team| %>
 	<tr>
@@ -14,6 +15,17 @@
 		<td><%= game_week_team.opponent.user.name %></td>
 		<% else %>
 		<td>Bye</td>
+		<% end %>
+		<% if game_week_team.fixture != nil %>
+			<% if game_week_team.fixture.drawn? %>
+				<td>Draw</td>
+			<% elsif game_week_team.fixture.won_by?(game_week_team) %>
+				<td>Won</td>
+			<% else %>
+				<td>Lost</td>
+			<% end %>
+		<% else %>
+		<td>N/A</td>
 		<% end %>
 	</tr>
 	<% end %>
