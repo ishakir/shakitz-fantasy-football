@@ -48,6 +48,7 @@ class GameWeekTeam < ActiveRecord::Base
   end
 
   def head_to_head_result
+    return nil if fixture.nil?
     return :won if fixture.won_by?(self)
     return :drawn if fixture.drawn?
     return :lost if fixture.lost_by?(self)

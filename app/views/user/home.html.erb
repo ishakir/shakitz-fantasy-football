@@ -89,6 +89,7 @@
 					<th>User</th>
 					<th>Team Name</th>
 					<th>Points</th>
+					<th>Record</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -97,6 +98,7 @@
 					<td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
 					<td><%= user.team_name %></td>
 					<td><%= user.points %></td>
+					<td><%= user.won_up_to_game_week(2) %>-<%= user.drawn_up_to_game_week(2) %>-<%= user.lost_up_to_game_week(2) %></td>
 				</tr>
 				<% end %>
 			</tbody>

@@ -4,6 +4,90 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   season_length = 17
 
+  test "user responds to won_up_to_game_week" do
+    user = User.find(1)
+    assert_respond_to user, :won_up_to_game_week
+  end
+
+  test "won up to game_week gives the correct number of wins, with 1 gw" do
+    user = User.find(1)
+    assert_equal 0, user.won_up_to_game_week(1)
+  end
+
+  test "won up to game_week givesw the correct number of wins, with 2 gw" do
+    user = User.find(1)
+    assert_equal 1, user.won_up_to_game_week(2)
+  end
+
+  test "user responds to drawn_up_to_game_week" do
+    user = User.find(1)
+    assert_respond_to user, :drawn_up_to_game_week
+  end
+
+  test "drawn_up_to_game_week gives the correct number of draws, with 1 gw" do
+    user = User.find(1)
+    assert_equal 1, user.drawn_up_to_game_week(1)
+  end
+
+  test "drawn_up_to_game_week gives the correct number of draws, with 2 gw" do
+    user = User.find(1)
+    assert_equal 1, user.drawn_up_to_game_week(2)
+  end
+
+  test "user responds to lost_up_to_game_week" do
+    user = User.find(1)
+    assert_respond_to user, :lost_up_to_game_week
+  end
+
+  test "lost_up_to_game_week returns the correct number of losses, with 1 gw" do
+    user = User.find(2)
+    assert_equal 0, user.lost_up_to_game_week(1)
+  end
+
+  test "lost_up_to_game_week returns the correct number of losses, with 2 gw" do
+    user = User.find(2)
+    assert_equal 1, user.lost_up_to_game_week(2)
+  end
+
+  test "user responds to   teams_up_to_game_week" do
+    user = User.find(1)
+    assert_respond_to user, :teams_up_to_game_week
+  end
+
+  test "list returned by teams_up_to_game_week is GameWeekTeam" do
+    user = User.find(1)
+    gwts = user.teams_up_to_game_week(1)
+    assert_kind_of GameWeekTeam, gwts[0]
+  end
+
+  test "get ArgumentError if game_week is too high" do
+    user = User.find(1)
+    assert_raise ArgumentError do
+      user.teams_up_to_game_week(18)
+    end
+  end
+
+  test "get ArgumentError if game_week is too low" do
+    user = User.find(1)
+    assert_raise ArgumentError do
+      user.teams_up_to_game_week(0)
+    end
+  end
+
+  test "we get as many game_week_teams as weeks asked for" do
+    user = User.find(1)
+    assert_equal 5, user.teams_up_to_game_week(5).size
+  end
+
+  test "all teams are in the specified range" do
+    user = User.find(1)
+    gwts = user.teams_up_to_game_week(9)
+    one_to_nine = 1 .. 9
+    gwts.each do |game_week_team|
+      assert one_to_nine.include?(game_week_team.game_week.number), "Team with number #{game_week_team.game_week.number} not expected"
+    end
+  end
+
   test "user responds to team_for_game_week" do
     user = User.find(1)
     assert_respond_to user, :team_for_game_week
