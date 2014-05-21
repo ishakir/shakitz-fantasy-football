@@ -63,6 +63,11 @@ class FixtureTest < ActiveSupport::TestCase
     assert_kind_of GameWeekTeam, fixture.loser
   end
 
+  test "fixture responds to assert_team_is_playing" do
+    fixture = Fixture.find(1)
+    assert_respond_to fixture, :assert_team_is_playing
+  end
+
   ## Validations
   test "must have a home team" do
     assert_raise ActiveRecord::RecordInvalid do
@@ -177,6 +182,27 @@ class FixtureTest < ActiveSupport::TestCase
     fixture = Fixture.find(1)
     assert_raise ArgumentError do
       fixture.lost_by?(GameWeekTeam.find(2))
+    end
+  end
+
+  test "assert_team_is_playing raises nothing if given home_team" do
+    fixture = Fixture.find(1)
+    assert_nothing_raised do
+      fixture.assert_team_is_playing(GameWeekTeam.find(1))
+    end
+  end
+
+  test "assert_team_is_playing raises nothing if given away_team" do
+    fixture = Fixture.find(1)
+    assert_nothing_raised do
+      fixture.assert_team_is_playing(GameWeekTeam.find(18))
+    end
+  end
+
+  test "assert_team_is_playing raises ArgumentError if team is not playing" do
+    fixture = Fixture.find(1)
+    assert_raise ArgumentError do
+      fixture.assert_team_is_playing(GameWeekTeam.find(2))
     end
   end
 end

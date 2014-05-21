@@ -36,9 +36,15 @@ class Fixture < ActiveRecord::Base
   end
 
   def opponent_of(team)
+    assert_team_is_playing(team)
     return home_team if team.id == away_team.id
     return away_team if team.id == home_team.id
-    fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
+  end
+
+  def assert_team_is_playing(team)
+    if team.id != home_team.id && team.id != away_team.id
+      fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
+    end
   end
 
   def winner
@@ -49,9 +55,7 @@ class Fixture < ActiveRecord::Base
   end
 
   def won_by?(team)
-    if team.id != home_team.id && team.id != away_team.id
-      fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
-    end
+    assert_team_is_playing(team)
     return false if drawn?
     winner.id == team.id
   end
@@ -61,9 +65,7 @@ class Fixture < ActiveRecord::Base
   end
 
   def lost_by?(team)
-    if team.id != home_team.id && team.id != away_team.id # Separate is_playing? method?
-      fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
-    end
+    assert_team_is_playing(team)
     return false if drawn?
     loser.id == team.id
   end
