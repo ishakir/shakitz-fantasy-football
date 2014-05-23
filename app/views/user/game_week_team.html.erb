@@ -7,7 +7,7 @@
 	<body>
 		<h1>NFL Fantasy Footbawwl</h1>
 		<h2><%= @user.name %> - <%= @user.team_name %> - Week <%= @game_week_team.game_week.number %></h2>
-		
+
 		<h3>Active</h3>
 		<table>
 			<tr>
@@ -21,12 +21,12 @@
 			</tr>
 			<% end %>
 		</table>
-		
+
 		<h4>Total Points - <%= @game_week_team.points%></h4>
 		<% if @game_week_team.opponent != nil %>
 			<h4>Opponent Points - <%= @game_week_team.opponent.points %></h4>
 		<% end %>
-		
+
 		<h3>Benched</h3>
 		<table>
 			<tr>
@@ -40,8 +40,8 @@
 			</tr>
 			<% end %>
 		</table>
-		
-		
-		
+
+
+
 	</body>
 </html>

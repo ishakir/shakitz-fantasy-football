@@ -1,32 +1,110 @@
-<h1>NFL Fantasy Footbawwl</h1>
-<h2><%= @user.name %> - <%= @user.team_name %></h2>
-<table>
-	<tr>
-		<th>Game Week</th>
-		<th>Points</th>
-		<th>Opponent</th>
-		<th>Won?</th>
-	</tr>
-	<% @user.game_week_teams.each do |game_week_team| %>
-	<tr>
-		<td><%= link_to game_week_team.game_week.number, controller: :user, action: :game_week_team, user_id: @user.id, game_week: game_week_team.game_week.number %></td>
-		<td><%= game_week_team.points %></td>
-		<% if game_week_team.opponent != nil %>
-		<td><%= game_week_team.opponent.user.name %></td>
-		<% else %>
-		<td>Bye</td>
-		<% end %>
-		<% if game_week_team.fixture != nil %>
-			<% if game_week_team.fixture.drawn? %>
-				<td>Draw</td>
-			<% elsif game_week_team.fixture.won_by?(game_week_team) %>
-				<td>Won</td>
-			<% else %>
-				<td>Lost</td>
-			<% end %>
-		<% else %>
-		<td>N/A</td>
-		<% end %>
-	</tr>
-	<% end %>
-</table>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<h1 align="center"> <%= @user.name %> - <%= @user.team_name %> </h1>
+			<h2 align="center"> <%= @user.points %> Points</h2>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<div class="col-md-1 column">
+					<span title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
+				</div>
+				<div class="col-md-4 column fixture-label">
+					<h3 id="week_label" title="Week " align="center">Week <%= @user.team_for_game_week(1).game_week.number %></h3>
+				</div>
+				<div class="col-md-1">
+					<span title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
+				</div>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-6 column">
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<h3>Active</h3>
+					<table class="table">
+						<tr>
+							<th>Player</th>
+							<th>Points</th>
+						</tr>
+						<% @user.team_for_game_week(1).match_players_playing.each do |match_player| %>
+						<tr>
+							<td><%= match_player.nfl_player.name %></td>
+							<td><%= match_player.points %></td>
+						</tr>
+						<% end %>
+					</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 column">
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<h3>Benched</h3>
+					<table class="table">
+						<tr>
+							<th>Player</th>
+							<th>Points</th>
+						</tr>
+						<% @user.team_for_game_week(1).match_players_benched.each do |match_player| %>
+						<tr>
+							<td><%= match_player.nfl_player.name %></td>
+							<td><%= match_player.points %></td>
+						</tr>
+						<% end %>
+					</table>
+						</div>
+					</div>
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							
+					<h3> Total Points - <%= @user.team_for_game_week(1).points %> </h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<h3 align="center"><%= @user.team_for_game_week(1).head_to_head_result %> vs. <%= @user.team_for_game_week(1).opponent.user.name %> (<%= @user.team_for_game_week(1).opponent.points %> points) </h3>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 column">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<h3> Some bid shit </h3>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<h3> Some trade shit </h3>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<h3>Fixtures</h3>
+				<table class="table">
+					<tr>
+						<th>Game Week</th>
+						<th>Opponent</th>
+						<th>Result</th>
+					</tr>
+					<% @user.game_week_teams.each do |game_week_team| %>
+					<% if !game_week_team.opponent.nil? %>
+					<tr>
+						<td><%= game_week_team.game_week.number %></td>
+						<td><%= game_week_team.opponent.user.name %></td>
+						<td><%= game_week_team.head_to_head_result%></td>
+					</tr>
+					<% end %>
+					<% end %>
+				</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
