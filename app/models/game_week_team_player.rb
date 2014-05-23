@@ -1,5 +1,18 @@
 # -*- encoding : utf-8 -*-
 class GameWeekTeamPlayer < ActiveRecord::Base
+  def self.find_unique_with(game_week_team, match_player)
+    gwtps = GameWeekTeamPlayer.where(game_week_team: game_week_team, match_player: match_player)
+
+    no_of_gwtps = gwtps.size
+    if no_of_gwtps == 0
+      fail ActiveRecord::RecordNotFound, "Didn't find a record with game_week_team_id '#{game_week_team.id}' and match_player_id '#{match_player.id}'"
+    elsif no_of_gwtps > 1
+      fail IllegalStateError, "Found #{no_of_gwtps} game week team players with game_week_team_id '#{game_week_team.id}' and match_player_id '#{match_player.id}'"
+    end
+
+    gwtps.first
+  end
+
   belongs_to :game_week_team
   belongs_to :match_player
 

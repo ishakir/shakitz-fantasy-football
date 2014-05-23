@@ -5,6 +5,9 @@ class UserController < ApplicationController
   TEAM_NAME_KEY = :team_name
   GAME_WEEK_KEY = :game_week
 
+  PLAYING_PLAYER_ID_KEY = :playing_player_id
+  BENCHED_PLAYER_ID_KEY = :benched_player_id
+
   def create
     validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY], params)
 
@@ -33,7 +36,7 @@ class UserController < ApplicationController
     game_week = params[GAME_WEEK_KEY]
 
     @user = User.find(user_id)
-    @game_week_team = find_game_week_team(user_id, game_week)
+    @game_week_team = GameWeekTeam.find_unique_with(user_id, game_week)
   end
 
   def update
@@ -63,18 +66,29 @@ class UserController < ApplicationController
     user.save!
   end
 
-  def find_game_week_team(user_id, game_week)
-    gwt_obj_list = GameWeekTeam.where(user_id: user_id).includes(:game_week).where('game_weeks.number' => game_week)
+  def swap_players
+    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
 
-    # There should only we one of these
-    no_of_gwt_objs = gwt_obj_list.size
-    if no_of_gwt_objs == 0
-      fail ActiveRecord::RecordNotFound, "Didn't find a record with user_id '#{user_id}' and game week '#{game_week}'"
-    elsif no_of_gwt_objs > 1
-      fail ApplicationHelper::IllegalStateError, "Found #{no_of_gwt_objs} game week teams with uid '#{user_id}' and game week '#{game_week}'"
-    end
+    # First find the game_week_team
+    user = User.find(params[USER_ID_KEY])
+    game_week_team = user.team_for_game_week(params[GAME_WEEK_KEY])
 
-    # Return what must be the only element
-    gwt_obj_list.first
+    # Find the match_player
+    playing_player = MatchPlayer.find(params[PLAYING_PLAYER_ID_KEY])
+    benched_player = MatchPlayer.find(params[BENCHED_PLAYER_ID_KEY])
+
+    playing_gwtp = GameWeekTeamPlayer.find_unique_with(game_week_team, playing_player)
+    benched_gwtp = GameWeekTeamPlayer.find_unique_with(game_week_team, benched_player)
+
+    # Check that both are playing / not playing as expected
+    fail ArgumentError, "Playing player was not found to be playing" unless playing_gwtp.playing
+    fail ArgumentError, "Benched player was not found to be benched" if benched_gwtp.playing
+
+    # Swap them
+    playing_gwtp.playing = false
+    playing_gwtp.save!
+
+    benched_gwtp.playing = true
+    benched_gwtp.save!
   end
 end

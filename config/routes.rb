@@ -2,19 +2,21 @@
 Footbawwl::Application.routes.draw do
   
   #Create root path to index
-  root :to=> "user#home"
+  root :to => "user#home"
   
-  get "fixtures/generate"
+  post "fixtures/generate"
+  
   # All the routes for the user display (League Table)
   get "/" => "user#home"
-
   
   get "/user/:user_id" => "user#show"
-  get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
   
   post "user/create" => "user#create"
   post "user/update" => "user#update"
   delete "user/delete" => "user#delete"
+  
+  get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
+  post "/user/:user_id/game_week/:game_week/swap" => "user#swap_players"
   
   # All of the below have not been check as part of LARGE CONTROLLER AUDIT
   get "match_player/rushing"

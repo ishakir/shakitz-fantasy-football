@@ -49,14 +49,19 @@ class User < ActiveRecord::Base
     end
   end
 
-  def team_for_game_week(game_week_number)
-    validate_game_week_number(game_week_number)
+  def team_for_game_week(game_week)
+    game_week_as_number = game_week.to_i
+    validate_game_week_number(game_week_as_number)
     teams = game_week_teams.select do |game_week_team|
-      game_week_team.game_week.number == game_week_number
+      game_week_team.game_week.number == game_week_as_number
     end
-    fail IllegalStateException if teams.empty?
-    fail IllegalStateException if teams.size > 1
-    teams[0]
+    if teams.empty?
+      fail IllegalStateError, "No game week team found with user_id #{id}, game week #{game_week_number}"
+    end
+    if teams.size > 1
+      fail IllegalStateError, "#{teams.size} game week teams found with user_id #{id}, game week #{game_week_number}"
+    end
+    teams.first
   end
 
   def points

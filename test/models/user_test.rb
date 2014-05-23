@@ -122,6 +122,11 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test "team_for_game_week accepts convertible strings" do
+    user = User.find(1)
+    assert_equal 1, user.team_for_game_week("1").game_week.number
+  end
+
   test 'opponents contains some game_week_teams' do
     user = User.find(1)
     assert_kind_of GameWeekTeam, user.opponents[0]
