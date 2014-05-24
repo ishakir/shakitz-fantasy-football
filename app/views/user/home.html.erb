@@ -32,81 +32,45 @@
 <div class="row clearfix">
 	<div class="col-md-6 column">
 		<h3> League Standings </h3>
-	</div>
-	<div class="col-md-6 column">
-		<h3> Head to Head Standings </h3>
-	</div>
-</div>
-<div class="row clearfix">
-	<div class="col-md-6 column">
-		<table class="table">
-			<thead>
-				<tr>
-					<th> # </th>
-					<th> Product </th>
-					<th> Payment Taken </th>
-					<th> Status </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td> 1 </td>
-					<td> TB - Monthly </td>
-					<td> 01/04/2012 </td>
-					<td> Default </td>
-				</tr>
-				<tr class="active">
-					<td> 1 </td>
-					<td> TB - Monthly </td>
-					<td> 01/04/2012 </td>
-					<td> Approved </td>
-				</tr>
-				<tr class="success">
-					<td> 2 </td>
-					<td> TB - Monthly </td>
-					<td> 02/04/2012 </td>
-					<td> Declined </td>
-				</tr>
-				<tr class="warning">
-					<td> 3 </td>
-					<td> TB - Monthly </td>
-					<td> 03/04/2012 </td>
-					<td> Pending </td>
-				</tr>
-				<tr class="danger">
-					<td> 4 </td>
-					<td> TB - Monthly </td>
-					<td> 04/04/2012 </td>
-					<td> Call in to confirm </td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="col-md-6 column">
-		<table class="table">
+		<table class="table sortable">
 			<thead>
 				<tr>
 					<th>User</th>
 					<th>Team Name</th>
-					<th>Points</th>
-					<th>Record</th>
+					<th data-defaultsort="desc">Points</th>
+					<th data-recordformat="hello" data-firstsort="desc">Record</th>
 				</tr>
 			</thead>
 			<tbody>
-				<% @users.each do |user| %>
+				<% @users.each_with_index do |user, index| %>
+				<% if index == 0 %>
+				<tr class="success">
+				<% elsif index == @users.size - 1 %>
+				<tr class="danger">
+				<% elsif user.id == 2 %>
+				<tr class="active">
+				<% else %>
 				<tr>
+				<% end %>
 					<td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
 					<td><%= user.team_name %></td>
 					<td><%= user.points %></td>
-					<td><%= user.won_up_to_game_week(2) %>-<%= user.drawn_up_to_game_week(2) %>-<%= user.lost_up_to_game_week(2) %></td>
+					<% if user.drawn_up_to_game_week(2) == 0%>
+					<td>
+						<%= user.won_up_to_game_week(2) %>-<%= user.lost_up_to_game_week(2) %>
+					</td>
+					<% else %>
+					<td>
+						<%= user.won_up_to_game_week(2) %>-<%= user.drawn_up_to_game_week(2) %>-<%= user.lost_up_to_game_week(2) %>
+					</td>
+					<% end %>
 				</tr>
 				<% end %>
 			</tbody>
 		</table>
 	</div>
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-			<h3 id="fixture-header"> Upcoming Fixtures </h3>
+	<div class="col-md-6 column">
+		<h3 id="fixture-header"> Upcoming Fixtures </h3>
 			<div class="row clearfix">
 				<div class="col-md-3 column col-md-offset-2">
 					<span title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
@@ -119,47 +83,16 @@
 				</div>
 			</div>
 			<table class="table">
-				<thead>
-					<tr>
-						<th> # </th>
-						<th> Product </th>
-						<th> Payment Taken </th>
-						<th> Status </th>
-					</tr>
-				</thead>
 				<tbody>
 					<tr>
-						<td> 1 </td>
-						<td> TB - Monthly </td>
-						<td> 01/04/2012 </td>
-						<td> Default </td>
-					</tr>
-					<tr class="active">
-						<td> 1 </td>
-						<td> TB - Monthly </td>
-						<td> 01/04/2012 </td>
-						<td> Approved </td>
-					</tr>
-					<tr class="success">
-						<td> 2 </td>
-						<td> TB - Monthly </td>
-						<td> 02/04/2012 </td>
-						<td> Declined </td>
-					</tr>
-					<tr class="warning">
-						<td> 3 </td>
-						<td> TB - Monthly </td>
-						<td> 03/04/2012 </td>
-						<td> Pending </td>
-					</tr>
-					<tr class="danger">
-						<td> 4 </td>
-						<td> TB - Monthly </td>
-						<td> 04/04/2012 </td>
-						<td> Call in to confirm </td>
+						<td align="center"> Imran Wright vs Mike Sharwood </td>
 					</tr>
 				</tbody>
 			</table>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			
 			<ul class="pagination">
 				<li>
 					<a href="#">Prev</a>
