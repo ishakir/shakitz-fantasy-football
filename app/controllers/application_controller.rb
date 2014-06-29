@@ -4,6 +4,23 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
+  class ResponseMessage
+    class IndividualMessage
+      def initialize(id, message)
+        @id = id
+        @message = message
+      end
+    end
+
+    def initialize
+      @messages = []
+    end
+
+    def add_message(id, message)
+      @messages.push(IndividualMessage.new(id, message))
+    end
+  end
+
   ### Validation of controller parameters
   # params: as provided to you in a controller method
   def validate_all_parameters(expected_params, params)
@@ -34,7 +51,9 @@ class ApplicationController < ActionController::Base
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do
+  rescue_from ArgumentError do |error|
+    puts "Rescuing with #{error.message}"
+    puts "#{error.backtrace}"
     render_unprocessable_entity
   end
 

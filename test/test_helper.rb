@@ -152,4 +152,34 @@ class ActiveSupport::TestCase
 
     assert_equal no_fixtures, Fixture.all.size
   end
+
+  def parse_data_file(directory, filename)
+    data = IO.read("test/data/#{directory}/#{filename}.json")
+    JSON.parse(data)
+  end
+
+  def parse_nfl_player_data_file(filename)
+    parse_data_file('nfl_player', filename)
+  end
+
+  def validate_stats_update_response(filename, expected_response, expected_messages)
+    # Parse the json in the data file specified
+    json = parse_nfl_player_data_file(filename)
+
+    # Make the post request and validate the response
+    post :update_stats, format: :json, game_week: 1, player: json
+    assert_response expected_response, response.body
+
+    # Parse the response body
+    response_body = JSON.parse(response.body)
+
+    # Check that the number and type of messages are correct
+    message_ids = response_body['messages'].map do |full_message_desc|
+      full_message_desc['id']
+    end
+    assert_equal expected_messages.size, response_body['messages'].size
+    expected_messages.each do |id|
+      assert message_ids.include?(id), "#{id} not found in #{message_ids}"
+    end
+  end
 end

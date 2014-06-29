@@ -120,3 +120,9 @@ twenty:
   name: Desean Foshawn
   nfl_team_id: 3
   nfl_player_type_id: 2
+
+twenty_one:
+  id: 21
+  name: Desean Foshawn
+  nfl_team_id: 3
+  nfl_player_type_id: 2

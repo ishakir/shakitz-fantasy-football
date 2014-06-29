@@ -18,14 +18,13 @@ Footbawwl::Application.routes.draw do
   get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
   post "/user/:user_id/game_week/:game_week/swap" => "user#swap_players"
   
-  # All of the below have not been check as part of LARGE CONTROLLER AUDIT
-  get "match_player/rushing"
-  get "match_player/passing"
-  get "match_player/defense"
-  get "match_player/kicker"
-  get "match_player/show"
+  # Route for generating fixtures
+  post "fixtures/generate"
   
-  # All the routes for nfl player
+  # Route for inputting stats
+  post "nfl_player/stats/:game_week" => "nfl_player#update_stats"
+  
+  # All the routes for nfl player (haven't been checked as part of audit)
   get "nfl_player/unpicked"
   get "nfl_player/show/:id" => "nfl_player#show", as: :showplayer
   
