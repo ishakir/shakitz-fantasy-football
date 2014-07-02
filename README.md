@@ -2,7 +2,7 @@
 
 What is it?
 ===========
-
+ 
 A rails application that manages an NFL fantasy league.
 
 It allows users to sign up and choose a team name, and pick a team. A users team can be edited by either trading directly with other players or bidding for unpicked players on the waver wire. The system automatically loads stats from NFL games so that players scores are up-to-date, and a league table is displayed on the front-end. Head-to-head fixtures can also be generated so that very user has a direct opponent in each game week, giving a second way of ranking the teams.
