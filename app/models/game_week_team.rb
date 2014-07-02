@@ -2,7 +2,7 @@
 class GameWeekTeam < ActiveRecord::Base
   def self.find_unique_with(user_id, game_week)
     gwt_obj_list = GameWeekTeam.where(user_id: user_id).includes(:game_week).where('game_weeks.number' => game_week)
-
+ 
     # There should only we one of these
     no_of_gwt_objs = gwt_obj_list.size
     if no_of_gwt_objs == 0
