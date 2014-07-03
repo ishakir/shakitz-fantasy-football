@@ -9,7 +9,6 @@ mp_<%= n %>:
   passing_td: 15
   rushing_yards: 105
   rushing_td: 2
-  point_conversion: 3
   offensive_sack: 2
   offensive_safety: 1
   fumble: 2
@@ -20,7 +19,6 @@ mp_<%= n %>:
   turnover: 1 
   defensive_yards: 70
   defensive_points: 0
-  kicker_points: 1
   blocked_kicks: 2
 <% end %>
 
@@ -33,7 +31,6 @@ mp_<%= n + 18 %>:
   passing_td: 1
   rushing_yards: 30
   rushing_td: 0
-  point_conversion: 1
   offensive_sack: 2
   offensive_safety: 0
   fumble: 1
@@ -44,7 +41,6 @@ mp_<%= n + 18 %>:
   turnover: 0
   defensive_yards: 30
   defensive_points: 1
-  kicker_points: 3
   blocked_kicks: 0
 <% end %>
 
