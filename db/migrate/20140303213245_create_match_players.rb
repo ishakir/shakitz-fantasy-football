@@ -4,7 +4,7 @@ class CreateMatchPlayers < ActiveRecord::Migration
     create_table :match_players do |t|
       t.integer :passing_yards, :default => 0
       t.integer :passing_td, :default => 0
-      t.integet :passing_twopt, :default => 0
+      t.integer :passing_twopt, :default => 0
       t.integer :rushing_yards, :default => 0
       t.integer :rushing_td, :default => 0
       t.integer :rushing_twopt, :default => 0
