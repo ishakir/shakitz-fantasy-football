@@ -19,7 +19,6 @@ mp_<%= n %>:
   turnover: 1 
   defensive_yards: 70
   defensive_points: 0
-  kicker_points: 1
   blocked_kicks: 2
 <% end %>
 
@@ -42,7 +41,6 @@ mp_<%= n + 18 %>:
   turnover: 0
   defensive_yards: 30
   defensive_points: 1
-  kicker_points: 3
   blocked_kicks: 0
 <% end %>
 
