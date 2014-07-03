@@ -44,3 +44,5 @@ We use the standard rails testing frameworks in minitest for unit and rubocop fo
 We use magic_encoding to insert the UTF-8 header into the ruby files, so if rubocop returns complaining about a missing utf-8 encoding comment, run:
 
     magic_encoding
+    
+<Stafford4President>
