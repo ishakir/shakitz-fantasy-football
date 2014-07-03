@@ -25,9 +25,8 @@ class ApplicationController < ActionController::Base
   # params: as provided to you in a controller method
   def validate_all_parameters(expected_params, params)
     expected_params.each do |parameter|
-      unless params.key?(parameter)
-        fail ArgumentError, "Expecting '#{parameter}' in params, but could not find it"
-      end
+      next if params.key?(parameter)
+      fail ArgumentError, "Expecting '#{parameter}' in params, but could not find it"
     end
   end
 
@@ -38,10 +37,9 @@ class ApplicationController < ActionController::Base
       parameters_found.push(parameter) if params.key?(parameter)
     end
 
-    if parameters_found.size < minimum_expected
-      parameters_found_string = parameters_found.join(', ')
-      fail ArgumentError, "Expected at least #{minimum_expected} but found #{parameters_found_string}"
-    end
+    return unless parameters_found.size < minimum_expected
+    parameters_found_string = parameters_found.join(', ')
+    fail ArgumentError, "Expected at least #{minimum_expected} but found #{parameters_found_string}"
   end
 
   ### Controller exception handling
@@ -51,9 +49,9 @@ class ApplicationController < ActionController::Base
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do |error|
-#    puts "Rescuing with #{error.message}"
-#    puts "#{error.backtrace}"
+  rescue_from ArgumentError do |_error|
+    #    puts "Rescuing with #{error.message}"
+    #    puts "#{error.backtrace}"
     render_unprocessable_entity
   end
 

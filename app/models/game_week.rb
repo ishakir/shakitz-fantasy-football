@@ -11,8 +11,7 @@ class GameWeek < ActiveRecord::Base
 
   def number_is_in_correct_range
     return unless number.present?
-    if number < 1 || number > 17
-      errors.add(:number, 'is not between 1 and 17 inclusive')
-    end
+    return unless number < 1 || number > 17
+    errors.add(:number, 'is not between 1 and 17 inclusive')
   end
 end

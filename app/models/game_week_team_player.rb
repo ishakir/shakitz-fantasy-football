@@ -36,11 +36,7 @@ class GameWeekTeamPlayer < ActiveRecord::Base
     mp_gw = match_player.game_week
     gwt_gw = game_week_team.game_week
 
-    if gwt_gw.number != mp_gw.number
-      errors.add(
-        :base,
-        'Game Weeks do not match!'
-      )
-    end
+    return if gwt_gw.number == mp_gw.number
+    errors.add(:base, 'Game Weeks do not match!')
   end
 end
