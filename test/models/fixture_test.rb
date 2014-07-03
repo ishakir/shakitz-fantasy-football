@@ -205,9 +205,4 @@ class FixtureTest < ActiveSupport::TestCase
       fixture.assert_team_is_playing(GameWeekTeam.find(2))
     end
   end
-
-  test "stuff" do
-    puts Dir.pwd
-    assert true
-  end
 end

@@ -52,8 +52,8 @@ class ApplicationController < ActionController::Base
 
   # Stuff that's going to return a 422
   rescue_from ArgumentError do |error|
-    puts "Rescuing with #{error.message}"
-    puts "#{error.backtrace}"
+#    puts "Rescuing with #{error.message}"
+#    puts "#{error.backtrace}"
     render_unprocessable_entity
   end
 
