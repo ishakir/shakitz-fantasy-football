@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ishakir/footbawwl.svg)](https://travis-ci.org/ishakir/footbawwl)
+[![Code Climate](https://codeclimate.com/github/ishakir/footbawwl.png)](https://codeclimate.com/github/ishakir/footbawwl)
 
 What is it?
 ===========
