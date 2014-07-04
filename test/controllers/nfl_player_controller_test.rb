@@ -72,71 +72,71 @@ class NflPlayerControllerTest < ActionController::TestCase
   ##################################
   # Tests for update_stats
   ##################################
-  # test "should reject no player attribute" do
-  #   post :update_stats, format: :json, game_week: 1
-  #   assert_response :unprocessable_entity
-  #   parsed_body = JSON.parse(response.body)
-  #   assert_equal 1, parsed_body['messages'].size
-  #   assert_equal 1, parsed_body['messages'][0]['id']
-  # end
+  test "should reject no player attribute" do
+    post :update_stats, format: :json, game_week: 1
+    assert_response :unprocessable_entity
+    parsed_body = JSON.parse(response.body)
+    assert_equal 1, parsed_body['messages'].size
+    assert_equal 1, parsed_body['messages'][0]['id']
+  end
 
-  # test "should reject if no id_info" do
-  #   validate_stats_update_response('no_identification_info', :unprocessable_entity, [1])
-  # end
+  test "should reject if no id_info" do
+    validate_stats_update_response('no_identification_info', :unprocessable_entity, [1])
+  end
 
-  # test "should reject if id_info contains no content" do
-  #   validate_stats_update_response('no_identification_data', :unprocessable_entity, [1])
-  # end
+  test "should reject if id_info contains no content" do
+    validate_stats_update_response('no_identification_data', :unprocessable_entity, [1])
+  end
 
-  # test "should reject if only type is supplied" do
-  #   validate_stats_update_response('only_type', :unprocessable_entity, [2])
-  # end
+  test "should reject if only type is supplied" do
+    validate_stats_update_response('only_type', :unprocessable_entity, [2])
+  end
 
-  # test "should reject is only team is supplied" do
-  #   validate_stats_update_response('only_team', :unprocessable_entity, [3])
-  # end
+  test "should reject is only team is supplied" do
+    validate_stats_update_response('only_team', :unprocessable_entity, [3])
+  end
 
-  # test "should reject if id is incorrect" do
-  #   validate_stats_update_response('invalid_id', :not_found, [11])
-  # end
+  test "should reject if id is incorrect" do
+    validate_stats_update_response('invalid_id', :not_found, [11])
+  end
 
-  # test "should reject if name cannot be found" do
-  #   validate_stats_update_response('name_doesnt_exist', :not_found, [12])
-  # end
+  test "should reject if name cannot be found" do
+    validate_stats_update_response('name_doesnt_exist', :not_found, [12])
+  end
 
-  # test "should reject if name / type combination cannot be found" do
-  #   validate_stats_update_response('name_type_combo_doesnt_exist', :not_found, [13])
-  # end
+  test "should reject if name / type combination cannot be found" do
+    validate_stats_update_response('name_type_combo_doesnt_exist', :not_found, [13])
+  end
 
-  # test "should reject if name / team combination cannot be found" do
-  #   validate_stats_update_response('name_team_combo_doesnt_exist', :not_found, [14])
-  # end
+  test "should reject if name / team combination cannot be found" do
+    validate_stats_update_response('name_team_combo_doesnt_exist', :not_found, [14])
+  end
 
-  # test "should reject if team / type combination cannot be found" do
-  #   validate_stats_update_response('team_type_combo_doesnt_exist', :not_found, [15])
-  # end
+  test "should reject if team / type combination cannot be found" do
+    validate_stats_update_response('team_type_combo_doesnt_exist', :not_found, [15])
+  end
 
-  # test "should reject if name / team / type combination cannot be found" do
-  #   validate_stats_update_response('name_team_type_combo_doesnt_exist', :not_found, [16])
-  # end
+  test "should reject if name / team / type combination cannot be found" do
+    validate_stats_update_response('name_team_type_combo_doesnt_exist', :not_found, [16])
+  end
 
-  # test "should reject if multiple players have the same name" do
-  #   validate_stats_update_response('multiple_players_with_name', :not_found, [21])
-  # end
+  test "should reject if multiple players have the same name" do
+    validate_stats_update_response('multiple_players_with_name', :not_found, [21])
+  end
 
-  # test "should reject if multiple players have the same name / type" do
-  #   validate_stats_update_response('multiple_players_with_name_type_combo', :not_found, [22])
-  # end
+  test "should reject if multiple players have the same name / type" do
+    validate_stats_update_response('multiple_players_with_name_type_combo', :not_found, [22])
+  end
 
-  # test "should reject if multiple players have the same name / team" do
-  #   validate_stats_update_response('multiple_players_with_name_team_combo', :not_found, [23])
-  # end
+  test "should reject if multiple players have the same name / team" do
+    validate_stats_update_response('multiple_players_with_name_team_combo', :not_found, [23])
+  end
 
-  # test "should reject if multiple players have the same team / type" do
-  #   validate_stats_update_response('multiple_players_with_team_type_combo', :not_found, [24])
-  # end
+  test "should reject if multiple players have the same team / type" do
+    validate_stats_update_response('multiple_players_with_team_type_combo', :not_found, [24])
+  end
 
-  # test "should reject if multiple players have the same name / team / type" do
-  #   validate_stats_update_response('multiple_players_with_name_type_team_combo', :not_found, [25])
-  # end
+  test "should reject if multiple players have the same name / team / type" do
+    validate_stats_update_response('multiple_players_with_name_type_team_combo', :not_found, [25])
+  end
 end

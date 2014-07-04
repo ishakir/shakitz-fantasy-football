@@ -4,23 +4,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
-  class ResponseMessage
-    class IndividualMessage
-      def initialize(id, message)
-        @id = id
-        @message = message
-      end
-    end
-
-    def initialize
-      @messages = []
-    end
-
-    def add_message(id, message)
-      @messages.push(IndividualMessage.new(id, message))
-    end
-  end
-
   ### Validation of controller parameters
   # params: as provided to you in a controller method
   def validate_all_parameters(expected_params, params)
@@ -45,13 +28,20 @@ class ApplicationController < ActionController::Base
   ### Controller exception handling
   # Stuff that's going to return a 404
   rescue_from ActiveRecord::RecordNotFound do
-    render file: "#{Rails.root}/public/404", layout: false, status: :not_found
+    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+  end
+
+  def render_unprocessable_entity
+    render file: "#{Rails.root}/public/422.html", layout: false, status: :unprocessable_entity
+  end
+
+  # Utility methods
+  def render_internal_server_error
+    render file: "#{Rails.root}/public/500.html", layout: false, status: :exception
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do |_error|
-    #    puts "Rescuing with #{error.message}"
-    #    puts "#{error.backtrace}"
+  rescue_from ArgumentError do
     render_unprocessable_entity
   end
 
@@ -62,14 +52,5 @@ class ApplicationController < ActionController::Base
   # Stuff that's going to return a 500
   rescue_from IllegalStateError do
     render_internal_server_error
-  end
-
-  def render_unprocessable_entity
-    render file: "#{Rails.root}/public/422", layout: false, status: :unprocessable_entity
-  end
-
-  # Utility methods
-  def render_internal_server_error
-    render file: "#{Rails.root}/public/500", layout: false, status: :exception
   end
 end

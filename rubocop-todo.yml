@@ -39,3 +39,6 @@ MethodLength:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 StringLiterals:
   Enabled: false
+
+CyclomaticComplexity:
+ Max: 10

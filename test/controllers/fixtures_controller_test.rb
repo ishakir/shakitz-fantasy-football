@@ -2,6 +2,12 @@
 require 'test_helper'
 
 class FixturesControllerTest < ActionController::TestCase
+  # This is a work around for a rails bug, it appears that rails won't
+  # create it for the first test :/
+  def setup
+    @controller = FixturesController.new
+  end
+
   test "generate requires zero parameters" do
     Fixture.delete_all
     get :generate
