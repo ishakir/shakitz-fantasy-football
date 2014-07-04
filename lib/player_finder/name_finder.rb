@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'player_finder/name_finder/name_only_finder'
 require 'player_finder/name_finder/name_team_finder'
 require 'player_finder/name_finder/name_type_finder'

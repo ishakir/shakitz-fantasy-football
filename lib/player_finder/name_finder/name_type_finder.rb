@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'illegal_state_error'
 
 module PlayerFinder

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module PlayerFinder
   module NameFinder
     class NameTeamTypeFinder

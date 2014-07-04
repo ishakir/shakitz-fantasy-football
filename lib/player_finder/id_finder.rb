@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module PlayerFinder
   class IdFinder
     def initialize(id_hash)

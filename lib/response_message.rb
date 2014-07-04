@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ResponseMessage
   class IndividualMessage
     def initialize(id, message)
