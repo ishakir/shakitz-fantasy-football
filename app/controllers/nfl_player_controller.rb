@@ -50,6 +50,11 @@ class NflPlayerController < ApplicationController
       return respond(message, :not_found)
     else
 
+      # If there are any inconsistancies, flag them
+      player_finder.add_inconsistancy_messages(message)
+
+      respond(message, :ok)
+
     end
   end
 

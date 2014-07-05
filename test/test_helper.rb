@@ -168,7 +168,7 @@ class ActiveSupport::TestCase
 
     # Make the post request and validate the response
     post :update_stats, format: :json, game_week: 1, player: json
-    assert_response expected_response, response.body
+    assert_response expected_response
 
     # Parse the response body
     response_body = JSON.parse(response.body)

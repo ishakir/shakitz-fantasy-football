@@ -139,4 +139,32 @@ class NflPlayerControllerTest < ActionController::TestCase
   test "should reject if multiple players have the same name / team / type" do
     validate_stats_update_response('multiple_players_with_name_type_team_combo', :not_found, [25])
   end
+
+  test "should warn if id specified but name is wrong" do
+    validate_stats_update_response('inconsistant_name', :success, [51])
+  end
+
+  test "should warn if id specified but team is wrong" do
+    validate_stats_update_response('inconsistant_team', :success, [53])
+  end
+
+  test "should warn if id specified but type is wrong" do
+    validate_stats_update_response('inconsistant_type', :success, [52])
+  end
+
+  test "should warn if id specified but name and team are wrong" do
+    validate_stats_update_response('inconsistant_name_team', :success, [51, 53])
+  end
+
+  test "should warn if id specified but name and type are wrong" do
+    validate_stats_update_response('inconsistant_name_type', :success, [51, 52])
+  end
+
+  test "should warn if id specified but team and type are wrong" do
+    validate_stats_update_response('inconsistant_team_type', :success, [52, 53])
+  end
+
+  test "should warn if id specified but name, team and type are wrong" do
+    validate_stats_update_response('inconsistant_name_team_type', :success, [51, 52, 53])
+  end
 end

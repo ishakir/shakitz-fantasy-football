@@ -1,8 +1,6 @@
 {
-	"player": {
-		"id_info": {
-			"id": 21,
-			"team": "Jog on Jaguars"
-		}
+  "id_info": {
+  	"id": 21,
+		"team": "Jog On Jaguars"
 	}
 }
