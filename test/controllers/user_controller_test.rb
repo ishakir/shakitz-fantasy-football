@@ -7,7 +7,7 @@ class UserControllerTest < ActionController::TestCase
 
   # CREATE
   test 'create redirects to show' do
-    post :create, user_name: 'Dummy User Name', team_name: 'Dummy Team Name'
+    post :create, user_name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword'
     assert_redirected_to controller: :user, action: :home
   end
 

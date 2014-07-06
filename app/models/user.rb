@@ -1,8 +1,6 @@
 # -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
   include WithGameWeek
-
-  attr_accessible :name, :team_name, :password, :password_confirmation
   
   attr_accessor :password
   before_save :encrypt_password
@@ -33,6 +31,14 @@ class User < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
+  end
+  
+  def create
+    User.create(user_params)
+  end
+  
+  def user_params
+    params.require(:user).permit(:name, :team_name, :password, :password_confirmation)
   end
 
   def opponents

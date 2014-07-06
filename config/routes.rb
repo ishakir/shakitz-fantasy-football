@@ -4,8 +4,6 @@ Footbawwl::Application.routes.draw do
   #Create root path to index
   root :to => "user#home"
   
-  resources :sessions
-
   get "log_out" => "sessions#destroy", :as => "log_out"
   get "log_in" => "sessions#new", :as => "log_in"
   get "sign_up" => "user#create", :as => "sign_up"
@@ -82,6 +80,8 @@ Footbawwl::Application.routes.draw do
   #   resources :posts, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
   resources :user
+  resources :sessions
+
 
   # Example resource route within a namespace:
   #   namespace :admin do

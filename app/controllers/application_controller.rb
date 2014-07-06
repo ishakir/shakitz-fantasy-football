@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Stuff that's going to return a 500
-  rescue_from IllegalStateError do
+  rescue_from IllegalStateError do |error|
     render_internal_server_error
   end
 end
