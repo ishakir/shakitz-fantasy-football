@@ -3,18 +3,23 @@ class UserController < ApplicationController
   USER_ID_KEY = :user_id
   USER_NAME_KEY = :user_name
   TEAM_NAME_KEY = :team_name
+  PASSWORD_KEY = :password
   GAME_WEEK_KEY = :game_week
 
   PLAYING_PLAYER_ID_KEY = :playing_player_id
   BENCHED_PLAYER_ID_KEY = :benched_player_id
 
   def create
-    validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY], params)
+    #validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY], params)
 
-    user = User.new
-    update_user_entity(user, params)
-
-    redirect_to action: :home
+    #user = User.new
+    #update_user_entity(user, params)
+    @user = User.new(params[:user])
+    if @user.save
+      redirect_to action: :home, :notice => "Signed up!"
+    else
+      render "create"
+    end
   end
 
   def home
@@ -62,6 +67,7 @@ class UserController < ApplicationController
   def update_user_entity(user, params)
     user.name = params[USER_NAME_KEY] if params.key?(USER_NAME_KEY)
     user.team_name = params[TEAM_NAME_KEY] if params.key?(TEAM_NAME_KEY)
+    user.password = params[PASSWORD_KEY] if params.key?(PASSWORD_KEY)
 
     user.save!
   end

@@ -8,6 +8,8 @@ class NflPlayerController < ApplicationController
   GAME_WEEK_KEY   = :game_week
   STATS_KEY       = :stats
 
+  UNALLOWED_STAT_NAMES = {}
+
   def unpicked
     @players = NflPlayer.all
     picked_players = GameWeekTeamPlayer.all

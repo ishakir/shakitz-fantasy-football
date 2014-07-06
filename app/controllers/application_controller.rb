@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+require 'illegal_state_error'
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

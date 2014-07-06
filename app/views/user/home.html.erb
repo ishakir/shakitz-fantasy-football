@@ -11,22 +11,25 @@
 		</div>
 	</div>
 	<div class="col-md-3 column">
-		<form role="form">
-			<div class="form-group">
-				<label for="exampleInputEmail1">Email address</label>
-				<input type="email" class="form-control" id="exampleInputEmail1">
-			</div>
-			<div class="form-group">
-				<label for="exampleInputPassword1">Password</label>
-				<input type="password" class="form-control" id="exampleInputPassword1">
-			</div>
-			<button type="submit" class="btn btn-default">
-				Login
-			</button>
-			<button type="register" class="btn">
-				Register
-			</button>
-		</form>
+		<% if current_user.present? %>
+			<h3>Welcome <%= current_user.name %><small><br /><%= current_user.team_name%></small></h3>
+			<button class="btn btn-default"><%= link_to "Log out", log_out_path %></button>
+		<% else %>	
+			<%= form_tag sessions_path do %>
+				<div class="form-group">
+			    	<%= label_tag :name %>
+			    	<%= text_field_tag :name, params[:name], class: "form-control" %>
+			  	</div>
+			  	<div class="form-group">
+			    	<%= label_tag :password %>
+			    	<%= password_field_tag :password, nil, class: "form-control" %>
+			  	</div>
+			  	<button type="submit" class="btn btn-default">Log in</button>
+			  	<button type="register" class="btn">Register</button>
+			<% end %>
+		<% end %>
+		
+		
 	</div>
 </div>
 <div class="row clearfix">
