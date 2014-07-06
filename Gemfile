@@ -27,6 +27,12 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+#To be able to use attr_accessible
+gem 'protected_attributes'
+
+#authentication gems
+gem 'bcrypt-ruby', :require => 'bcrypt'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

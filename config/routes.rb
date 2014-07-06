@@ -4,6 +4,13 @@ Footbawwl::Application.routes.draw do
   #Create root path to index
   root :to => "user#home"
   
+  resources :user
+  resources :sessions
+
+  get "log_out" => "sessions#destroy", :as => "log_out"
+  get "log_in" => "sessions#new", :as => "log_in"
+  get "sign_up" => "user#create", :as => "sign_up"
+  
   post "fixtures/generate"
   
   # All the routes for the user display (League Table)
@@ -69,7 +76,6 @@ Footbawwl::Application.routes.draw do
   #     end
   #   end
 
-  resources :user
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
