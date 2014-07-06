@@ -48,3 +48,8 @@ default:
   id: 37
   nfl_player_id: 18
   game_week_id: 3
+
+nfl_player_controller_test:
+  id: 38
+  nfl_player_id: 21
+  game_week_id: 1

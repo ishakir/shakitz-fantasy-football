@@ -182,4 +182,11 @@ class ActiveSupport::TestCase
       assert message_ids.include?(id), "#{id} not found in #{message_ids}"
     end
   end
+
+  def check_stats(match_player, stats)
+    player_attributes = match_player.attributes
+    stats.keys.each do |key|
+      assert_equal(player_attributes[key], stats[key])
+    end
+  end
 end

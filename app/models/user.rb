@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
+  include WithGameWeek
+
   validates :name,
             presence: true,
             uniqueness: true
@@ -14,11 +16,6 @@ class User < ActiveRecord::Base
       game_week_team.opponent
     end
     opponents.compact
-  end
-
-  def validate_game_week_number(game_week_number)
-    fail ArgumentError, "Game week number must be greater than 1, not #{game_week_number}" if game_week_number < 1
-    fail ArgumentError, "Game week number must be less than 17, not #{game_week_number}" if game_week_number > 17
   end
 
   def won_up_to_game_week(game_week_number)
@@ -43,25 +40,12 @@ class User < ActiveRecord::Base
   end
 
   def teams_up_to_game_week(game_week_number)
-    validate_game_week_number(game_week_number)
-    game_week_teams.select do |game_week_team|
-      game_week_team.game_week.number <= game_week_number
-    end
+    up_to_game_week(game_week_teams, game_week_number)
   end
 
   def team_for_game_week(game_week)
     game_week_as_number = game_week.to_i
-    validate_game_week_number(game_week_as_number)
-    teams = game_week_teams.select do |game_week_team|
-      game_week_team.game_week.number == game_week_as_number
-    end
-    if teams.empty?
-      fail IllegalStateError, "No game week team found with user_id #{id}, game week #{game_week_number}"
-    end
-    if teams.size > 1
-      fail IllegalStateError, "#{teams.size} game week teams found with user_id #{id}, game week #{game_week_number}"
-    end
-    teams.first
+    for_game_week(game_week_teams, game_week_as_number)
   end
 
   def points

@@ -101,4 +101,38 @@ class NflPlayerTest < ActiveSupport::TestCase
     player.name = 'My Dummy Name'
     assert !player.save
   end
+
+  test "player responds to player_for_game_week" do
+    player = NflPlayer.find(1)
+    assert_respond_to player, :player_for_game_week
+  end
+
+  test "player_for_game_week gives game_week_team with correct user" do
+    player = NflPlayer.find(1)
+    assert_equal player.id, player.player_for_game_week(1).nfl_player.id
+  end
+
+  test "player_for_game_week gives game_week_team with correct game_week" do
+    player = NflPlayer.find(1)
+    assert_equal 1, player.player_for_game_week(1).game_week.number
+  end
+
+  test "can't give player_for_game_week zero" do
+    player = NflPlayer.find(1)
+    assert_raise ArgumentError do
+      player.player_for_game_week(0)
+    end
+  end
+
+  test "can't give team_for_game_week 18" do
+    player = NflPlayer.find(1)
+    assert_raise ArgumentError do
+      player.player_for_game_week(18)
+    end
+  end
+
+  test "player_for_game_week accepts convertible strings" do
+    player = NflPlayer.find(1)
+    assert_equal 1, player.player_for_game_week("1").game_week.number
+  end
 end

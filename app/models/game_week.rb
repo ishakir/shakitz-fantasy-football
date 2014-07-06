@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class GameWeek < ActiveRecord::Base
+  include WithGameWeek
+
   has_many :match_players
   has_many :game_week_teams
 
@@ -11,7 +13,8 @@ class GameWeek < ActiveRecord::Base
 
   def number_is_in_correct_range
     return unless number.present?
-    return unless number < 1 || number > 17
+    validate_game_week_number(number)
+  rescue ArgumentError
     errors.add(:number, 'is not between 1 and 17 inclusive')
   end
 end

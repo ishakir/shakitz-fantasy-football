@@ -5,6 +5,8 @@ require 'response_message'
 class NflPlayerController < ApplicationController
   PLAYER_JSON_KEY = :player
   ID_INFO_KEY     = :id_info
+  GAME_WEEK_KEY   = :game_week
+  STATS_KEY       = :stats
 
   def unpicked
     @players = NflPlayer.all
@@ -48,14 +50,18 @@ class NflPlayerController < ApplicationController
     elsif found_player == :too_many
       player_finder.add_multiple_players_found_message(message)
       return respond(message, :not_found)
-    else
-
-      # If there are any inconsistancies, flag them
-      player_finder.add_inconsistancy_messages(message)
-
-      respond(message, :ok)
-
     end
+
+    # If there are any inconsistancies, flag them 
+    player_finder.add_inconsistancy_messages(message)
+    match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
+    update_stats(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
+
+    respond(message, :ok)
+  end
+
+  def update_stats
+
   end
 
   def params_validated?(params)
