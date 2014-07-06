@@ -152,7 +152,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'can add user' do
-    User.create!(name: 'Test User', team_name: 'Test Team Name')
+    User.create!(name: 'Test User', team_name: 'Test Team Name', password: 'lollercats')
     last_entry = User.last
     assert_equal 'Test User', last_entry.name
   end

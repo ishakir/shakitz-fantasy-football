@@ -14,8 +14,9 @@ class UserControllerTest < ActionController::TestCase
   test 'should create new user' do
     new_name = 'John Doriando'
     team_name = 'I love Stafford'
+    pw = 'Lions4Life'
 
-    post :create, user_name: new_name, team_name: team_name
+    post :create, user_name: new_name, team_name: team_name, password: pw
 
     assert_equal new_name, User.last.name, "Error user wasn't created by controller method!"
   end

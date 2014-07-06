@@ -10,7 +10,7 @@ class UserController < ApplicationController
   BENCHED_PLAYER_ID_KEY = :benched_player_id
 
   def create
-    #validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY], params)
+    validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY], params)
 
     #user = User.new
     #update_user_entity(user, params)
@@ -28,9 +28,8 @@ class UserController < ApplicationController
 
   def show
     validate_all_parameters([USER_ID_KEY], params)
-
     user_id = params[USER_ID_KEY]
-
+    
     @user = User.find(user_id)
   end
 

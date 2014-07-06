@@ -4,38 +4,53 @@ one:
   id: 1
   name: Mike Sharwood
   team_name: Stafford's Picks
-
+  password_hash: PASSWORD_STRING1
+  password_salt: PASSWORD_STRING
 two:
   id: 2
   name: Imran Wright
   team_name: Destroyers
+  password_hash: PASSWORD_STRING2
+  password_salt: PASSWORD_STRING
 
 three:
   id: 3
   name: Another User
   team_name: The Depressed
-
+  password_hash: PASSWORD_STRING3
+  password_salt: PASSWORD_STRING
+  
 four:
   id: 4
   name: Yet Another User
   team_name: The Enlightened
-
+  password_hash: PASSWORD_STRING4
+  password_salt: PASSWORD_STRING
+  
 five:
   id: 5
   name: My Next User
   team_name: The Awesomes
-
+  password_hash: PASSWORD_STRING5
+  password_salt: PASSWORD_STRING  
+  
 six:
   id: 6
   name: Further User
   team_name: The Coolbeans
-  
+  password_hash: PASSWORD_STRING6
+  password_salt: PASSWORD_STRING
+    
 seven:
   id: 7
   name: Cool User
   team_name: The Shenanigans
-  
+  password_hash: PASSWORD_STRING7
+  password_salt: PASSWORD_STRING
+    
 eight:
   id: 8
   name: Cooler User
   team_name: What A Rigmarole
+  password_hash: PASSWORD_STRING8
+  password_salt: PASSWORD_STRING
