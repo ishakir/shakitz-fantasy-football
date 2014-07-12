@@ -1,12 +1,9 @@
 # -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
   include WithGameWeek
-  
+
   attr_accessor :password
   before_save :encrypt_password
-  
-  validates_confirmation_of :password
-  validates_presence_of :password, :on => :create
 
   validates :name,
             presence: true,
@@ -15,8 +12,12 @@ class User < ActiveRecord::Base
   validates :team_name,
             presence: true
 
+  validate :password,
+           confirmation: true,
+           presence: { on: create }
+
   has_many :game_week_teams, dependent: :destroy
-  
+
   def self.authenticate(name, password)
     user = find_by_name(name)
     if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
@@ -25,18 +26,17 @@ class User < ActiveRecord::Base
       nil
     end
   end
-  
+
   def encrypt_password
-    if password.present?
-      self.password_salt = BCrypt::Engine.generate_salt
-      self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
-    end
+    return unless password.present?
+    self.password_salt = BCrypt::Engine.generate_salt
+    self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
   end
-  
+
   def create
     User.create(user_params)
   end
-  
+
   def user_params
     params.require(:user).permit(:name, :team_name, :password, :password_confirmation)
   end

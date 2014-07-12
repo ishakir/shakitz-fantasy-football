@@ -6,9 +6,9 @@ mp_<%= n %>:
   nfl_player_id: <%= n + 1 %>
   game_week_id: 1
   passing_yards: 225
-  passing_td: 15
+  passing_tds: 15
   rushing_yards: 105
-  rushing_td: 2
+  rushing_tds: 2
   offensive_sack: 2
   offensive_safety: 1
   fumble: 2
@@ -28,9 +28,9 @@ mp_<%= n + 18 %>:
   nfl_player_id: <%= n + 1 %>
   game_week_id: 2
   passing_yards: 120
-  passing_td: 1
+  passing_tds: 1
   rushing_yards: 30
-  rushing_td: 0
+  rushing_tds: 0
   offensive_sack: 2
   offensive_safety: 0
   fumble: 1

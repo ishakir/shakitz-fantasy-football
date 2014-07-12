@@ -12,11 +12,11 @@ class UserController < ApplicationController
   def create
     validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY], params)
 
-    #user = User.new
-    #update_user_entity(user, params)
+    # user = User.new
+    # update_user_entity(user, params)
     @user = User.new(params[:user])
     if @user.save
-      redirect_to action: :home, :notice => "Signed up!"
+      redirect_to action: :home, notice: "Signed up!"
     else
       render "create"
     end
@@ -29,7 +29,7 @@ class UserController < ApplicationController
   def show
     validate_all_parameters([USER_ID_KEY], params)
     user_id = params[USER_ID_KEY]
-    
+
     @user = User.find(user_id)
   end
 
