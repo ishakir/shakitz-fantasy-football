@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# -*- encoding : utf-8 -*-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430112835) do
+ActiveRecord::Schema.define(version: 20140713162845) do
 
   create_table "fixtures", force: true do |t|
     t.integer  "home_team_id"
@@ -95,6 +95,20 @@ ActiveRecord::Schema.define(version: 20140430112835) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "transfer_requests", force: true do |t|
+    t.integer  "request_user_id"
+    t.integer  "target_user_id"
+    t.integer  "offered_player_id"
+    t.integer  "target_player_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "transfer_requests", ["offered_player_id"], name: "index_transfer_requests_on_offered_player_id"
+  add_index "transfer_requests", ["request_user_id"], name: "index_transfer_requests_on_request_user_id"
+  add_index "transfer_requests", ["target_player_id"], name: "index_transfer_requests_on_target_player_id"
+  add_index "transfer_requests", ["target_user_id"], name: "index_transfer_requests_on_target_user_id"
 
   create_table "users", force: true do |t|
     t.string   "name"

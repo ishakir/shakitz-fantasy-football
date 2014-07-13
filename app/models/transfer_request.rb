@@ -1,0 +1,49 @@
+# -*- encoding : utf-8 -*-
+class TransferRequest < ActiveRecord::Base
+  belongs_to :request_user,
+             foreign_key: :request_user_id,
+             class_name: "User"
+
+  belongs_to :target_user,
+             foreign_key: :target_user_id,
+             class_name: "User"
+
+  belongs_to :offered_player,
+             foreign_key: :offered_player_id,
+             class_name: "NflPlayer"
+
+  belongs_to :target_player,
+             foreign_key: :target_player_id,
+             class_name: "NflPlayer"
+
+  validates :request_user,
+            presence: true
+
+  validates :target_user,
+            presence: true
+
+  validates :offered_player,
+            presence: true
+
+  validates :target_player,
+            presence: true
+
+  validate :users_are_different
+  validate :players_are_different
+
+  def users_are_different
+    return unless request_user.present? && target_user.present?
+    request_user_id = request_user.id
+    target_user_id = target_user.id
+    return unless request_user_id == target_user_id
+    errors.add(:users, "Request and target users are the same, with id #{request_user_id}")
+  end
+
+  def players_are_different
+    return unless offered_player.present? && target_player.present?
+    offered_player_id = offered_player.id
+    target_player_id = target_player.id
+    return unless offered_player_id == target_player_id
+    errors.add(:players, "Offered and Target players are the same, with id #{offered_player_id}")
+  end
+end
