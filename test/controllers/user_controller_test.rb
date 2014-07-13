@@ -7,16 +7,16 @@ class UserControllerTest < ActionController::TestCase
 
   # CREATE
   test 'create redirects to show' do
-    post :create, user_name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword'
-    assert_redirected_to controller: :user, action: :home
+    post :create, name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword', password_confirmation: 'dummyPassword'
+    assert_redirected_to controller: :user, action: :home, notice: "Signed up!"
   end
 
   test 'should create new user' do
     new_name = 'John Doriando'
-    team_name = 'I love Stafford'
+    team = 'I love Stafford'
     pw = 'Lions4Life'
 
-    post :create, user_name: new_name, team_name: team_name, password: pw
+    post :create, name: new_name, team_name: team, password: pw, password_confirmation: pw
 
     assert_equal new_name, User.last.name, "Error user wasn't created by controller method!"
   end
@@ -24,7 +24,7 @@ class UserControllerTest < ActionController::TestCase
   test 'should fail to create new user with null name' do
     nullname = ''
 
-    post :create, user_name: nullname, team_name: 'Dummy Team Name'
+    post :create, name: nullname, team_name: 'Dummy Team Name'
     assert_response(:unprocessable_entity)
   end
 
@@ -183,14 +183,14 @@ class UserControllerTest < ActionController::TestCase
     user_id = 1
 
     pre_edit_user = User.find(user_id)
-    post :update, user_id: user_id, user_name: 'Timothy Perkins'
+    post :update, user_id: user_id, name: 'Timothy Perkins'
 
     post_edit_user = User.find(user_id)
     assert_not_equal pre_edit_user.name, post_edit_user.name, 'Failed to update User'
   end
 
   test 'should fail to edit non-existent user' do
-    fail_edit_fake_entity_row_obj(:update, { user_id: 50, user_name: 'Biggity Boo' }, 'user')
+    fail_edit_fake_entity_row_obj(:update, { user_id: 50, name: 'Biggity Boo' }, 'user')
   end
 
   test 'should edit team name' do
