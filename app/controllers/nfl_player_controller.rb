@@ -8,8 +8,6 @@ class NflPlayerController < ApplicationController
   GAME_WEEK_KEY   = :game_week
   STATS_KEY       = :stats
 
-  UNALLOWED_STAT_NAMES = {}
-
   def unpicked
     @players = NflPlayer.all
     picked_players = GameWeekTeamPlayer.all
@@ -38,11 +36,9 @@ class NflPlayerController < ApplicationController
     player_finder = PlayerFinder.new(id_json)
 
     if player_finder == :only_team
-      message.add_message(2, "Only 'team' was provided to identify the player, please specify one of id, name with team, type or both, or team and type")
-      return respond(message, :unprocessable_entity)
+      return handle_only_team(message)
     elsif player_finder == :only_type
-      message.add_message(3, "Only 'type' was provided to identify the player, please specify one of id, name with team, type or both, or team and type")
-      return respond(message, :unprocessable_entity)
+      return handle_only_type(message)
     end
 
     found_player = player_finder.player
@@ -57,12 +53,28 @@ class NflPlayerController < ApplicationController
     # If there are any inconsistancies, flag them
     player_finder.add_inconsistancy_messages(message)
     match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
-    update_stats(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
+    update_stats_for_player(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
 
     respond(message, :ok)
   end
 
-  def update_stats
+  def handle_only_team(message)
+    message.add_message(2, "Only 'team' was provided to identify the player, please specify one of id, name with team, type or both, or team and type")
+    respond(message, :unprocessable_entity)
+  end
+
+  def handle_only_type(message)
+    message.add_message(3, "Only 'type' was provided to identify the player, please specify one of id, name with team, type or both, or team and type")
+    respond(message, :unprocessable_entity)
+  end
+
+  def update_stats_for_player(match_player, stats)
+    return if stats.nil?
+    all_stats_hash = stats.values.reduce(Hash.new) do |acc_hash, value|
+      acc_hash.merge(value)
+    end
+    match_player.assign_attributes(all_stats_hash)
+    match_player.save!
   end
 
   def params_validated?(params)

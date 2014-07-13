@@ -184,9 +184,8 @@ class ActiveSupport::TestCase
   end
 
   def check_stats(match_player, stats)
-    player_attributes = match_player.attributes
     stats.keys.each do |key|
-      assert_equal(player_attributes[key], stats[key])
+      assert_equal stats[key], match_player.read_attribute(key), "Stat #{key} is incorrect"
     end
   end
 end

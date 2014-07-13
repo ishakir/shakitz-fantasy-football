@@ -175,12 +175,12 @@ class NflPlayerControllerTest < ActionController::TestCase
 
   test "should update passing touchdowns even if team is inconsistant" do
     validate_stats_update_response('inconsistant_team_pass_td', :success, [53])
-    assert_equal(5, NflPlayer.find(21).player_for_game_week(1).passing_td)
+    assert_equal(5, NflPlayer.find(21).player_for_game_week(1).passing_tds)
   end
 
   test "should update passing two point conversions even if type is inconsistant" do
     validate_stats_update_response('inconsistant_type_pass_twoptm', :success, [52])
-    assert_equal(2, NflPlayer.find(21).player_for_game_week(1).passing_twopt)
+    assert_equal(2, NflPlayer.find(21).player_for_game_week(1).passing_twoptm)
   end
 
   test "should update all stats" do
@@ -190,14 +190,14 @@ class NflPlayerControllerTest < ActionController::TestCase
       match_player,
 
       passing_yards: 500,
-      passing_td: 7,
-      passing_twopt: 1,
+      passing_tds: 7,
+      passing_twoptm: 1,
       rushing_yards: 21,
-      rushing_td: 1,
-      rushing_twopt: 3,
-      recieving_yards: 87,
-      recieving_td: 3,
-      recieving_twopt: 1,
+      rushing_tds: 1,
+      rushing_twoptm: 3,
+      receiving_yards: 87,
+      receiving_tds: 3,
+      receiving_twoptm: 1,
       field_goals_kicked: 7,
       extra_points_kicked: 20
 

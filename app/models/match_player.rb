@@ -56,7 +56,7 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def passing_td_points
-    passing_td * 3
+    passing_tds * 3
   end
 
   def offensive_sack_points
@@ -77,7 +77,7 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def rushing_td_points
-    rushing_td * 6
+    rushing_tds * 6
   end
 
   def fumble_points

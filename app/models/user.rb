@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
 
   attr_accessor :password
   before_save :encrypt_password
-
   validates_confirmation_of :password
   validates_presence_of :password, on: :create
 
@@ -14,6 +13,10 @@ class User < ActiveRecord::Base
 
   validates :team_name,
             presence: true
+
+  validate :password,
+           confirmation: true,
+           presence: { on: create }
 
   has_many :game_week_teams, dependent: :destroy
 
@@ -27,10 +30,9 @@ class User < ActiveRecord::Base
   end
 
   def encrypt_password
-    if password.present?
-      self.password_salt = BCrypt::Engine.generate_salt
-      self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
-    end
+    return unless password.present?
+    self.password_salt = BCrypt::Engine.generate_salt
+    self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
   end
 
   def create

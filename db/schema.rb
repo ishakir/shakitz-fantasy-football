@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# -*- encoding : utf-8 -*-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -48,14 +48,14 @@ ActiveRecord::Schema.define(version: 20140430112835) do
 
   create_table "match_players", force: true do |t|
     t.integer  "passing_yards",       default: 0
-    t.integer  "passing_td",          default: 0
-    t.integer  "passing_twopt",       default: 0
+    t.integer  "passing_tds",         default: 0
+    t.integer  "passing_twoptm",      default: 0
     t.integer  "rushing_yards",       default: 0
-    t.integer  "rushing_td",          default: 0
-    t.integer  "rushing_twopt",       default: 0
+    t.integer  "rushing_tds",         default: 0
+    t.integer  "rushing_twoptm",      default: 0
     t.integer  "receiving_yards",     default: 0
-    t.integer  "receiving_td",        default: 0
-    t.integer  "receiving_twopt",     default: 0
+    t.integer  "receiving_tds",       default: 0
+    t.integer  "receiving_twoptm",    default: 0
     t.integer  "offensive_sack",      default: 0
     t.integer  "offensive_safety",    default: 0
     t.integer  "fumble",              default: 0
