@@ -18,10 +18,10 @@ module WithGameWeek
       item.game_week.number == game_week_number
     end
     if candidates.empty?
-      fail IllegalStateError, "No game week team found for id #{id}, game week #{game_week_number}"
+      fail IllegalStateError, "Nothing found for id #{id}, game week #{game_week_number}"
     end
     if candidates.size > 1
-      fail IllegalStateError, "#{candidates.size} game week teams found with user_id #{id}, game week #{game_week_number}"
+      fail IllegalStateError, "#{candidates.size} found with id #{id}, game week #{game_week_number}"
     end
     candidates.first
   end

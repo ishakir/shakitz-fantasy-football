@@ -117,12 +117,14 @@ nineteen:
   
 twenty:
   id: 20
+  nfl_id: 20
   name: Desean Foshawn
   nfl_team_id: 3
   nfl_player_type_id: 2
 
 twenty_one:
   id: 21
+  nfl_id: 21
   name: Desean Foshawn
   nfl_team_id: 3
   nfl_player_type_id: 2

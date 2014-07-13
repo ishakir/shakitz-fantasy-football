@@ -1,0 +1,13 @@
+<h1><%= @team.name %></h1>
+<table class="table">
+  <tr>
+    <td>Name</td>
+    <td>Position</td>
+  </tr>  
+  <% @team.nfl_players.each do |nfl_player| %>
+    <tr>
+      <td><%= link_to nfl_player.name, controller: :nfl_player, action: :show, id: nfl_player.id %></td>
+      <td><%= nfl_player.nfl_player_type.position_type %></td>
+    </tr>
+  <% end %>
+</table>

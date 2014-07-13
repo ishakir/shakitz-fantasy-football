@@ -1,0 +1,17 @@
+<h1> <%= @match_player.nfl_player.name %></h1>
+<h3>Game Week <%= @match_player.game_week.number %></h3>
+<h3><%= @match_player.points %></h3>
+<table class="table">
+  <tr>
+    <td>Attribute</td>
+    <td>Value</td>
+  </tr>  
+  <% @match_player.attributes.keys.each do |key| %>
+    <% if key != "id" && key != "game_week_id" && key != "created_at" && key != "updated_at" && key != "nfl_player_id" %>
+    <tr>
+      <td><%= key %></td>
+      <td><%= @match_player.attributes[key] %></td>
+    </tr>
+    <% end %>
+  <% end %>
+</table>

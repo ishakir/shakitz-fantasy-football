@@ -1,0 +1,10 @@
+<table class="table">
+  <tr>
+    <td>Team</td>
+  </tr>  
+  <% @teams.each do |team| %>
+    <tr>
+      <td><%= link_to team.name, controller: :nfl_team, action: :show, id: team.id %></td>
+    </tr>
+  <% end %>
+</table>

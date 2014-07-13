@@ -1,0 +1,13 @@
+<h1> <%= @player.name %> - <%= @player.nfl_team.name %> - <%= @player.nfl_player_type.position_type %> </h1>
+<table class="table">
+  <tr>
+    <td>Game Week</td>
+    <td>Points</td>
+  </tr>  
+  <% @player.match_players.each do |match_player| %>
+    <tr>
+      <td><%= link_to match_player.game_week.number, controller: :nfl_player, action: :on_game_week, id: @player.id, game_week: match_player.game_week.number %></td>
+      <td><%= match_player.points %></td>
+    </tr>
+  <% end %>
+</table>

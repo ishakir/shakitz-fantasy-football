@@ -31,6 +31,12 @@ Footbawwl::Application.routes.draw do
   # All the routes for nfl player (haven't been checked as part of audit)
   get "nfl_player/unpicked"
   get "nfl_player/show/:id" => "nfl_player#show", as: :showplayer
+
+  # Routes added as part of demoing the stats update stuff
+  get "nfl_team" => "nfl_team#all"
+  get "nfl_team/:id" => "nfl_team#show"     
+  get "nfl_player/:id" => "nfl_player#show" 
+  get "nfl_player/:id/game_week/:game_week" => "nfl_player#on_game_week"
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

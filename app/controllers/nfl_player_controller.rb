@@ -24,6 +24,13 @@ class NflPlayerController < ApplicationController
     @player = NflPlayer.find(id)
   end
 
+  def on_game_week
+    id = params[:id]
+    game_week = params[:game_week]
+    player = NflPlayer.find(id)
+    @match_player = player.player_for_game_week(game_week)
+  end
+
   def update_stats
     # Setup the messages to return
     message = ApplicationController::ResponseMessage.new
@@ -43,6 +50,16 @@ class NflPlayerController < ApplicationController
 
     found_player = player_finder.player
     if found_player == :none
+      # TODO: remove this! Currently left in to do
+      # team = NflTeam.where(name: id_json['team']).first
+      # position_type = NflPlayerType.where(position_type: id_json['type']).first
+      # found_player = NflPlayer.new(name: id_json['name'], nfl_team: team, nfl_player_type: position_type)
+      # found_player.nfl_id = id_json['id']
+      # found_player.save!
+      # 1.upto(17) do |game_week|
+      #   MatchPlayer.create!(nfl_player: found_player, game_week: GameWeek.where(number: game_week).first)
+      # end
+      # message.add_message(0, "Added player (demo mode)")
       player_finder.add_no_player_found_message(message)
       return respond(message, :not_found)
     elsif found_player == :too_many

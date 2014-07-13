@@ -20,9 +20,9 @@ module PlayerFinder
 
     def player
       return @player unless @player.nil?
-      @player = NflPlayer.find(@id)
-    rescue ActiveRecord::RecordNotFound
-      :none
+      players = NflPlayer.where(nfl_id: @id)
+      return :none if players.empty?
+      @player = players.first
     end
 
     private

@@ -13,6 +13,9 @@ class NflPlayer < ActiveRecord::Base
   validates :nfl_player_type,
             presence: true
 
+  validates :nfl_id,
+            uniqueness: { allow_blank: true, allow_nil: true }
+
   def player_for_game_week(game_week)
     game_week_as_number = game_week.to_i
     for_game_week(match_players, game_week_as_number)
