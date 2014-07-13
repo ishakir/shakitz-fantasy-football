@@ -1,21 +1,20 @@
 # -*- encoding : utf-8 -*-
 class UserController < ApplicationController
   USER_ID_KEY = :user_id
-  USER_NAME_KEY = :user_name
+  USER_NAME_KEY = :name
   TEAM_NAME_KEY = :team_name
   PASSWORD_KEY = :password
+  PASSWORD_CONFIRMATION_KEY = :password_confirmation
   GAME_WEEK_KEY = :game_week
 
   PLAYING_PLAYER_ID_KEY = :playing_player_id
   BENCHED_PLAYER_ID_KEY = :benched_player_id
 
   def create
-    validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY], params)
+    validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY, PASSWORD_CONFIRMATION_KEY], params)
 
-    # user = User.new
-    # update_user_entity(user, params)
-    @user = User.new(params[:user])
-    if @user.save
+    user = User.new
+    if update_user_entity(user, params)
       redirect_to action: :home, notice: "Signed up!"
     else
       render "create"
