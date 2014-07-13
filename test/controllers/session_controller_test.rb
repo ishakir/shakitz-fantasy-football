@@ -4,5 +4,4 @@ class SessionControllerTest < ActionController::TestCase
   test "should get new" do
     #
   end
-
 end

@@ -54,7 +54,7 @@ class NflPlayerController < ApplicationController
       return respond(message, :not_found)
     end
 
-    # If there are any inconsistancies, flag them 
+    # If there are any inconsistancies, flag them
     player_finder.add_inconsistancy_messages(message)
     match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
     update_stats(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
@@ -63,7 +63,6 @@ class NflPlayerController < ApplicationController
   end
 
   def update_stats
-
   end
 
   def params_validated?(params)

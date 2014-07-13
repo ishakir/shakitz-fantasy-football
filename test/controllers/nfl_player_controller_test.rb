@@ -188,19 +188,19 @@ class NflPlayerControllerTest < ActionController::TestCase
     match_player = NflPlayer.find(21).player_for_game_week(1)
     check_stats(
       match_player,
-      {
-        passing_yards: 500,
-        passing_td: 7,
-        passing_twopt: 1,
-        rushing_yards: 21,
-        rushing_td: 1,
-        rushing_twopt: 3,
-        recieving_yards: 87,
-        recieving_td: 3,
-        recieving_twopt: 1,
-        field_goals_kicked: 7,
-        extra_points_kicked: 20
-      }
+
+      passing_yards: 500,
+      passing_td: 7,
+      passing_twopt: 1,
+      rushing_yards: 21,
+      rushing_td: 1,
+      rushing_twopt: 3,
+      recieving_yards: 87,
+      recieving_td: 3,
+      recieving_twopt: 1,
+      field_goals_kicked: 7,
+      extra_points_kicked: 20
+
     )
   end
 end
