@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class NflTeamController < ApplicationController
   def all
     @teams = NflTeam.all
