@@ -15,6 +15,6 @@ class GameWeek < ActiveRecord::Base
     return unless number.present?
     validate_game_week_number(number)
   rescue ArgumentError
-    errors.add(:number, 'is not between 1 and 17 inclusive')
+    errors.add(:number, 'is not between 1 and #{Settings.number_of_gameweeks} inclusive')
   end
 end

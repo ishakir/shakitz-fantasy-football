@@ -27,6 +27,11 @@ Footbawwl::Application.routes.draw do
   
   # Route for inputting stats
   post "nfl_player/stats/:game_week" => "nfl_player#update_stats"
+
+  # Routes for handling transfer requests
+  post "transfer_request" => "transfer_request#create"
+  post "transfer_request/:id" => "transfer_request#resolve"
+
   
   # All the routes for nfl player (haven't been checked as part of audit)
   get "nfl_player/unpicked"

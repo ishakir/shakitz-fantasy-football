@@ -6,60 +6,19 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-NflTeam.create!(name: "SD")
-NflTeam.create!(name: "HOU")
-NflTeam.create!(name: "WAS")
-NflTeam.create!(name: "PHI")
-NflTeam.create!(name: "NYG")
-NflTeam.create!(name: "DAL")
-NflTeam.create!(name: "SF")
-NflTeam.create!(name: "GB")
-NflTeam.create!(name: "STL")
-NflTeam.create!(name: "ARI")
-NflTeam.create!(name: "TEN")
-NflTeam.create!(name: "PIT")
-NflTeam.create!(name: "ATL")
-NflTeam.create!(name: "NO")
-NflTeam.create!(name: "TB")
-NflTeam.create!(name: "NYJ")
-NflTeam.create!(name: "KC")
-NflTeam.create!(name: "JAC")
-NflTeam.create!(name: "OAK")
-NflTeam.create!(name: "IND")
-NflTeam.create!(name: "MIN")
-NflTeam.create!(name: "DET")
-NflTeam.create!(name: "CLE")
-NflTeam.create!(name: "MIA")
-NflTeam.create!(name: "CHI")
-NflTeam.create!(name: "CIN")
-NflTeam.create!(name: "DEN")
-NflTeam.create!(name: "BAL")
-NflTeam.create!(name: "BUF")
-NflTeam.create!(name: "NE")
-NflTeam.create!(name: "SEA")
-NflTeam.create!(name: "CAR")
+[
+  "SD" , "HOU", "WAS", "PHI", "NYG", "DAL", "SF" , "GB" ,
+  "STL", "ARI", "TEN", "PIT", "ATL", "NO" , "TB" , "NYJ",
+  "KC" , "JAC", "OAK", "IND", "MIN", "DET", "CLE", "MIA",
+  "CHI", "CIN", "DEN", "BAL", "BUF", "NE" , "SEA", "CAR"
+].each do |team|
+  NflTeam.create!(name: team)
+end
 
-NflPlayerType.create!(position_type: "QB")
-NflPlayerType.create!(position_type: "WR")
-NflPlayerType.create!(position_type: "TE")
-NflPlayerType.create!(position_type: "RB")
-NflPlayerType.create!(position_type: "K")
-NflPlayerType.create!(position_type: "D")
+["QB", "WR", "TE", "RB", "K", "D"].each do |position|
+  NflPlayerType.create!(position_type: position)
+end
 
-GameWeek.create!(number: 1)
-GameWeek.create!(number: 2)
-GameWeek.create!(number: 3)
-GameWeek.create!(number: 4)
-GameWeek.create!(number: 5)
-GameWeek.create!(number: 6)
-GameWeek.create!(number: 7)
-GameWeek.create!(number: 8)
-GameWeek.create!(number: 9)
-GameWeek.create!(number: 10)
-GameWeek.create!(number: 11)
-GameWeek.create!(number: 12)
-GameWeek.create!(number: 13)
-GameWeek.create!(number: 14)
-GameWeek.create!(number: 15)
-GameWeek.create!(number: 16)
-GameWeek.create!(number: 17)
+1.upto(Settings.number_of_gameweeks) do |number|
+  GameWeek.create!(number: number)
+end

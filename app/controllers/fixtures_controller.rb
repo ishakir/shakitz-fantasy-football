@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 class FixturesController < ApplicationController
+  NUMBER_OF_GAMEWEEKS = Settings.number_of_gameweeks
+
   def generate
     users = User.all.map do |user|
       user.id
@@ -19,12 +21,12 @@ class FixturesController < ApplicationController
           gt: ["7:00PM"]         # everyone can fit into "one gameweek"
         )
       ],
-      cycles: (17.0 / cycle_length).floor # Enough cycles to fit into < 17 game weeks
+      cycles: (NUMBER_OF_GAMEWEEKS / cycle_length).floor # Enough cycles to fit into < NUMBER_OF_GAMEWEEKS game weeks
     ).generate                                                                # Will need to re-think this if no-users > 8
   end
 
   def save_fixture_schedule(schedule)
-    number_difference = 17 - schedule.rounds[0].size
+    number_difference = NUMBER_OF_GAMEWEEKS - schedule.rounds[0].size
     schedule.rounds[0].each.with_index(1) do |round, i|
       save_game_week_round(round, i + number_difference)
     end

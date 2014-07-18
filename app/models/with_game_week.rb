@@ -2,7 +2,7 @@
 module WithGameWeek
   def validate_game_week_number(game_week_number)
     fail ArgumentError, "Game week number must be greater than 1, not #{game_week_number}" if game_week_number < 1
-    fail ArgumentError, "Game week number must be less than 17, not #{game_week_number}" if game_week_number > 17
+    fail ArgumentError, "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}" if game_week_number > Settings.number_of_gameweeks
   end
 
   def up_to_game_week(list, game_week_number)
