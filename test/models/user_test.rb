@@ -236,4 +236,9 @@ class UserTest < ActiveSupport::TestCase
     user.name = 'Imran Wright'
     assert !user.save
   end
+
+  test 'can get current game week team' do
+    user = User.find(1)
+    assert_equal 1, user.team_for_current_game_week.game_week.number
+  end
 end

@@ -135,4 +135,9 @@ class NflPlayerTest < ActiveSupport::TestCase
     player = NflPlayer.find(1)
     assert_equal 1, player.player_for_game_week("1").game_week.number
   end
+
+  test "can get current match player" do
+    nfl_player = NflPlayer.find(1)
+    assert_equal 1, nfl_player.player_for_current_game_week.game_week.number
+  end
 end

@@ -69,6 +69,10 @@ class User < ActiveRecord::Base
     losses.size
   end
 
+  def team_for_current_game_week
+    for_current_game_week(game_week_teams)
+  end
+
   def teams_up_to_game_week(game_week_number)
     up_to_game_week(game_week_teams, game_week_number)
   end

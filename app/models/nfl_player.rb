@@ -20,4 +20,8 @@ class NflPlayer < ActiveRecord::Base
     game_week_as_number = game_week.to_i
     for_game_week(match_players, game_week_as_number)
   end
+
+  def player_for_current_game_week
+    for_current_game_week(match_players)
+  end
 end
