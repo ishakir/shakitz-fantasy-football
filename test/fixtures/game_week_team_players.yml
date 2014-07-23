@@ -55,3 +55,16 @@ gwteamplayer_out_<%= n + 44 %>:
   match_player_id: <%= n + 9 %>
   playing: true
 <% end %>
+
+# User three has one player in his game week team
+staffpick_week_one_user_three:
+  id: 55
+  game_week_team_id: 35
+  match_player_id: 2
+  playing: true
+
+imranson_week_one_user_four:
+  id: 56
+  game_week_team_id: 52
+  match_player_id: 4
+  playing: false

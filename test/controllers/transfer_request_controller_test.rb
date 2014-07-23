@@ -52,4 +52,62 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_equal 3, transfer_request.offered_player.id
     assert_equal 4, transfer_request.target_player.id
   end
+
+  test "resolve should reject if action_typ isn't specified" do
+    post :resolve, id: 1
+    assert_response :unprocessable_entity
+  end
+
+  test "resolve should reject if action_typ is invalid" do
+    post :resolve, id: 1, action_type: "shpoople"
+    assert_response :unprocessable_entity
+  end
+
+  test "resolve should reject if id is wrong" do
+    post :resolve, id: 50_000, action_type: "accept"
+    assert_response :not_found
+  end
+
+  test "nothing changes if it's rejected" do
+    post :resolve, id: 2, action_type: "reject"
+    assert_response :success
+
+    game_week_team_player_one = GameWeekTeamPlayer.find(55)
+    game_week_team_player_two = GameWeekTeamPlayer.find(56)
+
+    assert_equal 3, game_week_team_player_one.game_week_team.user.id
+    assert_equal 4, game_week_team_player_two.game_week_team.user.id
+  end
+
+  test "users are swapped if it's accepted" do
+    post :resolve, id: 2, action_type: "accept"
+    assert_response :success
+
+    game_week_team_player_one = GameWeekTeamPlayer.find(55)
+    game_week_team_player_two = GameWeekTeamPlayer.find(56)
+
+    assert_equal 4, game_week_team_player_one.game_week_team.user.id
+    assert_equal 3, game_week_team_player_two.game_week_team.user.id
+  end
+
+  test "transfer request is deleted after accept" do
+    post :resolve, id: 2, action_type: "accept"
+    assert_response :success
+
+    assert_raise ActiveRecord::RecordNotFound do
+      TransferRequest.find(2)
+    end
+  end
+
+  test "transfer request is deleted after reject" do
+    post :resolve, id: 2, action_type: "reject"
+    assert_response :success
+
+    assert_raise ActiveRecord::RecordNotFound do
+      TransferRequest.find(2)
+    end
+  end
+
+  # Test that playing / not playing is switched between players
+  # Check any other potential trades are cancelled
 end

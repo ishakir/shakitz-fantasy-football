@@ -6,3 +6,10 @@ one:
   target_user_id: 2
   offered_player_id: 1 
   target_player_id: 2
+
+two:
+  id: 2
+  request_user_id: 3
+  target_user_id: 4
+  offered_player_id: 2
+  target_player_id: 4

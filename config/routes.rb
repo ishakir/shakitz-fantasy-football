@@ -32,7 +32,6 @@ Footbawwl::Application.routes.draw do
   post "transfer_request" => "transfer_request#create"
   post "transfer_request/:id" => "transfer_request#resolve"
 
-  
   # All the routes for nfl player (haven't been checked as part of audit)
   get "nfl_player/unpicked"
   get "nfl_player/show/:id" => "nfl_player#show", as: :showplayer
