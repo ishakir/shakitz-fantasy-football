@@ -12,7 +12,6 @@ class UserController < ApplicationController
 
   def create
     validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY, PASSWORD_CONFIRMATION_KEY], params[:user])
-
     user = User.new
     if update_user_entity(user, params[:user])
       redirect_to action: :home, notice: "Signed up!"
