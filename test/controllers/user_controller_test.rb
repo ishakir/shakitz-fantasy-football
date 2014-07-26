@@ -7,7 +7,7 @@ class UserControllerTest < ActionController::TestCase
 
   # CREATE
   test 'create redirects to show' do
-    post :create, {"user" => {name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword', password_confirmation: 'dummyPassword'}}
+    post :create, "user" => { name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword', password_confirmation: 'dummyPassword' }
     assert_redirected_to controller: :user, action: :home, notice: "Signed up!"
   end
 
@@ -16,7 +16,7 @@ class UserControllerTest < ActionController::TestCase
     team = 'I love Stafford'
     pw = 'Lions4Life'
 
-    post :create, {"user" => {name: new_name, team_name: team, password: pw, password_confirmation: pw}}
+    post :create, "user" => { name: new_name, team_name: team, password: pw, password_confirmation: pw }
 
     assert_equal new_name, User.last.name, "Error user wasn't created by controller method!"
   end
@@ -24,24 +24,24 @@ class UserControllerTest < ActionController::TestCase
   test 'should fail to create new user with null name' do
     nullname = ''
 
-    post :create, {"user" => {name: nullname, team_name: 'Dummy Team Name'}}
+    post :create, "user" => { name: nullname, team_name: 'Dummy Team Name' }
     assert_response(:unprocessable_entity)
   end
 
   test 'should fail to create new user with null team name' do
     nullname = ''
 
-    post :create, {"user" => {user_name: 'Dummy User', team_name: nullname}}
+    post :create, "user" => { user_name: 'Dummy User', team_name: nullname }
     assert_response(:unprocessable_entity)
   end
 
   test 'should fail to create new user without team name' do
-    post :create, {"user" => {user_name: 'Dummy User'}}
+    post :create, "user" => { user_name: 'Dummy User' }
     assert_response(:unprocessable_entity)
   end
 
   test 'should fail to create new user without a user name' do
-    post :create, {"user" => {team_name: 'Dummy Team Name'}}
+    post :create, "user" => { team_name: 'Dummy Team Name' }
     assert_response(:unprocessable_entity)
   end
 
