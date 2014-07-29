@@ -7,7 +7,6 @@ Footbawwl::Application.routes.draw do
   get "log_out" => "sessions#destroy", :as => "log_out"
   get "log_in" => "sessions#new", :as => "log_in"
   get "sign_up" => "user#create", :as => "sign_up"
-  
   post "fixtures/generate"
   
   # All the routes for the user display (League Table)
