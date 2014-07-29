@@ -21,6 +21,17 @@ class UserControllerTest < ActionController::TestCase
     assert_equal new_name, User.last.name, "Error user wasn't created by controller method!"
   end
 
+  test 'should fail to create new user when passwords dont match' do
+    new_name = 'Eric Ebron'
+    team = 'Packers Wont Win'
+    pw = 'SeaHawksWho'
+    pw_confirm = 'SomethingDifferent99!'
+
+    post :create, "user" => { name: new_name, team_name: team, password: pw, password_confirmation: pw_confirm }
+
+    assert_response(:unprocessable_entity)
+  end
+
   test 'should fail to create new user with null name' do
     nullname = ''
 
