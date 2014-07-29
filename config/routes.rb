@@ -25,6 +25,9 @@ Footbawwl::Application.routes.draw do
   # Route for generating fixtures
   post "fixtures/generate"
   
+  # Route for inputting players
+  post "nfl_player" => "nfl_player#create"
+
   # Route for inputting stats
   post "nfl_player/stats/:game_week" => "nfl_player#update_stats"
 

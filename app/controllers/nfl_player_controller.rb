@@ -8,6 +8,10 @@ class NflPlayerController < ApplicationController
   GAME_WEEK_KEY   = :game_week
   STATS_KEY       = :stats
 
+  NAME_KEY = :name
+  TEAM_KEY = :team
+  TYPE_KEY = :type
+
   def unpicked
     @players = NflPlayer.all
     picked_players = GameWeekTeamPlayer.all
@@ -22,6 +26,54 @@ class NflPlayerController < ApplicationController
   def show
     id = params[:id]
     @player = NflPlayer.find(id)
+  end
+
+  def create
+    validate_all_parameters([TEAM_KEY, TYPE_KEY], params)
+
+    type = params[TYPE_KEY]
+
+    create_non_defence_player(params) if type != "D"
+    create_defence_player(params) if type == "D"
+  end
+
+  def create_defence_player(params)
+    fail ArgumentError, "Can't create defensive player with name" if params.key?(NAME_KEY)
+
+    team = find_team_from_name(params[TEAM_KEY])
+    type = find_type_from_name(params[TYPE_KEY])
+
+    NflPlayer.create!(
+      nfl_team: team,
+      nfl_player_type: type
+    )
+  end
+
+  def create_non_defence_player(params)
+    validate_all_parameters([NAME_KEY], params)
+
+    team = find_team_from_name(params[TEAM_KEY])
+    type = find_type_from_name(params[TYPE_KEY])
+
+    name = params[NAME_KEY]
+
+    NflPlayer.create!(
+      name: name,
+      nfl_team: team,
+      nfl_player_type: type
+    )
+  end
+
+  def find_team_from_name(team_name)
+    teams = NflTeam.where(name: team_name)
+    fail ActiveRecord::RecordNotFound if teams.size != 1
+    teams.first
+  end
+
+  def find_type_from_name(type)
+    types = NflPlayerType.where(position_type: type)
+    fail ActiveRecord::RecordNotFound if types.size != 1
+    types.first
   end
 
   def on_game_week

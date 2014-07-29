@@ -61,18 +61,24 @@ class NflPlayerTest < ActiveSupport::TestCase
     end
   end
 
-  test "can't save NflPlayer without a name" do
+  test "can't save NflPlayer without a name if type isn't D" do
     player = NflPlayer.new
     player.nfl_player_type = NflPlayerType.find(1)
-    assert !player.save, 'Saved without a name!'
+    assert !player.save, 'Saved without a name and type non-D!'
   end
 
-  test "can't save NflPlayer with a string that's the empty name" do
+  test "can save an NflPlayer without a name if type is D" do
+    player = NflPlayer.new
+    player.nfl_player_type = NflPlayerType.find(6)
+    assert player.save, "Couldn't save without a name and type D"
+  end
+
+  test "can't save NflPlayer with a string that's the empty name if type isn't D" do
     player = NflPlayer.new
     player.name = ''
     player.nfl_player_type = NflPlayerType.find(1)
 
-    assert !player.save, 'Saved with name as the empty string!'
+    assert !player.save, 'Saved with name as the empty string and type non-D!'
   end
 
   test "can't create NflPlayer with a string that's the empty string" do
