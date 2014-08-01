@@ -75,6 +75,32 @@ class UserController < ApplicationController
     user.save!
   end
 
+  def declare_roster
+    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
+    payload = validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
+    if payload[:status] == 400
+      render json: payload
+    else
+      # First find the game_week_team
+      user = User.find(params[USER_ID_KEY])
+      game_week_team = user.team_for_game_week(params[GAME_WEEK_KEY])
+      params[PLAYING_PLAYER_ID_KEY].each do |p|
+        # Find the match_player
+        player_gwt = GameWeekTeamPlayer.find_unique_with(game_week_team, MatchPlayer.find(p))
+        player_gwt.playing = true
+        player_gwt.save!
+      end
+
+      params[BENCHED_PLAYER_ID_KEY].each do |p|
+        # Find the match_player
+        player_gwt = GameWeekTeamPlayer.find_unique_with(game_week_team, MatchPlayer.find(p))
+        player_gwt.playing = false
+        player_gwt.save!
+      end
+      render json: payload
+    end
+  end
+
   def swap_players
     validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
 
@@ -99,5 +125,15 @@ class UserController < ApplicationController
 
     benched_gwtp.playing = true
     benched_gwtp.save!
+  end
+
+  def validate_id_length(playing, benched)
+    if playing.length != 10
+      return { response: "Invalid number of active players", status: 400 }
+    end
+    if benched.length != 8
+      return { response: "Invalid number of benched players", status: 400 }
+    end
+    { response: "OK", status: 200 }
   end
 end

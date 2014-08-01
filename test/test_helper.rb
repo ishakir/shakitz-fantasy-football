@@ -188,4 +188,8 @@ class ActiveSupport::TestCase
       assert_equal stats[key], match_player.read_attribute(key), "Stat #{key} is incorrect"
     end
   end
+
+  def json_response
+    ActiveSupport::JSON.decode @response.body
+  end
 end

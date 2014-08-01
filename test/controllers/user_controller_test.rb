@@ -4,6 +4,8 @@ require 'test_helper'
 class UserControllerTest < ActionController::TestCase
   # Future tests: Successful auth, correct response, appropriate message displayed
   default_id = 1
+  valid_active_player = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  valid_benched_player = [11, 12, 13, 14, 15, 16, 17, 18]
 
   # CREATE
   test 'create redirects to show' do
@@ -256,6 +258,53 @@ class UserControllerTest < ActionController::TestCase
   test "can't swap players if both benched" do
     post :swap_players, user_id: 1, game_week: 1, playing_player_id: 11, benched_player_id: 12
     assert_response :unprocessable_entity
+  end
+
+  test "can't update roster if user_id doesnt exist" do
+    post :declare_roster, user_id: 40, game_week: 1, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
+    assert_response :not_found
+  end
+
+  test "can't update roster if game_week doesn't exist" do
+    post :declare_roster, user_id: 1, game_week: 999, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
+    assert_response :unprocessable_entity
+  end
+
+  test "can't update roster if active player length is below 10" do
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: [1, 2, 3], benched_player_id: valid_benched_player
+    response_json = ActiveSupport::JSON.decode @response.body
+    assert_equal("Invalid number of active players", response_json['response'])
+  end
+
+  test "can't update roster if active player length is above 10" do
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], benched_player_id: valid_benched_player
+    response_json = ActiveSupport::JSON.decode @response.body
+    assert_equal("Invalid number of active players", response_json['response'])
+  end
+
+  test "can't update roster if benched player length is below 10" do
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: valid_active_player, benched_player_id: [1, 2, 3, 4, 5]
+    response_json = ActiveSupport::JSON.decode @response.body
+    assert_equal("Invalid number of benched players", response_json['response'])
+  end
+
+  test "can't update roster if benched player length is above 10" do
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: valid_active_player, benched_player_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    response_json = ActiveSupport::JSON.decode @response.body
+    assert_equal("Invalid number of benched players", response_json['response'])
+  end
+
+  test "we can update roster with correct parameters" do
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
+    assert_response :success
+  end
+
+  test "declaring new roster swaps players" do
+    player_before = GameWeekTeamPlayer.where(match_player_id: 1, game_week_team_id: 1).first
+    assert player_before.playing
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: [11, 2, 3, 4, 5, 6, 7, 8, 9, 10], benched_player_id: [1, 12, 13, 14, 15, 16, 17, 18]
+    player_after = GameWeekTeamPlayer.where(match_player_id: 1, game_week_team_id: 1).first
+    assert !player_after.playing
   end
 
   test "we get a success response if parameters are correct" do

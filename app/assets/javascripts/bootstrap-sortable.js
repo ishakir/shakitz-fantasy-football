@@ -34,7 +34,6 @@
             });
             $this.find('td').each(function () {
                 var $this = $(this);
-                	console.log("Hello");
                 if ($this.attr('data-dateformat') != undefined && momentJsAvailable) {
                     $this.attr('data-value', moment($this.text(), $this.attr('data-dateformat')).format('YYYY/MM/DD/HH/mm/ss'));
                 }

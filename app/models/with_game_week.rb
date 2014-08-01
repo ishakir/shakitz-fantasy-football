@@ -22,7 +22,7 @@ module WithGameWeek
       item.game_week.number == game_week_number
     end
     if candidates.empty?
-      fail IllegalStateError, "Nothing found for id #{id}, game week #{game_week_number}"
+      fail ActiveRecord::RecordNotFound, "Nothing found for id #{id}, game week #{game_week_number}"
     end
     if candidates.size > 1
       fail IllegalStateError, "#{candidates.size} found with id #{id}, game week #{game_week_number}"

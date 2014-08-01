@@ -23,6 +23,19 @@
   
 }
 
+.first-select{
+  background:#daf6b5;
+}
+
+.second-select{
+  background:#2d95b7;
+}
+
+.swap-player-btn{
+  margin-top:1.5em;
+  float:right;
+}
+
 .player-info{
   color:grey;
   font-size:90%;
@@ -36,6 +49,12 @@
   margin-bottom:2em;
 }
 
+.week-points-label{
+  display:block;
+  height: 100%;
+  margin: 0.8em;
+  color:#777;
+}
 #left-Box{
   float:left;
   width:45%;

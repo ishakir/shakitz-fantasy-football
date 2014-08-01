@@ -18,6 +18,8 @@ Footbawwl::Application.routes.draw do
   post "user/update" => "user#update"
   delete "user/delete" => "user#delete"
   
+  post "user/declare_roster" => "user#declare_roster"
+  
   get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
   post "/user/:user_id/game_week/:game_week/swap" => "user#swap_players"
   
