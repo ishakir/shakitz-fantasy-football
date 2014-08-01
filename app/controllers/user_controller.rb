@@ -63,9 +63,8 @@ class UserController < ApplicationController
 
   # Subroutines
   def validate_password(params)
-    if params[PASSWORD_KEY] != params[PASSWORD_CONFIRMATION_KEY]
-      fail ArgumentError, "Password and password confirmation do not match"
-    end
+    return if params[PASSWORD_KEY] == params[PASSWORD_CONFIRMATION_KEY]
+    fail ArgumentError, "Password and password confirmation do not match"
   end
 
   def update_user_entity(user, params)

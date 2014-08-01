@@ -70,6 +70,60 @@ class NflPlayerControllerTest < ActionController::TestCase
   # end
 
   ##################################
+  # Tests for create
+  ##################################
+  test "should reject if no type attribute" do
+    post :create, name: "A name", team: "DETROIT!"
+    assert_response :unprocessable_entity
+  end
+
+  test "should reject if no team attribute" do
+    post :create, name: "A name", type: "K"
+    assert_response :unprocessable_entity
+  end
+
+  test "should reject if team doesn't exist" do
+    post :create, name: "A name", team: "XXX", type: "K"
+    assert_response :not_found
+  end
+
+  test "should reject if type doesn't exist" do
+    post :create, name: "A name", type: "NNN", team: "DETROIT!"
+    assert_response :not_found
+  end
+
+  test "should reject if name isn't specified and type is not D" do
+    post :create, type: "K", team: "DETROIT!"
+    assert_response :unprocessable_entity
+  end
+
+  test "should reject if name is specified and type is D" do
+    post :create, name: "A name", team: "DETROIT!", type: "D"
+    assert_response :unprocessable_entity
+  end
+
+  test "should create a non-D player" do
+    post :create, name: "A name", team: "DETROIT!", type: "K"
+    assert_response :success
+
+    nfl_player = NflPlayer.last
+
+    assert_equal "A name", nfl_player.name
+    assert_equal "DETROIT!", nfl_player.nfl_team.name
+    assert_equal "K", nfl_player.nfl_player_type.position_type
+  end
+
+  test "should create a D player" do
+    post :create, team: "DETROIT!", type: "D"
+    assert_response :success
+
+    nfl_player = NflPlayer.last
+
+    assert_equal "DETROIT!", nfl_player.nfl_team.name
+    assert_equal "D", nfl_player.nfl_player_type.position_type
+  end
+
+  ##################################
   # Tests for update_stats
   ##################################
   test "should reject no player attribute" do
