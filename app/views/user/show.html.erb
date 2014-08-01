@@ -1,10 +1,54 @@
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
-			<h1 align="center"> <%= @user.name %> - <%= @user.team_name %> </h1>
-			<h2 align="center"> <%= @user.points %> Points</h2>
+			<h1 class="team-name"> <%= @user.name %> - <%= @user.team_name %> </h1>
+			<h2 class="team-points"> <%= @user.points %> Points</h2>
 		</div>
 	</div>
+	<div id="left-Box">
+		<h4>Active Roster</h3>
+		<table class="table table-hover table-condensed active-roster">
+			<tr>
+				<th>Player</th>
+				<th>Points</th>
+			</tr>
+			<% @user.team_for_game_week(1).match_players_playing.each do |match_player| %>
+			<tr id="<%= match_player.id %>Row">
+				<td id="<%= match_player.id %>">
+					<span class="player-name"><%= match_player.nfl_player.name %></span><br />
+					<span class="player-info">
+						<%= match_player.nfl_player.nfl_player_type.position_type %> - 
+						<%= match_player.nfl_player.nfl_team.name %>
+					</span>
+				</td>
+				<td><%= match_player.points %></td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+	<div id="right-Box">
+		<h4>Bench</h3>
+		<table id="benchedTable" class="table table-hover table-condensed table-striped benched">
+			<tr>
+				<th>Player</th>
+				<th>Points</th>
+			</tr>
+			<% @user.team_for_game_week(1).match_players_benched.each do |match_player| %>
+			<tr id="<%= match_player.id %>Row">
+				<td id="<%= match_player.id %>">
+					<span class="player-name"><%= match_player.nfl_player.name %></span><br />
+					<span class="player-info">
+						<%= match_player.nfl_player.nfl_player_type.position_type %> - 
+						<%= match_player.nfl_player.nfl_team.name %>
+					</span>
+				</td>
+				<td><%= match_player.points %></td>
+			</tr>
+			<% end %>
+		</table>
+		<button class="btn btn-default">Save changes</button>
+	</div>
+	<div style="clear:both;"></div>
 	<div class="row clearfix">
 		<div class="col-md-6 column">
 			<div class="row clearfix">

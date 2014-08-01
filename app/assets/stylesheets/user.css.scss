@@ -17,3 +17,43 @@
 .fixture-label {
   margin-top:-1em;
 }
+
+.player-name{
+  font-size:110%;
+  
+}
+
+.player-info{
+  color:grey;
+  font-size:90%;
+}
+
+.team-name{
+  margin-left:1.5em;
+}
+.team-points{
+  margin-left:3em;
+  margin-bottom:2em;
+}
+
+#left-Box{
+  float:left;
+  width:45%;
+  margin-bottom:3em;
+}
+
+#right-Box{
+  float:right;
+  width:45%;
+  margin-bottom:3em;
+}
+
+.active-roster{
+  border-right: 2px solid #eee;
+  border-left: 2px solid #eee;
+}
+
+.benched{
+  border-right: 2px solid #eee;
+  border-left: 2px solid #eee;
+}
