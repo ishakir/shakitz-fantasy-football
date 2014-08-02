@@ -14,7 +14,7 @@ class UserController < ApplicationController
     validate_password(params[:user])
     validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY, PASSWORD_CONFIRMATION_KEY], params[:user])
     user = User.new
-    if update_user_entity(user, params[:user])
+    if update_user_entity(user, params[:user]) && create_first_game_week(user)
       redirect_to action: :home, notice: "Signed up!"
     else
       render "create"
@@ -80,6 +80,14 @@ class UserController < ApplicationController
     user.password = params[PASSWORD_KEY] if params.key?(PASSWORD_KEY)
 
     user.save!
+  end
+
+  def create_first_game_week(user)
+    game_week_team = GameWeekTeam.new
+    game_week_team.user = user
+    game_week_team.game_week = GameWeek.find_unique_with(1)
+
+    game_week_team.save!
   end
 
   def declare_roster

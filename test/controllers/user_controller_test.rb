@@ -9,8 +9,24 @@ class UserControllerTest < ActionController::TestCase
 
   # CREATE
   test 'create redirects to show' do
-    post :create, "user" => { name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword', password_confirmation: 'dummyPassword' }
+    post :create, user: { name: 'Dummy User Name', team_name: 'Dummy Team Name', password: 'dummyPassword', password_confirmation: 'dummyPassword' }
     assert_redirected_to controller: :user, action: :home, notice: "Signed up!"
+  end
+
+  test 'game week team is created when a user is created' do
+    post :create, user: { name: "NNNNNaaamee", team_name: "TTTTTeeeamm", password: "password", password_confirmation: "password" }
+    assert_response :found
+
+    user = User.last
+    assert_equal 1, user.game_week_teams.size
+  end
+
+  test 'game week team created has the correct game week' do
+    post :create, user: { name: "Oooh", team_name: "friend", password: "footbawwl_friend", password_confirmation: "footbawwl_friend" }
+    assert_response :found
+
+    user = User.last
+    assert_not_nil user.team_for_game_week(1)
   end
 
   test 'should create new user' do
@@ -18,7 +34,7 @@ class UserControllerTest < ActionController::TestCase
     team = 'I love Stafford'
     pw = 'Lions4Life'
 
-    post :create, "user" => { name: new_name, team_name: team, password: pw, password_confirmation: pw }
+    post :create, user: { name: new_name, team_name: team, password: pw, password_confirmation: pw }
 
     assert_equal new_name, User.last.name, "Error user wasn't created by controller method!"
   end
@@ -29,7 +45,7 @@ class UserControllerTest < ActionController::TestCase
     pw = 'SeaHawksWho'
     pw_confirm = 'SomethingDifferent99!'
 
-    post :create, "user" => { name: new_name, team_name: team, password: pw, password_confirmation: pw_confirm }
+    post :create, user: { name: new_name, team_name: team, password: pw, password_confirmation: pw_confirm }
 
     assert_response(:unprocessable_entity)
   end
@@ -37,24 +53,24 @@ class UserControllerTest < ActionController::TestCase
   test 'should fail to create new user with null name' do
     nullname = ''
 
-    post :create, "user" => { name: nullname, team_name: 'Dummy Team Name' }
+    post :create, user: { name: nullname, team_name: 'Dummy Team Name' }
     assert_response(:unprocessable_entity)
   end
 
   test 'should fail to create new user with null team name' do
     nullname = ''
 
-    post :create, "user" => { user_name: 'Dummy User', team_name: nullname }
+    post :create, user: { user_name: 'Dummy User', team_name: nullname }
     assert_response(:unprocessable_entity)
   end
 
   test 'should fail to create new user without team name' do
-    post :create, "user" => { user_name: 'Dummy User' }
+    post :create, user: { user_name: 'Dummy User' }
     assert_response(:unprocessable_entity)
   end
 
   test 'should fail to create new user without a user name' do
-    post :create, "user" => { team_name: 'Dummy Team Name' }
+    post :create, user: { team_name: 'Dummy Team Name' }
     assert_response(:unprocessable_entity)
   end
 

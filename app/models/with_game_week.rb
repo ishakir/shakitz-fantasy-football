@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 module WithGameWeek
-  def validate_game_week_number(game_week_number)
+  def self.validate_game_week_number(game_week_number)
     fail ArgumentError, "Game week number must be greater than 1, not #{game_week_number}" if game_week_number < 1
     fail ArgumentError, "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}" if game_week_number > Settings.number_of_gameweeks
   end
@@ -10,14 +10,14 @@ module WithGameWeek
   end
 
   def up_to_game_week(list, game_week_number)
-    validate_game_week_number(game_week_number)
+    WithGameWeek.validate_game_week_number(game_week_number)
     list.select do |item|
       item.game_week.number <= game_week_number
     end
   end
 
   def for_game_week(list, game_week_number)
-    validate_game_week_number(game_week_number)
+    WithGameWeek.validate_game_week_number(game_week_number)
     candidates = list.select do |item|
       item.game_week.number == game_week_number
     end
