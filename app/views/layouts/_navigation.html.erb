@@ -11,11 +11,13 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li class="<%=active?(root_path) %>">
-						<a href="#">Home</a>
+						<a href="/">Home</a>
 					</li>
-					<li class="<%=active?(user_path(:id)) %>">
-						<a href="#">My Team</a>
-					</li>
+					<%if session[:user_id] %>
+						<li class="<%=active?(user_path(:id)) %>">
+							<a href="/user/<%= session[:user_id]%>">My Team</a>
+						</li>
+					<% end %>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
