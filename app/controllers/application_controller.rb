@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'illegal_state_error'
+require 'active_record/validations'
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -52,6 +53,7 @@ class ApplicationController < ActionController::Base
 
   # Stuff that's going to return a 500
   rescue_from IllegalStateError do
+    puts error.backtrace
     render_internal_server_error
   end
 end
