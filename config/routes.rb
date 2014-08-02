@@ -19,7 +19,7 @@ Footbawwl::Application.routes.draw do
   
   post "user/declare_roster" => "user#declare_roster"
   
-  get "/user/:user_id/game_week/:game_week" => "user#game_week_team"
+  get "/user/:user_id/game_week/:game_week" => "user#show"
   post "/user/:user_id/game_week/:game_week/swap" => "user#swap_players"
   
   # Route for generating fixtures

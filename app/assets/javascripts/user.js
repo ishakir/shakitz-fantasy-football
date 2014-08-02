@@ -3,7 +3,7 @@ var playingId = [];
 var benchedId = [];
 var spinner;
 
-var setHandlers = function(){
+var setTableHandlers = function(){
   var context = this;
   $(".benched tr").click(function() {
     $node = $(this);
@@ -115,7 +115,7 @@ var populateIdArrays = function(){
   });
 };
 
-var alertHandler = function(){
+var setAlertHandler = function(){
   $('.alert .close').on('click', function(e) {
       $(this).parent().hide();
   });    
@@ -148,7 +148,31 @@ var initSpinner = function(){
   }
 };
 
-var saveButtonHandler = function(){
+var setGameWeekToggleButtonHandlers = function(){
+  $("#prevWeekBtn").on("click", function(){
+    loadTeamGameWeek(currentGameWeek, false);
+  });
+  $("#nextWeekBtn").on("click", function(){
+    loadTeamGameWeek(currentGameWeek, true);
+  });
+};
+
+var loadTeamGameWeek = function(gameweek, inFuture){
+  var url = "/user/" + this.userId + "/game_week/";
+  if(inFuture){
+    gameweek += 1;
+    if(gameweek <= this.activeGameWeek){
+      location.href=url+gameweek;
+    }
+  } else {
+    gameweek -= 1;
+    if(gameweek > 0){
+      location.href=url+gameweek;
+    }
+  }
+};
+
+var setSaveButtonHandler = function(){
   var context = this;
   initSpinner();
   $("#swapButton").click(function(){
@@ -171,10 +195,11 @@ var saveButtonHandler = function(){
 };
 
 $(function(){
-  if(this.isUser){
-    setHandlers();
-    alertHandler();
-    saveButtonHandler();
+  if(this.isUser && (this.currentGameWeek == this.activeGameWeek)){
+    setTableHandlers();
+    setAlertHandler();
+    setSaveButtonHandler();
     initSpinner();
   }
+  setGameWeekToggleButtonHandlers();
 });

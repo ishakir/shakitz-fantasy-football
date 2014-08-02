@@ -3,7 +3,7 @@ require 'test_helper'
 
 class UserControllerTest < ActionController::TestCase
   # Future tests: Successful auth, correct response, appropriate message displayed
-  default_id = 1
+  default_user_id = 1
   valid_active_player = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   valid_benched_player = [11, 12, 13, 14, 15, 16, 17, 18]
 
@@ -65,9 +65,9 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test 'should delete user' do
-    delete :delete, user_id: default_id
+    delete :delete, user_id: default_user_id
     assert_raise ActiveRecord::RecordNotFound do
-      User.find(default_id)
+      User.find(default_user_id)
     end
   end
 
@@ -147,42 +147,45 @@ class UserControllerTest < ActionController::TestCase
 
   # Show gameweek breakdown
   test 'should reject the request to get gameweekteam if user_id is invalid' do
-    get :game_week_team, user_id: 10, game_week: 1
+    get :show, user_id: 10, game_week: 1
     assert_response :not_found
   end
 
   test 'should reject the request if game_week is invalid' do
-    get :game_week_team, user_id: 1, game_week: 50
-    assert_response :not_found
+    get :show, user_id: 1, game_week: 50
+    assert_response :unprocessable_entity
   end
 
   test 'should accept the request if both parameters are valid' do
-    get :game_week_team, user_id: 1, game_week: 1
+    get :show, user_id: 1, game_week: 1
     assert_response :success
   end
 
   test 'should put the user into a variable called @user' do
-    user = get_assigns :game_week_team, :user, user_id: 1, game_week: 1
+    user = get_assigns :show, :user, user_id: 1, game_week: 1
     assert_kind_of User, user
   end
 
   test 'should get a user with the correct id' do
-    user = get_assigns :game_week_team, :user, user_id: 1, game_week: 1
+    user = get_assigns :show, :user, user_id: 1, game_week: 1
     assert_equal 1, user.id
   end
 
   test 'should put the game week team into a variable called @game_week_team' do
-    game_week_team = get_assigns :game_week_team, :game_week_team, user_id: 1, game_week: 1
+    game_week = get_assigns :show, :game_week, user_id: default_user_id, game_week: 1
+    game_week_team = GameWeekTeam.find_unique_with(default_user_id, game_week)
     assert_kind_of GameWeekTeam, game_week_team
   end
 
   test 'should get a game week team with the correct game week number' do
-    game_week_team = get_assigns :game_week_team, :game_week_team, user_id: 1, game_week: 1
+    game_week = get_assigns :show, :game_week, user_id: default_user_id, game_week: 1
+    game_week_team = GameWeekTeam.find_unique_with(default_user_id, game_week)
     assert_equal 1, game_week_team.game_week.number
   end
 
   test 'should get the game_week_team from the correct user' do
-    game_week_team = get_assigns :game_week_team, :game_week_team, user_id: 1, game_week: 1
+    game_week = get_assigns :show, :game_week, user_id: default_user_id, game_week: 1
+    game_week_team = GameWeekTeam.find_unique_with(default_user_id, game_week)
     assert_equal 1, game_week_team.user.id
   end
 

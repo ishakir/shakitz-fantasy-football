@@ -29,7 +29,12 @@ class UserController < ApplicationController
     validate_all_parameters([USER_ID_KEY], params)
     user_id = params[USER_ID_KEY]
 
-    @gameweek = WithGameWeek.current_game_week
+    if params.key?(GAME_WEEK_KEY)
+      @game_week = params[GAME_WEEK_KEY]
+    else
+      @game_week = WithGameWeek.current_game_week
+    end
+    @active_gameweek = WithGameWeek.current_game_week
     @user = User.find(user_id)
   end
 
@@ -40,6 +45,7 @@ class UserController < ApplicationController
     game_week = params[GAME_WEEK_KEY]
 
     @user = User.find(user_id)
+    @game_week = game_week
     @game_week_team = GameWeekTeam.find_unique_with(user_id, game_week)
   end
 

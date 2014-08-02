@@ -1,5 +1,7 @@
 <script>
 	var userId = <%= @user.id %>;
+	var currentGameWeek = <%= @game_week %>;
+	var activeGameWeek = <%= @active_gameweek %>;
 	<% if session[:user_id] == @user.id %>
 		var isUser = true;
 	<% else %>
@@ -24,16 +26,16 @@
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="col-md-1 column">
-				<span title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
+				<span id="prevWeekBtn" title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
 			</div>
 			<div class="col-md-3 column fixture-label">
-				<h3 id="week_label" title="Week " align="center">Week <%= @user.team_for_game_week(@gameweek).game_week.number %></h3>
+				<h3 id="week_label" title="Week " align="center">Week <%= @user.team_for_game_week(@game_week).game_week.number %></h3>
 			</div>
 			<div class="col-md-1">
-				<span title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
+				<span id="nextWeekBtn" title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
 			</div>
 			<div>
-				<span class="week-points-label"><%= @user.team_for_game_week(@gameweek).points %> Points</span>
+				<span class="week-points-label"><%= @user.team_for_game_week(@game_week).points %> Points</span>
 			</div>
 		</div>
 	</div>
@@ -45,7 +47,7 @@
 					<th>Player</th>
 					<th>Points</th>
 				</tr>
-				<% @user.team_for_game_week(@gameweek).match_players_playing.each do |match_player| %>
+				<% @user.team_for_game_week(@game_week).match_players_playing.each do |match_player| %>
 				<tr id="<%= match_player.id %>Row">
 					<td id="<%= match_player.id %>">
 						<span class="player-name"><%= match_player.nfl_player.name %></span><br />
@@ -66,7 +68,7 @@
 					<th>Player</th>
 					<th>Points</th>
 				</tr>
-				<% @user.team_for_game_week(@gameweek).match_players_benched.each do |match_player| %>
+				<% @user.team_for_game_week(@game_week).match_players_benched.each do |match_player| %>
 				<tr id="<%= match_player.id %>Row">
 					<td id="<%= match_player.id %>">
 						<span class="player-name"><%= match_player.nfl_player.name %></span><br />
