@@ -171,7 +171,7 @@ var saveButtonHandler = function(){
 };
 
 $(function(){
-  if(isUser){
+  if(this.isUser){
     setHandlers();
     alertHandler();
     saveButtonHandler();
