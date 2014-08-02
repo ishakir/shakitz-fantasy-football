@@ -91,7 +91,7 @@
 		<div class="col-md-6 column">
 			<div class="row clearfix">
 				<div class="col-md-12 column">
-					<h3 align="center"><%= @user.team_for_game_week(1).head_to_head_result %> vs. <%= @user.team_for_game_week(1).opponent.user.name %> (<%= @user.team_for_game_week(1).opponent.points %> points) </h3>
+					<h3 align="center"><%# @user.team_for_game_week(1).head_to_head_result %> vs. <%# @user.team_for_game_week(1).opponent.user.name %> (<%# @user.team_for_game_week(1).opponent.points %> points) </h3>
 
 				</div>
 			</div>
@@ -116,15 +116,15 @@
 						<th>Opponent</th>
 						<th>Result</th>
 					</tr>
-					<% @user.game_week_teams.each do |game_week_team| %>
-					<% if !game_week_team.opponent.nil? %>
+					<%# @user.game_week_teams.each do |game_week_team| %>
+					<%# if !game_week_team.opponent.nil? %>
 					<tr>
-						<td><%= game_week_team.game_week.number %></td>
-						<td><%= game_week_team.opponent.user.name %></td>
-						<td><%= game_week_team.head_to_head_result%></td>
+						<td><%# game_week_team.game_week.number %></td>
+						<td><%# game_week_team.opponent.user.name %></td>
+						<td><%# game_week_team.head_to_head_result%></td>
 					</tr>
-					<% end %>
-					<% end %>
+					<%# end %>
+					<%# end %>
 				</table>
 				</div>
 			</div>
