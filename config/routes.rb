@@ -7,7 +7,6 @@ Footbawwl::Application.routes.draw do
   get "log_out" => "sessions#destroy", :as => "log_out"
   get "log_in" => "sessions#new", :as => "log_in"
   get "sign_up" => "user#create", :as => "sign_up"
-  post "fixtures/generate"
   
   # All the routes for the user display (League Table)
   get "/" => "user#home"
@@ -35,6 +34,9 @@ Footbawwl::Application.routes.draw do
   # Routes for handling transfer requests
   post "transfer_request" => "transfer_request#create"
   post "transfer_request/:id" => "transfer_request#resolve"
+  
+  # Route for getting gameweek information
+  get "gameweek/current" => "gameweek#get_current_gameweek"
 
   # All the routes for nfl player (haven't been checked as part of audit)
   get "nfl_player/unpicked"

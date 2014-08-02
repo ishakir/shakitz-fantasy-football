@@ -6,7 +6,7 @@ module WithGameWeek
   end
 
   def for_current_game_week(list)
-    for_game_week(list, current_game_week)
+    for_game_week(list, WithGameWeek.current_game_week)
   end
 
   def up_to_game_week(list, game_week_number)
@@ -30,9 +30,7 @@ module WithGameWeek
     candidates.first
   end
 
-  private
-
-  def current_game_week
+  def self.current_game_week
     number_of_days = (DateTime.now - DateTime.parse(Settings.first_gameweek_start)).floor
     return 1 if number_of_days == 0
     (number_of_days - (number_of_days % 7)) / 7

@@ -53,7 +53,6 @@ class ApplicationController < ActionController::Base
 
   # Stuff that's going to return a 500
   rescue_from IllegalStateError do
-    puts error.backtrace
     render_internal_server_error
   end
 end

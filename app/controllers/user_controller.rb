@@ -29,6 +29,7 @@ class UserController < ApplicationController
     validate_all_parameters([USER_ID_KEY], params)
     user_id = params[USER_ID_KEY]
 
+    @gameweek = WithGameWeek.current_game_week
     @user = User.find(user_id)
   end
 

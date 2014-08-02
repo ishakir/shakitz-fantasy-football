@@ -171,8 +171,10 @@ var saveButtonHandler = function(){
 };
 
 $(function(){
-  setHandlers();
-  alertHandler();
-  saveButtonHandler();
-  initSpinner();
+  if(isUser){
+    setHandlers();
+    alertHandler();
+    saveButtonHandler();
+    initSpinner();
+  }
 });
