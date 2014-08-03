@@ -44,6 +44,11 @@ mp_<%= n + 18 %>:
   blocked_kicks: 0
 <% end %>
 
+unchosen_player:
+  id: 39
+  nfl_player_id: 22
+  game_week_id: 1
+
 default:
   id: 37
   nfl_player_id: 18

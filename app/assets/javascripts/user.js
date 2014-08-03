@@ -177,21 +177,21 @@ var loadTeamGameWeek = function(gameweek, inFuture){
 var setAddPlayerButtonHandler = function(){
 	if($("#bloodhound").length){
 		$("#addPlayerButton").click(function(){
-			if(playerToBeAdded != undefined && playerToBeAdded.length > 0){
+			var url = window.location;
+			if(playerToBeAdded != undefined && playerToBeAdded > 0){
 				initSpinner();
 				$.ajax({
 			      type: "POST",
-			      url: "/user/add_player",
-			      data: { user_id: this.userId, player_name: this.playerToBeAdded }
+			      url: "/team_player/add_player",
+			      data: { user_id: userId, player_id: playerToBeAdded }
 			    })
 			    .done(function( msg ) {
-			      if(msg.status == 200){
-			        $('#swap-success').show();
-			      } else {
+			    	location.href = url;
+			      if(msg.status != 200){
 			        $('#swap-error').show();
 			        $('#swap-error-msg').html(msg.response);
 			      }
-			      context.spinner.stop();
+			      spinner.stop();
 			    });
 			}
 		});
@@ -224,7 +224,7 @@ var selector = function(){
 	var playerList = new Bloodhound({
 	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
-	  local: $.map(players, function(player) { return { value: player.name }; })
+	  local: $.map(players, function(player) { return { value: player.name, id: player.id }; })
 	});
 	// kicks off the loading/processing of `local` and `prefetch`
 	playerList.initialize();
@@ -236,12 +236,10 @@ var selector = function(){
 		name: 'states',
 	  	displayKey: 'value',
 	  	source: playerList.ttAdapter()
-	}).on('typeahead:selected', function($e, player){
-			playerToBeAdded = player["value"];
-        }
-    );
+	}).bind('typeahead:selected', function($e, player){
+		playerToBeAdded = player.id;
+    });
 };
-
 
 $(function(){
   if(this.isUser && (this.currentGameWeek == this.activeGameWeek)){

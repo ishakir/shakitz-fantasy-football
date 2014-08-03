@@ -127,3 +127,17 @@ twenty_one:
   name: Desean Foshawn
   nfl_team_id: 3
   nfl_player_type_id: 2
+  
+twenty_two:
+  id: 22
+  nfl_id: 22
+  name: Mr Unchosen
+  nfl_team_id: 3
+  nfl_player_type_id: 2
+  
+twenty_three:
+  id: 23
+  nfl_id: 23
+  name: Sir No MatchPlayer
+  nfl_team_id: 1
+  nfl_player_type_id: 1
