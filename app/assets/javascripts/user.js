@@ -177,7 +177,6 @@ var loadTeamGameWeek = function(gameweek, inFuture){
 var setAddPlayerButtonHandler = function(){
 	if($("#bloodhound").length){
 		$("#addPlayerButton").click(function(){
-			console.log("sup");
 			if(playerToBeAdded != undefined && playerToBeAdded.length > 0){
 				initSpinner();
 				$.ajax({
@@ -251,7 +250,6 @@ $(function(){
     setSaveButtonHandler();
   }
   setAddPlayerButtonHandler();
-
   setGameWeekToggleButtonHandlers();
   selector();
 });
