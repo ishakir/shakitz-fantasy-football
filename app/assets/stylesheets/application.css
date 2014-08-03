@@ -16,4 +16,4 @@
 *= require bootstrap
 *= require bootstrap_override
 *= require custom
-
+*= require custom_typeahead_suggestion

@@ -35,6 +35,7 @@ class UserController < ApplicationController
       @game_week = WithGameWeek.current_game_week
     end
     @active_gameweek = WithGameWeek.current_game_week
+    @nfl_players = NflPlayer.all.to_json
     @user = User.find(user_id)
   end
 

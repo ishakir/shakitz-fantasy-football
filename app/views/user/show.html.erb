@@ -2,6 +2,7 @@
 	var userId = <%= @user.id %>;
 	var currentGameWeek = <%= @game_week %>;
 	var activeGameWeek = <%= @active_gameweek %>;
+	var players = <%= raw @nfl_players %>;
 	<% if session[:user_id] == @user.id %>
 		var isUser = true;
 	<% else %>
@@ -87,47 +88,14 @@
 		</div>
 	</div>
 	<div style="clear:both;"></div>
-	<!--<div class="row clearfix">
-		<div class="col-md-6 column">
-			<div class="row clearfix">
-				<div class="col-md-12 column">
-					<h3 align="center"><%# @user.team_for_game_week(1).head_to_head_result %> vs. <%# @user.team_for_game_week(1).opponent.user.name %> (<%# @user.team_for_game_week(1).opponent.points %> points) </h3>
-
-				</div>
-			</div>
+	<% if @user.team_for_game_week(@game_week).game_week_team_players.size < 18 %>
+	<h4>Team Admin</h4>
+	<div id="adminBox" class="col-md-12">
+		<p>Please add a player to the team by selecting from the list below and pressing add player</p>
+		<div id="bloodhound">
+	  		<input class="typeahead" type="text" placeholder="Choose a player">
+	  		<button id="addPlayerButton" class="btn btn-primary add-btn">Add player</button>
 		</div>
-		<div class="col-md-6 column">
-			<div class="row clearfix">
-				<div class="col-md-12 column">
-					<h3> Some bid shit </h3>
-				</div>
-			</div>
-			<div class="row clearfix">
-				<div class="col-md-12 column">
-					<h3> Some trade shit </h3>
-				</div>
-			</div>
-			<div class="row clearfix">
-				<div class="col-md-12 column">
-					<h3>Fixtures</h3>
-				<table class="table">
-					<tr>
-						<th>Game Week</th>
-						<th>Opponent</th>
-						<th>Result</th>
-					</tr>
-					<%# @user.game_week_teams.each do |game_week_team| %>
-					<%# if !game_week_team.opponent.nil? %>
-					<tr>
-						<td><%# game_week_team.game_week.number %></td>
-						<td><%# game_week_team.opponent.user.name %></td>
-						<td><%# game_week_team.head_to_head_result%></td>
-					</tr>
-					<%# end %>
-					<%# end %>
-				</table>
-				</div>
-			</div>
-		</div>
-	</div>-->	
+	</div>
+	<% end %>
 </div>

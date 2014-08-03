@@ -2,6 +2,8 @@ var currentlyClicked = null;
 var playingId = [];
 var benchedId = [];
 var spinner;
+var select;
+var playerToBeAdded;
 
 var setTableHandlers = function(){
   var context = this;
@@ -172,15 +174,39 @@ var loadTeamGameWeek = function(gameweek, inFuture){
   }
 };
 
+var setAddPlayerButtonHandler = function(){
+	if($("#bloodhound").length){
+		$("#addPlayerButton").click(function(){
+			console.log("sup");
+			if(playerToBeAdded != undefined && playerToBeAdded.length > 0){
+				initSpinner();
+				$.ajax({
+			      type: "POST",
+			      url: "/user/add_player",
+			      data: { user_id: this.userId, player_name: this.playerToBeAdded }
+			    })
+			    .done(function( msg ) {
+			      if(msg.status == 200){
+			        $('#swap-success').show();
+			      } else {
+			        $('#swap-error').show();
+			        $('#swap-error-msg').html(msg.response);
+			      }
+			      context.spinner.stop();
+			    });
+			}
+		});
+	}
+};
+
 var setSaveButtonHandler = function(){
-  var context = this;
   initSpinner();
   $("#swapButton").click(function(){
     populateIdArrays();
     $.ajax({
       type: "POST",
       url: "/user/declare_roster",
-      data: { user_id: context.userId, game_week: 1, playing_player_id: context.playingId, benched_player_id: context.benchedId }
+      data: { user_id: this.userId, game_week: 1, playing_player_id: this.playingId, benched_player_id: this.benchedId }
     })
     .done(function( msg ) {
       if(msg.status == 200){
@@ -194,12 +220,40 @@ var setSaveButtonHandler = function(){
   });
 };
 
+var selector = function(){
+	// constructs the suggestion engine
+	var playerList = new Bloodhound({
+	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+	  queryTokenizer: Bloodhound.tokenizers.whitespace,
+	  local: $.map(players, function(player) { return { value: player.name }; })
+	});
+	// kicks off the loading/processing of `local` and `prefetch`
+	playerList.initialize();
+	$('#bloodhound .typeahead').typeahead({
+		hint: true,
+	  	highlight: true,
+	 	minLength: 1
+	}, {
+		name: 'states',
+	  	displayKey: 'value',
+	  	source: playerList.ttAdapter()
+	}).on('typeahead:selected', function($e, player){
+			playerToBeAdded = player["value"];
+        }
+    );
+};
+
+
 $(function(){
   if(this.isUser && (this.currentGameWeek == this.activeGameWeek)){
     setTableHandlers();
     setAlertHandler();
     setSaveButtonHandler();
-    initSpinner();
   }
+  setAddPlayerButtonHandler();
+
   setGameWeekToggleButtonHandlers();
+  selector();
 });
+
+
