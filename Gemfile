@@ -43,7 +43,7 @@ gem 'rails_config'
 gem 'mysql2'
 
 #third-party plugin to make select boxes nicer
-gem 'twitter-typeahead-rails', :git => "git://github.com/yourabi/twitter-typeahead-rails.git"
+gem 'twitter-typeahead-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
