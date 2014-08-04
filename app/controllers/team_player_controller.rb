@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class TeamPlayerController < ApplicationController
   USER_ID_KEY = :user_id
   PLAYER_ID_KEY = :player_id
