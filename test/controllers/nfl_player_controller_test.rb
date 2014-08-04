@@ -123,6 +123,24 @@ class NflPlayerControllerTest < ActionController::TestCase
     assert_equal "D", nfl_player.nfl_player_type.position_type
   end
 
+  test "should create a match_player for the first game week for the D" do
+    post :create, team: "DETROIT!", type: "D"
+    assert_response :success
+
+    nfl_player = NflPlayer.last
+
+    assert_equal 1, nfl_player.match_players.size
+  end
+
+  test "should create a match_player for the first game week for another player" do
+    post :create, name: "A name", team: "DETROIT!", type: "K"
+    assert_response :success
+
+    nfl_player = NflPlayer.last
+
+    assert_equal 1, nfl_player.match_players.size
+  end
+
   ##################################
   # Tests for update_stats
   ##################################

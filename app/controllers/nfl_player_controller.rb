@@ -33,8 +33,13 @@ class NflPlayerController < ApplicationController
 
     type = params[TYPE_KEY]
 
-    create_non_defence_player(params) if type != "D"
-    create_defence_player(params) if type == "D"
+    player = create_non_defence_player(params) if type != "D"
+    player = create_defence_player(params) if type == "D"
+
+    MatchPlayer.create(
+      game_week: GameWeek.find_unique_with(1),
+      nfl_player: player
+    )
   end
 
   def create_defence_player(params)
