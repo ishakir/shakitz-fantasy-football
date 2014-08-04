@@ -224,18 +224,25 @@ var selector = function(){
 	var playerList = new Bloodhound({
 	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
-	  local: $.map(players, function(player) { return { value: player.name, id: player.id }; })
+	  teamTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+	  local: $.map(players, function(p) { return { value: p.player.name, id: p.player.id, team: p.team }; })
 	});
 	// kicks off the loading/processing of `local` and `prefetch`
 	playerList.initialize();
+
 	$('#bloodhound .typeahead').typeahead({
 		hint: true,
 	  	highlight: true,
 	 	minLength: 1
 	}, {
-		name: 'states',
+		name: 'nfl_players',
 	  	displayKey: 'value',
-	  	source: playerList.ttAdapter()
+	  	source: playerList.ttAdapter(),
+	  	templates: {
+	  		suggestion: function (datum) {
+		           return datum.value + " <span class=\"text-muted small\"> in " + datum.team + "</span>";
+		    }
+	  	}
 	}).bind('typeahead:selected', function($e, player){
 		playerToBeAdded = player.id;
     });
