@@ -24,6 +24,6 @@ class TeamPlayerController < ApplicationController
   end
 
   def validate_player_is_not_present_in_other_team(player)
-    fail ArgumentError, "This player is already in a team" if GameWeekTeamPlayer.where(match_player: player).nil?
+    fail ArgumentError, "This player is already in a team" unless GameWeekTeamPlayer.where(match_player: player).nil?
   end
 end
