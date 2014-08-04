@@ -11,6 +11,7 @@ class NflPlayerController < ApplicationController
   NAME_KEY = :name
   TEAM_KEY = :team
   TYPE_KEY = :type
+  NFL_ID_KEY = :nfl_id
 
   def unpicked
     @players = NflPlayer.all
@@ -29,12 +30,12 @@ class NflPlayerController < ApplicationController
   end
 
   def create
-    validate_all_parameters([TEAM_KEY, TYPE_KEY], params)
+    validate_all_parameters([NAME_KEY, TEAM_KEY, TYPE_KEY], params)
 
     type = params[TYPE_KEY]
 
-    player = create_non_defence_player(params) if type != "D"
     player = create_defence_player(params) if type == "D"
+    player = create_non_defence_player(params) if type != "D"
 
     MatchPlayer.create(
       game_week: GameWeek.find_unique_with(1),
@@ -43,29 +44,32 @@ class NflPlayerController < ApplicationController
   end
 
   def create_defence_player(params)
-    fail ArgumentError, "Can't create defensive player with name" if params.key?(NAME_KEY)
+    fail ArgumentError if params.key?(NFL_ID_KEY)
 
     team = find_team_from_name(params[TEAM_KEY])
     type = find_type_from_name(params[TYPE_KEY])
-
-    NflPlayer.create!(
-      nfl_team: team,
-      nfl_player_type: type
-    )
-  end
-
-  def create_non_defence_player(params)
-    validate_all_parameters([NAME_KEY], params)
-
-    team = find_team_from_name(params[TEAM_KEY])
-    type = find_type_from_name(params[TYPE_KEY])
-
     name = params[NAME_KEY]
 
     NflPlayer.create!(
       name: name,
       nfl_team: team,
       nfl_player_type: type
+    )
+  end
+
+  def create_non_defence_player(params)
+    validate_all_parameters([NFL_ID_KEY], params)
+
+    team = find_team_from_name(params[TEAM_KEY])
+    type = find_type_from_name(params[TYPE_KEY])
+    name = params[NAME_KEY]
+    nfl_id = params[NFL_ID_KEY]
+
+    NflPlayer.create!(
+      name: name,
+      nfl_team: team,
+      nfl_player_type: type,
+      nfl_id: nfl_id
     )
   end
 

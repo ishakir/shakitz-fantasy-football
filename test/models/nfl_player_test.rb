@@ -33,7 +33,7 @@ class NflPlayerTest < ActiveSupport::TestCase
   test 'the players name is the same as set on create' do
     expected_name = 'Aaron Brodgers'
 
-    NflPlayer.create!(name: expected_name, nfl_player_type: NflPlayerType.find(1))
+    NflPlayer.create!(name: expected_name, nfl_player_type: NflPlayerType.find(1), nfl_team: NflTeam.find(1))
 
     player = NflPlayer.last
     name = player.name
@@ -61,28 +61,14 @@ class NflPlayerTest < ActiveSupport::TestCase
     end
   end
 
-  test "can't save NflPlayer without a name if type isn't D" do
+  test "can't save NflPlayer without a name" do
     player = NflPlayer.new
     player.nfl_player_type = NflPlayerType.find(1)
     assert !player.save, 'Saved without a name and type non-D!'
   end
 
-  test "can save an NflPlayer without a name if type is D" do
-    player = NflPlayer.new
-    player.nfl_player_type = NflPlayerType.find(6)
-    assert player.save, "Couldn't save without a name and type D"
-  end
-
-  test "can't save NflPlayer with a string that's the empty name if type isn't D" do
-    player = NflPlayer.new
-    player.name = ''
-    player.nfl_player_type = NflPlayerType.find(1)
-
-    assert !player.save, 'Saved with name as the empty string and type non-D!'
-  end
-
   test "can't create NflPlayer with a string that's the empty string" do
-    NflPlayer.create(name: '', nfl_player_type: NflPlayerType.find(1))
+    NflPlayer.create(name: '', nfl_player_type: NflPlayerType.find(1), nfl_team: NflTeam.find(1))
     last_player = NflPlayer.last
 
     assert_equal LAST_NFL_PLAYER_NAME_IN_FIXTURES, last_player.name, 'Player with invalid name was created!'
@@ -105,7 +91,15 @@ class NflPlayerTest < ActiveSupport::TestCase
   test "can't create NFLPlayer without NflPlayerType" do
     player = NflPlayer.new
     player.name = 'My Dummy Name'
+    player.nfl_team = NflTeam.find(1)
     assert !player.save
+  end
+
+  test "can create NflPlayer without a team" do
+    player = NflPlayer.new
+    player.name = 'My Dummy Name'
+    player.nfl_player_type = NflPlayerType.find(1)
+    assert player.save
   end
 
   test "player responds to player_for_game_week" do
