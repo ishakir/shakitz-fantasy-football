@@ -37,7 +37,7 @@ class NflPlayerController < ApplicationController
     player = create_defence_player(params) if type == "D"
     player = create_non_defence_player(params) if type != "D"
 
-    MatchPlayer.create(
+    MatchPlayer.create!(
       game_week: GameWeek.find_unique_with(1),
       nfl_player: player
     )
