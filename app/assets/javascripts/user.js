@@ -224,7 +224,7 @@ var selector = function(){
 	var playerList = new Bloodhound({
 	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
-	  teamTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+	  limit: 32,
 	  local: $.map(players, function(p) { return { value: p.player.name, id: p.player.id, team: p.team }; })
 	});
 	// kicks off the loading/processing of `local` and `prefetch`
@@ -249,6 +249,7 @@ var selector = function(){
 };
 
 $(function(){
+  selector();
   if(this.isUser && (this.currentGameWeek == this.activeGameWeek)){
     setTableHandlers();
     setAlertHandler();
@@ -256,7 +257,4 @@ $(function(){
   }
   setAddPlayerButtonHandler();
   setGameWeekToggleButtonHandlers();
-  selector();
 });
-
-

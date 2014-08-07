@@ -55,17 +55,6 @@
   margin: 0.8em;
   color:#777;
 }
-#left-Box{
-  float:left;
-  width:45%;
-  margin-bottom:3em;
-}
-
-#right-Box{
-  float:right;
-  width:45%;
-  margin-bottom:3em;
-}
 
 .active-roster{
   border-right: 2px solid #eee;
@@ -82,6 +71,22 @@
   margin-top:0.3em; 
 }
 
+#adminBox{
+  margin-bottom:2em;
+}
+
 #bloodhound{
   margin-top:1em;
+}
+
+#left-Box{
+  float:left;
+  width:45%;
+  margin-bottom:3em;
+}
+
+#right-Box{
+  float:right;
+  width:45%;
+  margin-bottom:3em;
 }
