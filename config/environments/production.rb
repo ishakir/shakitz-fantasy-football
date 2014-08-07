@@ -81,4 +81,5 @@ Footbawwl::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+  config.log_level = :info
 end
