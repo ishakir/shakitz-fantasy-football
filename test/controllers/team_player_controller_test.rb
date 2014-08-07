@@ -23,11 +23,9 @@ class TeamPlayerControllerTest < ActionController::TestCase
   end
 
   test "can't add a player to a team who already belongs to someone else" do
-    player = MatchPlayer.find(1)
-    assert GameWeekTeamPlayer.where(match_player: player)
-    post :add_player, user_id: DEFAULT_USER_ID, player_id: 1
+    post :add_player, user_id: DEFAULT_USER_ID, player_id: 21
     assert_response :success
-    post :add_player, user_id: 2, player_id: 1
+    post :add_player, user_id: 2, player_id: 21
     assert_response :unprocessable_entity
   end
 

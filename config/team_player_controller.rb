@@ -16,7 +16,7 @@ class TeamPlayerController < ApplicationController
     validate_player_is_not_present_in_other_team(nfl_player)
 
     fail ActiveRecord::RecordInvalid if user_team.match_players.size >= MAX_PLAYING_SIZE + MAX_BENCH_SIZE
-    is_playing = user_team.match_players.size < MAX_PLAYING_SIZE
+    is_playing = user_team.match_players.size >= MAX_PLAYING_SIZE
 
     GameWeekTeamPlayer.create!(game_week_team: user_team, match_player: nfl_player, playing: is_playing)
 
@@ -24,6 +24,6 @@ class TeamPlayerController < ApplicationController
   end
 
   def validate_player_is_not_present_in_other_team(player)
-    fail ArgumentError, "This player is already in a team" unless GameWeekTeamPlayer.where(match_player: player).empty?
+    fail ArgumentError, "This player is already in a team" unless GameWeekTeamPlayer.where(match_player: player).nil?
   end
 end

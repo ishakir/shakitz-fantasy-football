@@ -43,9 +43,13 @@ class UserController < ApplicationController
       Rails.logger.info "Game week key specified on "
       @game_week = @active_gameweek
     end
+
     Rails.logger.info "Calculated current game week to be #{@game_week}"
 
-    @nfl_players = NflPlayer.all.to_json
+    players = return_nfl_player_and_team_data
+    Rails.logger.info "Found players"
+
+    @nfl_players = players.to_json
     Rails.logger.info "Found all nfl_players and converted to json"
     Rails.logger.info @nfl_players
 
@@ -165,5 +169,16 @@ class UserController < ApplicationController
       return { response: "Invalid number of benched players", status: 400 }
     end
     { response: "OK", status: 200 }
+  end
+
+  def return_nfl_player_and_team_data
+    players = NflPlayer.includes(:nfl_team)
+    tmp = {}
+    players.each do |player|
+      player_tmp = { player: player }
+      name_tmp = { team: player.nfl_team.name }
+      tmp[player.id] = player_tmp.merge!(name_tmp)
+    end
+    tmp
   end
 end
