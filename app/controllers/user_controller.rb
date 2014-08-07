@@ -27,16 +27,30 @@ class UserController < ApplicationController
 
   def show
     validate_all_parameters([USER_ID_KEY], params)
+    Rails.logger.info "Sucessfully found #{USER_ID_KEY} in parameters"
+
     user_id = params[USER_ID_KEY]
+    Rails.logger.info "User id is #{user_id}"
+
+    @active_gameweek = WithGameWeek.current_game_week
+
+    Rails.logger.info "Calculate active game week as #{@active_gameweek}"
 
     if params.key?(GAME_WEEK_KEY)
+      Rails.logger.info "Game week key specified on request"
       @game_week = params[GAME_WEEK_KEY]
     else
-      @game_week = WithGameWeek.current_game_week
+      Rails.logger.info "Game week key specified on "
+      @game_week = @active_gameweek
     end
-    @active_gameweek = WithGameWeek.current_game_week
+    Rails.logger.info "Calculated current game week to be #{@game_week}"
+
     @nfl_players = NflPlayer.all.to_json
+    Rails.logger.info "Found all nfl_players and converted to json"
+    Rails.logger.info @nfl_players
+
     @user = User.find(user_id)
+    Rails.logger.info "Found user"
   end
 
   def game_week_team

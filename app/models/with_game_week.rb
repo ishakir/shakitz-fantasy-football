@@ -31,8 +31,15 @@ module WithGameWeek
   end
 
   def self.current_game_week
+    Rails.logger.info "Calculating current game week"
     number_of_days = (DateTime.now - DateTime.parse(Settings.first_gameweek_start)).floor
+    Rails.logger.info "Calculated number of days since start to be #{number_of_days}"
+
     return 1 if number_of_days == 0
-    (number_of_days - (number_of_days % 7)) / 7
+
+    game_week = (number_of_days - (number_of_days % 7)) / 7
+    Rails.logger.info "Returning from current_game_week with #{game_week}"
+
+    game_week
   end
 end
