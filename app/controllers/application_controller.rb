@@ -29,7 +29,8 @@ class ApplicationController < ActionController::Base
 
   ### Controller exception handling
   # Stuff that's going to return a 404
-  rescue_from ActiveRecord::RecordNotFound do
+  rescue_from ActiveRecord::RecordNotFound do |error|
+    trace_error(error)
     render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 
@@ -43,16 +44,26 @@ class ApplicationController < ActionController::Base
   end
 
   # Stuff that's going to return a 422
-  rescue_from ArgumentError do
+  rescue_from ArgumentError do |error|
+    trace_error(error)
     render_unprocessable_entity
   end
 
-  rescue_from ActiveRecord::RecordInvalid do
+  rescue_from ActiveRecord::RecordInvalid do |error|
+    trace_error(error)
     render_unprocessable_entity
   end
 
   # Stuff that's going to return a 500
-  rescue_from IllegalStateError do
+  rescue_from IllegalStateError do |error|
+    trace_error(error)
     render_internal_server_error
+  end
+
+  private
+
+  def trace_error(error)
+    Rails.logger.error error.message
+    Rails.logger.error error.backtrace
   end
 end
