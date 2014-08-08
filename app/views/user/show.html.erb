@@ -30,6 +30,16 @@
     	<button type="button" class="close">×</button>
     		Successfully updated team roster
 	</div>
+	<% if @user.team_for_game_week(@game_week).game_week_team_players.size < 18 %>
+	<h4>Team Admin</h4>
+	<div id="adminBox" class="col-md-12">
+		<p>Please add a player to the team by selecting from the list below and pressing add player</p>
+		<div id="bloodhound">
+	  		<input class="typeahead" type="text" placeholder="Choose a player">
+	  		<button id="addPlayerButton" class="btn btn-primary add-btn">Add player</button>
+		</div>
+	</div>
+	<% end %>
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="col-md-1 column">
@@ -97,15 +107,4 @@
 			<% end %>
 		</div>
 	</div>
-	<div style="clear:both;"></div>
-	<% if @user.team_for_game_week(@game_week).game_week_team_players.size < 18 %>
-	<h4>Team Admin</h4>
-	<div id="adminBox" class="col-md-12">
-		<p>Please add a player to the team by selecting from the list below and pressing add player</p>
-		<div id="bloodhound">
-	  		<input class="typeahead" type="text" placeholder="Choose a player">
-	  		<button id="addPlayerButton" class="btn btn-primary add-btn">Add player</button>
-		</div>
-	</div>
-	<% end %>
 </div>

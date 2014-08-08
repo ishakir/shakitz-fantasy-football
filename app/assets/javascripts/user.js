@@ -58,7 +58,7 @@ var validatePositionCount = function(oldNode, newNode){
          break;
     }
   });
-  if(qbCnt == 2 && rbCnt == 2 && dCnt ==1 && (validRestOfTeam(tCnt, kCnt, wrCnt))){
+  if(qbCnt == 2 && rbCnt == 2 && dCnt ==1 && (validRestOfTeam(teCnt, kCnt, wrCnt))){
     var oldPos, newPos;
     $(oldNode).find(".player-pos").each(function(i, value){
       oldPos = value.innerHTML.trim();
@@ -73,14 +73,14 @@ var validatePositionCount = function(oldNode, newNode){
   return false;
 };
 
-var validRestOfTeam = function(tCnt, kCnt, wrCnt){
-  if(tCnt + kCnt + wrCnt > 4){
+var validRestOfTeam = function(teCnt, kCnt, wrCnt){
+  if(teCnt + kCnt + wrCnt > 5){
     return false;
   } else if(wrCnt > 3){
     return false;
   } else if(kCnt > 2){
     return false;
-  } else if(tCnt > 2){
+  } else if(teCnt > 2){
     return false;
   }
   return true;
@@ -88,7 +88,7 @@ var validRestOfTeam = function(tCnt, kCnt, wrCnt){
 
 //Taken from Bobince's answer at: https://stackoverflow.com/questions/698301/is-there-a-native-jquery-function-to-switch-elements
 var swapNodes = function(a, b){
-  if(a.parentNode == b.parentNode || this.validatePositionCount(a, b)){
+  if(this.validatePositionCount(a, b)){
     var aparent= a.parentNode;
     var asibling= a.nextSibling===b? a : a.nextSibling;
     b.parentNode.insertBefore(a, b);
@@ -199,13 +199,13 @@ var setAddPlayerButtonHandler = function(){
 };
 
 var setSaveButtonHandler = function(){
-  initSpinner();
   $("#swapButton").click(function(){
+  	initSpinner();
     populateIdArrays();
     $.ajax({
       type: "POST",
       url: "/user/declare_roster",
-      data: { user_id: this.userId, game_week: 1, playing_player_id: this.playingId, benched_player_id: this.benchedId }
+      data: { user_id: userId, game_week: currentGameWeek, playing_player_id: playingId, benched_player_id: benchedId }
     })
     .done(function( msg ) {
       if(msg.status == 200){
@@ -214,7 +214,7 @@ var setSaveButtonHandler = function(){
         $('#swap-error').show();
         $('#swap-error-msg').html(msg.response);
       }
-      context.spinner.stop();
+      spinner.stop();
     });
   });
 };
@@ -224,7 +224,7 @@ var selector = function(){
 	var playerList = new Bloodhound({
 	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 	  queryTokenizer: Bloodhound.tokenizers.whitespace,
-	  teamTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+ 	  limit: 32,
 	  local: $.map(players, function(p) { return { value: p.player.name, id: p.player.id, team: p.team }; })
 	});
 	// kicks off the loading/processing of `local` and `prefetch`
@@ -249,7 +249,7 @@ var selector = function(){
 };
 
 $(function(){
-  if(this.isUser && (this.currentGameWeek == this.activeGameWeek)){
+  if(isUser && (currentGameWeek == activeGameWeek)){
     setTableHandlers();
     setAlertHandler();
     setSaveButtonHandler();
