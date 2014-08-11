@@ -37,10 +37,7 @@ class NflPlayerController < ApplicationController
     player = create_defence_player(params) if type == "D"
     player = create_non_defence_player(params) if type != "D"
 
-    MatchPlayer.create!(
-      game_week: GameWeek.find_unique_with(1),
-      nfl_player: player
-    )
+    create_all_match_players(player)
   end
 
   def create_defence_player(params)
@@ -71,6 +68,16 @@ class NflPlayerController < ApplicationController
       nfl_player_type: type,
       nfl_id: nfl_id
     )
+  end
+
+  def create_all_match_players(player)
+    all_game_weeks = GameWeek.all
+    all_game_weeks.each do |game_week|
+      MatchPlayer.create!(
+        game_week: game_week,
+        nfl_player: player
+      )
+    end
   end
 
   def find_team_from_name(team_name)
