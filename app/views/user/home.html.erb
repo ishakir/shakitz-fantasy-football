@@ -1,5 +1,9 @@
 <script>
+	isUser = false;
+	players = {};
+	var gameweek = <%= @game_week %>
 	$(function(){
+		ajaxGameWeek(gameweek);
 		$("#prevWeek").on("click", function(){
 			var id = parseInt($("#gwNumber").html());
 			if(id == 1){
@@ -20,9 +24,6 @@
 		});
 	});
 	
-	isUser = false;
-	players = {};
-	
 	var ajaxGameWeek = function(id){
 		$.ajax({
 		  type: "GET",
@@ -30,15 +31,13 @@
 		})
 		  .done(function(data) {
 		  	var html = "";
-
 		  	if(data.length == 0){
-				html+= "No fixtures scheduled";
-				return;		  		
+				html+= "<tr><td>No fixtures scheduled</td></tr>";
 		  	}
 		  	
 		  	$.each(data, function(key, d){
 		  		html+= "<tr><td align=\"center\"><strong>"+d.home_name+"</strong>";
-		  		html+= " vs ";
+		  		html+= "  <em>vs</em>  ";
 		  		html+= "<strong>"+d.away_name+"</strong></td></tr>"; 
 		  	});
 		  	$("#fixtureTable").html(html);
@@ -134,15 +133,6 @@
 			</div>
 			<table class="table">
 				<tbody id="fixtureTable">
-					<% @fixtures.each do |fixture| %>
-						<tr>
-							<td align="center">
-								<strong><%= fixture.home_team.user.team_name %></strong> 
-								vs 
-								<strong><%= fixture.away_team.user.team_name %></strong>
-							</td>
-						</tr>
-					<% end %>
 				</tbody>
 			</table>
 	</div>
