@@ -1,3 +1,50 @@
+<script>
+	$(function(){
+		$("#prevWeek").on("click", function(){
+			var id = parseInt($("#gwNumber").html());
+			if(id == 1){
+				return;
+			} 
+			var newWeek = id-1;
+			ajaxGameWeek(newWeek);
+			$("#gwNumber").html(newWeek);
+		});
+		$("#nextWeek").on("click", function(){
+			var id = parseInt($("#gwNumber").html());
+			if(id == 17){
+				return;
+			}
+			var newWeek = id+1;
+			ajaxGameWeek(newWeek);
+			$("#gwNumber").html(newWeek);
+		});
+	});
+	
+	isUser = false;
+	players = {};
+	
+	var ajaxGameWeek = function(id){
+		$.ajax({
+		  type: "GET",
+		  url: "/fixtures/week/"+id,
+		})
+		  .done(function(data) {
+		  	var html = "";
+
+		  	if(data.length == 0){
+				html+= "No fixtures scheduled";
+				return;		  		
+		  	}
+		  	
+		  	$.each(data, function(key, d){
+		  		html+= "<tr><td align=\"center\"><strong>"+d.home_name+"</strong>";
+		  		html+= " vs ";
+		  		html+= "<strong>"+d.away_name+"</strong></td></tr>"; 
+		  	});
+		  	$("#fixtureTable").html(html);
+	  });
+ 	}
+</script>
 <div class="row clearfix">
 	<div class="col-md-9 column">
 		<div class="jumbotron">
@@ -76,20 +123,26 @@
 		<h3 id="fixture-header"> Upcoming Fixtures </h3>
 			<div class="row clearfix">
 				<div class="col-md-3 column col-md-offset-2">
-					<span title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
+					<span id="prevWeek" title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
 				</div>
 				<div class="col-md-4 column fixture-label">
-					<h3 id="week_label" title="Week ">Week #X</h3>
+					<h3 id="week_label" title="Week ">Week <span id="gwNumber"><%= @game_week %></span></h3>
 				</div>
 				<div class="col-md-3 column">
-					<span title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
+					<span id="nextWeek" title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
 				</div>
 			</div>
 			<table class="table">
-				<tbody>
-					<tr>
-						<td align="center"> Imran Wright vs Mike Sharwood </td>
-					</tr>
+				<tbody id="fixtureTable">
+					<% @fixtures.each do |fixture| %>
+						<tr>
+							<td align="center">
+								<strong><%= fixture.home_team.user.team_name %></strong> 
+								vs 
+								<strong><%= fixture.away_team.user.team_name %></strong>
+							</td>
+						</tr>
+					<% end %>
 				</tbody>
 			</table>
 	</div>

@@ -23,6 +23,8 @@ class UserController < ApplicationController
 
   def home
     @users = User.all
+    @fixtures = Fixture.all
+    @game_week = WithGameWeek.current_game_week
   end
 
   def show
