@@ -25,6 +25,7 @@ class UserController < ApplicationController
     @users = User.all
     @fixtures = Fixture.all
     @game_week = WithGameWeek.current_game_week
+    @max_number_game_weeks = Settings.number_of_gameweeks
   end
 
   def show

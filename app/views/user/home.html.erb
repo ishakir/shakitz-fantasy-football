@@ -1,12 +1,14 @@
 <script>
 	isUser = false;
 	players = {};
-	var gameweek = <%= @game_week %>
+	var gameweek = <%= @game_week %>;
+	var max_num_game_week = <%= @max_number_game_weeks  %>;
+	var min_num_game_week = 1;
 	$(function(){
 		ajaxGameWeek(gameweek);
 		$("#prevWeek").on("click", function(){
 			var id = parseInt($("#gwNumber").html());
-			if(id == 1){
+			if(id == min_num_game_week){
 				return;
 			} 
 			var newWeek = id-1;
@@ -15,7 +17,7 @@
 		});
 		$("#nextWeek").on("click", function(){
 			var id = parseInt($("#gwNumber").html());
-			if(id == 17){
+			if(id == max_num_game_week){
 				return;
 			}
 			var newWeek = id+1;
