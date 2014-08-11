@@ -13,12 +13,12 @@ class UserControllerTest < ActionController::TestCase
     assert_redirected_to controller: :user, action: :home, notice: "Signed up!"
   end
 
-  test 'game week team is created when a user is created' do
+  test 'all game_week_teams are created when a user is created' do
     post :create, user: { name: "NNNNNaaamee", team_name: "TTTTTeeeamm", password: "password", password_confirmation: "password" }
     assert_response :found
 
     user = User.last
-    assert_equal 1, user.game_week_teams.size
+    assert_equal 17, user.game_week_teams.size
   end
 
   test 'game week team created has the correct game week' do

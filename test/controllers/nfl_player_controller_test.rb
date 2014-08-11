@@ -130,12 +130,12 @@ class NflPlayerControllerTest < ActionController::TestCase
     assert_equal "D", nfl_player.nfl_player_type.position_type
   end
 
-  test "should create a match_player for the first week" do
+  test "should create a match_player for all weeks" do
     post :create, name: "Defence", team: "DETROIT!", type: "D"
 
     nfl_player = NflPlayer.last
 
-    assert_equal 1, nfl_player.match_players.size
+    assert_equal 17, nfl_player.match_players.size
   end
 
   ##################################
