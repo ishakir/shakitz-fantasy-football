@@ -2,7 +2,7 @@
 class FixturesController < ApplicationController
   NUMBER_OF_GAMEWEEKS = Settings.number_of_gameweeks
   GAME_WEEK = :game_week
-  
+
   def generate
     users = User.all.map do |user|
       user.id
@@ -10,15 +10,15 @@ class FixturesController < ApplicationController
     schedule = generate_fixture_schedule(users)
     save_fixture_schedule(schedule)
   end
-  
-  def get_fixture_for_week()
+
+  def fixtures_for_week
     validate_all_parameters([GAME_WEEK], params)
-    @fixtures = Fixture.joins(home_team: :game_week).where(game_weeks: {number: params[:game_week] } )
-    
+    @fixtures = Fixture.joins(home_team: :game_week).where(game_weeks: { number: params[:game_week] })
+
     @list = @fixtures.map do |fixture|
-      { :home_team_id => fixture.home_team.id, :home_name => fixture.home_team.user.team_name, :away_team_id => fixture.away_team.id, :away_name => fixture.away_team.user.team_name }
+      { home_team_id: fixture.home_team.id, home_name: fixture.home_team.user.team_name, away_team_id: fixture.away_team.id, away_name: fixture.away_team.user.team_name }
     end
-  
+
     render json: @list.to_json
   end
 
