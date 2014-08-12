@@ -25,9 +25,11 @@ Footbawwl::Application.routes.draw do
   #Route for adding players to team
   post "team_player/add_player" => "team_player#add_player"
 
-  # Route for generating fixtures
+  # Routes for generating stuff
   post "fixtures/generate"
   get "fixtures/week/:game_week" => "fixtures#fixtures_for_week"
+
+  post "progress_game_week" => "team_player#progress_game_week"
   
   # Route for inputting players
   post "nfl_player" => "nfl_player#create"
