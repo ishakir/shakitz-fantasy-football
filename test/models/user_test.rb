@@ -11,7 +11,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "won up to game_week gives the correct number of wins, with 1 gw" do
     user = User.find(1)
-    assert_equal 0, user.won_up_to_game_week(1)
+    assert_equal 1, user.won_up_to_game_week(1)
   end
 
   test "won up to game_week gives the correct number of wins, with 2 gw" do
@@ -31,7 +31,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "drawn_up_to_game_week gives the correct number of draws, with 1 gw" do
     user = User.find(1)
-    assert_equal 1, user.drawn_up_to_game_week(1)
+    assert_equal 0, user.drawn_up_to_game_week(1)
   end
 
   test "drawn_up_to_game_week gives the correct number of draws, with 2 gw" do
@@ -51,7 +51,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "lost_up_to_game_week returns the correct number of losses, with 1 gw" do
     user = User.find(2)
-    assert_equal 0, user.lost_up_to_game_week(1)
+    assert_equal 1, user.lost_up_to_game_week(1)
   end
 
   test "lost_up_to_game_week returns the correct number of losses, with 2 gw" do

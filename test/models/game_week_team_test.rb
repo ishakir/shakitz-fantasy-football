@@ -41,16 +41,16 @@ class GameWeekTeamTest < ActiveSupport::TestCase
 
   test "head_to_head_result can be won" do
     game_week_team = GameWeekTeam.find(2)
-    assert_equal :won, game_week_team.head_to_head_result
+    assert_equal :drawn, game_week_team.head_to_head_result
   end
 
   test "head_to_head result can be drawn" do
     game_week_team = GameWeekTeam.find(1)
-    assert_equal :drawn, game_week_team.head_to_head_result
+    assert_equal :won, game_week_team.head_to_head_result
   end
 
   test "head_to_head_result can be lost" do
-    game_week_team = GameWeekTeam.find(19)
+    game_week_team = GameWeekTeam.find(18)
     assert_equal :lost, game_week_team.head_to_head_result
   end
 

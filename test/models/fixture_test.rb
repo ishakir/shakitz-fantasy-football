@@ -49,7 +49,7 @@ class FixtureTest < ActiveSupport::TestCase
   end
 
   test "winner is GameWeekTeam" do
-    fixture = Fixture.find(2)
+    fixture = Fixture.find(1)
     assert_kind_of GameWeekTeam, fixture.winner
   end
 
@@ -59,7 +59,7 @@ class FixtureTest < ActiveSupport::TestCase
   end
 
   test "loser is GameWeekTeam" do
-    fixture = Fixture.find(2)
+    fixture = Fixture.find(1)
     assert_kind_of GameWeekTeam, fixture.loser
   end
 
@@ -122,43 +122,43 @@ class FixtureTest < ActiveSupport::TestCase
   end
 
   test "can get the winner as a game_week_team" do
-    fixture = Fixture.find(2)
-    assert 2, fixture.winner.id
+    fixture = Fixture.find(1)
+    assert 1, fixture.winner.id
   end
 
   test "can get the loser as a game_week_team" do
-    fixture = Fixture.find(2)
-    assert 19, fixture.loser.id
+    fixture = Fixture.find(1)
+    assert 18, fixture.loser.id
   end
 
   test "winner returns nil if no-one won" do
-    fixture = Fixture.find(1)
+    fixture = Fixture.find(2)
     assert_nil fixture.winner
   end
 
   test "loser returns nil if no-one won" do
-    fixture = Fixture.find(1)
+    fixture = Fixture.find(2)
     assert_nil fixture.loser
   end
 
   test "we can tell if a match wasn't drawn" do
-    fixture = Fixture.find(2)
+    fixture = Fixture.find(1)
     assert !fixture.drawn?
   end
 
   test "we can tell if a match was drawn" do
-    fixture = Fixture.find(1)
+    fixture = Fixture.find(2)
     assert fixture.drawn?
   end
 
   test "can get that one team won" do
-    fixture = Fixture.find(2)
-    assert fixture.won_by?(GameWeekTeam.find(2))
+    fixture = Fixture.find(1)
+    assert fixture.won_by?(GameWeekTeam.find(1))
   end
 
   test "can get that one team did not win" do
-    fixture = Fixture.find(2)
-    assert !fixture.won_by?(GameWeekTeam.find(19))
+    fixture = Fixture.find(1)
+    assert !fixture.won_by?(GameWeekTeam.find(18))
   end
 
   test "won_by? throws ArgumentError if team not found" do
@@ -169,13 +169,13 @@ class FixtureTest < ActiveSupport::TestCase
   end
 
   test "can get that one team lost" do
-    fixture = Fixture.find(2)
-    assert fixture.lost_by?(GameWeekTeam.find(19))
+    fixture = Fixture.find(1)
+    assert fixture.lost_by?(GameWeekTeam.find(18))
   end
 
   test "can get that one team did not lose" do
-    fixture = Fixture.find(2)
-    assert !fixture.lost_by?(GameWeekTeam.find(2))
+    fixture = Fixture.find(1)
+    assert !fixture.lost_by?(GameWeekTeam.find(1))
   end
 
   test "lost_by? throws ArgumentError if team not found" do
