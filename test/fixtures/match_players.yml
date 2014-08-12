@@ -9,6 +9,8 @@ mp_<%= n %>:
   passing_tds: 15
   rushing_yards: 105
   rushing_tds: 2
+  receiving_yards: 100
+  receiving_tds: 1
   offensive_sack: 2
   offensive_safety: 1
   fumble: 2
@@ -31,6 +33,8 @@ mp_<%= n + 18 %>:
   passing_tds: 1
   rushing_yards: 30
   rushing_tds: 0
+  receiving_yards: 40
+  receiving_tds: 1
   offensive_sack: 2
   offensive_safety: 0
   fumble: 1

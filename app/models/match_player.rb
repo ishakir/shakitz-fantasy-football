@@ -23,6 +23,8 @@ class MatchPlayer < ActiveRecord::Base
     # Add points generally gained by QBs / WRs
     total_points += passing_yards_points
     total_points += passing_td_points
+    total_points += receiving_yards_points
+    total_points += receiving_td_points
 
     total_points += offensive_sack_points
     total_points += offensive_safety_points
@@ -56,7 +58,7 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def passing_td_points
-    passing_tds * 3
+    passing_tds * 4
   end
 
   def offensive_sack_points
@@ -69,6 +71,15 @@ class MatchPlayer < ActiveRecord::Base
 
   def qb_pick_points
     -2 * qb_pick
+  end
+
+  # Points from WR actions
+  def receiving_yards_points
+    points_per_number_of_attribute(receiving_yards, 10)
+  end
+
+  def receiving_td_points
+    receiving_tds * 6
   end
 
   # Points from RB actions
