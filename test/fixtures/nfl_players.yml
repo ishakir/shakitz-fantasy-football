@@ -141,3 +141,12 @@ twenty_three:
   name: Sir No MatchPlayer
   nfl_team_id: 1
   nfl_player_type_id: 1
+
+<% 18.times do |n| %>
+player_<%= n %>:
+  id: <%= 24 + n %>
+  nfl_id: <%= 24 + n %>
+  name: player_<%= n %>
+  nfl_team_id: 1
+  nfl_player_type_id: 1
+<% end %>

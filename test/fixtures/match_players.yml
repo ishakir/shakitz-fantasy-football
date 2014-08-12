@@ -44,6 +44,30 @@ mp_<%= n + 18 %>:
   blocked_kicks: 0
 <% end %>
 
+<% 18.times do |n| %>
+<% 2.times do |m| %>
+mp_<%= n %>_<%= m %>:
+  id: <%= 18*m + (n + 1) + 40 %>
+  nfl_player_id: <%= 24 + n %>
+  game_week_id: <%= m + 1 %>
+  passing_yards: 120
+  passing_tds: 1
+  rushing_yards: 30
+  rushing_tds: 0
+  offensive_sack: 2
+  offensive_safety: 0
+  fumble: 1
+  qb_pick: 1
+  defensive_sack: 2
+  defensive_td: 0
+  defensive_safety: 1
+  turnover: 0
+  defensive_yards: 30
+  defensive_points: 1
+  blocked_kicks: 0
+<% end %>
+<% end %>
+
 unchosen_player:
   id: 39
   nfl_player_id: 22
