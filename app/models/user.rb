@@ -48,21 +48,27 @@ class User < ActiveRecord::Base
     opponents.compact
   end
 
-  def won_up_to_game_week(game_week_number)
+  def won_up_to_game_week(*game_week_number)
+    game_week_number = game_week_number.empty? ? last_game_week : game_week_number.first
+    return 0 if game_week_number == 0
     wins = teams_up_to_game_week(game_week_number).select do |game_week_team|
       game_week_team.head_to_head_result == :won
     end
     wins.size
   end
 
-  def drawn_up_to_game_week(game_week_number)
+  def drawn_up_to_game_week(*game_week_number)
+    game_week_number = game_week_number.empty? ? last_game_week : game_week_number.first
+    return 0 if game_week_number == 0
     draws = teams_up_to_game_week(game_week_number).select do |game_week_team|
       game_week_team.head_to_head_result == :drawn
     end
     draws.size
   end
 
-  def lost_up_to_game_week(game_week_number)
+  def lost_up_to_game_week(*game_week_number)
+    game_week_number = game_week_number.empty? ? last_game_week : game_week_number.first
+    return 0 if game_week_number == 0
     losses = teams_up_to_game_week(game_week_number).select do |game_week_team|
       game_week_team.head_to_head_result == :lost
     end
@@ -87,5 +93,11 @@ class User < ActiveRecord::Base
     game_week_teams.reduce(0) do |sum, game_week_team|
       sum + game_week_team.points
     end
+  end
+
+  private
+
+  def last_game_week
+    WithGameWeek.current_game_week - 1
   end
 end

@@ -106,13 +106,13 @@
 					<td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
 					<td><%= user.team_name %></td>
 					<td><%= user.points %></td>
-					<% if user.drawn_up_to_game_week(2) == 0%>
+					<% if user.drawn_up_to_game_week == 0%>
 					<td>
-						<%= user.won_up_to_game_week(2) %>-<%= user.lost_up_to_game_week(2) %>
+						<%= user.won_up_to_game_week %>-<%= user.lost_up_to_game_week %>
 					</td>
 					<% else %>
 					<td>
-						<%= user.won_up_to_game_week(2) %>-<%= user.drawn_up_to_game_week(2) %>-<%= user.lost_up_to_game_week(2) %>
+						<%= user.won_up_to_game_week %>-<%= user.drawn_up_to_game_week %>-<%= user.lost_up_to_game_week %>
 					</td>
 					<% end %>
 				</tr>

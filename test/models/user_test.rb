@@ -14,9 +14,14 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 0, user.won_up_to_game_week(1)
   end
 
-  test "won up to game_week givesw the correct number of wins, with 2 gw" do
+  test "won up to game_week gives the correct number of wins, with 2 gw" do
     user = User.find(1)
     assert_equal 1, user.won_up_to_game_week(2)
+  end
+
+  test "won up to game_week defaults to calculating for current_game_week - 1" do
+    user = User.find(1)
+    assert_equal 0, user.won_up_to_game_week
   end
 
   test "user responds to drawn_up_to_game_week" do
@@ -34,6 +39,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, user.drawn_up_to_game_week(2)
   end
 
+  test "drawn up to game week defaults to calculating for current_game_week - 1" do
+    user = User.find(1)
+    assert_equal 0, user.drawn_up_to_game_week
+  end
+
   test "user responds to lost_up_to_game_week" do
     user = User.find(1)
     assert_respond_to user, :lost_up_to_game_week
@@ -47,6 +57,11 @@ class UserTest < ActiveSupport::TestCase
   test "lost_up_to_game_week returns the correct number of losses, with 2 gw" do
     user = User.find(2)
     assert_equal 1, user.lost_up_to_game_week(2)
+  end
+
+  test "lost_up_to_game_week defaults to calculating for current_game_week - 1" do
+    user = User.find(1)
+    assert_equal 0, user.lost_up_to_game_week
   end
 
   test "user responds to   teams_up_to_game_week" do
