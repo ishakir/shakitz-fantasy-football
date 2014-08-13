@@ -9,12 +9,12 @@
 	<% if session[:user_id] == @user.id %>
 		<% Rails.logger.info "Found user_id from session" %>
 		var isUser = true;
-		console.log('pow');
 	<% else %>
 		<% Rails.logger.info "Didn't find user_id from session" %>
 		var isUser = false;
 	<% end %>
 </script>
+<%= javascript_include_tag "team_show" %>
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -109,4 +109,3 @@
 		</div>
 	</div>
 </div>
-<%= javascript_include_tag "team_show" %>

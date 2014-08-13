@@ -250,14 +250,12 @@ var selector = function(){
 };
 
 $(function(){
-  if(isUser && (currentGameWeek === activeGameWeek)){
-    setTableHandlers();
-    setAlertHandler();
-    console.log('faggit');
-    setSaveButtonHandler();
-  } 
-  console.log('err');
-  setAddPlayerButtonHandler();
-  setGameWeekToggleButtonHandlers();
-  selector();
+	  if(isUser && (currentGameWeek === activeGameWeek)){
+	    setTableHandlers();
+	    setAlertHandler();
+	    setSaveButtonHandler();
+	  } 
+	  setAddPlayerButtonHandler();
+	  setGameWeekToggleButtonHandlers();
+	  selector();
 });
