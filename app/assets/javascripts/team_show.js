@@ -5,6 +5,7 @@ var spinner;
 var select;
 var playerToBeAdded;
 
+
 var setTableHandlers = function(){
   var context = this;
   $(".benched tr").click(function() {
@@ -249,14 +250,14 @@ var selector = function(){
 };
 
 $(function(){
-  if(isUser && (currentGameWeek == activeGameWeek)){
+  if(isUser && (currentGameWeek === activeGameWeek)){
     setTableHandlers();
     setAlertHandler();
+    console.log('faggit');
     setSaveButtonHandler();
-  }
+  } 
+  console.log('err');
   setAddPlayerButtonHandler();
   setGameWeekToggleButtonHandlers();
   selector();
 });
-
-
