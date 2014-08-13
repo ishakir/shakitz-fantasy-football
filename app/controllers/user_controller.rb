@@ -41,7 +41,7 @@ class UserController < ApplicationController
 
     if params.key?(GAME_WEEK_KEY)
       Rails.logger.info "Game week key specified on request"
-      @game_week = params[GAME_WEEK_KEY]
+      @game_week = params[GAME_WEEK_KEY].to_i
     else
       Rails.logger.info "Game week key specified on "
       @game_week = @active_gameweek
