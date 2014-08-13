@@ -70,10 +70,12 @@ var validatePositionCount = function(oldNode, newNode){
     if(oldPos == newPos){
       return true;
     }
-  } else {
-  	return false;
-  }
-  return true;
+    if((oldPos == "WR" || oldPos == "TE" || oldPos == "K") &&
+    	(newPos == "WR" || newPos == "TE" || newPos == "K")){
+    	return true;
+  	}
+  } 
+  return false;
 };
 
 var validRestOfTeam = function(teCnt, kCnt, wrCnt){
