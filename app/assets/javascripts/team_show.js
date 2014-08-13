@@ -59,7 +59,7 @@ var validatePositionCount = function(oldNode, newNode){
          break;
     }
   });
-  if(qbCnt == 2 && rbCnt == 2 && dCnt ==1 && (validRestOfTeam(teCnt, kCnt, wrCnt))){
+  if(qbCnt == 2 && rbCnt == 2 && dCnt == 1 && (validRestOfTeam(teCnt, kCnt, wrCnt))){
     var oldPos, newPos;
     $(oldNode).find(".player-pos").each(function(i, value){
       oldPos = value.innerHTML.trim();
@@ -70,8 +70,10 @@ var validatePositionCount = function(oldNode, newNode){
     if(oldPos == newPos){
       return true;
     }
+  } else {
+  	return false;
   }
-  return false;
+  return true;
 };
 
 var validRestOfTeam = function(teCnt, kCnt, wrCnt){
