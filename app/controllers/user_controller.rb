@@ -26,6 +26,7 @@ class UserController < ApplicationController
     @fixtures = Fixture.all
     @game_week = WithGameWeek.current_game_week
     @max_number_game_weeks = Settings.number_of_gameweeks
+    @users = @users.sort_by { |u| -u.points }
   end
 
   def show
