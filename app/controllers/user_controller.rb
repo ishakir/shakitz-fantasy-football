@@ -137,32 +137,6 @@ class UserController < ApplicationController
     end
   end
 
-  def swap_players
-    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
-
-    # First find the game_week_team
-    user = User.find(params[USER_ID_KEY])
-    game_week_team = user.team_for_game_week(params[GAME_WEEK_KEY])
-
-    # Find the match_player
-    playing_player = MatchPlayer.find(params[PLAYING_PLAYER_ID_KEY])
-    benched_player = MatchPlayer.find(params[BENCHED_PLAYER_ID_KEY])
-
-    playing_gwtp = GameWeekTeamPlayer.find_unique_with(game_week_team, playing_player)
-    benched_gwtp = GameWeekTeamPlayer.find_unique_with(game_week_team, benched_player)
-
-    # Check that both are playing / not playing as expected
-    fail ArgumentError, "Playing player was not found to be playing" unless playing_gwtp.playing
-    fail ArgumentError, "Benched player was not found to be benched" if benched_gwtp.playing
-
-    # Swap them
-    playing_gwtp.playing = false
-    playing_gwtp.save!
-
-    benched_gwtp.playing = true
-    benched_gwtp.save!
-  end
-
   def validate_id_length(playing, benched)
     if playing.length != 10
       return { response: "Invalid number of active players", status: 400 }

@@ -239,46 +239,6 @@ class UserControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  # Swap players
-  test "can't swap players without playing_player_id" do
-    post :swap_players, user_id: 1, game_week: 1, benched_player_id: 11
-    assert_response :unprocessable_entity
-  end
-
-  test "can't swap players without benched_player_id" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1
-    assert_response :unprocessable_entity
-  end
-
-  test "can't swap players if user_id doesn't exist" do
-    post :swap_players, user_id: 5000, game_week: 1, playing_player_id: 1, benched_player_id: 11
-    assert_response :not_found
-  end
-
-  test "can't swap players if game_week doesn't exist" do
-    post :swap_players, user_id: 1, game_week: 50, playing_player_id: 1, benched_player_id: 11
-  end
-
-  test "can't swap players if playing_player doesn't exist" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1000, benched_player_id: 11
-    assert_response :not_found
-  end
-
-  test "can't swap players if benched_player doesn't exist" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1, benched_player_id: 1000
-    assert_response :not_found
-  end
-
-  test "can't swap players if both playing" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1, benched_player_id: 2
-    assert_response :unprocessable_entity
-  end
-
-  test "can't swap players if both benched" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 11, benched_player_id: 12
-    assert_response :unprocessable_entity
-  end
-
   test "can't update roster if user_id doesnt exist" do
     post :declare_roster, user_id: 40, game_week: 1, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
     assert_response :not_found
@@ -324,26 +284,5 @@ class UserControllerTest < ActionController::TestCase
     post :declare_roster, user_id: 1, game_week: 1, playing_player_id: [11, 2, 3, 4, 5, 6, 7, 8, 9, 10], benched_player_id: [1, 12, 13, 14, 15, 16, 17, 18]
     player_after = GameWeekTeamPlayer.where(match_player_id: 1, game_week_team_id: 1).first
     assert !player_after.playing
-  end
-
-  test "we get a success response if parameters are correct" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1, benched_player_id: 11
-    assert_response :success
-  end
-
-  test "playing_player is benched after swapping" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1, benched_player_id: 11
-    gwtps = GameWeekTeamPlayer.where(match_player_id: 1, game_week_team_id: 1)
-    assert_equal 1, gwtps.size
-    player = gwtps.first
-    assert !player.playing
-  end
-
-  test "benched_player is benched after swapping" do
-    post :swap_players, user_id: 1, game_week: 1, playing_player_id: 1, benched_player_id: 11
-    gwtps = GameWeekTeamPlayer.where(match_player_id: 11, game_week_team_id: 1)
-    assert_equal 1, gwtps.size
-    player = gwtps.first
-    assert player.playing
   end
 end
