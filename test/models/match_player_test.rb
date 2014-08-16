@@ -56,7 +56,7 @@ class MatchPlayerTest < ActiveSupport::TestCase
   test 'can create match player' do
     match_player = MatchPlayer.new
     match_player.nfl_player = NflPlayer.find(19)
-    match_player.game_week = GameWeek.find(1)
+    match_player.game_week = GameWeek.find(2)
     assert match_player.save
   end
 

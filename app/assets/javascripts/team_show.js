@@ -253,6 +253,21 @@ var selector = function(){
     });
 };
 
+var populateStats = function(){
+	$.each(players, function(key, value){
+		console.log(value.player);
+		var tableHeader = "<table id='"+value.player.id+"_stat_table' class='table table-striped table-condensed player-stat'><tr><th>Play Type</th><th>Points</th></tr>";
+		var innerTable = "<tbody>";
+		$.each(value.points, function(k, v){
+			//k = k.replace("_", " ");
+			k = k.replace(/_/g, ' ');
+			innerTable += "<tr><td>" + k + "</td>";
+			innerTable += "<td>"+v+"</td></tr>";
+		});
+		$("#stat-detail").append(tableHeader + innerTable + "</tbody></table>");
+	});
+};
+
 $(function(){
 	  if(isUser && (currentGameWeek === activeGameWeek)){
 	    setTableHandlers();
@@ -262,4 +277,5 @@ $(function(){
 	  setAddPlayerButtonHandler();
 	  setGameWeekToggleButtonHandlers();
 	  selector();
+	  populateStats();
 });

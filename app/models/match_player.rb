@@ -121,10 +121,6 @@ class MatchPlayer < ActiveRecord::Base
     extra_points_kicked
   end
 
-  def kicker_points_points
-    kicker_points
-  end
-
   def blocked_kicks_points
     -3 * blocked_kicks
   end

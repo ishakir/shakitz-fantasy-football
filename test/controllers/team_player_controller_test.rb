@@ -33,7 +33,7 @@ class TeamPlayerControllerTest < ActionController::TestCase
   end
 
   test "can't add a player who has no match player entity" do
-    post :add_player, user_id: DEFAULT_USER_ID, player_id: 23
+    post :add_player, user_id: DEFAULT_USER_ID, player_id: 80
     assert_response :not_found
   end
 

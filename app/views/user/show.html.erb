@@ -76,8 +76,17 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td><%= match_player.points %></td>
+					<td id="<%= match_player.nfl_player.name %>_points"><%= match_player.points %></td>
 				</tr>
+				<script>
+					$("#<%=match_player.nfl_player.name%>_points").hover(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeIn(); 
+					},function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeOut();
+					}).mousemove(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').css({top:(ev.clientY-790), left: -75});
+					});
+				</script>
 				<% end %>
 			</table>
 			<% Rails.logger.info "Succesfully rendered active-roster players" %>
@@ -98,8 +107,17 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td><%= match_player.points %></td>
+					<td id="<%= match_player.nfl_player.name %>_points"><%= match_player.points %></td>
 				</tr>
+				<script>
+					$("#<%=match_player.nfl_player.name%>_points").hover(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeIn(); 
+					},function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeOut();
+					}).mousemove(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').css({top:(ev.clientY-790), left: 550});
+					});
+				</script>
 				<% end %>
 			</table>
 			<% Rails.logger.info "Succesfully rendered benched-roster players" %>
@@ -108,4 +126,6 @@
 			<% end %>
 		</div>
 	</div>
+	<div id="stat-detail">
+		</div>
 </div>

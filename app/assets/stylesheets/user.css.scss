@@ -90,3 +90,21 @@
   width:45%;
   margin-bottom:3em;
 }
+
+#stat-detail table{
+  display:none;
+  position:relative;
+  border: 1px solid black;
+  overflow:hidden;
+  border-radius: 5px;    
+  border-radius: 5px; 
+}
+
+#stat-detail td{
+  border:1px solid black;
+}
+
+.player-stat {
+  width:25%;
+  background:#eee;
+}

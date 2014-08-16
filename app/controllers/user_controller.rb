@@ -152,10 +152,33 @@ class UserController < ApplicationController
     players = NflPlayer.includes(:nfl_team)
     tmp = {}
     players.each do |player|
-      player_tmp = { player: player }
+      player_points = generate_player_specific_point_data(player.player_for_current_game_week)
+      player_tmp = { player: player, points: player_points }
       name_tmp = { team: player.nfl_team.name }
       tmp[player.id] = player_tmp.merge!(name_tmp)
     end
     tmp
+  end
+
+  def generate_player_specific_point_data(player)
+    {
+      Passing_touchdowns: player.passing_tds,
+      Passing_yards: player.passing_yards,
+      Receiving_touchdowns: player.receiving_tds,
+      Receiving_yards: player.receiving_yards,
+      Rushing_touchdowns: player.rushing_tds,
+      Rushing_yards: player.rushing_yards,
+      Offensive_sack: player.offensive_sack,
+      Offensive_safety: player.offensive_safety,
+      Picks_thrown: player.qb_pick,
+      Fumbles: player.fumble,
+      Defensive_td: player.defensive_td,
+      Defensive_sack: player.defensive_sack,
+      Defensive_safety: player.defensive_safety,
+      Turnover_won: player.turnover,
+      Field_goals_kicked: player.field_goals_kicked,
+      Extra_points_kicked: player.extra_points_kicked,
+      Blocked_kicks: player.blocked_kicks
+     }
   end
 end
