@@ -5,6 +5,7 @@
 	var activeGameWeek = <%= @active_gameweek %>;
 	<% Rails.logger.info "Game Week is #{@game_week} and active game week is #{@active_gameweek}" %>
 	var players = <%= raw @nfl_players %>;
+	var stats = <%= raw @stats %>;
 	<% Rails.logger.info "Found @nfl_players" %>
 	<% if session[:user_id] == @user.id %>
 		<% Rails.logger.info "User_id #{@user.id} is same as session id #{session[:user_id]}" %>

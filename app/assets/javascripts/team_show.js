@@ -254,12 +254,10 @@ var selector = function(){
 };
 
 var populateStats = function(){
-	$.each(players, function(key, value){
-		console.log(value.player);
-		var tableHeader = "<table id='"+value.player.id+"_stat_table' class='table table-striped table-condensed player-stat'><tr><th>Play Type</th><th>Points</th></tr>";
+	$.each(stats, function(key, value){
+		var tableHeader = "<table id='"+value.nfl_player_id+"_stat_table' class='table table-striped table-condensed player-stat'><tr><th>Play Type</th><th>Points</th></tr>";
 		var innerTable = "<tbody>";
-		$.each(value.points, function(k, v){
-			//k = k.replace("_", " ");
+		$.each(value, function(k, v){
 			k = k.replace(/_/g, ' ');
 			innerTable += "<tr><td>" + k + "</td>";
 			innerTable += "<td>"+v+"</td></tr>";

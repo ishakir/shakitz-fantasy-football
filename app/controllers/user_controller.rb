@@ -57,6 +57,8 @@ class UserController < ApplicationController
     Rails.logger.info "Found all nfl_players and converted to json"
     Rails.logger.info @nfl_players
 
+    @stats = return_my_player_point_info
+
     @user = User.find(user_id)
     Rails.logger.info "Found user"
   end
@@ -146,6 +148,11 @@ class UserController < ApplicationController
       return { response: "Invalid number of benched players", status: 400 }
     end
     { response: "OK", status: 200 }
+  end
+
+  def return_my_player_point_info
+    user = User.find(params[USER_ID_KEY])
+    user.team_for_game_week(@game_week).match_players.to_json
   end
 
   def return_nfl_player_and_team_data
