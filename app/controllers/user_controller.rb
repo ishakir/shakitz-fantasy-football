@@ -159,8 +159,7 @@ class UserController < ApplicationController
     players = NflPlayer.includes(:nfl_team)
     tmp = {}
     players.each do |player|
-      player_points = generate_player_specific_point_data(player.player_for_current_game_week)
-      player_tmp = { player: player, points: player_points }
+      player_tmp = { player: player }
       name_tmp = { team: player.nfl_team.name }
       tmp[player.id] = player_tmp.merge!(name_tmp)
     end

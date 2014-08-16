@@ -77,10 +77,10 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td id="<%= match_player.nfl_player.name %>_points"><%= match_player.points %></td>
+					<td id="<%= match_player.nfl_player.id %>_points"><%= match_player.points %></td>
 				</tr>
 				<script>
-					$("#<%=match_player.nfl_player.name%>_points").hover(function(ev){
+					$("#<%=match_player.nfl_player.id%>_points").hover(function(ev){
 					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeIn(); 
 					},function(ev){
 					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeOut();
@@ -108,10 +108,10 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td id="<%= match_player.nfl_player.name %>_points"><%= match_player.points %></td>
+					<td id="<%= match_player.nfl_player.id %>_points"><%= match_player.points %></td>
 				</tr>
 				<script>
-					$("#<%=match_player.nfl_player.name%>_points").hover(function(ev){
+					$("#<%=match_player.nfl_player.id%>_points").hover(function(ev){
 					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeIn(); 
 					},function(ev){
 					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeOut();

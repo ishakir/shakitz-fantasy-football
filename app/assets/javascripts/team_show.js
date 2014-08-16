@@ -255,18 +255,22 @@ var selector = function(){
 
 var populateStats = function(){
 	$.each(stats, function(key, value){
-		var tableHeader = "<table id='"+value.nfl_player_id+"_stat_table' class='table table-striped table-condensed player-stat'><tr><th>Play Type</th><th>Points</th></tr>";
-		var innerTable = "<tbody>";
+		var tableHeader = "<table id='"+value.nfl_player_id+"_stat_table' class='table table-striped table-condensed player-stat'><thead><tr><th>Play Type</th><th>Points</th></tr></thead>";
+		var innerTable = "";
 		$.each(value, function(k, v){
+			if(k == 'id'){
+				return;
+			}
 			k = k.replace(/_/g, ' ');
 			innerTable += "<tr><td>" + k + "</td>";
 			innerTable += "<td>"+v+"</td></tr>";
 		});
-		$("#stat-detail").append(tableHeader + innerTable + "</tbody></table>");
+		$("#stat-detail").append(tableHeader + innerTable + "</table>");
 	});
 };
 
 $(function(){
+	  populateStats();
 	  if(isUser && (currentGameWeek === activeGameWeek)){
 	    setTableHandlers();
 	    setAlertHandler();
@@ -275,5 +279,4 @@ $(function(){
 	  setAddPlayerButtonHandler();
 	  setGameWeekToggleButtonHandlers();
 	  selector();
-	  populateStats();
 });
