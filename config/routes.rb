@@ -11,7 +11,7 @@ Footbawwl::Application.routes.draw do
   # All the routes for the user display (League Table)
   get "/" => "user#home"
   
-  get "/user/:user_id" => "user#show"
+  get "user/:user_id" => "user#show"
   
   post "user/create" => "user#create"
   post "user/update" => "user#update"
@@ -19,13 +19,14 @@ Footbawwl::Application.routes.draw do
   
   post "user/declare_roster" => "user#declare_roster"
   
-  get "/user/:user_id/game_week/:game_week" => "user#show"
+  get "user/:user_id/game_week/:game_week" => "user#show"
   
   #Route for adding players to team
   post "team_player/add_player" => "team_player#add_player"
 
   # Routes for generating stuff
   post "fixtures/generate"
+  get "fixtures/week" => "fixtures#fixtures_for_week"
   get "fixtures/week/:game_week" => "fixtures#fixtures_for_week"
 
   post "progress_game_week" => "team_player#progress_game_week"

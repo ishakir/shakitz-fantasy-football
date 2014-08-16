@@ -99,4 +99,22 @@ class FixturesControllerTest < ActionController::TestCase
   test "should generate the correct number of fixtures with 2 users" do
     validate_correct_no_fixtures_generated(2)
   end
+
+  test "should fail to return json with no game week" do
+    get :fixtures_for_week
+    assert_response :unprocessable_entity
+  end
+
+  test "should return empty json with invalid game week" do
+    get :fixtures_for_week, game_week: 20
+    parsed_body = JSON.parse(response.body)
+    assert parsed_body.empty?
+  end
+
+  test "should return valid json for valid game week" do
+    get :fixtures_for_week, game_week: 1
+    parsed_body = JSON.parse(response.body)[0]
+    assert_equal("Stafford's Picks", parsed_body['home_name'])
+    assert_equal("Destroyers", parsed_body['away_name'])
+  end
 end
