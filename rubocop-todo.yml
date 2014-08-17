@@ -41,4 +41,7 @@ StringLiterals:
   Enabled: false
 
 CyclomaticComplexity:
- Max: 10
+  Max: 10
+
+PerceivedComplexity:
+  Max: 8

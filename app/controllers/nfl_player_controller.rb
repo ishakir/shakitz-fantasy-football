@@ -11,7 +11,7 @@ class NflPlayerController < ApplicationController
   NAME_KEY = :name
   TEAM_KEY = :team
   TYPE_KEY = :type
-  NFL_ID_KEY = :nfl_id
+  NFL_ID_KEY = :id
 
   def unpicked
     @players = NflPlayer.all

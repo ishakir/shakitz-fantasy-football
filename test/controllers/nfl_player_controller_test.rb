@@ -73,42 +73,42 @@ class NflPlayerControllerTest < ActionController::TestCase
   # Tests for create
   ##################################
   test "should reject if no type attribute" do
-    post :create, name: "A name", team: "DETROIT!", nfl_id: "stuff"
+    post :create, name: "A name", team: "DETROIT!", id: "stuff"
     assert_response :unprocessable_entity
   end
 
   test "should reject if no team attribute" do
-    post :create, name: "A name", type: "K", nfl_id: "stuff"
+    post :create, name: "A name", type: "K", id: "stuff"
     assert_response :unprocessable_entity
   end
 
   test "should reject if team doesn't exist" do
-    post :create, name: "A name", team: "XXX", type: "K", nfl_id: "stuff"
+    post :create, name: "A name", team: "XXX", type: "K", id: "stuff"
     assert_response :not_found
   end
 
-  test "should reject if type is not D and nfl_id isn't specified" do
+  test "should reject if type is not D and id isn't specified" do
     post :create, name: "A name", team: "XXX", type: "K"
     assert_response :unprocessable_entity
   end
 
   test "should reject if type doesn't exist" do
-    post :create, name: "A name", type: "NNN", team: "DETROIT!", nfl_id: "stuff"
+    post :create, name: "A name", type: "NNN", team: "DETROIT!", id: "stuff"
     assert_response :not_found
   end
 
-  test "should reject if type is D and nfl_id is specified" do
-    post :create, name: "A name", type: "D", team: "DETROIT!", nfl_id: "stuff"
+  test "should reject if type is D and id is specified" do
+    post :create, name: "A name", type: "D", team: "DETROIT!", id: "stuff"
     assert_response :unprocessable_entity
   end
 
   test "should reject if name isn't specified" do
-    post :create, type: "K", team: "DETROIT!", nfl_id: "stuff"
+    post :create, type: "K", team: "DETROIT!", id: "stuff"
     assert_response :unprocessable_entity
   end
 
   test "should create a player" do
-    post :create, name: "A name", team: "DETROIT!", type: "K", nfl_id: "stuff", nfl_id: "stuff"
+    post :create, name: "A name", team: "DETROIT!", type: "K", id: "stuff"
     assert_response :success
 
     nfl_player = NflPlayer.last
