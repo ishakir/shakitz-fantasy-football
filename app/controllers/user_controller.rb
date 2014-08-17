@@ -185,6 +185,6 @@ class UserController < ApplicationController
       Field_goals_kicked: player.field_goals_kicked,
       Extra_points_kicked: player.extra_points_kicked,
       Blocked_kicks: player.blocked_kicks
-     }
+    }
   end
 end
