@@ -3,17 +3,19 @@
 	var userId = <%= @user.id %>;
 	var currentGameWeek = <%= @game_week %>;
 	var activeGameWeek = <%= @active_gameweek %>;
-	<% Rails.logger.info "Found three assigns" %>
+	<% Rails.logger.info "Game Week is #{@game_week} and active game week is #{@active_gameweek}" %>
 	var players = <%= raw @nfl_players %>;
+	var stats = <%= raw @stats %>;
 	<% Rails.logger.info "Found @nfl_players" %>
 	<% if session[:user_id] == @user.id %>
-		<% Rails.logger.info "Found user_id from session" %>
+		<% Rails.logger.info "User_id #{@user.id} is same as session id #{session[:user_id]}" %>
 		var isUser = true;
 	<% else %>
 		<% Rails.logger.info "Didn't find user_id from session" %>
 		var isUser = false;
 	<% end %>
 </script>
+<%= javascript_include_tag "team_show" %>
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -75,8 +77,17 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td><%= match_player.points %></td>
+					<td id="<%= match_player.nfl_player.id %>_points"><%= match_player.points %></td>
 				</tr>
+				<script>
+					$("#<%=match_player.nfl_player.id%>_points").hover(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeIn(); 
+					},function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeOut();
+					}).mousemove(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').css({top:(ev.clientY-790), left: -75});
+					});
+				</script>
 				<% end %>
 			</table>
 			<% Rails.logger.info "Succesfully rendered active-roster players" %>
@@ -97,14 +108,25 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td><%= match_player.points %></td>
+					<td id="<%= match_player.nfl_player.id %>_points"><%= match_player.points %></td>
 				</tr>
+				<script>
+					$("#<%=match_player.nfl_player.id%>_points").hover(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeIn(); 
+					},function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').stop(true,true).fadeOut();
+					}).mousemove(function(ev){
+					    $('#<%=match_player.nfl_player.id%>_stat_table').css({top:(ev.clientY-790), left: 550});
+					});
+				</script>
 				<% end %>
 			</table>
 			<% Rails.logger.info "Succesfully rendered benched-roster players" %>
-			<% if session[:user_id] == @user.id %>
+			<% if session[:user_id] == @user.id && @active_gameweek == @game_week %>
 			<button id="swapButton" class="btn btn-primary btn-lg swap-player-btn">Save changes</button>
 			<% end %>
 		</div>
 	</div>
+	<div id="stat-detail">
+		</div>
 </div>

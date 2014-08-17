@@ -26,6 +26,7 @@ class UserController < ApplicationController
     @fixtures = Fixture.all
     @game_week = WithGameWeek.current_game_week
     @max_number_game_weeks = Settings.number_of_gameweeks
+    @users = @users.sort_by { |u| -u.points }
   end
 
   def show
@@ -41,7 +42,7 @@ class UserController < ApplicationController
 
     if params.key?(GAME_WEEK_KEY)
       Rails.logger.info "Game week key specified on request"
-      @game_week = params[GAME_WEEK_KEY]
+      @game_week = params[GAME_WEEK_KEY].to_i
     else
       Rails.logger.info "Game week key specified on "
       @game_week = @active_gameweek
@@ -55,6 +56,8 @@ class UserController < ApplicationController
     @nfl_players = players.to_json
     Rails.logger.info "Found all nfl_players and converted to json"
     Rails.logger.info @nfl_players
+
+    @stats = return_my_player_point_info
 
     @user = User.find(user_id)
     Rails.logger.info "Found user"
@@ -147,6 +150,11 @@ class UserController < ApplicationController
     { response: "OK", status: 200 }
   end
 
+  def return_my_player_point_info
+    user = User.find(params[USER_ID_KEY])
+    user.team_for_game_week(@game_week).match_players.to_json
+  end
+
   def return_nfl_player_and_team_data
     players = NflPlayer.includes(:nfl_team)
     tmp = {}
@@ -156,5 +164,27 @@ class UserController < ApplicationController
       tmp[player.id] = player_tmp.merge!(name_tmp)
     end
     tmp
+  end
+
+  def generate_player_specific_point_data(player)
+    {
+      Passing_touchdowns: player.passing_tds,
+      Passing_yards: player.passing_yards,
+      Receiving_touchdowns: player.receiving_tds,
+      Receiving_yards: player.receiving_yards,
+      Rushing_touchdowns: player.rushing_tds,
+      Rushing_yards: player.rushing_yards,
+      Offensive_sack: player.offensive_sack,
+      Offensive_safety: player.offensive_safety,
+      Picks_thrown: player.qb_pick,
+      Fumbles: player.fumble,
+      Defensive_td: player.defensive_td,
+      Defensive_sack: player.defensive_sack,
+      Defensive_safety: player.defensive_safety,
+      Turnover_won: player.turnover,
+      Field_goals_kicked: player.field_goals_kicked,
+      Extra_points_kicked: player.extra_points_kicked,
+      Blocked_kicks: player.blocked_kicks
+     }
   end
 end

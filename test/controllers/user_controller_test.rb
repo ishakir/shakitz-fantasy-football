@@ -127,7 +127,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test 'should see user object from view page second entry is Imran Wright' do
-    can_see_entity_row_index_eq(:home, :users, 1, 'Imran Wright', 'user')
+    can_see_entity_row_index_eq(:home, :users, 1, 'Another User', 'user')
   end
 
   # Show user breakdown

@@ -5,7 +5,7 @@ class GameWeekTest < ActiveSupport::TestCase
   test 'a game week has a number of match players' do
     game_weeks = GameWeek.where(number: 1)
     game_week = game_weeks.first
-    assert_equal 38, game_week.match_players.size, "GameWeek didn't have the expected number of match players!"
+    assert_equal 41, game_week.match_players.size, "GameWeek didn't have the expected number of match players!"
   end
 
   test 'a game week has a number of game week teams' do

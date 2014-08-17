@@ -15,3 +15,11 @@
 //= require spin
 //= require twitter/typeahead
 //= require_tree .
+//= stub home
+//= stub team_show
+//= stub fixtures
+//= stub game_week
+//= stub match_player
+//= stub nfl_player
+//= stub session
+//= stubb team_player

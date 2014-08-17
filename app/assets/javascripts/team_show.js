@@ -5,6 +5,7 @@ var spinner;
 var select;
 var playerToBeAdded;
 
+
 var setTableHandlers = function(){
   var context = this;
   $(".benched tr").click(function() {
@@ -58,7 +59,7 @@ var validatePositionCount = function(oldNode, newNode){
          break;
     }
   });
-  if(qbCnt == 2 && rbCnt == 2 && dCnt ==1 && (validRestOfTeam(teCnt, kCnt, wrCnt))){
+  if(qbCnt == 2 && rbCnt == 2 && dCnt == 1 && (validRestOfTeam(teCnt, kCnt, wrCnt))){
     var oldPos, newPos;
     $(oldNode).find(".player-pos").each(function(i, value){
       oldPos = value.innerHTML.trim();
@@ -69,7 +70,11 @@ var validatePositionCount = function(oldNode, newNode){
     if(oldPos == newPos){
       return true;
     }
-  }
+    if((oldPos == "WR" || oldPos == "TE" || oldPos == "K") &&
+    	(newPos == "WR" || newPos == "TE" || newPos == "K")){
+    	return true;
+  	}
+  } 
   return false;
 };
 
@@ -248,15 +253,30 @@ var selector = function(){
     });
 };
 
+var populateStats = function(){
+	$.each(stats, function(key, value){
+		var tableHeader = "<table id='"+value.nfl_player_id+"_stat_table' class='table table-striped table-condensed player-stat'><thead><tr><th>Play Type</th><th>Points</th></tr></thead>";
+		var innerTable = "";
+		$.each(value, function(k, v){
+			if(k == 'id'){
+				return;
+			}
+			k = k.replace(/_/g, ' ');
+			innerTable += "<tr><td>" + k + "</td>";
+			innerTable += "<td>"+v+"</td></tr>";
+		});
+		$("#stat-detail").append(tableHeader + innerTable + "</table>");
+	});
+};
+
 $(function(){
-  if(isUser && (currentGameWeek == activeGameWeek)){
-    setTableHandlers();
-    setAlertHandler();
-    setSaveButtonHandler();
-  }
-  setAddPlayerButtonHandler();
-  setGameWeekToggleButtonHandlers();
-  selector();
+	  populateStats();
+	  if(isUser && (currentGameWeek === activeGameWeek)){
+	    setTableHandlers();
+	    setAlertHandler();
+	    setSaveButtonHandler();
+	  } 
+	  setAddPlayerButtonHandler();
+	  setGameWeekToggleButtonHandlers();
+	  selector();
 });
-
-
