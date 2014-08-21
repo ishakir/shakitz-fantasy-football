@@ -2,6 +2,8 @@
 class CreateMatchPlayers < ActiveRecord::Migration
   def change
     create_table :match_players do |t|
+
+      # Offensive Stats
       t.integer :passing_yards, :default => 0
       t.integer :passing_tds, :default => 0
       t.integer :passing_twoptm, :default => 0
@@ -11,19 +13,19 @@ class CreateMatchPlayers < ActiveRecord::Migration
       t.integer :receiving_yards, :default => 0
       t.integer :receiving_tds, :default => 0
       t.integer :receiving_twoptm, :default => 0
-      t.integer :offensive_sack, :default => 0
-      t.integer :offensive_safety, :default => 0
-      t.integer :fumble, :default => 0
-      t.integer :qb_pick, :default => 0
-      t.integer :defensive_sack, :default => 0
-      t.integer :defensive_td, :default => 0
-      t.integer :defensive_safety, :default => 0
-      t.integer :turnover, :default => 0
-      t.integer :defensive_yards, :default => 0
-      t.integer :defensive_points, :default => 0
+
+      t.integer :times_sacked, :default => 0
+      t.integer :fumbles_lost, :default => 0
+      t.integer :interceptions_thrown, :default => 0
       t.integer :field_goals_kicked, :default => 0
       t.integer :extra_points_kicked, :default => 0
-      t.integer :blocked_kicks, :default => 0
+
+      # Defensive Stats
+      t.integer :sacks_made, :default => 0
+      t.integer :defense_touchdowns, :default => 0
+      t.integer :fumbles_won, :default => 0
+      t.integer :interceptions_caught, :default => 0
+      t.integer :yards_conceded, :default => 0
       
       t.references :game_week
       t.references :nfl_player
