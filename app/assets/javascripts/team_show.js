@@ -257,14 +257,19 @@ var populateStats = function(){
 	$.each(stats, function(key, value){
 		var tableHeader = "<table id='"+value.nfl_player_id+"_stat_table' class='table table-striped table-condensed player-stat'><thead><tr><th>Play Type</th><th>Points</th></tr></thead>";
 		var innerTable = "";
+		var hasStatInfo = false;
 		$.each(value, function(k, v){
-			if(k == 'id'){
-				return;
+			if(k.indexOf('id') > -1 || k.indexOf('_at') > -1 || v === 0){
+				return; //don't show date or id stats or 0 points
 			}
+			hasStatInfo = true;
 			k = k.replace(/_/g, ' ');
 			innerTable += "<tr><td>" + k + "</td>";
 			innerTable += "<td>"+v+"</td></tr>";
 		});
+		if(!hasStatInfo){
+			innerTable += "<tr><td>Great pick "+userName+"!</td></tr>";
+		}
 		$("#stat-detail").append(tableHeader + innerTable + "</table>");
 	});
 };
