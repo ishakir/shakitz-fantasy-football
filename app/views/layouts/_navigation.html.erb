@@ -18,6 +18,9 @@
 							<a href="/user/<%= session[:user_id]%>">My Team</a>
 						</li>
 					<% end %>
+					<li class="<%=active?(transfer_request_path) %>">
+						<a href="/transfer/status">Transfers</a>
+					</li>
 				</ul>
 				<% if session[:user_id] %>
 				<ul class="nav navbar-nav navbar-right">

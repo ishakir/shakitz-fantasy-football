@@ -27,6 +27,9 @@ class TransferRequestController < ApplicationController
     )
   end
 
+  def status
+  end
+
   def resolve
     validate_all_parameters([ACTION_KEY, ID_KEY], params)
 
