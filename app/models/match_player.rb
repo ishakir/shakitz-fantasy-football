@@ -133,21 +133,25 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def points_conceded_points
-    case points_conceded
-    when 0
-      10
-    when 1..6
-      7
-    when 7..13
-      4
-    when 14..20
-      1
-    when 21..27
-      0
-    when 28..34
-      -1
+    if(nfl_player.nfl_player_type.position_type == 'D')
+      case points_conceded
+      when 0
+        10
+      when 1..6
+        7
+      when 7..13
+        4
+      when 14..20
+        1
+      when 21..27
+        0
+      when 28..34
+        -1
+      else
+        -4
+      end
     else
-      -4
+        0
     end
   end
 
