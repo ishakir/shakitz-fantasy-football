@@ -133,7 +133,7 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def points_conceded_points
-    if(nfl_player.nfl_player_type.position_type == 'D')
+    if nfl_player.nfl_player_type.position_type == 'D'
       case points_conceded
       when 0
         10
@@ -151,7 +151,7 @@ class MatchPlayer < ActiveRecord::Base
         -4
       end
     else
-        0
+      0
     end
   end
 
