@@ -160,10 +160,6 @@ class MatchPlayer < ActiveRecord::Base
     extra_points_kicked
   end
 
-  def field_goals_kicked_points
-    -3 * field_goals_kicked
-  end
-
   # Utility Methods
   def points_per_number_of_attribute(attribute, how_many_per_point)
     (attribute - (attribute % how_many_per_point)) / how_many_per_point
