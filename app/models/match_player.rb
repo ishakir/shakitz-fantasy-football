@@ -23,30 +23,34 @@ class MatchPlayer < ActiveRecord::Base
     # Add points generally gained by QBs / WRs
     total_points += passing_yards_points
     total_points += passing_td_points
+    total_points += passing_twoptm_points
+
     total_points += receiving_yards_points
     total_points += receiving_td_points
+    total_points += receiving_twoptm_points
 
-    total_points += offensive_sack_points
-    total_points += offensive_safety_points
-    total_points += qb_pick_points
+    total_points += times_sacked_points
+
+    # total_points += offensive_safety_points
+    total_points += interceptions_thrown_points
 
     # Add points generally gained by RBs
     total_points += rushing_yards_points
     total_points += rushing_td_points
-
-    total_points += fumble_points
+    total_points += rushing_twoptm_points
+    total_points += fumbles_lost_points
 
     # Add points generally gained by Defence
-    total_points += defensive_td_points
-    total_points += defensive_sack_points
-    total_points += turnover_points
-    total_points += defensive_safety_points
+    total_points += defense_touchdowns_points
+    total_points += sacks_made_points
+    total_points += interceptions_caught_points
+    total_points += points_conceded_points
+    total_points += fumbles_won_points
+    # total_points += defensive_safety_points
 
     # Add points generally gained by Kickers
     total_points += field_goals_kicked_points
     total_points += extra_points_kicked_points
-
-    total_points += blocked_kicks_points
 
     # Return total points
     total_points
@@ -61,16 +65,20 @@ class MatchPlayer < ActiveRecord::Base
     passing_tds * 4
   end
 
-  def offensive_sack_points
-    -1 * offensive_sack
+  def passing_twoptm_points
+    passing_twoptm * 2
+  end
+
+  def sacks_made_points
+    -1 * sacks_made
   end
 
   def offensive_safety_points
     -1 * offensive_safety
   end
 
-  def qb_pick_points
-    -2 * qb_pick
+  def interceptions_thrown_points
+    -2 * interceptions_thrown
   end
 
   # Points from WR actions
@@ -82,6 +90,10 @@ class MatchPlayer < ActiveRecord::Base
     receiving_tds * 6
   end
 
+  def receiving_twoptm_points
+    receiving_twoptm * 2
+  end
+
   # Points from RB actions
   def rushing_yards_points
     points_per_number_of_attribute(rushing_yards, 10)
@@ -91,25 +103,52 @@ class MatchPlayer < ActiveRecord::Base
     rushing_tds * 6
   end
 
-  def fumble_points
-    -2 * fumble
+  def rushing_twoptm_points
+    rushing_twoptm * 2
+  end
+
+  def fumbles_lost_points
+    -2 * fumbles_lost
+  end
+
+  def fumbles_won_points
+    2 * fumbles_won
   end
 
   # Points from Defence actions
-  def defensive_td_points
-    defensive_td * 6
+  def defense_touchdowns_points
+    defense_touchdowns * 6
   end
 
-  def defensive_sack_points
-    defensive_sack
+  def times_sacked_points
+    times_sacked
   end
 
-  def turnover_points
-    turnover * 2
+  def interceptions_caught_points
+    interceptions_caught * 2
   end
 
   def defensive_safety_points
     defensive_safety * 2
+  end
+
+  def points_conceded_points
+    case points_conceded
+    when 0
+      10
+    when 1..6
+      7
+    when 7..13
+      4
+    when 14..20
+      1
+    when 21..27
+      0
+    when 28..34
+      -1
+    else
+      -4
+    end
   end
 
   # Points from Kicker actions
@@ -121,8 +160,8 @@ class MatchPlayer < ActiveRecord::Base
     extra_points_kicked
   end
 
-  def blocked_kicks_points
-    -3 * blocked_kicks
+  def field_goals_kicked_points
+    -3 * field_goals_kicked
   end
 
   # Utility Methods

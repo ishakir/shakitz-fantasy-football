@@ -7,21 +7,23 @@ mp_<%= n %>:
   game_week_id: 1
   passing_yards: 225
   passing_tds: 15
+  passing_twoptm: 1
   rushing_yards: 105
   rushing_tds: 2
+  rushing_twoptm: 1
   receiving_yards: 100
   receiving_tds: 1
-  offensive_sack: 2
-  offensive_safety: 1
-  fumble: 2
-  qb_pick: 2
-  defensive_sack: 1
-  defensive_td: 1
-  defensive_safety: 2
-  turnover: 1 
-  defensive_yards: 70
-  defensive_points: 0
-  blocked_kicks: 2
+  receiving_twoptm: 1
+  times_sacked: 2
+  fumbles_lost: 2
+  fumbles_won: 2
+  interceptions_thrown: 2
+  sacks_made: 1
+  defense_touchdowns: 1
+  interceptions_caught: 1 
+  points_conceded: 70
+  field_goals_kicked: 2
+  extra_points_kicked: 0
 <% end %>
 
 <% 18.times do |n| %>
@@ -31,21 +33,23 @@ mp_<%= n + 18 %>:
   game_week_id: 2
   passing_yards: 120
   passing_tds: 1
+  passing_twoptm: 1
   rushing_yards: 30
   rushing_tds: 0
+  rushing_twoptm: 1
   receiving_yards: 40
   receiving_tds: 1
-  offensive_sack: 2
-  offensive_safety: 0
-  fumble: 1
-  qb_pick: 1
-  defensive_sack: 2
-  defensive_td: 0
-  defensive_safety: 1
-  turnover: 0
-  defensive_yards: 30
-  defensive_points: 1
-  blocked_kicks: 0
+  receiving_twoptm: 1
+  times_sacked: 2
+  fumbles_lost: 1
+  fumbles_won: 2
+  interceptions_thrown: 1
+  sacks_made: 2
+  defense_touchdowns: 0
+  interceptions_caught: 0
+  points_conceded: 30
+  field_goals_kicked: 0
+  extra_points_kicked: 0
 <% end %>
 
 <% 18.times do |n| %>
@@ -56,19 +60,20 @@ mp_<%= n %>_<%= m %>:
   game_week_id: <%= m + 1 %>
   passing_yards: 120
   passing_tds: 1
+  passing_twoptm: 1
   rushing_yards: 30
   rushing_tds: 0
-  offensive_sack: 2
-  offensive_safety: 0
-  fumble: 1
-  qb_pick: 1
-  defensive_sack: 2
-  defensive_td: 0
-  defensive_safety: 1
-  turnover: 0
-  defensive_yards: 30
-  defensive_points: 1
-  blocked_kicks: 0
+  rushing_twoptm: 1
+  times_sacked: 2
+  fumbles_lost: 1
+  fumbles_won: 2
+  interceptions_thrown: 1
+  sacks_made: 2
+  defense_touchdowns: 0
+  interceptions_caught: 0
+  points_conceded: 30
+  field_goals_kicked: 0
+  extra_points_kicked: 0
 <% end %>
 <% end %>
   
