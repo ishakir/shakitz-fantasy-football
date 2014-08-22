@@ -6,6 +6,7 @@
 	<% Rails.logger.info "Game Week is #{@game_week} and active game week is #{@active_gameweek}" %>
 	var players = <%= raw @nfl_players %>;
 	var stats = <%= raw @stats %>;
+	var userName = "<%= @user.name %>";
 	<% Rails.logger.info "Found @nfl_players" %>
 	<% if session[:user_id] == @user.id %>
 		<% Rails.logger.info "User_id #{@user.id} is same as session id #{session[:user_id]}" %>
@@ -77,7 +78,7 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td id="<%= match_player.nfl_player.id %>_points"><%= match_player.points %></td>
+					<td><span id="<%= match_player.nfl_player.id %>_points" class="point-stats"><%= match_player.points %></span></td>
 				</tr>
 				<script>
 					$("#<%=match_player.nfl_player.id%>_points").hover(function(ev){
@@ -108,7 +109,7 @@
 							<%= match_player.nfl_player.nfl_team.name %>
 						</span>
 					</td>
-					<td id="<%= match_player.nfl_player.id %>_points"><%= match_player.points %></td>
+					<td><span id="<%= match_player.nfl_player.id %>_points" class="point-stats"><%= match_player.points %></span></td>
 				</tr>
 				<script>
 					$("#<%=match_player.nfl_player.id%>_points").hover(function(ev){
