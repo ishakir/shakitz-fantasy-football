@@ -16,6 +16,10 @@ module PlayerFinder
         message.add_message(25, "Multiple players were found with name '#{@name}', team '#{@team}' and type '#{@type}' please specify the id to uniquely identify the player.")
       end
 
+      def add_inconsistancy_messages(_message)
+        # Nothing doing here
+      end
+
       def player
         teams = NflTeam.where(name: @team)
         types = NflPlayerType.where(position_type: @type)

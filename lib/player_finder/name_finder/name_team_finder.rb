@@ -17,6 +17,10 @@ module PlayerFinder
         message.add_message(23, multiple_players_message)
       end
 
+      def add_inconsistancy_messages(_message)
+        # Nothing doing here
+      end
+
       def player
         teams = NflTeam.where(name: @team)
         fail IllegalStateError unless teams.size == 1

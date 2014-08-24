@@ -141,6 +141,20 @@ class NflPlayerControllerTest < ActionController::TestCase
   ##################################
   # Tests for update_stats
   ##################################
+  STATS_HASH = {
+    passing_yards: 500,
+    passing_tds: 7,
+    passing_twoptm: 1,
+    rushing_yards: 21,
+    rushing_tds: 1,
+    rushing_twoptm: 3,
+    receiving_yards: 87,
+    receiving_tds: 3,
+    receiving_twoptm: 1,
+    field_goals_kicked: 7,
+    extra_points_kicked: 20
+  }
+
   test "should reject no player attribute" do
     post :update_stats, format: :json, game_week: 1
     assert_response :unprocessable_entity
@@ -252,24 +266,57 @@ class NflPlayerControllerTest < ActionController::TestCase
     assert_equal(2, NflPlayer.find(21).player_for_game_week(1).passing_twoptm)
   end
 
-  test "should update all stats" do
-    validate_stats_update_response('all_stats', :success, [])
+  test "should update all stats for id finder" do
+    validate_stats_update_response('id_all_stats', :success, [])
     match_player = NflPlayer.find(21).player_for_game_week(1)
     check_stats(
       match_player,
+      STATS_HASH
+    )
+  end
 
-      passing_yards: 500,
-      passing_tds: 7,
-      passing_twoptm: 1,
-      rushing_yards: 21,
-      rushing_tds: 1,
-      rushing_twoptm: 3,
-      receiving_yards: 87,
-      receiving_tds: 3,
-      receiving_twoptm: 1,
-      field_goals_kicked: 7,
-      extra_points_kicked: 20
+  test "should update all stats for name finder" do
+    validate_stats_update_response('name_all_stats', :success, [])
+    match_player = NflPlayer.find(22).player_for_game_week(1)
+    check_stats(
+      match_player,
+      STATS_HASH
+    )
+  end
 
+  test "should update all stats for team type finder" do
+    validate_stats_update_response('team_type_all_stats', :success, [])
+    match_player = NflPlayer.find(10).player_for_game_week(1)
+    check_stats(
+      match_player,
+      STATS_HASH
+    )
+  end
+
+  test "should update all stats for name team finder" do
+    validate_stats_update_response('name_team_all_stats', :success, [])
+    match_player = NflPlayer.find(22).player_for_game_week(1)
+    check_stats(
+      match_player,
+      STATS_HASH
+    )
+  end
+
+  test "should update all stats for name type finder" do
+    validate_stats_update_response('name_type_all_stats', :success, [])
+    match_player = NflPlayer.find(22).player_for_game_week(1)
+    check_stats(
+      match_player,
+      STATS_HASH
+    )
+  end
+
+  test "should update all stats for name team type finder" do
+    validate_stats_update_response('name_team_type_all_stats', :success, [])
+    match_player = NflPlayer.find(22).player_for_game_week(1)
+    check_stats(
+      match_player,
+      STATS_HASH
     )
   end
 end
