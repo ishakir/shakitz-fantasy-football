@@ -70,15 +70,15 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def sacks_made_points
-    -1 * sacks_made
+    sacks_made
   end
 
   def offensive_safety_points
-    -1 * offensive_safety
+    offensive_safety * -1
   end
 
   def interceptions_thrown_points
-    -2 * interceptions_thrown
+    interceptions_thrown * -2
   end
 
   # Points from WR actions
@@ -108,11 +108,11 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def fumbles_lost_points
-    -2 * fumbles_lost
+    fumbles_lost * -2
   end
 
   def fumbles_won_points
-    2 * fumbles_won
+    fumbles_won * 2
   end
 
   # Points from Defence actions
@@ -121,7 +121,7 @@ class MatchPlayer < ActiveRecord::Base
   end
 
   def times_sacked_points
-    times_sacked
+    times_sacked * -1
   end
 
   def interceptions_caught_points

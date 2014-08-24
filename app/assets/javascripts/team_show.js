@@ -7,7 +7,6 @@ var playerToBeAdded;
 
 
 var setTableHandlers = function(){
-  var context = this;
   $(".benched tr").click(function() {
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
@@ -274,13 +273,31 @@ var populateStats = function(){
 	});
 };
 
+var setTableTransferRequestHandlers = function(){
+  $(".benched tr").click(function() {
+    $node = $(this);
+    promptTransferRequest($node[0].innerHTML, $node[0].id);
+  });
+  $(".active-roster tr").click(function() {
+    $node = $(this);
+    promptTransferRequest($node[0].innerHTML, $node[0].id);
+  });
+};
+
+var promptTransferRequest = function(node, id){
+	var playerId = id.substring('Row')[0];
+	$("#requestModal").modal('show');
+};
+
 $(function(){
 	  populateStats();
 	  if(isUser && (currentGameWeek === activeGameWeek)){
 	    setTableHandlers();
 	    setAlertHandler();
 	    setSaveButtonHandler();
-	  } 
+	  } else if(!isUser) {
+	  	setTableTransferRequestHandlers();
+	  }
 	  setAddPlayerButtonHandler();
 	  setGameWeekToggleButtonHandlers();
 	  selector();
