@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   id: 1
   name: Mike Sharwood
   team_name: Stafford's Picks
   password_hash: PASSWORD_STRING1
   password_salt: PASSWORD_STRING
+
 two:
   id: 2
   name: Imran Wright
