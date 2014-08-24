@@ -16,6 +16,10 @@ module PlayerFinder
       message.add_message(24, multiple_players_message)
     end
 
+    def add_inconsistancy_messages(_message)
+      # Nothing doing here
+    end
+
     def player
       teams = NflTeam.where(name: @team)
       types = NflPlayerType.where(position_type: @type)

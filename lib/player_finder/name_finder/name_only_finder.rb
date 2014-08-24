@@ -14,6 +14,10 @@ module PlayerFinder
         message.add_message(21, multiple_players_message)
       end
 
+      def add_inconsistancy_messages(_message)
+        # Nothing doing here
+      end
+
       def player
         players = NflPlayer.where(name: @name)
         return :none     if players.empty?

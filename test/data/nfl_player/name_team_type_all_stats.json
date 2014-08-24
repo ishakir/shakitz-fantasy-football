@@ -1,0 +1,31 @@
+{
+  "id_info": {
+    "name": "Mr Unchosen",
+    "team": "Greenbay Smackers",
+    "type": "WR"
+  },
+  "stats": {
+    "passing_stats": {
+      "passing_yards": 500,
+      "passing_tds": 7,
+      "passing_twoptm": 1
+    },
+    "rushing_stats": {
+      "rushing_yards": 21,
+      "rushing_tds": 1,
+      "rushing_twoptm": 3
+    },
+    "receiving_stats": {
+      "receiving_yards": 87,
+      "receiving_tds": 3,
+      "receiving_twoptm": 1
+    },
+    "kicking_stats": {
+      "field_goals_kicked": 7,
+      "extra_points_kicked": 20
+    },
+    "defence_stats": {
+
+    }
+  }
+}
