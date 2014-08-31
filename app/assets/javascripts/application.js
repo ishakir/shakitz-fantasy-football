@@ -10,16 +10,12 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery.min
+//= require jquery
+//= require jquery_ujs
 //= require turbolinks
+//= require bootstrap-sprockets
+//= require twitter/typeahead.min
 //= require spin
-//= require twitter/typeahead
-//= require_tree .
-//= stub home
-//= stub team_show
-//= stub fixtures
-//= stub game_week
-//= stub match_player
-//= stub nfl_player
-//= stub session
-//= stubb team_player
+//= require less-1.3.3.min
+//= require moment.min
+//= require bootstrap-sortable
