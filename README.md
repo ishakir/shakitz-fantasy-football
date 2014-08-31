@@ -4,7 +4,6 @@
 Shakitz NFL Fantasy Football for Rails
 ======================================
 
-
 What is it?
 ===========
 
@@ -20,9 +19,9 @@ Shakitz is the open source implementation of a fantasy football league. Key feat
 
 Shakitz had an alpha run during the 2014 preseason, and is currently in the middle of a beta run during the 2014 regular season. We hope these runs will iron out any creases making the system ready for running in full in 2015.
 
-If you are interested in playing Shakitz NFL Fantasy Football with your friend, want to place feature requests or are interested in developing please don't hesitate to contact either [ishakir](https://github.com/ishakir) or [MikeSpitz](https://github.com/MikeSpitz).
+If you are interested in playing Shakitz NFL Fantasy Football with your friends, want to make feature requests or are interested in contributing please don't hesitate to contact either [ishakir](https://github.com/ishakir) or [MikeSpitz](https://github.com/MikeSpitz).
 
-We're keen to drive usage and take advantage of the Open Source nature of the project to give users the features they really want. What we believe are the most important features are listed below, let us know if you want to amend or develop some of them!
+We're keen to drive usage and take advantage of the open source nature of the project. This is the people's fantasy system. What we believe are the most important features are listed below, let us know if you want to amend or develop some of them!
 
 Highest Priority new features
 =============================
