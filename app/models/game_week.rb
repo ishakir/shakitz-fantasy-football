@@ -34,4 +34,21 @@ class GameWeek < ActiveRecord::Base
   rescue ArgumentError
     errors.add(:number, 'is not between 1 and #{Settings.number_of_gameweeks} inclusive')
   end
+
+  def is_active?
+    days_for_game_week_start = (number - 1) * 7
+    days_for_game_week_end = number * 7
+
+    is_after_game_week_start = WithGameWeek.is_more_than_time_since_start?(days_for_game_week_start, 0)
+    is_after_game_week_end = WithGameWeek.is_more_than_time_since_start?(days_for_game_week_end, 0)
+
+    is_after_game_week_start && !is_after_game_week_end
+  end
+
+  def is_locked?
+    days_for_game_week_start = (number - 1) * 7
+    days_until_thursday = days_for_game_week_start + 2
+
+    WithGameWeek.is_more_than_time_since_start?(days_until_thursday, 17)
+  end
 end

@@ -30,14 +30,40 @@ module WithGameWeek
     candidates.first
   end
 
+  def self.start_of_first_gameweek
+    start = DateTime.parse(Settings.first_gameweek_start) + 2.hours
+    Rails.logger.info("Start time: #{start.strftime("%d/%m/%Y %H:%M:%S")}")
+    start
+  end
+
+  def self.eastern_current_time
+    eastern_time = DateTime.now.utc.in_time_zone('Eastern Time (US & Canada)')
+    Rails.logger.info("Eastern Time: #{eastern_time.strftime("%d/%m/%Y %H:%M:%S")}")
+    eastern_time
+  end
+
+  def self.is_more_than_time_since_start?(days, hours)
+    eastern_current_time = WithGameWeek.eastern_current_time
+    start_time = WithGameWeek.start_of_first_gameweek
+
+    time_difference = eastern_current_time - start_time
+    time_difference > days.days + hours.hours
+  end
+
   def self.current_game_week
     Rails.logger.info "Calculating current game week"
-    number_of_days = (DateTime.now - DateTime.parse(Settings.first_gameweek_start)).floor
-    Rails.logger.info "Calculated number of days since start to be #{number_of_days}"
 
-    game_week = ((number_of_days - (number_of_days % 7)) / 7) + 1
+    eastern_current_time = WithGameWeek.eastern_current_time
+    augmented_start_time = WithGameWeek.start_of_first_gameweek
+
+    days_since_start = ((eastern_current_time - augmented_start_time) / 1.day).floor
+    Rails.logger.info "Days since start is #{days_since_start}"
+
+    game_week = ((days_since_start - (days_since_start % 7)) / 7) + 1
+
     Rails.logger.info "Returning from current_game_week with #{game_week}"
 
+    return 1 if game_week < 1
     game_week
   end
 end
