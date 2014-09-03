@@ -149,8 +149,18 @@ class UserController < ApplicationController
     end
     { response: "OK", status: 200 }
   end
+  
+  def show_my_team_info
+    validate_all_parameters([USER_ID_KEY], params)
+    if(@game_week.nil?)
+      @game_week = WithGameWeek.current_game_week
+    end
+    payload = return_my_player_point_info
+    render json: payload
+  end
 
   def return_my_player_point_info
+
     user = User.find(params[USER_ID_KEY])
     user.team_for_game_week(@game_week).match_players.to_json
   end
