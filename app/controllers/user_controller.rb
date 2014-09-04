@@ -39,8 +39,8 @@ class UserController < ApplicationController
     @active_gameweek = WithGameWeek.current_game_week
 
     Rails.logger.info "Calculate active game week as #{@active_gameweek}"
-    
-    @game_week_time_obj = Hash.new
+
+    @game_week_time_obj = {}
     if params.key?(GAME_WEEK_KEY)
       Rails.logger.info "Game week key specified on request"
       @game_week = params[GAME_WEEK_KEY].to_i
@@ -48,7 +48,7 @@ class UserController < ApplicationController
       Rails.logger.info "Game week key specified on "
       @game_week = @active_gameweek
     end
-    
+
     @game_week_time_obj['locked'] = GameWeek.find_unique_with(@game_week).is_locked?
 
     Rails.logger.info "Calculated current game week to be #{@game_week}"
@@ -57,14 +57,11 @@ class UserController < ApplicationController
     Rails.logger.info "Found players"
 
     @nfl_players = players.to_json
-    Rails.logger.info "Found all nfl_players and converted to json"
-    Rails.logger.info @nfl_players
 
     @stats = return_my_player_point_info
 
     @user = User.find(user_id)
     Rails.logger.info "Found user"
-    
   end
 
   def game_week_team
@@ -121,6 +118,11 @@ class UserController < ApplicationController
   def declare_roster
     validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
     payload = validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
+
+    if GameWeek.find_unique_with(params[GAME_WEEK_KEY].to_i).is_locked?
+      fail ArgumentError, "Gameweek is currently locked, unable to make changes"
+    end
+
     if payload[:status] == 400
       render json: payload
     else
@@ -153,10 +155,10 @@ class UserController < ApplicationController
     end
     { response: "OK", status: 200 }
   end
-  
+
   def show_my_team_info
     validate_all_parameters([USER_ID_KEY], params)
-    if(@game_week.nil?)
+    if @game_week.nil?
       @game_week = WithGameWeek.current_game_week
     end
     payload = return_my_player_point_info
@@ -164,7 +166,6 @@ class UserController < ApplicationController
   end
 
   def return_my_player_point_info
-
     user = User.find(params[USER_ID_KEY])
     user.team_for_game_week(@game_week).match_players.to_json
   end
