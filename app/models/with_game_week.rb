@@ -47,7 +47,18 @@ module WithGameWeek
     start_time = WithGameWeek.start_of_first_gameweek
 
     time_difference = eastern_current_time - start_time
-    time_difference > days.days + hours.hours
+    Rails.logger.info("Time difference is #{time_difference}")
+
+    converted_days = days.days
+    converted_hours = hours.hours
+
+    Rails.logger.info("Converted days is #{converted_days}")
+    Rails.logger.info("Converted hours is #{converted_hours}")
+
+    total_converted_time = days.days + hours.hours
+    Rails.logger.info("Total converted time is #{total_converted_time}")
+
+    time_difference > total_converted_time
   end
 
   def self.current_game_week
