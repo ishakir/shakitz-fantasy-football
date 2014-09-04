@@ -31,7 +31,8 @@ module WithGameWeek
   end
 
   def self.start_of_first_gameweek
-    start = DateTime.parse(Settings.first_gameweek_start) + 2.hours
+    Time.zone = 'Eastern Time (US & Canada)'
+    start = Time.zone.parse(Settings.first_gameweek_start) + 2.hours
     Rails.logger.info("Start time: #{start.strftime("%d/%m/%Y %H:%M:%S")}")
     start
   end
