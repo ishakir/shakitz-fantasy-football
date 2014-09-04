@@ -244,6 +244,12 @@ class UserControllerTest < ActionController::TestCase
     assert_response :not_found
   end
 
+  test "can't update roster if game week is locked" do
+    skip('need to determine how to lock gameweek for tests')
+    post :declare_roster, user_id: 1, game_week: 1, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
+    assert_response :unprocessable_entity
+  end
+
   test "can't update roster if game_week doesn't exist" do
     post :declare_roster, user_id: 1, game_week: 999, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
     assert_response :unprocessable_entity

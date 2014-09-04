@@ -1,6 +1,8 @@
 <% Rails.logger.info "Starting render of show template" %>
 <script>
 	var userId = <%= @user.id %>;
+	var gameweek = <%= @game_week %>;
+	var gameWeekTimeObj = <%= raw @game_week_time_obj.to_json.gsub("</", "<\\/")  %>;
 	var currentGameWeek = <%= @game_week %>;
 	var activeGameWeek = <%= @active_gameweek %>;
 	<% Rails.logger.info "Game Week is #{@game_week} and active game week is #{@active_gameweek}" %>
@@ -123,7 +125,7 @@
 				<% end %>
 			</table>
 			<% Rails.logger.info "Succesfully rendered benched-roster players" %>
-			<% if session[:user_id] == @user.id && @active_gameweek == @game_week %>
+			<% if session[:user_id] == @user.id && @active_gameweek == @game_week && !@game_week_time_obj['locked'] %>
 			<button id="swapButton" class="btn btn-primary btn-lg swap-player-btn">Save changes</button>
 			<% end %>
 		</div>

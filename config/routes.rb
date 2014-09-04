@@ -21,6 +21,8 @@ Footbawwl::Application.routes.draw do
   post "user/declare_roster" => "user#declare_roster"
   get "user/:user_id/game_week/:game_week" => "user#show"
   
+  get "user/:user_id/myteam" => "user#show_my_team_info"
+  
   ##Transfer View
   get "transfer/status" => "transfer_request#status", :as => "transfer_request"
   get "transfer_request" => "transfer_request#status"
