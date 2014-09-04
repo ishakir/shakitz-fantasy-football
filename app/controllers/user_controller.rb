@@ -39,7 +39,8 @@ class UserController < ApplicationController
     @active_gameweek = WithGameWeek.current_game_week
 
     Rails.logger.info "Calculate active game week as #{@active_gameweek}"
-
+    
+    @game_week_time_obj = Hash.new
     if params.key?(GAME_WEEK_KEY)
       Rails.logger.info "Game week key specified on request"
       @game_week = params[GAME_WEEK_KEY].to_i
@@ -47,6 +48,8 @@ class UserController < ApplicationController
       Rails.logger.info "Game week key specified on "
       @game_week = @active_gameweek
     end
+    
+    @game_week_time_obj['locked'] = GameWeek.find_unique_with(@game_week).is_locked?
 
     Rails.logger.info "Calculated current game week to be #{@game_week}"
 
@@ -61,6 +64,7 @@ class UserController < ApplicationController
 
     @user = User.find(user_id)
     Rails.logger.info "Found user"
+    
   end
 
   def game_week_team

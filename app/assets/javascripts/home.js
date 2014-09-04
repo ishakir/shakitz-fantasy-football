@@ -41,4 +41,7 @@ $(function(){
 		ajaxGameWeek(newWeek);
 		$("#gwNumber").html(newWeek);
 	});
+	$("#register-link").on("click", function(e){
+		e.preventDefault();
+	});
 });

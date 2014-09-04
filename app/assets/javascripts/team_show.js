@@ -291,7 +291,9 @@ var promptTransferRequest = function(node, id){
 
 $(function(){
 	  populateStats();
-	  if(isUser && (currentGameWeek === activeGameWeek)){
+	  console.log(gameWeekTimeObj);
+	  console.log(gameWeekTimeObj.locked);
+	  if(isUser && (currentGameWeek === activeGameWeek) && !gameWeekTimeObj.locked){
 	    setTableHandlers();
 	    setAlertHandler();
 	    setSaveButtonHandler();
