@@ -276,23 +276,31 @@ var populateStats = function(){
 var setTableTransferRequestHandlers = function(){
   $(".benched tr").click(function() {
     $node = $(this);
-    promptTransferRequest($node[0].innerHTML, $node[0].id);
+    promptTransferRequest($($node[0]).find("span")[0].innerHTML, $node[0].id);
   });
   $(".active-roster tr").click(function() {
     $node = $(this);
-    promptTransferRequest($node[0].innerHTML, $node[0].id);
+    promptTransferRequest($($node[0]).find("span")[0].innerHTML, $node[0].id);
   });
 };
 
-var promptTransferRequest = function(node, id){
+var promptTransferRequest = function(name, id){	
 	var playerId = id.substring('Row')[0];
 	$("#requestModal").modal('show');
+	$('.selectpicker.opponent-player').selectpicker();
+	$('.selectpicker.opponent-player').change(function(e) {
+		$('#requested_player_id').val(e.target.selectedOptions[0].id.split("-")[1]);
+	});
+	$('.selectpicker.my-player').selectpicker();
+	$('.selectpicker.my-player').change(function(e){
+		$('#offered_player_id').val(e.target.selectedOptions[0].id.split("-")[1]);
+	});
+	$('#requested_player_id').val(name);
+	$('.selectpicker.opponent-player').selectpicker('val', name);
 };
 
 $(function(){
 	  populateStats();
-	  console.log(gameWeekTimeObj);
-	  console.log(gameWeekTimeObj.locked);
 	  if(isUser && (currentGameWeek === activeGameWeek) && !gameWeekTimeObj.locked){
 	    setTableHandlers();
 	    setAlertHandler();

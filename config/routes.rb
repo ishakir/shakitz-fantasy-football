@@ -44,7 +44,7 @@ Footbawwl::Application.routes.draw do
   post "nfl_player/stats/:game_week" => "nfl_player#update_stats"
   
   # Routes for handling transfer requests
-  post "transfer_request" => "transfer_request#create"
+  post "transfer_request" => "transfer_request#create", :as => "transfer_request_bid"
   post "transfer_request/:id" => "transfer_request#resolve"
   
   # Route for getting gameweek information

@@ -16,6 +16,14 @@ class MatchPlayer < ActiveRecord::Base
   def both_are_present
     nfl_player.present? && game_week.present?
   end
+  
+  def get_player_name
+    NflPlayer.find(self.nfl_player_id).name
+  end
+  
+  def get_player_team
+    NflPlayer.find(self.nfl_player_id).nfl_team.name
+  end
 
   def points
     total_points = 0

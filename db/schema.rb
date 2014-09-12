@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20140713162845) do
     t.integer  "target_user_id"
     t.integer  "offered_player_id"
     t.integer  "target_player_id"
+    t.string   "status",            default: "pending"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

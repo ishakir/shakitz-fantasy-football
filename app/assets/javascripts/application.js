@@ -19,3 +19,4 @@
 //= require less-1.3.3.min
 //= require moment.min
 //= require bootstrap-sortable
+//= require bootstrap-select
