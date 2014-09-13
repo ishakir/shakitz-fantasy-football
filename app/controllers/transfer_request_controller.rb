@@ -10,7 +10,7 @@ class TransferRequestController < ApplicationController
 
   ACTION_KEY = :action_type
   ID_KEY     = :id
-  
+
   STATUS_ACCEPTED = "accepted"
   STATUS_REJECTED = "rejected"
   STATUS_PENDING = "pending"
@@ -34,19 +34,21 @@ class TransferRequestController < ApplicationController
   end
 
   def status
-    @pending_transfers = TransferRequest.where(:status => STATUS_PENDING)
-    @completed_transfers = TransferRequest.where.not(:status => STATUS_PENDING)
+    @pending_transfers = TransferRequest.where(status: STATUS_PENDING)
+    @completed_transfers = TransferRequest.where.not(status: STATUS_PENDING)
   end
 
   def resolve
     validate_all_parameters([ACTION_KEY, ID_KEY], params)
 
     action_type = params[ACTION_KEY]
-    fail ArgumentError, "action should be accept or reject" unless action_type == "accept" || action_type == "reject"
+    fail ArgumentError, "action should be accept or reject" unless action_type == "accept" ||
+      action_type == "reject" || action_type == "cancel"
 
     transfer_request = TransferRequest.find(params[ID_KEY])
     handle_swap(transfer_request) if action_type == "accept"
     transfer_request.update!(status: STATUS_REJECTED) if action_type == "reject"
+    transfer_request.destroy! if action_type == "cancel"
   end
 
   def handle_swap(transfer_request)
@@ -69,7 +71,7 @@ class TransferRequestController < ApplicationController
     # Save
     game_week_team_player_one.save!
     game_week_team_player_two.save!
-    
+
     # Change status
     transfer_request.update!(status: STATUS_ACCEPTED)
   end

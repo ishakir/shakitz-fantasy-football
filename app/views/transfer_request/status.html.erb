@@ -1,3 +1,4 @@
+<%= javascript_include_tag "transfer_status" %>
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -17,8 +18,8 @@
 					<h4 class="incoming action">Incoming</h4>
 					<ul>
 					<% @pending_transfers.each do |transfer| %>
-						<% if transfer.request_user.id != session[:user_id] %>
-						<li id="incoming_<%= transfer.id %>" class="actionable-transfers">
+						<% if transfer.request_user.id == session[:user_id] %>
+						<li id="incoming_<%= transfer.id %>" class="actionable-transfers inc">
 							<span>You offered <%= transfer.offered_player.name %> for
 								<%= transfer.target_player.name  %> from 
 								<%= transfer.target_user.name %></span>
@@ -30,8 +31,8 @@
 					<h4 class="outgoing action">Outgoing</h4>
 					<ul>
 					<% @pending_transfers.each do |transfer| %>
-						<% if transfer.target_user.id != session[:user_id] %>
-						<li id="outgoing_<%= transfer.id %>" class="actionable-transfers">
+						<% if transfer.target_user.id == session[:user_id] %>
+						<li id="outgoing_<%= transfer.id %>" class="actionable-transfers out">
 							<span>You were offered <%= transfer.offered_player.name %> for
 								<%= transfer.target_player.name  %> from 
 								<%= transfer.request_user.name %></span>
@@ -137,6 +138,33 @@
 				<% else %>
 				<h5>There are currently no completed transfers</h3>
 				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">		
+			<div class="modal fade in" id="actionModal" role="dialog" aria-labelledby="transferconfirm" aria-hidden="false">
+				<div id="transfer-dialog" class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">
+								Transfer Request Response
+							</h4>
+						</div>
+						<%= form_for :transfer_request, :url => transfer_request_resolve_path, :html => {:id => 'act_on_transfer'}, :method => :post  do |f| %>
+						<div class="modal-body">
+							<p id="transferModalText"></p>
+							<%= f.hidden_field :action_type, :action_type =>'action_type_id' %>
+ 						 	<%= f.hidden_field :id, :id =>'transfer_request_id' %>
+				  		</div>
+						<div class="modal-footer">
+							<a class="btn btn-default btn-danger" data-dismiss="actionModal">No</a>
+							<button type="submit" class="btn btn-default btn-success">Yes</button>
+						</div>
+						<% end %>
+					</div>	
+				</div>
 			</div>
 		</div>
 	</div>

@@ -165,11 +165,9 @@ class UserController < ApplicationController
     user = User.find(params[USER_ID_KEY])
     user.team_for_game_week(@game_week).match_players.to_json
   end
-  
+
   def return_player_name_for_active_game_week_team(user_id)
-    if(user_id <= 0)
-      user_id = session[:user_id]
-    end
+    user_id = session[:user_id] if user_id <= 0
     team = User.find(user_id).team_for_game_week(WithGameWeek.current_game_week).match_players
     obj = []
     team.each do |player|

@@ -30,7 +30,7 @@ class TransferRequest < ActiveRecord::Base
 
   validate :users_are_different
   validate :players_are_different
-  
+
   ALLOWED_TYPES = %w(pending accepted rejected)
 
   validates :status,
