@@ -50,6 +50,8 @@ class TransferRequestController < ApplicationController
     handle_swap(transfer_request) if action_type == "accept"
     transfer_request.update!(status: STATUS_REJECTED) if action_type == "reject"
     transfer_request.destroy! if action_type == "cancel"
+    
+    redirect_to transfer_request_path
   end
 
   def handle_swap(transfer_request)
