@@ -34,6 +34,7 @@ class TransferRequestController < ApplicationController
   end
 
   def status
+    @hasActions = doesUserHaveActionsToComplete(TransferRequest.where(status: STATUS_PENDING))
     @pending_transfers = TransferRequest.where(status: STATUS_PENDING)
     @completed_transfers = TransferRequest.where.not(status: STATUS_PENDING)
   end
@@ -42,7 +43,7 @@ class TransferRequestController < ApplicationController
     validate_all_parameters([ACTION_KEY, ID_KEY], params[TRANSFER_REQUEST_ID_KEY])
 
     action_type = params[TRANSFER_REQUEST_ID_KEY][ACTION_KEY]
-    fail ArgumentError, "action should be accept, cancel or reject" unless action_type == "accept" || 
+    fail ArgumentError, "action should be accept, cancel or reject" unless action_type == "accept" ||
       action_type == "reject" || action_type == "cancel"
 
     transfer_request = TransferRequest.find(params[TRANSFER_REQUEST_ID_KEY][ID_KEY])
@@ -74,6 +75,16 @@ class TransferRequestController < ApplicationController
 
     # Change status
     transfer_request.update!(status: STATUS_ACCEPTED)
+  end
+
+  def doesUserHaveActionsToComplete(pendingTransfers)
+    result = false
+    pendingTransfers.each do |p|
+      if p['request_user_id'] == session[:user_id] || p['target_user_id'] == session[:user_id]
+        result = true
+      end
+    end
+    result
   end
 
   def find_game_week_team_player(game_week_team, match_player)

@@ -10,7 +10,7 @@
 		</div>
 		<div>
 			<div class="col-md-12 column">
-				<% if !session[:user_id].nil? %>
+				<% if !session[:user_id].nil?  && !@hasActions%>
 				<div id="my-action">
 					<h3>
 						My Actions
@@ -18,7 +18,7 @@
 					<h4 class="incoming action">Incoming</h4>
 					<ul>
 					<% @pending_transfers.each do |transfer| %>
-						<% if transfer.request_user.id == session[:user_id] %>
+						<% if transfer.request_user.id != session[:user_id] %>
 						<li id="incoming_<%= transfer.id %>" class="actionable-transfers inc">
 							<span>You offered <%= transfer.offered_player.name %> for
 								<%= transfer.target_player.name  %> from 
@@ -142,8 +142,8 @@
 		</div>
 	</div>
 	<div class="row clearfix">
-		<div class="col-md-12 column">		
-			<div class="modal fade in" id="actionModal" role="dialog" aria-labelledby="transferconfirm" aria-hidden="false">
+		<div class="col-md-12 column">	
+			<div class="modal fade in" id="actionModal" role="dialog" aria-hidden="false">
 				<div id="transfer-dialog" class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">

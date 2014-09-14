@@ -15,7 +15,7 @@ var setIncomingHandlers = function(){
 			$('#action_type').val("accept");
 			$('#transferModalText').html("Are you sure you want to accept this transfer?");
 		}
-		$('#actionModal').show();
+		$('#actionModal').modal('show');
 	});
 };
 
@@ -24,7 +24,7 @@ var setOutgoingHandlers = function(){
 		var id = e.target.parentNode.id.split('_')[1];
 		$('#transfer_request_id').val(id);
 		$('#action_type').val("cancel");
-		$('#actionModal').show();
+		$('#actionModal').modal('show');
 		$('#transferModalText').html("Are you sure you want to cancel this transfer?");
 	});
 };

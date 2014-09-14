@@ -61,29 +61,29 @@ class TransferRequestControllerTest < ActionController::TestCase
   end
 
   test "resolve should reject if action_type isn't specified" do
-    post :resolve, id: 1
+    post :resolve, transfer_request: { id: 1 }
     assert_response :unprocessable_entity
   end
 
   test "resolve should reject if action_type is invalid" do
-    post :resolve, id: 1, action_type: "shpoople"
+    post :resolve, transfer_request: { id: 1, action_type: "shpoople" }
     assert_response :unprocessable_entity
   end
 
   test "resolve should reject if id is wrong" do
-    post :resolve, id: 50_000, action_type: "accept"
+    post :resolve, transfer_request: { id: 50_000, action_type: "accept" }
     assert_response :not_found
   end
 
   test "status changes to rejected if rejected" do
-    post :resolve, id: 2, action_type: "reject"
+    post :resolve, transfer_request: { id: 2, action_type: "reject" }
     assert_response :success
 
     assert_equal "rejected", TransferRequest.find(2).status
   end
 
   test "users are swapped if it's accepted" do
-    post :resolve, id: 2, action_type: "accept"
+    post :resolve, transfer_request: { id: 2, action_type: "accept" }
     assert_response :success
 
     game_week_team_player_one = GameWeekTeamPlayer.find(55)
@@ -94,14 +94,14 @@ class TransferRequestControllerTest < ActionController::TestCase
   end
 
   test "transfer status is changed to accepted if accepted" do
-    post :resolve, id: 2, action_type: "accept"
+    post :resolve, transfer_request: { id: 2, action_type: "accept" }
     assert_response :success
 
     assert_equal "accepted", TransferRequest.find(2).status
   end
 
   test "transfer request is destroyed when cancelled" do
-    post :resolve, id: 2, action_type: "cancel"
+    post :resolve, transfer_request: { id: 2, action_type: "cancel" }
     assert_response :success
 
     assert_raise ActiveRecord::RecordNotFound do
