@@ -155,11 +155,11 @@
 						<%= form_for :transfer_request, :url => transfer_request_resolve_path, :html => {:id => 'act_on_transfer'}, :method => :post  do |f| %>
 						<div class="modal-body">
 							<p id="transferModalText"></p>
-							<%= f.hidden_field :action_type, :action_type =>'action_type_id' %>
+							<%= f.hidden_field :action_type, :id =>'action_type' %>
  						 	<%= f.hidden_field :id, :id =>'transfer_request_id' %>
 				  		</div>
 						<div class="modal-footer">
-							<a class="btn btn-default btn-danger" data-dismiss="actionModal">No</a>
+							<a class="btn btn-default btn-danger" data-dismiss="modal">No</a>
 							<button type="submit" class="btn btn-default btn-success">Yes</button>
 						</div>
 						<% end %>

@@ -39,13 +39,13 @@ class TransferRequestController < ApplicationController
   end
 
   def resolve
-    validate_all_parameters([ACTION_KEY, ID_KEY], params)
+    validate_all_parameters([ACTION_KEY, ID_KEY], params[TRANSFER_REQUEST_ID_KEY])
 
-    action_type = params[ACTION_KEY]
-    fail ArgumentError, "action should be accept or reject" unless action_type == "accept" ||
+    action_type = params[TRANSFER_REQUEST_ID_KEY][ACTION_KEY]
+    fail ArgumentError, "action should be accept, cancel or reject" unless action_type == "accept" || 
       action_type == "reject" || action_type == "cancel"
 
-    transfer_request = TransferRequest.find(params[ID_KEY])
+    transfer_request = TransferRequest.find(params[TRANSFER_REQUEST_ID_KEY][ID_KEY])
     handle_swap(transfer_request) if action_type == "accept"
     transfer_request.update!(status: STATUS_REJECTED) if action_type == "reject"
     transfer_request.destroy! if action_type == "cancel"

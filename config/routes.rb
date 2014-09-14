@@ -45,7 +45,7 @@ Footbawwl::Application.routes.draw do
   
   # Routes for handling transfer requests
   post "transfer_request" => "transfer_request#create", :as => "transfer_request_bid"
-  post "transfer_request/:id" => "transfer_request#resolve", :as => "transfer_request_resolve"
+  post "transfer_request/resolve" => "transfer_request#resolve", :as => "transfer_request_resolve"
   
   # Route for getting gameweek information
   get "gameweek/current" => "gameweek#get_current_gameweek"
