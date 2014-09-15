@@ -287,16 +287,15 @@ var setTableTransferRequestHandlers = function(){
 var promptTransferRequest = function(name, id){	
 	var playerId = id.substring('Row')[0];
 	$("#requestModal").modal('show');
-	$('.selectpicker.opponent-player').selectpicker();
+	$('.selectpicker.opponent-player').selectpicker('val', name);
 	$('.selectpicker.opponent-player').change(function(e) {
 		$('#requested_player_id').val(e.target.selectedOptions[0].id.split("-")[1]);
 	});
+	$('#requested_player_id').val(playerId);
 	$('.selectpicker.my-player').selectpicker();
 	$('.selectpicker.my-player').change(function(e){
 		$('#offered_player_id').val(e.target.selectedOptions[0].id.split("-")[1]);
 	});
-	$('#requested_player_id').val(name);
-	$('.selectpicker.opponent-player').selectpicker('val', name);
 };
 
 $(function(){
