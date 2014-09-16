@@ -34,6 +34,7 @@ Highest Priority new features
 * Allow custom team sizes
 * Fixtures for > 8 users
 * Enhanced home page with more interesting info (team of the week, recent transfer activity etc...)
+* Graphs for users points over time
 
 Setting up a development environment
 ====================================
