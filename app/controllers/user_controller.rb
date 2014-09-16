@@ -49,7 +49,7 @@ class UserController < ApplicationController
       @game_week = @active_gameweek
     end
 
-    @game_week_time_obj['locked'] = GameWeek.find_unique_with(@game_week).is_locked?
+    @game_week_time_obj['locked'] = GameWeek.find_unique_with(@game_week).locked?
 
     Rails.logger.info "Calculated current game week to be #{@game_week}"
 
@@ -119,7 +119,7 @@ class UserController < ApplicationController
     validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
     payload = validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
 
-    if GameWeek.find_unique_with(params[GAME_WEEK_KEY].to_i).is_locked?
+    if GameWeek.find_unique_with(params[GAME_WEEK_KEY].to_i).locked?
       fail ArgumentError, "Gameweek is currently locked, unable to make changes"
     end
 
@@ -158,9 +158,7 @@ class UserController < ApplicationController
 
   def show_my_team_info
     validate_all_parameters([USER_ID_KEY], params)
-    if @game_week.nil?
-      @game_week = WithGameWeek.current_game_week
-    end
+    @game_week = WithGameWeek.current_game_week if @game_week.nil?
     payload = return_my_player_point_info
     render json: payload
   end

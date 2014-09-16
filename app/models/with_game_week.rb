@@ -43,7 +43,7 @@ module WithGameWeek
     eastern_time
   end
 
-  def self.is_more_than_time_since_start?(days, hours)
+  def self.more_than_time_since_start?(days, hours)
     eastern_current_time = WithGameWeek.eastern_current_time
     start_time = WithGameWeek.start_of_first_gameweek
 
