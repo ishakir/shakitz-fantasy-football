@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ishakir/footbawwl.svg)](https://travis-ci.org/ishakir/footbawwl)
+[![Build Status](https://travis-ci.org/ishakir/shakitz-fantasy-football.svg)](https://travis-ci.org/ishakir/shakitz-fantasy-football)
 [![Code Climate](https://codeclimate.com/github/ishakir/footbawwl.png)](https://codeclimate.com/github/ishakir/footbawwl)
 
 Shakitz NFL Fantasy Football for Rails
