@@ -1,0 +1,171 @@
+<%= javascript_include_tag "transfer_status" %>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="page-header">
+				<h2>
+					Shakitz Footbawwl Transfers <small>Sponsored by the Henne for President Foundation</small>
+				</h2>
+			</div>
+		</div>
+		<div>
+			<div class="col-md-12 column">
+				<% if !session[:user_id].nil?  && @hasActions%>
+				<div id="my-action">
+					<h3>
+						My Actions
+					</h3>
+					<h4 class="incoming action">Incoming</h4>
+					<ul>
+					<% @pending_transfers.each do |transfer| %>
+						<% if transfer.request_user.id == session[:user_id] %>
+						<li id="incoming_<%= transfer.id %>" class="actionable-transfers inc">
+							<span>You offered <%= transfer.offered_player.name %> for
+								<%= transfer.target_player.name  %> from 
+								<%= transfer.target_user.name %></span>
+							  <button type="button" class="btn btn-default btn-sm btn-danger pull-right">Cancel</button>
+						</li>
+						<% end %>
+					<% end %>
+					</ul>
+					<h4 class="outgoing action">Outgoing</h4>
+					<ul>
+					<% @pending_transfers.each do |transfer| %>
+						<% if transfer.target_user.id == session[:user_id] %>
+						<li id="outgoing_<%= transfer.id %>" class="actionable-transfers out">
+							<span>You were offered <%= transfer.offered_player.name %> for
+								<%= transfer.target_player.name  %> from 
+								<%= transfer.request_user.name %></span>
+							<div class="pull-right">
+							  <button type="button" class="btn btn-default btn-sm btn-danger">Reject</button>
+							  <button type="button" class="btn btn-default btn-sm btn-success">Accept</button>
+							 </div>
+						</li>
+						<% end %>
+					<% end %>
+					</ul>
+				</div>
+				<% end %>	
+				<h3>
+					Pending Transfers
+				</h3>
+				<% if @pending_transfers.length > 0 %>
+				<table class="table pending-transfer-table">
+					<thead>
+						<tr>
+							<th>
+								Offering User
+							</th>
+							<th>
+								Offered Player
+							</th>
+							<th>
+								Targeted User
+							</th>
+							<th>
+								Targeted Player
+							</th>
+							<th>
+								Time bidded
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @pending_transfers.each_with_index do |transfer, index| %>
+							<% if transfer.status == "pending" %>
+								<% if index%2== 0%>
+								<tr class="active">
+								<% else %>
+								<tr>
+								<% end %>
+									<td><%= transfer.request_user.name %></td>
+									<td><%= transfer.offered_player.name %></td>
+									<td><%= transfer.target_user.name %></td>
+									<td><%= transfer.target_player.name  %></td>
+									<td><%= transfer.created_at %></td>
+								</tr>
+							<% end %>
+						<% end %>
+					</tbody>
+				</table>
+				<% else %>
+				<h5>There are no pending transfers</h5>
+				<% end %>
+				<h3>
+					Transfer History
+				</h3>
+				<% if @completed_transfers.length > 0 %>
+				<table class="table completed-transfer-table">
+					<thead>
+						<tr>
+							<th>
+								Offering User
+							</th>
+							<th>
+								Offered Player
+							</th>
+							<th>
+								Targeted User
+							</th>
+							<th>
+								Targeted Player
+							</th>
+							<th>
+								Time Decision Reached
+							</th>
+							<th>
+								Decision
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @completed_transfers.each_with_index do |transfer, index| %>
+							<% if index%2== 0%>
+							<tr class="active">
+							<% else %>
+							<tr>
+							<% end %>
+								<td><%= transfer.request_user.name %></td>
+								<td><%= transfer.offered_player.name %></td>
+								<td><%= transfer.target_user.name %></td>
+								<td><%= transfer.target_player.name  %></td>
+								<td><%= transfer.updated_at %></td>
+								<td><%= transfer.status %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+				<% else %>
+				<h5>There are currently no completed transfers</h3>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">	
+			<div class="modal fade in" id="actionModal" role="dialog" aria-hidden="false">
+				<div id="transfer-dialog" class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">
+								Transfer Request Response
+							</h4>
+						</div>
+						<%= form_for :transfer_request, :url => transfer_request_resolve_path, :html => {:id => 'act_on_transfer'}, :method => :post  do |f| %>
+						<div class="modal-body">
+							<p id="transferModalText"></p>
+							<%= f.hidden_field :action_type, :id =>'action_type' %>
+ 						 	<%= f.hidden_field :id, :id =>'transfer_request_id' %>
+				  		</div>
+						<div class="modal-footer">
+							<a class="btn btn-default btn-danger" data-dismiss="modal">No</a>
+							<button type="submit" class="btn btn-default btn-success">Yes</button>
+						</div>
+						<% end %>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

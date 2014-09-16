@@ -132,21 +132,50 @@
 	</div>
 	<div id="stat-detail">
 	</div>
-	<div id="requestModal" class="modal fade">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title">Transfer request</h4>
-	      </div>
-	      <div id="requestBody" class="modal-body">
-	        
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button id="requestButton" type="button" class="btn btn-primary">Request transfer</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+	<div class="row clearfix">
+		<div class="col-md-12 column">			
+			<div class="modal fade in" id="requestModal" role="dialog" aria-labelledby="transferrequest" aria-hidden="false">
+				<div id="register-user-dialog" class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">
+								Transfer Request Bid
+							</h4>
+						</div>
+						<% if !session[:user_id].nil? %>
+							<%= form_for :transfer_request, :url => transfer_request_bid_path, :html => {:id => 'create_transfer'}, :method => :post  do |f| %>
+							 <div class="modal-body">
+								<div id="row1">
+									<span>Player Offered:</span>
+									<span class="pull-right">Player Requested:</span>
+								</div>
+								<div id="row2">
+									<select id="my-player" class="selectpicker my-player">
+									 <%= return_player_name_for_active_game_week_team(session[:user_id]).each do |u| %>
+									 	<option id="nfl_p_id-<%= u[0] %>" data-subtext="<%= u[2] %>"><%= u[1] %></option>
+									 <% end %>
+									</select>
+									<select id="opponent-player" class="selectpicker opponent-player pull-right">
+									 <%= return_player_name_for_active_game_week_team(@user.id).each do |u| %>
+									 	<option id="nfl_p_id-<%= u[0] %>" data-subtext="<%= u[2] %>"><%= u[1] %></option>
+									 <% end %>
+									</select>
+	 						 	</div> 
+	 						 	<%= f.hidden_field :offered_player_id, :id=>'offered_player_id' %>
+	 						 	<%= f.hidden_field :target_player_id, :id=>'requested_player_id' %>
+	 						 	<%= f.hidden_field :request_user_id, :id=>'request_user_id', :value=>session[:user_id] %>
+	 						 	<%= f.hidden_field :target_user_id, :id=>'target_user_id', :value=>@user.id %>
+							  </div>
+							  <div class="modal-footer">
+							    <a class="btn btn-default btn-grey" data-dismiss="modal">Cancel</a>
+							    <button type="submit" class="btn btn-default">Submit Transfer Request</button>
+							  </div>
+							<% end %>	
+						<% end %>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

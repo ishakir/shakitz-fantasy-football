@@ -26,7 +26,6 @@ We're keen to drive usage and take advantage of the open source nature of the pr
 Highest Priority new features
 =============================
 
-* Locking of teams at an appropriate time before matches
 * Complete implementation of waver wire
 * Complete automation of initial player creation, fixture generation, team locking and stats updates
 * Automated provisioning of production instances
@@ -34,6 +33,7 @@ Highest Priority new features
 * Allow custom team sizes
 * Fixtures for > 8 users
 * Enhanced home page with more interesting info (team of the week, recent transfer activity etc...)
+* Graphs for users points over time
 
 Setting up a development environment
 ====================================

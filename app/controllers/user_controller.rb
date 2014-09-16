@@ -157,9 +157,7 @@ class UserController < ApplicationController
   end
 
   def show_my_team_info
-    validate_all_parameters([USER_ID_KEY], params)
-    @game_week = WithGameWeek.current_game_week if @game_week.nil?
-    payload = return_my_player_point_info
+    payload = return_player_name_for_active_game_week_team
     render json: payload
   end
 
@@ -167,6 +165,17 @@ class UserController < ApplicationController
     user = User.find(params[USER_ID_KEY])
     user.team_for_game_week(@game_week).match_players.to_json
   end
+
+  def return_player_name_for_active_game_week_team(user_id)
+    user_id = session[:user_id] if user_id <= 0
+    team = User.find(user_id).team_for_game_week(WithGameWeek.current_game_week).match_players
+    obj = []
+    team.each do |player|
+      obj.push([player.nfl_player_id, player.get_player_name, player.get_player_team])
+    end
+    obj
+  end
+  helper_method :return_player_name_for_active_game_week_team
 
   def return_nfl_player_and_team_data
     players = NflPlayer.includes(:nfl_team)

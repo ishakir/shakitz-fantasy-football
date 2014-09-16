@@ -48,6 +48,9 @@ gem 'mysql2'
 #third-party plugin to make select boxes nicer
 gem 'twitter-typeahead-rails'
 
+#another select third-party plugin
+gem 'bootstrap-select-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
