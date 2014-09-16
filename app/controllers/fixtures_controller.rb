@@ -4,9 +4,7 @@ class FixturesController < ApplicationController
   GAME_WEEK = :game_week
 
   def generate
-    users = User.all.map do |user|
-      user.id
-    end
+    users = User.all.map(&:id)
     schedule = generate_fixture_schedule(users)
     save_fixture_schedule(schedule)
   end
@@ -29,7 +27,7 @@ class FixturesController < ApplicationController
       rules: [
         RRSchedule::Rule.new(
           wday: 6,
-          ps: (0 .. users.size), # We have as many places to play as teams, that means
+          ps: (0..users.size), # We have as many places to play as teams, that means
           gt: ["7:00PM"]         # everyone can fit into "one gameweek"
         )
       ],

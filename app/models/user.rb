@@ -42,9 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def opponents
-    opponents = game_week_teams.map do |game_week_team|
-      game_week_team.opponent
-    end
+    opponents = game_week_teams.map(&:opponent)
     opponents.compact
   end
 

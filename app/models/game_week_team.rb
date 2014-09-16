@@ -44,9 +44,7 @@ class GameWeekTeam < ActiveRecord::Base
     gwt_players = game_week_team_players.select do |gwtp|
       gwtp.playing == playing
     end
-    gwt_players.map do |gwtp|
-      gwtp.match_player
-    end
+    gwt_players.map(&:match_player)
   end
 
   def fixture
