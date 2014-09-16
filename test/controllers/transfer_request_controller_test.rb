@@ -77,14 +77,14 @@ class TransferRequestControllerTest < ActionController::TestCase
 
   test "status changes to rejected if rejected" do
     post :resolve, transfer_request: { id: 2, action_type: "reject" }
-    assert_response :success
+    assert_redirected_to controller: :transfer_request, action: :status
 
     assert_equal "rejected", TransferRequest.find(2).status
   end
 
   test "users are swapped if it's accepted" do
     post :resolve, transfer_request: { id: 2, action_type: "accept" }
-    assert_response :success
+    assert_redirected_to controller: :transfer_request, action: :status
 
     game_week_team_player_one = GameWeekTeamPlayer.find(55)
     game_week_team_player_two = GameWeekTeamPlayer.find(56)
@@ -95,14 +95,14 @@ class TransferRequestControllerTest < ActionController::TestCase
 
   test "transfer status is changed to accepted if accepted" do
     post :resolve, transfer_request: { id: 2, action_type: "accept" }
-    assert_response :success
+    assert_redirected_to controller: :transfer_request, action: :status
 
     assert_equal "accepted", TransferRequest.find(2).status
   end
 
   test "transfer request is destroyed when cancelled" do
     post :resolve, transfer_request: { id: 2, action_type: "cancel" }
-    assert_response :success
+    assert_redirected_to controller: :transfer_request, action: :status
 
     assert_raise ActiveRecord::RecordNotFound do
       TransferRequest.find(2)

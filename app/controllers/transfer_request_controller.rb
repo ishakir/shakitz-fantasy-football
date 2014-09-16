@@ -34,7 +34,7 @@ class TransferRequestController < ApplicationController
   end
 
   def status
-    @hasActions = doesUserHaveActionsToComplete(TransferRequest.where(status: STATUS_PENDING))
+    @has_actions = does_user_have_actions_to_complete(TransferRequest.where(status: STATUS_PENDING))
     @pending_transfers = TransferRequest.where(status: STATUS_PENDING)
     @completed_transfers = TransferRequest.where.not(status: STATUS_PENDING)
   end
@@ -50,7 +50,7 @@ class TransferRequestController < ApplicationController
     handle_swap(transfer_request) if action_type == "accept"
     transfer_request.update!(status: STATUS_REJECTED) if action_type == "reject"
     transfer_request.destroy! if action_type == "cancel"
-    
+
     redirect_to transfer_request_path
   end
 
@@ -79,12 +79,11 @@ class TransferRequestController < ApplicationController
     transfer_request.update!(status: STATUS_ACCEPTED)
   end
 
-  def doesUserHaveActionsToComplete(pendingTransfers)
+  def does_user_have_actions_to_complete(pending_transfers)
     result = false
-    pendingTransfers.each do |p|
-      if p['request_user_id'] == session[:user_id] || p['target_user_id'] == session[:user_id]
-        result = true
-      end
+    pending_transfers.each do |p|
+      next unless p['request_user_id'] == session[:user_id] || p['target_user_id'] == session[:user_id]
+      result = true
     end
     result
   end
