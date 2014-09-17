@@ -29,7 +29,6 @@ Highest Priority new features
 * Complete implementation of waver wire
 * Complete automation of initial player creation, fixture generation, team locking and stats updates
 * Automated provisioning of production instances
-* Allow points strategies
 * Allow custom team sizes
 * Fixtures for > 8 users
 * Enhanced home page with more interesting info (team of the week, recent transfer activity etc...)
