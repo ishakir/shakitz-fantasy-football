@@ -1,2 +1,3 @@
 first_gameweek_start: <%= Time.now.strftime("%d/%m/%Y") %>
 number_of_gameweeks: 17
+points_strategy: nfl
