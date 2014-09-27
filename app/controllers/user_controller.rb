@@ -171,7 +171,7 @@ class UserController < ApplicationController
     team = User.find(user_id).team_for_game_week(WithGameWeek.current_game_week).match_players
     obj = []
     team.each do |player|
-      obj.push([player.nfl_player_id, player.nfl_player.name, player.nfl_team.name])
+      obj.push([player.nfl_player_id, player.nfl_player.name, player.nfl_player.nfl_team.name])
     end
     obj
   end
