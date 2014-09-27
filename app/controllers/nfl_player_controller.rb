@@ -118,16 +118,6 @@ class NflPlayerController < ApplicationController
 
     found_player = player_finder.player
     if found_player == :none
-      # TODO: remove this! Currently left in to do
-      # team = NflTeam.where(name: id_json['team']).first
-      # position_type = NflPlayerType.where(position_type: id_json['type']).first
-      # found_player = NflPlayer.new(name: id_json['name'], nfl_team: team, nfl_player_type: position_type)
-      # found_player.nfl_id = id_json['id']
-      # found_player.save!
-      # 1.upto(17) do |game_week|
-      #   MatchPlayer.create!(nfl_player: found_player, game_week: GameWeek.where(number: game_week).first)
-      # end
-      # message.add_message(0, "Added player (demo mode)")
       player_finder.add_no_player_found_message(message)
       return respond(message, :not_found)
     elsif found_player == :too_many
@@ -139,6 +129,10 @@ class NflPlayerController < ApplicationController
     player_finder.add_inconsistancy_messages(message)
     match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
     update_stats_for_player(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
+
+    points_strategy = PointsStrategy.new(Settings.points_strategy, match_player)
+    match_player.points = points_strategy.calculate_points
+    match_player.save!
 
     respond(message, :ok)
   end

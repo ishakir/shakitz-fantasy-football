@@ -319,4 +319,10 @@ class NflPlayerControllerTest < ActionController::TestCase
       STATS_HASH
     )
   end
+
+  test "should update the points on updating the stats" do
+    validate_stats_update_response('name_team_type_all_stats', :success, [])
+    match_player = NflPlayer.find(22).player_for_game_week(1)
+    assert_operator match_player.points, :>, 0
+  end
 end

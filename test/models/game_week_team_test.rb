@@ -157,14 +157,12 @@ class GameWeekTeamTest < ActiveSupport::TestCase
   end
 
   test 'should get number of team points for gameweek 1' do
-    skip("Revisit when we've reconsidered points")
     game_week_team = GameWeekTeam.find(1)
     assert_equal GWT_STAFFORD_PICKS_POINTS, game_week_team.points, 'Incorrect points total'
   end
 
   test 'should get number of team points for gameweek 2' do
-    skip("Revisit when we've reconsidered points")
-    game_week_team = GameWeekTeam.find(2)
+    game_week_team = GameWeekTeam.find(3)
     assert_equal GWT_TWO_POINTS, game_week_team.points
   end
 

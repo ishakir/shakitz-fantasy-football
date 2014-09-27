@@ -24,6 +24,7 @@ mp_<%= n %>:
   points_conceded: 70
   field_goals_kicked: 2
   extra_points_kicked: 0
+  points: 4
 <% end %>
 
 <% 18.times do |n| %>
@@ -50,6 +51,7 @@ mp_<%= n + 18 %>:
   points_conceded: 30
   field_goals_kicked: 0
   extra_points_kicked: 0
+  points: 3
 <% end %>
 
 <% 18.times do |n| %>
@@ -74,6 +76,7 @@ mp_<%= n %>_<%= m %>:
   points_conceded: 30
   field_goals_kicked: 0
   extra_points_kicked: 0
+  points: 2
 <% end %>
 <% end %>
   

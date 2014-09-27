@@ -239,7 +239,6 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'Can get users total points' do
-    skip("Revisit when we've chatted about points again")
     user = User.find(1)
     assert_equal USER_ONE_POINTS, user.points, 'Failed to get total team points'
   end

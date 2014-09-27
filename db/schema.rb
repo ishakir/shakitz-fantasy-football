@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20140713162845) do
     t.integer  "fumbles_won",          default: 0
     t.integer  "interceptions_caught", default: 0
     t.integer  "points_conceded",      default: 0
+    t.integer  "points",               default: 0
     t.integer  "game_week_id"
     t.integer  "nfl_player_id"
     t.datetime "created_at"

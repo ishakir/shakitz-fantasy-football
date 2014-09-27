@@ -26,6 +26,8 @@ class CreateMatchPlayers < ActiveRecord::Migration
       t.integer :fumbles_won, :default => 0
       t.integer :interceptions_caught, :default => 0
       t.integer :points_conceded, :default => 0
+
+      t.integer :points, :default => 0
       
       t.references :game_week
       t.references :nfl_player

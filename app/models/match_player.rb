@@ -16,9 +16,4 @@ class MatchPlayer < ActiveRecord::Base
   def both_are_present
     nfl_player.present? && game_week.present?
   end
-
-  def points
-    points_strategy = PointsStrategy.new(Settings.points_strategy, self)
-    points_strategy.calculate_points
-  end
 end
