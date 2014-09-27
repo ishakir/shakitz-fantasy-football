@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'player_finder'
 require 'response_message'
+require 'points_strategy'
 
 class NflPlayerController < ApplicationController
   PLAYER_JSON_KEY = :player
