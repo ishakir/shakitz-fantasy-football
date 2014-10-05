@@ -21,6 +21,9 @@
 					<li class="<%=active?(transfer_request_path) %>">
 						<a href="/transfer/status">Transfers</a>
 					</li>
+					<li class="<%= active?("/game_day") %>">
+						<a href="/game_day">Game Day</a>
+					</li>
 				</ul>
 				<% if session[:user_id] %>
 				<ul class="nav navbar-nav navbar-right">
