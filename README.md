@@ -14,7 +14,7 @@ Shakitz is the open source implementation of a fantasy football league. Key feat
 * Ranking table for:
   * Total points
   * Head-to-head fixtures
-* Player for player trades between users (under development)
+* Player for player trades between users
 * Waver wire trades for undrafted players (under development)
 
 Shakitz had an alpha run during the 2014 preseason, and is currently in the middle of a beta run during the 2014 regular season. We hope these runs will iron out any creases making the system ready for running in full in 2015.
@@ -27,6 +27,7 @@ Highest Priority new features
 =============================
 
 * Complete implementation of waver wire
+* Trades involving more than one player per side
 * Complete automation of initial player creation, fixture generation, team locking and stats updates
 * Automated provisioning of production instances
 * Allow custom team sizes
@@ -36,8 +37,6 @@ Highest Priority new features
 
 Setting up a development environment
 ====================================
-
-(*These instructions may be a little outdated and will be re-visited after the beta run is stable)
 
 You will need [rails](http://rubyonrails.org/download) before you can do anything. Once you have done that:
 
@@ -52,23 +51,18 @@ Change into the directory created:
 Install all the necessary gems
 
     (sudo) bundle install
-    
-Install a javascript runtime
 
-    sudo apt-get install nodejs
+Try running the tests to check the environment is sane:
 
-Start the rails server
-
-    rails server
+    bundle exec rake test
 
 Contributing
 ============
 
-(*These instructions may be a little outdated and will be re-visited after the beta run is stable)
+We use the standard rails testing frameworks in minitest for unit and rubocop for static analysis, these and a good conversation are the criteria for a commit. In order to check that any changes are good run first:
 
-We use the standard rails testing frameworks in minitest for unit and rubocop for static analysis, these and a good conversation are the criteria for a commit. In order to check that any changes are good run our custom function validation rake task:
-
-    rake validate
+    rubocop -R -a
+    bundle exec rake test
 
 We use magic_encoding to insert the UTF-8 header into the ruby files, so if rubocop returns complaining about a missing utf-8 encoding comment, run:
 
