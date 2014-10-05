@@ -105,8 +105,12 @@ desean:
   nfl_player_id: 20
   game_week_id: 1
   
-sir_no_match_player:
+sir_no_match_player_1:
     id: 100
     nfl_player_id: 23
     game_week_id: 1
   
+sir_no_match_player_2:
+  id: 101
+  nfl_player_id: 23
+  game_week_id: 2

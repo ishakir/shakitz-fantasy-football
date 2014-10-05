@@ -68,3 +68,9 @@ imranson_week_one_user_four:
   game_week_team_id: 52
   match_player_id: 4
   playing: false
+
+sir_no_match_player_user_eight:
+  id: 57
+  game_week_team_id: 120
+  match_player_id: 100
+  playing: false

@@ -22,6 +22,9 @@ Footbawwl::Application.routes.draw do
   get "user/:user_id/game_week/:game_week" => "user#show"
   
   get "user/:user_id/myteam" => "user#show_my_team_info"
+
+  # Game Day View
+  get "game_day/:game_week/which_team" => "game_days#which_team_has_player"
   
   ##Transfer View
   get "transfer/status" => "transfer_request#status", :as => "transfer_request"
