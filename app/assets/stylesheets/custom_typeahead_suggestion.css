@@ -17,6 +17,10 @@
   background-color: #fff;
 }
 
+.small-typeahead {
+  width: 290px;
+}
+
 .typeahead:focus {
   border: 2px solid #0097cf;
 }

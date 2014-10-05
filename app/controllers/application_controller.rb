@@ -27,6 +27,17 @@ class ApplicationController < ActionController::Base
     fail ArgumentError, "Expected at least #{minimum_expected} but found #{parameters_found_string}"
   end
 
+  def return_nfl_player_and_team_data
+    players = NflPlayer.includes(:nfl_team)
+    tmp = {}
+    players.each do |player|
+      player_tmp = { player: player }
+      name_tmp = { team: player.nfl_team.name }
+      tmp[player.id] = player_tmp.merge!(name_tmp)
+    end
+    tmp
+  end
+
   ### Controller exception handling
   # Stuff that's going to return a 404
   rescue_from ActiveRecord::RecordNotFound do |error|

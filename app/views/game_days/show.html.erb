@@ -1,0 +1,22 @@
+<%= javascript_include_tag "game_days" %>
+<script>
+  var currentGameWeek = <%= @current_game_week %>;
+  var playerData = <%= raw @player_data %>
+</script>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"> 
+      <div class="row">
+        <div id="bloodhound">
+          <input id="playerText" class="typeahead small-typeahead" type="text" placeholder="Find Player's Team">
+        </div>
+      </div>
+      <div class="row top5">
+        <p id="teamText" class="text-center">User - Team</p>
+        <p id = "playingOrBenched" class="text-success text-center"><strong>Playing</strong></p>
+      </div>
+    </div>
+    <div class="col-md-9">
+    </div>
+  </div>
+</div>

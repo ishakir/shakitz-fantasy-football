@@ -2,6 +2,16 @@ class GameDaysController < ApplicationController
   GAME_WEEK_KEY = :game_week
   PLAYER_ID_KEY = :player_id
 
+  def show_no_game_week
+    redirect_to "/game_day/#{WithGameWeek.current_game_week}"
+  end
+
+  def show
+    validate_all_parameters([GAME_WEEK_KEY], params)
+    @current_game_week = WithGameWeek.current_game_week
+    @player_data = return_nfl_player_and_team_data.to_json
+  end
+
   def which_team_has_player
     validate_all_parameters([GAME_WEEK_KEY, PLAYER_ID_KEY], params)
 
@@ -13,14 +23,18 @@ class GameDaysController < ApplicationController
     found_user = nil if game_week_team_players.empty?
     found_user = game_week_team_players.first.game_week_team.user unless game_week_team_players.empty?
 
-    return_data = nil if found_user.nil?
-    return_data = {
+    team_data = nil if found_user.nil?
+    team_data = {
       name: found_user.name,
       team_name: found_user.team_name,
       playing: game_week_team_players.first.playing
     } unless found_user.nil?
 
-    render json: { data: return_data }, status: :success
+    return_data = { data: team_data }
+
+    respond_to do |format|
+      format.json { render json: return_data }
+    end
   end
 
   private

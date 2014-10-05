@@ -177,17 +177,6 @@ class UserController < ApplicationController
   end
   helper_method :return_player_name_for_active_game_week_team
 
-  def return_nfl_player_and_team_data
-    players = NflPlayer.includes(:nfl_team)
-    tmp = {}
-    players.each do |player|
-      player_tmp = { player: player }
-      name_tmp = { team: player.nfl_team.name }
-      tmp[player.id] = player_tmp.merge!(name_tmp)
-    end
-    tmp
-  end
-
   def generate_player_specific_point_data(player)
     {
       Passing_touchdowns: player.passing_tds,
