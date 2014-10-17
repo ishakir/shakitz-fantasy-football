@@ -12,6 +12,43 @@ class GameDaysController < ApplicationController
     @current_game_week = WithGameWeek.current_game_week
     @player_data = return_nfl_player_and_team_data.to_json
     @users = User.all
+    @best_team = find_ten_best_players(@page_game_week)
+  end
+
+  def find_ten_best_players(game_week)
+    game_week = GameWeek.find_unique_with(game_week)
+    top_qbs = find_top_of_type("QB", 2, game_week)
+    top_rbs = find_top_of_type("RB", 2, game_week)
+    top_wrs = find_top_of_type("WR", 3, game_week)
+    top_tes = find_top_of_type("TE", 2, game_week)
+    top_ds  = find_top_of_type("D", 1, game_week)
+    top_ks  = find_top_of_type("K", 2, game_week)
+
+    best_team = top_qbs
+                  .concat(top_rbs)
+                  .concat(top_ds)
+                  .concat(top_wrs.first(2))
+                  .push(top_tes.first)
+                  .push(top_ks.first)
+
+    other_players = [top_wrs[2], top_tes[1], top_ks[1]]
+    other_players.each do |match_player|
+      puts "Hello" if match_player.nil?
+      puts match_player.nfl_player.name unless match_player.nil?
+    end
+    best_team.push(
+      other_players.max_by(&:points)
+    )
+
+    best_team
+  end
+
+  def find_top_of_type(type, number, game_week)
+    MatchPlayer
+      .joins(:nfl_player)
+      .where(game_week: game_week, nfl_players: { nfl_player_type_id: NflPlayerType.find_unique_with(type) })
+      .order(points: :desc)
+      .limit(number)
   end
 
   def which_team_has_player

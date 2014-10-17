@@ -15,7 +15,7 @@ var selector = function(){
 };
 
 var checkPlayerTeamAndUpdate = function(playerId) {
-  var request_url = "/game_day/" + currentGameWeek + "/which_team"
+  var request_url = "/game_day/" + pageGameWeek + "/which_team"
   $.getJSON(
     request_url,
     { player_id: playerId }

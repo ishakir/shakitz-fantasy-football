@@ -79,7 +79,7 @@ mp_<%= n %>_<%= m %>:
   points: 2
 <% end %>
 <% end %>
-  
+
 default:
   id: 37
   nfl_player_id: 18
@@ -99,18 +99,108 @@ some_other_player:
   id: 40
   nfl_player_id: 19
   game_week_id: 1
-  
+
 desean:
   id: 99
   nfl_player_id: 20
   game_week_id: 1
-  
+
 sir_no_match_player_1:
-    id: 100
-    nfl_player_id: 23
-    game_week_id: 1
-  
+  id: 100
+  nfl_player_id: 23
+  game_week_id: 1
+
 sir_no_match_player_2:
   id: 101
   nfl_player_id: 23
   game_week_id: 2
+
+great_qb:
+  id: 110
+  nfl_player_id: 2
+  game_week_id: 7
+  points: 31
+
+good_qb:
+  id: 111
+  nfl_player_id: 13
+  game_week_id: 7
+  points: 15
+
+bad_qb:
+  id: 112
+  nfl_player_id: 18
+  game_week_id: 7
+  points: 3
+
+great_rb:
+  id: 113
+  nfl_player_id: 1
+  game_week_id: 7
+  points: 24
+
+good_rb:
+  id: 114
+  nfl_player_id: 6
+  game_week_id: 7
+  points: 16
+
+bad_rb:
+  id: 115
+  nfl_player_id: 7
+  game_week_id: 7
+  points: 4
+
+great_wr:
+  id: 116
+  nfl_player_id: 3
+  game_week_id: 7
+  points: 23
+
+good_wr:
+  id: 117
+  nfl_player_id: 14
+  game_week_id: 7
+  points: 15
+
+bad_wr:
+  id: 118
+  nfl_player_id: 15
+  game_week_id: 7
+  points: 4
+
+good_kicker:
+  id: 119
+  nfl_player_id: 4
+  game_week_id: 7
+  points: 6
+
+bad_kicker:
+  id: 120
+  nfl_player_id: 16
+  game_week_id: 7
+  points: 1
+
+good_defence:
+  id: 121
+  nfl_player_id: 10
+  game_week_id: 7
+  points: 10
+
+bad_defence:
+  id: 122
+  nfl_player_id: 11
+  game_week_id: 7
+  points: 3
+
+good_te:
+  id: 123
+  nfl_player_id: 5
+  game_week_id: 7
+  points: 18
+
+bad_te:
+  id: 124
+  nfl_player_id: 9
+  game_week_id: 7
+  points: 6

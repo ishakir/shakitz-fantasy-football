@@ -83,4 +83,88 @@ class GameDaysControllerTest < ActionController::TestCase
     current_game_week = get_assigns :show, :current_game_week, game_week: 1
     assert_kind_of Integer, current_game_week
   end
+
+  test "best team is an assigns" do
+    assert_assigns_not_nil :show, :best_team, game_week: 7
+  end
+
+  test "best team contains 10 players" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_equal 10, best_team.size
+  end
+
+  test "best team contains great qb" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(110)
+  end
+
+  test "best team contains good qb" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(111)
+  end
+
+  test "best team does not contain bad qb" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert !(best_team.include? MatchPlayer.find(112))
+  end
+
+  test "best team contains great rb" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(113)
+  end
+
+  test "best team contains good rb" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(114)
+  end
+
+  test "best team does not contain bad rb" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert !(best_team.include? MatchPlayer.find(115))
+  end
+
+  test "best team contains great wr" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(116)
+  end
+
+  test "best team contains good wr" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(117)
+  end
+
+  test "best team does not contain bad wr" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert !(best_team.include? MatchPlayer.find(118))
+  end
+
+  test "best team contains good kicker" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(119)
+  end
+
+  test "best team does not contain bad kicker" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert !(best_team.include? MatchPlayer.find(120))
+  end
+
+  test "best team contains good defence" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(121)
+  end
+
+  test "best team does not contain bad defence" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert !(best_team.include? MatchPlayer.find(122))
+  end
+
+  test "best team contains good te" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(123)
+  end
+
+  test "best team contains bad te" do
+    best_team = get_assigns :show, :best_team, game_week: 7
+    assert_includes best_team, MatchPlayer.find(124)
+  end
 end
