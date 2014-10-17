@@ -32,10 +32,6 @@ class GameDaysController < ApplicationController
                   .push(top_ks.first)
 
     other_players = [top_wrs[2], top_tes[1], top_ks[1]]
-    other_players.each do |match_player|
-      puts "Hello" if match_player.nil?
-      puts match_player.nfl_player.name unless match_player.nil?
-    end
     best_team.push(
       other_players.max_by(&:points)
     )
