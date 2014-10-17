@@ -5,6 +5,32 @@
 </script>
 <div class="container">
   <div class="row">
+    <div class="col-md-5">
+      <table class="table sortable">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Team Name</th>
+            <th data-defaultsort="desc">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each_with_index do |user, index| %>
+          <% if index == 0 %>
+          <tr class="success">
+          <% elsif index == @users.size - 1 %>
+          <tr class="danger">
+          <% else %>
+          <tr>
+          <% end %>
+            <td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
+            <td><%= user.team_name %></td>
+            <td><%= user.team_for_game_week(@current_game_week).points %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
     <div class="col-md-3"> 
       <div class="row">
         <div id="bloodhound">
@@ -15,8 +41,6 @@
         <p id="teamText" class="text-center">User - Team</p>
         <p id = "playingOrBenched" class="text-success text-center"><strong>Playing</strong></p>
       </div>
-    </div>
-    <div class="col-md-9">
     </div>
   </div>
 </div>

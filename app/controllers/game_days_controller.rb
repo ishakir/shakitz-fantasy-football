@@ -10,6 +10,7 @@ class GameDaysController < ApplicationController
     validate_all_parameters([GAME_WEEK_KEY], params)
     @current_game_week = WithGameWeek.current_game_week
     @player_data = return_nfl_player_and_team_data.to_json
+    @users = User.all
   end
 
   def which_team_has_player

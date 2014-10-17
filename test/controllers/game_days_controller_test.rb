@@ -58,4 +58,14 @@ class GameDaysControllerTest < ActionController::TestCase
   test "show puts all player data in assigns" do
     assert_assigns_not_nil :show, :player_data, game_week: 1
   end
+
+  test "show puts all users into @users" do
+    users = get_assigns :show, :users, game_week: 1
+    assert_equal NUMBER_OF_USERS, users.size
+  end
+
+  test "users contains user data types" do
+    users = get_assigns :show, :users, game_week: 1
+    assert_kind_of User, users[0]
+  end
 end
