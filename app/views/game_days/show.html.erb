@@ -1,9 +1,31 @@
 <%= javascript_include_tag "game_days" %>
 <script>
+  var pageGameWeek = <%= @page_game_week %>;
   var currentGameWeek = <%= @current_game_week %>;
   var playerData = <%= raw @player_data %>
 </script>
 <div class="container">
+  <div class="row clearfix ">
+    <div class="col-md-3 column"></div>
+    <div class="col-md-1 column">
+      <% if @page_game_week > 1 %>
+        <%= link_to "/game_day/#{@page_game_week - 1}" do %>
+          <%= content_tag(:span, "", :class => "glyphicon glyphicon-arrow-left arrow") %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-4 column">
+      <h1 align="center" class="top-align">Week <%= @page_game_week %></h1>
+    </div>
+    <div class="col-md-1 column">
+      <% if @page_game_week < @current_game_week %>
+        <%= link_to "/game_day/#{@page_game_week + 1}" do %>
+          <%= content_tag(:span, "", :class => "glyphicon glyphicon-arrow-right arrow") %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-3 column"/></div>
+  </div>
   <div class="row">
     <div class="col-md-5">
       <table class="table sortable">
@@ -25,7 +47,7 @@
           <% end %>
             <td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
             <td><%= user.team_name %></td>
-            <td><%= user.team_for_game_week(@current_game_week).points %></td>
+            <td><%= user.team_for_game_week(@page_game_week).points %></td>
           </tr>
           <% end %>
         </tbody>

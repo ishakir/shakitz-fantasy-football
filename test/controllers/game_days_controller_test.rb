@@ -50,9 +50,14 @@ class GameDaysControllerTest < ActionController::TestCase
     assert_redirected_to "/game_day/1"
   end
 
-  test "show has current_game_week in assigns" do
-    current_game_week = get_assigns :show, :current_game_week, game_week: 1
-    assert_equal 1, current_game_week
+  test "show has page_game_week in assigns" do
+    page_game_week = get_assigns :show, :page_game_week, game_week: 1
+    assert_equal 1, page_game_week
+  end
+
+  test "show has page_game_week as an integer" do
+    page_game_week = get_assigns :show, :page_game_week, game_week: 1
+    assert_kind_of Integer, page_game_week
   end
 
   test "show puts all player data in assigns" do
@@ -67,5 +72,15 @@ class GameDaysControllerTest < ActionController::TestCase
   test "users contains user data types" do
     users = get_assigns :show, :users, game_week: 1
     assert_kind_of User, users[0]
+  end
+
+  test "current_game_week is an assigns" do
+    current_game_week = get_assigns :show, :current_game_week, game_week: 1
+    assert_equal 1, current_game_week
+  end
+
+  test "current_game_week is an integer" do
+    current_game_week = get_assigns :show, :current_game_week, game_week: 1
+    assert_kind_of Integer, current_game_week
   end
 end
