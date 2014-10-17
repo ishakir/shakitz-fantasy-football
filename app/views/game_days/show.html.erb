@@ -68,7 +68,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <h3>Team of the week</h3>
+      <h3>Team of the week <span class="gameday-week-points-label"> <%= @best_team.reduce(0) { |total, match_player| total+= match_player.points} %> points</span></h3>
       <table class="table">
         <tr>
           <th>Player</th>
