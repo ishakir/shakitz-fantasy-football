@@ -9,7 +9,7 @@
     <div class="col-md-3 column"></div>
     <div class="col-md-1 column">
       <% if @page_game_week > 1 %>
-        <%= link_to "/game_day/#{@page_game_week - 1}" do %>
+        <%= link_to "/game_day/#{@page_game_week - 1}", method: :get do %>
           <%= content_tag(:span, "", :class => "glyphicon glyphicon-arrow-left arrow") %>
         <% end %>
       <% end %>
@@ -19,7 +19,7 @@
     </div>
     <div class="col-md-1 column">
       <% if @page_game_week < @current_game_week %>
-        <%= link_to "/game_day/#{@page_game_week + 1}" do %>
+        <%= link_to "/game_day/#{@page_game_week + 1}", method: :get do %>
           <%= content_tag(:span, "", :class => "glyphicon glyphicon-arrow-right arrow") %>
         <% end %>
       <% end %>
