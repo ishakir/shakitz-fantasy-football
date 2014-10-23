@@ -74,4 +74,10 @@ class GameWeekTeam < ActiveRecord::Base
       sum + player.points
     end
   end
+
+  def bench_points
+    match_players_benched.reduce(0) do |sum, player|
+      sum + player.points
+    end
+  end
 end

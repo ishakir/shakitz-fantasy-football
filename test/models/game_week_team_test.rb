@@ -2,6 +2,9 @@
 require 'test_helper'
 
 class GameWeekTeamTest < ActiveSupport::TestCase
+  STAFFORDS_PICKS_WEEK_1_BENCH_POINTS = 32
+  STAFFORDS_PICKS_WEEK_3_BENCH_POINTS = 24
+
   # No tests for creating GWT with fixture, as fixtures will be generated
   # much later than the GWTs will be
   test "game_week_team has an opponent" do
@@ -37,6 +40,11 @@ class GameWeekTeamTest < ActiveSupport::TestCase
   test "game_week_team has head_to_head_result" do
     game_week_team = GameWeekTeam.find(1)
     assert_respond_to game_week_team, :head_to_head_result
+  end
+
+  test "game_week_team has bench points" do
+    game_week_team = GameWeekTeam.find(1)
+    assert_respond_to game_week_team, :bench_points
   end
 
   test "head_to_head_result can be won" do
@@ -164,6 +172,16 @@ class GameWeekTeamTest < ActiveSupport::TestCase
   test 'should get number of team points for gameweek 2' do
     game_week_team = GameWeekTeam.find(3)
     assert_equal GWT_TWO_POINTS, game_week_team.points
+  end
+
+  test 'should get total bench players points for gameweek 1' do
+    game_week_team = GameWeekTeam.find(1)
+    assert_equal STAFFORDS_PICKS_WEEK_1_BENCH_POINTS, game_week_team.bench_points
+  end
+
+  test "should get total bench players points for gameweek 3" do
+    game_week_team = GameWeekTeam.find(3)
+    assert_equal STAFFORDS_PICKS_WEEK_3_BENCH_POINTS, game_week_team.bench_points
   end
 
   test "can't create gwt if user / game week combo isn't unique" do

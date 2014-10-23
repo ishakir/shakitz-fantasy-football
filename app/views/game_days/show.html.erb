@@ -35,6 +35,7 @@
             <th>User</th>
             <th>Team Name</th>
             <th data-defaultsort="desc">Points</th>
+            <th>Bench</th>
           </tr>
         </thead>
         <tbody>
@@ -46,9 +47,11 @@
           <% else %>
           <tr>
           <% end %>
+            <% game_week_team = user.team_for_game_week(@page_game_week) %>
             <td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
             <td><%= user.team_name %></td>
-            <td><%= user.team_for_game_week(@page_game_week).points %></td>
+            <td><%= game_week_team.points %></td>
+            <td><%= game_week_team.bench_points %></td>
           </tr>
           <% end %>
         </tbody>
