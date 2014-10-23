@@ -22,11 +22,17 @@ class UserController < ApplicationController
   end
 
   def home
+    @t1 = Time.now
     @users = User.all
+    Rails.logger.info("Found all users, took #{Time.now - @t1} ms so far")
     @fixtures = Fixture.all
+    Rails.logger.info("Found all fixtures, took #{Time.now - @t1} ms so far")
     @game_week = WithGameWeek.current_game_week
+    Rails.logger.info("Found current game week, took #{Time.now - @t1} ms so far")
     @max_number_game_weeks = Settings.number_of_gameweeks
+    Rails.logger.info("Found max no game weeks, took #{Time.now - @t1} ms so far")
     @users = @users.sort_by { |u| -u.points }
+    Rails.logger.info("Sorted users by points, took #{Time.now - @t1} ms so far")
   end
 
   def show

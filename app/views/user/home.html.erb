@@ -67,14 +67,17 @@
 					<td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
 					<td><%= user.team_name %></td>
 					<td><%= user.points %></td>
-					<% if user.drawn_up_to_game_week == 0%>
+					<% Rails.logger.info("Got points for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
+					<% if user.drawn_up_to_game_week == 0 %>
 					<td>
 						<%= user.won_up_to_game_week %>-<%= user.lost_up_to_game_week %>
 					</td>
+					<% Rails.logger.info("Calculated fixtures information for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
 					<% else %>
 					<td>
 						<%= user.won_up_to_game_week %>-<%= user.drawn_up_to_game_week %>-<%= user.lost_up_to_game_week %>
 					</td>
+					<% Rails.logger.info("Calculated fixtures information for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
 					<% end %>
 				</tr>
 				<% end %>
@@ -141,3 +144,4 @@
 		</div>
 	</div>
 </div>
+<% Rails.logger.info("Finished rendering whole page, took #{Time.now - @t1} ms so far") %>
