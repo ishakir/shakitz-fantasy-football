@@ -18,7 +18,7 @@
 					<h4 class="incoming action">Incoming</h4>
 					<ul>
 						<% if @pending_transfers.where(target_user_id: session[:user_id]).count == 0 %>
-							<li>You currently have no incoming transfers</li>
+							<li class="actionable-transfers inc">You currently have no incoming transfers</li>
 						<% else %>
 							<% @pending_transfers.each do |transfer| %>
 								<% if transfer.target_user.id == session[:user_id] %>
@@ -38,7 +38,7 @@
 					<h4 class="incoming action">Outgoing</h4>
 					<ul>
 						<% if @pending_transfers.where(request_user_id: session[:user_id]).count == 0 %>
-							<li>You currently have no outgoing transfers</li>
+							<li class="actionable-transfers inc">You currently have no outgoing transfers</li>
 						<% else %>
 							<% @pending_transfers.each do |transfer| %>
 								<% if transfer.request_user.id == session[:user_id] %>
