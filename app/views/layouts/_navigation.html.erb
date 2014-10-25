@@ -15,11 +15,15 @@
 					</li>
 					<% if session[:user_id] %>
 						<li class="<%=active?(user_path(:id)) %>">
-							<a href="/user/<%= session[:user_id]%>">My Team</a>
+							<a href="/user/<%= session[:user_id] %>">My Team</a>
 						</li>
 					<% end %>
 					<li class="<%=active?(transfer_request_path) %>">
-						<a href="/transfer/status">Transfers</a>
+						<a href="/transfer/status">Transfers
+							<% if @transfer_amount > 0 %>
+							<span class="badge"><%= @transfer_amount %></span>
+							<% end %>
+						</a>
 					</li>
 					<li class="<%= active?("/game_day") %>">
 						<a href="/game_day">Game Day</a>
