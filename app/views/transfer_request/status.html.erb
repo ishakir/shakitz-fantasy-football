@@ -10,40 +10,48 @@
 		</div>
 		<div>
 			<div class="col-md-12 column">
-				<% if !session[:user_id].nil?  && @has_actions%>
+				<% if !session[:user_id].nil? && @has_actions %>
 				<div id="my-action">
 					<h3>
 						My Actions
 					</h3>
 					<h4 class="incoming action">Incoming</h4>
 					<ul>
-					<% @pending_transfers.each do |transfer| %>
-						<% if transfer.request_user.id == session[:user_id] %>
-						<li id="incoming_<%= transfer.id %>" class="actionable-transfers inc">
-							<span>You offered <%= transfer.offered_player.name %> for
-								<%= transfer.target_player.name  %> from 
-								<%= transfer.target_user.name %></span>
-							  <button type="button" class="btn btn-default btn-sm btn-danger pull-right">Cancel</button>
-						</li>
+						<% if @pending_transfers.where(target_user_id: session[:user_id]).count == 0 %>
+							<li>You currently have no incoming transfers</li>
+						<% else %>
+							<% @pending_transfers.each do |transfer| %>
+								<% if transfer.target_user.id == session[:user_id] %>
+								<li id="incoming_<%= transfer.id %>" class="actionable-transfers out">
+									<span>You were offered <%= transfer.offered_player.name %> for
+										<%= transfer.target_player.name  %> from 
+										<%= transfer.request_user.name %></span>
+									<div class="pull-right">
+									  <button type="button" class="btn btn-default btn-sm btn-danger">Reject</button>
+									  <button type="button" class="btn btn-default btn-sm btn-success">Accept</button>
+									 </div>
+								</li>
+								<% end %>
+							<% end %>
 						<% end %>
-					<% end %>
 					</ul>
-					<h4 class="outgoing action">Outgoing</h4>
+					<h4 class="incoming action">Outgoing</h4>
 					<ul>
-					<% @pending_transfers.each do |transfer| %>
-						<% if transfer.target_user.id == session[:user_id] %>
-						<li id="outgoing_<%= transfer.id %>" class="actionable-transfers out">
-							<span>You were offered <%= transfer.offered_player.name %> for
-								<%= transfer.target_player.name  %> from 
-								<%= transfer.request_user.name %></span>
-							<div class="pull-right">
-							  <button type="button" class="btn btn-default btn-sm btn-danger">Reject</button>
-							  <button type="button" class="btn btn-default btn-sm btn-success">Accept</button>
-							 </div>
-						</li>
+						<% if @pending_transfers.where(request_user_id: session[:user_id]).count == 0 %>
+							<li>You currently have no outgoing transfers</li>
+						<% else %>
+							<% @pending_transfers.each do |transfer| %>
+								<% if transfer.request_user.id == session[:user_id] %>
+								<li id="outgoing_<%= transfer.id %>" class="actionable-transfers inc">
+									<span>You offered <%= transfer.offered_player.name %> for
+										<%= transfer.target_player.name  %> from 
+										<%= transfer.target_user.name %></span>
+									  <button type="button" class="btn btn-default btn-sm btn-danger pull-right">Cancel</button>
+								</li>
+								<% end %>
+							<% end %>
 						<% end %>
-					<% end %>
-					</ul>
+					</ul>	
 				</div>
 				<% end %>	
 				<h3>
