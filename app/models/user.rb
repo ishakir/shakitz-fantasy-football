@@ -48,10 +48,10 @@ class User < ActiveRecord::Base
 
   def all_results(*game_week_number)
     game_week_number = game_week_number.empty? ? last_game_week : game_week_number.first
-    no_results = {wins: 0, draws: 0, losses: 0}
+    no_results = { wins: 0, draws: 0, losses: 0 }
     return no_results if game_week_number == 0
-    
-    teams_up_to_game_week(game_week_number).reduce(no_results) do |hash, game_week_team|
+
+    teams_up_to_game_week(game_week_number).each_with_object(no_results) do |game_week_team, hash|
       result = game_week_team.head_to_head_result
       hash[:wins]   += 1 if result == :won
       hash[:draws]  += 1 if result == :drawn

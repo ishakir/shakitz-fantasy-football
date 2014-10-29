@@ -8,12 +8,12 @@ class ApplicationController < ActionController::Base
 
   ### Validation of controller parameters
   # params: as provided to you in a controller method
-  before_filter :set_transfer_amount
-  
+  before_action :set_transfer_amount
+
   def set_transfer_amount
     session[:user_id] ? @transfer_amount = TransferRequest.where(status: "pending", target_user_id: session[:user_id]).count : @transfer_amount = 0
   end
-  
+
   def validate_all_parameters(expected_params, params)
     expected_params.each do |parameter|
       next if params.key?(parameter)
