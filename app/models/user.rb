@@ -46,16 +46,18 @@ class User < ActiveRecord::Base
     opponents.compact
   end
 
-  def won_up_to_game_week(*game_week_number)
-    all_results_of_type(:won, game_week_number)
-  end
-
-  def drawn_up_to_game_week(*game_week_number)
-    all_results_of_type(:drawn, game_week_number)
-  end
-
-  def lost_up_to_game_week(*game_week_number)
-    all_results_of_type(:lost, game_week_number)
+  def all_results(*game_week_number)
+    game_week_number = game_week_number.empty? ? last_game_week : game_week_number.first
+    no_results = {wins: 0, draws: 0, losses: 0}
+    return no_results if game_week_number == 0
+    
+    teams_up_to_game_week(game_week_number).reduce(no_results) do |hash, game_week_team|
+      result = game_week_team.head_to_head_result
+      hash[:wins]   += 1 if result == :won
+      hash[:draws]  += 1 if result == :drawn
+      hash[:losses] += 1 if result == :lost
+      hash
+    end
   end
 
   def team_for_current_game_week
@@ -82,14 +84,5 @@ class User < ActiveRecord::Base
 
   def last_game_week
     WithGameWeek.current_game_week - 1
-  end
-
-  def all_results_of_type(result_type, game_week_number_array)
-    game_week_number = game_week_number_array.empty? ? last_game_week : game_week_number_array.first
-    return 0 if game_week_number == 0
-    losses = teams_up_to_game_week(game_week_number).select do |game_week_team|
-      game_week_team.head_to_head_result == result_type
-    end
-    losses.size
   end
 end

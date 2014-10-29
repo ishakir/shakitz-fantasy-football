@@ -4,64 +4,54 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   season_length = 17
 
-  test "user responds to won_up_to_game_week" do
-    user = User.find(1)
-    assert_respond_to user, :won_up_to_game_week
-  end
-
   test "won up to game_week gives the correct number of wins, with 1 gw" do
     user = User.find(1)
-    assert_equal 1, user.won_up_to_game_week(1)
+    assert_equal 1, user.all_results(1)[:wins]
   end
 
   test "won up to game_week gives the correct number of wins, with 2 gw" do
     user = User.find(1)
-    assert_equal 1, user.won_up_to_game_week(2)
+    assert_equal 1, user.all_results(2)[:wins]
   end
 
   test "won up to game_week defaults to calculating for current_game_week - 1" do
     user = User.find(1)
-    assert_equal 0, user.won_up_to_game_week
-  end
-
-  test "user responds to drawn_up_to_game_week" do
-    user = User.find(1)
-    assert_respond_to user, :drawn_up_to_game_week
+    assert_equal 0, user.all_results[:wins]
   end
 
   test "drawn_up_to_game_week gives the correct number of draws, with 1 gw" do
     user = User.find(1)
-    assert_equal 0, user.drawn_up_to_game_week(1)
+    assert_equal 0, user.all_results(1)[:draws]
   end
 
   test "drawn_up_to_game_week gives the correct number of draws, with 2 gw" do
     user = User.find(1)
-    assert_equal 1, user.drawn_up_to_game_week(2)
+    assert_equal 1, user.all_results(2)[:draws]
   end
 
   test "drawn up to game week defaults to calculating for current_game_week - 1" do
     user = User.find(1)
-    assert_equal 0, user.drawn_up_to_game_week
+    assert_equal 0, user.all_results[:draws]
   end
 
-  test "user responds to lost_up_to_game_week" do
+  test "user responds to all_results" do
     user = User.find(1)
-    assert_respond_to user, :lost_up_to_game_week
+    assert_respond_to user, :all_results
   end
 
   test "lost_up_to_game_week returns the correct number of losses, with 1 gw" do
     user = User.find(2)
-    assert_equal 1, user.lost_up_to_game_week(1)
+    assert_equal 1, user.all_results(1)[:losses]
   end
 
   test "lost_up_to_game_week returns the correct number of losses, with 2 gw" do
     user = User.find(2)
-    assert_equal 1, user.lost_up_to_game_week(2)
+    assert_equal 1, user.all_results(2)[:losses]
   end
 
   test "lost_up_to_game_week defaults to calculating for current_game_week - 1" do
     user = User.find(1)
-    assert_equal 0, user.lost_up_to_game_week
+    assert_equal 0, user.all_results[:losses]
   end
 
   test "user responds to   teams_up_to_game_week" do
