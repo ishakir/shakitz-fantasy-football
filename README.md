@@ -15,7 +15,8 @@ Shakitz is the open source implementation of a fantasy football league. Key feat
   * Total points
   * Head-to-head fixtures
 * Player for player trades between users
-* Waver wire trades for undrafted players (under development)
+* Game Day page for Sundays
+* Default NFL points spreads + options to customize
 
 Shakitz had an alpha run during the 2014 preseason, and is currently in the middle of a beta run during the 2014 regular season. We hope these runs will iron out any creases making the system ready for running in full in 2015.
 
@@ -28,6 +29,7 @@ Highest Priority new features
 
 * Complete implementation of waver wire
 * Trades involving more than one player per side
+* Loan trades with a "trade-back" date
 * Complete automation of initial player creation, fixture generation, team locking and stats updates
 * Automated provisioning of production instances
 * Allow custom team sizes
