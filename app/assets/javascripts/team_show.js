@@ -264,6 +264,9 @@ var setTableTransferRequestHandlers = function(){
 };
 
 var promptTransferRequest = function(name, id){	
+	if(!isUser){
+		return;
+	}
 	var playerId = id.substring('Row')[0];
 	$("#requestModal").modal('show');
 	$('.selectpicker.opponent-player').selectpicker('val', name);
