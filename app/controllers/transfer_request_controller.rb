@@ -31,6 +31,8 @@ class TransferRequestController < ApplicationController
       offered_player: offered_player,
       target_player: target_player
     )
+    
+    redirect_to transfer_request_path
   end
 
   def status
