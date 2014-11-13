@@ -264,7 +264,7 @@ var setTableTransferRequestHandlers = function(){
 };
 
 var promptTransferRequest = function(name, id){	
-	if(!isUser){
+	if(!isLoggedIn){
 		return;
 	}
 	var playerId = id.substring('Row')[0];
