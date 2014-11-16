@@ -107,14 +107,12 @@ class NflPlayerController < ApplicationController
 
     team = find_team_from_name(params[TEAM_KEY])
     type = find_type_from_name(params[TYPE_KEY])
-    name = params[NAME_KEY]
-    nfl_id = params[NFL_ID_KEY]
 
     NflPlayer.create!(
-      name: name,
+      name: params[NAME_KEY],
       nfl_team: team,
       nfl_player_type: type,
-      nfl_id: nfl_id
+      nfl_id: params[NFL_ID_KEY]
     )
   end
 

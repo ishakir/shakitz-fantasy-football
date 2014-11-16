@@ -48,6 +48,10 @@ class ApplicationController < ActionController::Base
     tmp
   end
 
+  def ok_response
+    { response: 'OK', status: 200 }
+  end
+
   ### Controller exception handling
   # Stuff that's going to return a 404
   rescue_from ActiveRecord::RecordNotFound do |error|

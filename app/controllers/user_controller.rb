@@ -52,7 +52,7 @@ class UserController < ApplicationController
     update_players_stats(params[PLAYING_PLAYER_ID_KEY], game_week_team, true)
     update_players_stats(params[BENCHED_PLAYER_ID_KEY], game_week_team, false)
 
-    render status: :ok, json: { response: 'OK' }
+    render json: ok_response
   rescue ArgumentError => e
     render status: :unprocessable_entity, json: { response: e.message }
   end

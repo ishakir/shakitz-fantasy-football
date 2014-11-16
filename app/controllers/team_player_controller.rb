@@ -11,18 +11,18 @@ class TeamPlayerController < ApplicationController
   def add_player
     validate_all_parameters([USER_ID_KEY, PLAYER_ID_KEY], params)
 
-    user_id = params[USER_ID_KEY]
-    nfl_player = NflPlayer.find(params[PLAYER_ID_KEY]).player_for_game_week(DEFAULT_GAMEWEEK)
-    user_team = User.find(user_id).team_for_game_week(DEFAULT_GAMEWEEK)
+    match_player = first_match_player(params[PLAYER_ID_KEY])
+    user_team = first_game_week_team(params[USER_ID_KEY])
 
-    validate_player_is_not_present_in_other_team(nfl_player)
+    validate_can_add_player(user_team, match_player)
 
-    fail ActiveRecord::RecordInvalid if user_team.match_players.size >= MAX_PLAYING_SIZE + MAX_BENCH_SIZE
-    is_playing = user_team.match_players.size < MAX_PLAYING_SIZE
+    GameWeekTeamPlayer.create!(
+      game_week_team: user_team,
+      match_player: match_player,
+      playing:  all_playing_positions_filled?(user_team)
+    )
 
-    GameWeekTeamPlayer.create!(game_week_team: user_team, match_player: nfl_player, playing: is_playing)
-
-    render json: { response: 'OK', status: 200 }
+    render json: ok_response
   end
 
   def progress_game_week
@@ -62,6 +62,29 @@ class TeamPlayerController < ApplicationController
       game_week_team: next_game_week_team,
       playing: game_week_team_player.playing
     )
+  end
+
+  private
+
+  def all_playing_positions_filled?(game_week_team)
+    game_week_team.match_players.size < MAX_PLAYING_SIZE
+  end
+
+  def first_match_player(nfl_player_id)
+    NflPlayer.find(nfl_player_id).player_for_game_week(DEFAULT_GAMEWEEK)
+  end
+
+  def first_game_week_team(user_id)
+    User.find(user_id).team_for_game_week(DEFAULT_GAMEWEEK)
+  end
+
+  def validate_can_add_player(team, player)
+    validate_team_is_not_already_full(team)
+    validate_player_is_not_present_in_other_team(player)
+  end
+
+  def validate_team_is_not_already_full(team)
+    fail ActiveRecord::RecordInvalid if team.match_players.size >= MAX_PLAYING_SIZE + MAX_BENCH_SIZE
   end
 
   def validate_player_is_not_present_in_other_team(player)
