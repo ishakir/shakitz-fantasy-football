@@ -5,9 +5,9 @@ module ApplicationHelper
   end
 
   def active?(link_path)
-    if params[:controller] == 'user' && params[:action] == 'show' && (link_path.include? "user")
+    if params[:controller] == 'user' && params[:action] == 'show' && (link_path.include? 'user')
       link_path = "/user/#{params[:user_id]}"
     end
-    current_page?(link_path) ? "active" : ""
+    current_page?(link_path) ? 'active' : ''
   end
 end

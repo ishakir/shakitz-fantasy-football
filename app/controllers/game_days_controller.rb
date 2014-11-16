@@ -30,34 +30,22 @@ class GameDaysController < ApplicationController
 
   def find_ten_best_players(game_week)
     game_week = GameWeek.find_unique_with(game_week)
-    top_qbs = find_top_of_type("QB", NO_QBS_TO_SELECT, game_week)
-    top_rbs = find_top_of_type("RB", NO_RBS_TO_SELECT, game_week)
-    top_wrs = find_top_of_type("WR", NO_WRS_TO_SELECT, game_week)
-    top_tes = find_top_of_type("TE", NO_TES_TO_SELECT, game_week)
-    top_ds  = find_top_of_type("D",  NO_DS_TO_SELECT,  game_week)
-    top_ks  = find_top_of_type("K",  NO_KS_TO_SELECT,  game_week)
 
-    best_team = top_qbs
-                .concat(top_rbs)
-                .concat(top_ds)
-                .concat(top_wrs.first(MIN_NO_WRS))
-                .push(top_tes.first)
-                .push(top_ks.first)
+    top_qbs = find_top_of_type('QB', NO_QBS_TO_SELECT, game_week)
+    top_rbs = find_top_of_type('RB', NO_RBS_TO_SELECT, game_week)
+    top_wrs = find_top_of_type('WR', NO_WRS_TO_SELECT, game_week)
+    top_tes = find_top_of_type('TE', NO_TES_TO_SELECT, game_week)
+    top_ds  = find_top_of_type('D',  NO_DS_TO_SELECT,  game_week)
+    top_ks  = find_top_of_type('K',  NO_KS_TO_SELECT,  game_week)
 
-    other_players = [top_wrs[WR_WILDCARD_INDEX], top_tes[TE_WILDCARD_INDEX], top_ks[K_WILDCARD_INDEX]]
-    best_team.push(
-      other_players.max_by(&:points)
+    best_team(
+      qbs: top_qbs,
+      rbs: top_rbs,
+      wrs: top_wrs,
+      tes: top_tes,
+      ds: top_ds,
+      ks: top_ks
     )
-
-    best_team
-  end
-
-  def find_top_of_type(type, number, game_week)
-    MatchPlayer
-      .joins(:nfl_player)
-      .where(game_week: game_week, nfl_players: { nfl_player_type_id: NflPlayerType.find_unique_with(type) })
-      .order(points: :desc)
-      .limit(number)
   end
 
   def which_team_has_player
@@ -86,6 +74,29 @@ class GameDaysController < ApplicationController
   end
 
   private
+
+  def best_team(params)
+    best_team = params[:qbs].concat(params[:rbs])
+                .concat(params[:ds])
+                .concat(params[:wrs].first(MIN_NO_WRS))
+                .push(params[:tes].first)
+                .push(params[:ks].first)
+
+    other_players = [params[:wrs][WR_WILDCARD_INDEX], params[:tes][TE_WILDCARD_INDEX], params[:ks][K_WILDCARD_INDEX]]
+    best_team.push(
+      other_players.max_by(&:points)
+    )
+
+    best_team
+  end
+
+  def find_top_of_type(type, number, game_week)
+    MatchPlayer
+      .joins(:nfl_player)
+      .where(game_week: game_week, nfl_players: { nfl_player_type_id: NflPlayerType.find_unique_with(type) })
+      .order(points: :desc)
+      .limit(number)
+  end
 
   def find_player(users, _name, game_week)
     users.each do |user|

@@ -37,7 +37,7 @@ class TeamPlayerControllerTest < ActionController::TestCase
     assert_response :not_found
   end
 
-  test "can add a player to a valid team with less than 18 players" do
+  test 'can add a player to a valid team with less than 18 players' do
     previous_size = User.find(DEFAULT_USER_ID).team_for_game_week(DEFAULT_GAMEWEEK).match_players.size
     post :add_player, user_id: DEFAULT_USER_ID, player_id: 22
     assert_response :success
@@ -47,12 +47,12 @@ class TeamPlayerControllerTest < ActionController::TestCase
   ###############################################
   # Tests for :progress_game_week
   ###############################################
-  test "progress_game_week should reject if game_week not supplied" do
+  test 'progress_game_week should reject if game_week not supplied' do
     post :progress_game_week
     assert_response :unprocessable_entity
   end
 
-  test "progress_game_week copies all players into next game week team" do
+  test 'progress_game_week copies all players into next game week team' do
     post :progress_game_week, game_week: 1
     assert_response :success
 
@@ -60,7 +60,7 @@ class TeamPlayerControllerTest < ActionController::TestCase
     assert_equal 18, game_week_team.match_players.size
   end
 
-  test "progress_game_week copies the correct players into second game week team" do
+  test 'progress_game_week copies the correct players into second game week team' do
     post :progress_game_week, game_week: 1
     assert_response :success
 
@@ -69,7 +69,7 @@ class TeamPlayerControllerTest < ActionController::TestCase
     assert game_week_team.match_players.include?(MatchPlayer.find(60))
   end
 
-  test "playing status is maintained" do
+  test 'playing status is maintained' do
     post :progress_game_week, game_week: 1
     assert_response :success
 

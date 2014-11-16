@@ -28,7 +28,7 @@ class FixturesController < ApplicationController
         RRSchedule::Rule.new(
           wday: 6,
           ps: (0..users.size), # We have as many places to play as teams, that means
-          gt: ["7:00PM"]         # everyone can fit into "one gameweek"
+          gt: ['7:00PM']         # everyone can fit into "one gameweek"
         )
       ],
       cycles: (NUMBER_OF_GAMEWEEKS / cycle_length).floor # Enough cycles to fit into < NUMBER_OF_GAMEWEEKS game weeks

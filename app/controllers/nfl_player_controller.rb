@@ -35,8 +35,8 @@ class NflPlayerController < ApplicationController
 
     type = params[TYPE_KEY]
 
-    player = create_defence_player(params) if type == "D"
-    player = create_non_defence_player(params) if type != "D"
+    player = create_defence_player(params) if type == 'D'
+    player = create_non_defence_player(params) if type != 'D'
 
     create_all_match_players(player)
   end
@@ -174,7 +174,7 @@ class NflPlayerController < ApplicationController
   end
 
   def add_no_id_info_error_message_and_respond(message)
-    message.add_message(1, "No attributes were provided to identify the player, please specify one of id, name with team, type or both, or team and type")
+    message.add_message(1, 'No attributes were provided to identify the player, please specify one of id, name with team, type or both, or team and type')
     respond(message, :unprocessable_entity)
   end
 end

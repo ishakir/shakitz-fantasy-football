@@ -2,11 +2,11 @@
 class Fixture < ActiveRecord::Base
   belongs_to :home_team,
              foreign_key: :home_team_id,
-             class_name: "GameWeekTeam"
+             class_name: 'GameWeekTeam'
 
   belongs_to :away_team,
              foreign_key: :away_team_id,
-             class_name: "GameWeekTeam"
+             class_name: 'GameWeekTeam'
 
   validates :home_team,
             presence: true

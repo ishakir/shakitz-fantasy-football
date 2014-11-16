@@ -21,27 +21,3 @@ ClassLength:
 # Offense count: 36
 Documentation:
   Enabled: false
-
-# Need to sort these out at some point too
-# Offense count: 101
-LineLength:
-  Max: 178
-
-# Got a couple long methods, work out what to do with them at some point
-# Offense count: 2
-# Configuration parameters: CountComments.
-MethodLength:
-  Max: 24
-
-# I don't actually agree with this, I think "" is better in case someone does want to interpolate later
-# Offense count: 140
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-StringLiterals:
-  Enabled: false
-
-CyclomaticComplexity:
-  Max: 10
-
-PerceivedComplexity:
-  Max: 8

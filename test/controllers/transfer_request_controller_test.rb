@@ -2,27 +2,27 @@
 require 'test_helper'
 
 class TransferRequestControllerTest < ActionController::TestCase
-  test "create should reject if request_user_id is not supplied" do
+  test 'create should reject if request_user_id is not supplied' do
     post :create, target_user_id: 1, offered_player_id: 2, target_player_id: 3
     assert_response :unprocessable_entity
   end
 
-  test "create should reject if target_user_id is not supplied" do
+  test 'create should reject if target_user_id is not supplied' do
     post :create, request_user_id: 1, offered_player_id: 2, target_player_id: 3
     assert_response :unprocessable_entity
   end
 
-  test "create should reject if offered_player_id is not supplied" do
+  test 'create should reject if offered_player_id is not supplied' do
     post :create, request_user_id: 1, target_user_id: 2, target_player_id: 3
     assert_response :unprocessable_entity
   end
 
-  test "create should reject if target_player_id is not supplied" do
+  test 'create should reject if target_player_id is not supplied' do
     post :create, request_user_id: 1, target_user_id: 2, offered_player_id: 3
     assert_response :unprocessable_entity
   end
 
-  test "create should reject if request_user_id is invalid" do
+  test 'create should reject if request_user_id is invalid' do
     post :create, transfer_request: { request_user_id: -2, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
     assert_response :not_found
   end
@@ -32,8 +32,8 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_response :not_found
   end
 
-  test "create should reject if offered_player_id is invalid" do
-    post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: "a string", target_player_id: 4 }
+  test 'create should reject if offered_player_id is invalid' do
+    post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 'a string', target_player_id: 4 }
     assert_response :not_found
   end
 
@@ -42,9 +42,9 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_response :not_found
   end
 
-  test "if all are valid then a transfer request is created" do
+  test 'if all are valid then a transfer request is created' do
     post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
-    assert_response :success
+    assert_response :redirect
 
     transfer_request = TransferRequest.last
     assert_equal 1, transfer_request.request_user.id
@@ -53,11 +53,16 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_equal 4, transfer_request.target_player.id
   end
 
-  test "status is set to pending after creating a new transfer request" do
+  test 'status is set to pending after creating a new transfer request' do
     post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
-    assert_response :success
+    assert_response :redirect
 
-    assert_equal "pending", TransferRequest.last.status
+    assert_equal 'pending', TransferRequest.last.status
+  end
+
+  test 'create redirects to transfer page' do
+    post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
+    assert_redirected_to '/transfer/status'
   end
 
   test "resolve should reject if action_type isn't specified" do
@@ -65,25 +70,25 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test "resolve should reject if action_type is invalid" do
-    post :resolve, transfer_request: { id: 1, action_type: "shpoople" }
+  test 'resolve should reject if action_type is invalid' do
+    post :resolve, transfer_request: { id: 1, action_type: 'shpoople' }
     assert_response :unprocessable_entity
   end
 
-  test "resolve should reject if id is wrong" do
-    post :resolve, transfer_request: { id: 50_000, action_type: "accept" }
+  test 'resolve should reject if id is wrong' do
+    post :resolve, transfer_request: { id: 50_000, action_type: 'accept' }
     assert_response :not_found
   end
 
-  test "status changes to rejected if rejected" do
-    post :resolve, transfer_request: { id: 2, action_type: "reject" }
+  test 'status changes to rejected if rejected' do
+    post :resolve, transfer_request: { id: 2, action_type: 'reject' }
     assert_redirected_to controller: :transfer_request, action: :status
 
-    assert_equal "rejected", TransferRequest.find(2).status
+    assert_equal 'rejected', TransferRequest.find(2).status
   end
 
   test "users are swapped if it's accepted" do
-    post :resolve, transfer_request: { id: 2, action_type: "accept" }
+    post :resolve, transfer_request: { id: 2, action_type: 'accept' }
     assert_redirected_to controller: :transfer_request, action: :status
 
     game_week_team_player_one = GameWeekTeamPlayer.find(55)
@@ -93,15 +98,15 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_equal 3, game_week_team_player_two.game_week_team.user.id
   end
 
-  test "transfer status is changed to accepted if accepted" do
-    post :resolve, transfer_request: { id: 2, action_type: "accept" }
+  test 'transfer status is changed to accepted if accepted' do
+    post :resolve, transfer_request: { id: 2, action_type: 'accept' }
     assert_redirected_to controller: :transfer_request, action: :status
 
-    assert_equal "accepted", TransferRequest.find(2).status
+    assert_equal 'accepted', TransferRequest.find(2).status
   end
 
-  test "transfer request is destroyed when cancelled" do
-    post :resolve, transfer_request: { id: 2, action_type: "cancel" }
+  test 'transfer request is destroyed when cancelled' do
+    post :resolve, transfer_request: { id: 2, action_type: 'cancel' }
     assert_redirected_to controller: :transfer_request, action: :status
 
     assert_raise ActiveRecord::RecordNotFound do
@@ -109,18 +114,18 @@ class TransferRequestControllerTest < ActionController::TestCase
     end
   end
 
-  test "status returns a non nil object" do
+  test 'status returns a non nil object' do
     assert_assigns_not_nil(:status, @pending_transfers)
   end
 
-  test "status returns all of the pending transfer requests" do
-    expected_size = TransferRequest.where(status: "pending").length
+  test 'status returns all of the pending transfer requests' do
+    expected_size = TransferRequest.where(status: 'pending').length
     actual_size = get_assigns(:status, :pending_transfers).length
     assert_equal expected_size, actual_size
   end
 
-  test "status returns all of the completed transfer requests" do
-    expected_size = TransferRequest.where.not(status: "pending").length
+  test 'status returns all of the completed transfer requests' do
+    expected_size = TransferRequest.where.not(status: 'pending').length
     actual_size = get_assigns(:status, :completed_transfers).length
     assert_equal expected_size, actual_size
   end
