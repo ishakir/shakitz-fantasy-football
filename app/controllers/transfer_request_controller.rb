@@ -21,20 +21,7 @@ class TransferRequestController < ApplicationController
     validate_all_create_parameters(params)
 
     transfer_request = params[TRANSFER_REQUEST_ID_KEY]
-
-    request_user = User.find(transfer_request[REQUEST_USER_ID_KEY])
-    target_user = User.find(transfer_request[TARGET_USER_ID_KEY])
-
-    offered_player = NflPlayer.find(transfer_request[OFFERED_PLAYER_ID_KEY])
-    target_player = NflPlayer.find(transfer_request[TARGET_PLAYER_ID_KEY])
-
-    TransferRequest.create!(
-      request_user: request_user,
-      target_user: target_user,
-      offered_player: offered_player,
-      target_player: target_player,
-      status: TransferRequest::STATUS_PENDING
-    )
+    create_transfer_request(transfer_request)
 
     redirect_to transfer_request_path
   end
@@ -57,6 +44,16 @@ class TransferRequestController < ApplicationController
   end
 
   private
+
+  def create_transfer_request(transfer_request_params)
+    TransferRequest.create!(
+      request_user: User.find(transfer_request_params[REQUEST_USER_ID_KEY]),
+      target_user: User.find(transfer_request_params[TARGET_USER_ID_KEY]),
+      offered_player: NflPlayer.find(transfer_request_params[OFFERED_PLAYER_ID_KEY]),
+      target_player: NflPlayer.find(transfer_request_params[TARGET_PLAYER_ID_KEY]),
+      status: TransferRequest::STATUS_PENDING
+    )
+  end
 
   def validate_all_create_parameters(params)
     validate_all_parameters([TRANSFER_REQUEST_ID_KEY], params)
