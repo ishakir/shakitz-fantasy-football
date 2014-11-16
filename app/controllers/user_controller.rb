@@ -33,37 +33,28 @@ class UserController < ApplicationController
   def show
     validate_all_parameters([USER_ID_KEY], params)
 
-    user_id = params[USER_ID_KEY]
-
     @active_gameweek = WithGameWeek.current_game_week
+    @game_week = params.key?(GAME_WEEK_KEY) ? @game_week = params[GAME_WEEK_KEY].to_i : @active_gameweek
+    @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).locked? }
 
-    @game_week_time_obj = {}
-    if params.key?(GAME_WEEK_KEY)
-      @game_week = params[GAME_WEEK_KEY].to_i
-    else
-      @game_week = @active_gameweek
-    end
-
-    @game_week_time_obj['locked'] = GameWeek.find_unique_with(@game_week).locked?
-
-    players = return_nfl_player_and_team_data
-
-    @nfl_players = players.to_json
-
+    @nfl_players = return_nfl_player_and_team_data.to_json
     @stats = return_my_player_point_info
-
-    @user = User.find(user_id)
+    @user = User.find(params[USER_ID_KEY])
   end
 
-  def game_week_team
-    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY], params)
+  def declare_roster
+    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
+    validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
+    validate_game_week_active(params[GAME_WEEK_KEY].to_i)
 
-    user_id = params[USER_ID_KEY]
-    game_week = params[GAME_WEEK_KEY]
+    # First find the game_week_team
+    game_week_team = User.find(params[USER_ID_KEY]).team_for_game_week(params[GAME_WEEK_KEY])
+    update_players_stats(params[PLAYING_PLAYER_ID_KEY], game_week_team, true)
+    update_players_stats(params[BENCHED_PLAYER_ID_KEY], game_week_team, false)
 
-    @user = User.find(user_id)
-    @game_week = game_week
-    @game_week_team = GameWeekTeam.find_unique_with(user_id, game_week)
+    render status: :ok, json: { response: 'OK' }
+  rescue ArgumentError => e
+    render status: :unprocessable_entity, json: { response: e.message }
   end
 
   def update
@@ -85,10 +76,24 @@ class UserController < ApplicationController
     redirect_to action: :home
   end
 
-  # Subroutines
+  private
+
+  def update_players_stats(match_player_ids, game_week_team, status)
+    match_player_ids.each do |player|
+      game_week_team_player = GameWeekTeamPlayer.find_unique_with(game_week_team, MatchPlayer.find(player))
+      game_week_team_player.playing = status
+      game_week_team_player.save!
+    end
+  end
+
   def validate_password(params)
     return if params[PASSWORD_KEY] == params[PASSWORD_CONFIRMATION_KEY]
     fail ArgumentError, 'Password and password confirmation do not match'
+  end
+
+  def validate_game_week_active(game_week_number)
+    game_week = GameWeek.find_unique_with(game_week_number)
+    fail ArgumentError, 'Gameweek is currently locked, unable to make changes' if game_week.locked?
   end
 
   def update_user_entity(user, params)
@@ -106,45 +111,9 @@ class UserController < ApplicationController
     end
   end
 
-  def declare_roster
-    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
-    payload = validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
-
-    if GameWeek.find_unique_with(params[GAME_WEEK_KEY].to_i).locked?
-      fail ArgumentError, 'Gameweek is currently locked, unable to make changes'
-    end
-
-    if payload[:status] == 400
-      render json: payload
-    else
-      # First find the game_week_team
-      user = User.find(params[USER_ID_KEY])
-      game_week_team = user.team_for_game_week(params[GAME_WEEK_KEY])
-      params[PLAYING_PLAYER_ID_KEY].each do |p|
-        # Find the match_player
-        player_gwt = GameWeekTeamPlayer.find_unique_with(game_week_team, MatchPlayer.find(p))
-        player_gwt.playing = true
-        player_gwt.save!
-      end
-
-      params[BENCHED_PLAYER_ID_KEY].each do |p|
-        # Find the match_player
-        player_gwt = GameWeekTeamPlayer.find_unique_with(game_week_team, MatchPlayer.find(p))
-        player_gwt.playing = false
-        player_gwt.save!
-      end
-      render json: payload
-    end
-  end
-
   def validate_id_length(playing, benched)
-    if playing.length != 10
-      return { response: 'Invalid number of active players', status: 400 }
-    end
-    if benched.length != 8
-      return { response: 'Invalid number of benched players', status: 400 }
-    end
-    { response: 'OK', status: 200 }
+    fail ArgumentError, 'Invalid number of active players' if playing.length != 10
+    fail ArgumentError, 'Invalid number of benched players' if benched.length != 8
   end
 
   def show_my_team_info

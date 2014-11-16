@@ -6,7 +6,6 @@ class GameWeekTeamPlayer < ActiveRecord::Base
     no_of_gwtps = gwtps.size
     if no_of_gwtps == 0
       fail ActiveRecord::RecordNotFound, no_record_found_message(game_week_team, match_player)
-
     elsif no_of_gwtps > 1
       fail IllegalStateError, multiple_records_found_message(no_of_gwtps, game_week_team, match_player)
     end

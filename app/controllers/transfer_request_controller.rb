@@ -106,6 +106,6 @@ class TransferRequestController < ApplicationController
 
   def find_game_week_team_player(game_week_team, player)
     match_player = player.player_for_current_game_week
-    GameWeekTeamPlayer.find_unique_with(game_week_team: game_week_team, match_player: match_player)
+    GameWeekTeamPlayer.find_unique_with(game_week_team, match_player)
   end
 end
