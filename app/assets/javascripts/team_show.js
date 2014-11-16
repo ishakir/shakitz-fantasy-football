@@ -264,18 +264,35 @@ var setTableTransferRequestHandlers = function(){
 };
 
 var promptTransferRequest = function(name, id){	
+	if(!isLoggedIn){
+		return;
+	}
 	var playerId = id.substring('Row')[0];
 	$("#requestModal").modal('show');
 	$('.selectpicker.opponent-player').selectpicker('val', name);
+	 
 	$('.selectpicker.opponent-player').change(function(e) {
-		$('#requested_player_id').val(e.target.selectedOptions[0].id.split("-")[1]);
+		changePlayerId('#requested_player_id',e.target.selectedOptions[0].id.split("-")[1]);
 	});
 	$('#requested_player_id').val(playerId);
 	$('.selectpicker.my-player').selectpicker();
 	$('.selectpicker.my-player').change(function(e){
-		$('#offered_player_id').val(e.target.selectedOptions[0].id.split("-")[1]);
+		changePlayerId('#offered_player_id', e.target.selectedOptions[0].id.split("-")[1]);
 	});
+	setDefaultPlayerId();
 };
+
+var setDefaultPlayerId = function(){
+	var defaultRequestedId = $('.selectpicker.opponent-player option:selected').attr('id').split("-")[1];
+	var defaultTargetedId = $('.selectpicker.my-player option:selected').attr('id').split("-")[1];
+	changePlayerId('#requested_player_id',defaultRequestedId);
+	changePlayerId('#offered_player_id', defaultTargetedId);
+};
+
+var changePlayerId = function(node, id){
+	$(node).val(id);
+};
+
 
 $(function(){
 	  populateStats();

@@ -84,36 +84,51 @@ default:
   id: 37
   nfl_player_id: 18
   game_week_id: 3
+  points: 0
 
 nfl_player_controller_test:
   id: 38
   nfl_player_id: 21
   game_week_id: 1
+  points: 0
 
 unchosen_player:
   id: 39
   nfl_player_id: 22
   game_week_id: 1
+  points: 0
 
 some_other_player:
   id: 40
   nfl_player_id: 19
   game_week_id: 1
+  points: 0
+  
+<% 36.times do |n| %>
+mp_free_agent_<%= n+60 %>:
+  id: <%= 150 + n %>
+  nfl_player_id: <%= 42 + n %>
+  game_week_id: 1
+  points: 0
+<% end %>
 
 desean:
   id: 99
   nfl_player_id: 20
   game_week_id: 1
+  points: 0
 
 sir_no_match_player_1:
   id: 100
   nfl_player_id: 23
   game_week_id: 1
+  points: 0
 
 sir_no_match_player_2:
   id: 101
   nfl_player_id: 23
   game_week_id: 2
+  points: 0
 
 great_qb:
   id: 110

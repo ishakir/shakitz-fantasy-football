@@ -150,3 +150,12 @@ player_<%= n %>:
   nfl_team_id: 1
   nfl_player_type_id: 1
 <% end %>
+
+<% 36.times do |n| %>
+free_agent_<%= n%>:
+  id: <%= 42 + n %>
+  nfl_id: <%= 42 + n %>
+  name: free_agent_<%= n %>
+  nfl_team_id: 2
+  nfl_player_type_id: 2
+<% end %>

@@ -35,6 +35,8 @@ class TransferRequestController < ApplicationController
       target_player: target_player,
       status: TransferRequest::STATUS_PENDING
     )
+
+    redirect_to transfer_request_path
   end
 
   def status

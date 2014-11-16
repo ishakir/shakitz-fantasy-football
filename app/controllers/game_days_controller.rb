@@ -1,4 +1,17 @@
 class GameDaysController < ApplicationController
+  NO_QBS_TO_SELECT = 2
+  NO_RBS_TO_SELECT = 2
+  NO_WRS_TO_SELECT = 3
+  NO_TES_TO_SELECT = 2
+  NO_DS_TO_SELECT  = 1
+  NO_KS_TO_SELECT  = 2
+
+  MIN_NO_WRS = 2
+
+  WR_WILDCARD_INDEX = 2
+  TE_WILDCARD_INDEX = 1
+  K_WILDCARD_INDEX  = 1
+
   GAME_WEEK_KEY = :game_week
   PLAYER_ID_KEY = :player_id
 
@@ -18,12 +31,12 @@ class GameDaysController < ApplicationController
   def find_ten_best_players(game_week)
     game_week = GameWeek.find_unique_with(game_week)
 
-    top_qbs = find_top_of_type('QB', 2, game_week)
-    top_rbs = find_top_of_type('RB', 2, game_week)
-    top_wrs = find_top_of_type('WR', 3, game_week)
-    top_tes = find_top_of_type('TE', 2, game_week)
-    top_ds  = find_top_of_type('D', 1, game_week)
-    top_ks  = find_top_of_type('K', 2, game_week)
+    top_qbs = find_top_of_type('QB', NO_QBS_TO_SELECT, game_week)
+    top_rbs = find_top_of_type('RB', NO_RBS_TO_SELECT, game_week)
+    top_wrs = find_top_of_type('WR', NO_WRS_TO_SELECT, game_week)
+    top_tes = find_top_of_type('TE', NO_TES_TO_SELECT, game_week)
+    top_ds  = find_top_of_type('D',  NO_DS_TO_SELECT,  game_week)
+    top_ks  = find_top_of_type('K',  NO_KS_TO_SELECT,  game_week)
 
     best_team(
       qbs: top_qbs,
@@ -65,11 +78,11 @@ class GameDaysController < ApplicationController
   def best_team(params)
     best_team = params[:qbs].concat(params[:rbs])
                 .concat(params[:ds])
-                .concat(params[:wrs].first(2))
+                .concat(params[:wrs].first(MIN_NO_WRS))
                 .push(params[:tes].first)
                 .push(params[:ks].first)
 
-    other_players = [params[:wrs][2], params[:tes][1], params[:ks][1]]
+    other_players = [params[:wrs][WR_WILDCARD_INDEX], params[:tes][TE_WILDCARD_INDEX], params[:ks][K_WILDCARD_INDEX]]
     best_team.push(
       other_players.max_by(&:points)
     )

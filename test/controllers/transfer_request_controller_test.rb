@@ -44,7 +44,7 @@ class TransferRequestControllerTest < ActionController::TestCase
 
   test 'if all are valid then a transfer request is created' do
     post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
-    assert_response :success
+    assert_response :redirect
 
     transfer_request = TransferRequest.last
     assert_equal 1, transfer_request.request_user.id
@@ -55,9 +55,14 @@ class TransferRequestControllerTest < ActionController::TestCase
 
   test 'status is set to pending after creating a new transfer request' do
     post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
-    assert_response :success
+    assert_response :redirect
 
     assert_equal 'pending', TransferRequest.last.status
+  end
+
+  test 'create redirects to transfer page' do
+    post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
+    assert_redirected_to '/transfer/status'
   end
 
   test "resolve should reject if action_type isn't specified" do
