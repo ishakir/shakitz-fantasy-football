@@ -39,7 +39,7 @@ class GameDaysController < ApplicationController
     validate_all_parameters([GAME_WEEK_KEY], params)
     @page_game_week = params[GAME_WEEK_KEY].to_i
     @current_game_week = WithGameWeek.current_game_week
-    @player_data = return_nfl_player_and_team_data.to_json
+    @player_data = return_nfl_player_and_team_data
     @users = User.all.sort_by { |u| -u.team_for_game_week(@page_game_week).points }
     @best_team = find_ten_best_players(@page_game_week)
   end

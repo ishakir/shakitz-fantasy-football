@@ -31,7 +31,7 @@ class FixturesController < ApplicationController
   end
 
   def all_fixtures_for_week(game_week)
-    Fixture.joins(home_team: :game_week).where(game_weeks: { number: params[game_week] })
+    Fixture.joins(home_team: :game_week).where(game_weeks: { number: game_week })
   end
 
   def generate_fixture_schedule(users)

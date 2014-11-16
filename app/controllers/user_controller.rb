@@ -33,24 +33,18 @@ class UserController < ApplicationController
   def show
     validate_all_parameters([USER_ID_KEY], params)
 
-    @active_gameweek = WithGameWeek.current_game_week
-    @game_week = params.key?(GAME_WEEK_KEY) ? @game_week = params[GAME_WEEK_KEY].to_i : @active_gameweek
-    @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).locked? }
+    put_game_week_data_in_assigns(params)
 
-    @nfl_players = return_nfl_player_and_team_data.to_json
+    @nfl_players = return_nfl_player_and_team_data
     @stats = return_my_player_point_info
     @user = User.find(params[USER_ID_KEY])
   end
 
   def declare_roster
-    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
-    validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
-    validate_game_week_active(params[GAME_WEEK_KEY].to_i)
+    validate_everything_for_declare_roster(params)
 
     # First find the game_week_team
-    game_week_team = User.find(params[USER_ID_KEY]).team_for_game_week(params[GAME_WEEK_KEY])
-    update_players_stats(params[PLAYING_PLAYER_ID_KEY], game_week_team, true)
-    update_players_stats(params[BENCHED_PLAYER_ID_KEY], game_week_team, false)
+    update_game_week_team_roster(params)
 
     render json: ok_response
   rescue ArgumentError => e
@@ -78,7 +72,25 @@ class UserController < ApplicationController
 
   private
 
-  def update_players_stats(match_player_ids, game_week_team, status)
+  def validate_everything_for_declare_roster(params)
+    validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
+    validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
+    validate_game_week_active(params[GAME_WEEK_KEY].to_i)
+  end
+
+  def put_game_week_data_in_assigns(params)
+    @active_gameweek = WithGameWeek.current_game_week
+    @game_week = params.key?(GAME_WEEK_KEY) ? @game_week = params[GAME_WEEK_KEY].to_i : @active_gameweek
+    @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).locked? }
+  end
+
+  def update_game_week_team_roster(params)
+    game_week_team = User.find(params[USER_ID_KEY]).team_for_game_week(params[GAME_WEEK_KEY])
+    update_players_status(params[PLAYING_PLAYER_ID_KEY], game_week_team, true)
+    update_players_status(params[BENCHED_PLAYER_ID_KEY], game_week_team, false)
+  end
+
+  def update_players_status(match_player_ids, game_week_team, status)
     match_player_ids.each do |player|
       game_week_team_player = GameWeekTeamPlayer.find_unique_with(game_week_team, MatchPlayer.find(player))
       game_week_team_player.playing = status
@@ -128,12 +140,11 @@ class UserController < ApplicationController
 
   def return_player_name_for_active_game_week_team(user_id)
     user_id = session[:user_id] if user_id <= 0
-    team = User.find(user_id).team_for_game_week(WithGameWeek.current_game_week).match_players
-    obj = []
-    team.each do |player|
-      obj.push([player.nfl_player_id, player.nfl_player.name, player.nfl_player.nfl_team.name])
+    team = User.find(user_id).team_for_current_game_week.match_players
+
+    team.reduce([]) do |player, array|
+      array.push([player.nfl_player_id, player.nfl_player.name, player.nfl_player.nfl_team.name])
     end
-    obj
   end
   helper_method :return_player_name_for_active_game_week_team
 

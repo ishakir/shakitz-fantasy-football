@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
       name_tmp = { team: player.nfl_team.name }
       tmp[player.id] = player_tmp.merge!(name_tmp)
     end
-    tmp
+    tmp.to_json
   end
 
   def ok_response
