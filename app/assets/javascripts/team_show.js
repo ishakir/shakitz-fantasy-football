@@ -269,23 +269,26 @@ var promptTransferRequest = function(name, id){
 	}
 	var playerId = id.substring('Row')[0];
 	$("#requestModal").modal('show');
+	initSelectPicker();
 	$('.selectpicker.opponent-player').selectpicker('val', name);
-	 
+	setDefaultPlayerId(playerId);
+};
+
+var initSelectPicker = function(){
+	$('.selectpicker.opponent-player').selectpicker();
 	$('.selectpicker.opponent-player').change(function(e) {
 		changePlayerId('#requested_player_id',e.target.selectedOptions[0].id.split("-")[1]);
 	});
-	$('#requested_player_id').val(playerId);
+	
 	$('.selectpicker.my-player').selectpicker();
 	$('.selectpicker.my-player').change(function(e){
 		changePlayerId('#offered_player_id', e.target.selectedOptions[0].id.split("-")[1]);
-	});
-	setDefaultPlayerId();
+	});	
 };
 
-var setDefaultPlayerId = function(){
-	var defaultRequestedId = $('.selectpicker.opponent-player option:selected').attr('id').split("-")[1];
+var setDefaultPlayerId = function(requestedId){
 	var defaultTargetedId = $('.selectpicker.my-player option:selected').attr('id').split("-")[1];
-	changePlayerId('#requested_player_id',defaultRequestedId);
+	changePlayerId('#requested_player_id',requestedId);
 	changePlayerId('#offered_player_id', defaultTargetedId);
 };
 
