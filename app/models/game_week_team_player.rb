@@ -5,12 +5,22 @@ class GameWeekTeamPlayer < ActiveRecord::Base
 
     no_of_gwtps = gwtps.size
     if no_of_gwtps == 0
-      fail ActiveRecord::RecordNotFound, "Didn't find a record with game_week_team_id '#{game_week_team.id}' and match_player_id '#{match_player.id}'"
+      fail ActiveRecord::RecordNotFound, no_record_found_message(game_week_team, match_player)
+
     elsif no_of_gwtps > 1
-      fail IllegalStateError, "Found #{no_of_gwtps} game week team players with game_week_team_id '#{game_week_team.id}' and match_player_id '#{match_player.id}'"
+      fail IllegalStateError, multiple_records_found_message(no_of_gwtps, game_week_team, match_player)
     end
 
     gwtps.first
+  end
+
+  def self.no_record_found_message(game_week_team, match_player)
+    "Didn't find a record with game_week_team_id '#{game_week_team.id}' and match_player_id '#{match_player.id}'"
+  end
+
+  def self.multiple_records_found_message(no_found, game_week_team, match_player)
+    "Found #{no_found} game week team players with game_week_team_id '#{game_week_team.id}'" \
+    " and match_player_id '#{match_player.id}'"
   end
 
   belongs_to :game_week_team

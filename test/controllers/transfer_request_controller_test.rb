@@ -23,22 +23,42 @@ class TransferRequestControllerTest < ActionController::TestCase
   end
 
   test 'create should reject if request_user_id is invalid' do
-    post :create, transfer_request: { request_user_id: -2, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
+    post :create, transfer_request: {
+      request_user_id: -2,
+      target_user_id: 2,
+      offered_player_id: 3,
+      target_player_id: 4
+    }
     assert_response :not_found
   end
 
   test "create should reject if target_user_id can't be found" do
-    post :create, transfer_request: { request_user_id: 1, target_user_id: 50_000, offered_player_id: 3, target_player_id: 4 }
+    post :create, transfer_request: {
+      request_user_id: 1,
+      target_user_id: 50_000,
+      offered_player_id: 3,
+      target_player_id: 4
+    }
     assert_response :not_found
   end
 
   test 'create should reject if offered_player_id is invalid' do
-    post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 'a string', target_player_id: 4 }
+    post :create, transfer_request: {
+      request_user_id: 1,
+      target_user_id: 2,
+      offered_player_id: 'a string',
+      target_player_id: 4
+    }
     assert_response :not_found
   end
 
   test "create should reject if target_player_id can't be found" do
-    post :create, transfer_request: { request_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 50_000 }
+    post :create, transfer_request: {
+      request_user_id: 1,
+      target_user_id: 2,
+      offered_player_id: 3,
+      target_player_id: 50_000
+    }
     assert_response :not_found
   end
 

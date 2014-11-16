@@ -2,6 +2,8 @@
 require 'test_helper'
 
 class MatchPlayerTest < ActiveSupport::TestCase
+  NON_STAT_ATTIBUTES = %w(id nfl_player_id, game_week_id, created_at, updated_at)
+
   test 'can see player touchdown stat' do
     obj = MatchPlayer.find(1).nfl_player
 
@@ -14,8 +16,8 @@ class MatchPlayerTest < ActiveSupport::TestCase
   test 'can see player stat is default from start' do
     obj = MatchPlayer.find(37).attributes
     obj.each do |key, value|
-      next if key == 'id' || key == 'nfl_player_id' || key == 'game_week_id' || key == 'created_at' || key == 'updated_at'
-      assert_equal 0, value, "Incorrect default value, was #{value}"
+      next if NON_STAT_ATTIBUTES.include?(key)
+      assert_equal 0, value, "Incorrect default value for #{key}, was #{value}"
     end
   end
 

@@ -56,5 +56,4 @@ class GameWeek < ActiveRecord::Base
 
     WithGameWeek.more_than_time_since_start?(days_until_thursday, HOURS_UNTIL_5_PM)
   end
-
 end

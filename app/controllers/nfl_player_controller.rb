@@ -41,6 +41,53 @@ class NflPlayerController < ApplicationController
     create_all_match_players(player)
   end
 
+  def on_game_week
+    id = params[:id]
+    game_week = params[:game_week]
+    player = NflPlayer.find(id)
+    @match_player = player.player_for_game_week(game_week)
+  end
+
+  def update_stats
+    # Setup the messages to return
+    message = ApplicationController::ResponseMessage.new
+
+    # Check that player json is a thing
+    return add_no_id_info_error_message_and_respond(message) unless params_validated?(params)
+
+    id_json = params[PLAYER_JSON_KEY][ID_INFO_KEY]
+
+    player_finder = PlayerFinder.new(id_json)
+
+    if player_finder == :only_team
+      return handle_only_team(message)
+    elsif player_finder == :only_type
+      return handle_only_type(message)
+    end
+
+    found_player = player_finder.player
+    if found_player == :none
+      player_finder.add_no_player_found_message(message)
+      return respond(message, :not_found)
+    elsif found_player == :too_many
+      player_finder.add_multiple_players_found_message(message)
+      return respond(message, :not_found)
+    end
+
+    # If there are any inconsistancies, flag them
+    player_finder.add_inconsistancy_messages(message)
+    match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
+    update_stats_for_player(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
+
+    points_strategy = PointsStrategy.new(Settings.points_strategy, match_player)
+    match_player.points = points_strategy.calculate_points
+    match_player.save!
+
+    respond(message, :ok)
+  end
+
+  private
+
   def create_defence_player(params)
     fail ArgumentError if params.key?(NFL_ID_KEY)
 
@@ -93,58 +140,21 @@ class NflPlayerController < ApplicationController
     types.first
   end
 
-  def on_game_week
-    id = params[:id]
-    game_week = params[:game_week]
-    player = NflPlayer.find(id)
-    @match_player = player.player_for_game_week(game_week)
-  end
-
-  def update_stats
-    # Setup the messages to return
-    message = ApplicationController::ResponseMessage.new
-
-    # Check that player json is a thing
-    return add_no_id_info_error_message_and_respond(message) unless params_validated?(params)
-
-    id_json = params[PLAYER_JSON_KEY][ID_INFO_KEY]
-
-    player_finder = PlayerFinder.new(id_json)
-
-    if player_finder == :only_team
-      return handle_only_team(message)
-    elsif player_finder == :only_type
-      return handle_only_type(message)
-    end
-
-    found_player = player_finder.player
-    if found_player == :none
-      player_finder.add_no_player_found_message(message)
-      return respond(message, :not_found)
-    elsif found_player == :too_many
-      player_finder.add_multiple_players_found_message(message)
-      return respond(message, :not_found)
-    end
-
-    # If there are any inconsistancies, flag them
-    player_finder.add_inconsistancy_messages(message)
-    match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
-    update_stats_for_player(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
-
-    points_strategy = PointsStrategy.new(Settings.points_strategy, match_player)
-    match_player.points = points_strategy.calculate_points
-    match_player.save!
-
-    respond(message, :ok)
-  end
-
   def handle_only_team(message)
-    message.add_message(2, "Only 'team' was provided to identify the player, please specify one of id, name with team, type or both, or team and type")
+    message.add_message(
+      2,
+      "Only 'team' was provided to identify the player, please specify one of id," \
+      ' name with team, type or both, or team and type'
+    )
     respond(message, :unprocessable_entity)
   end
 
   def handle_only_type(message)
-    message.add_message(3, "Only 'type' was provided to identify the player, please specify one of id, name with team, type or both, or team and type")
+    message.add_message(
+      3,
+      "Only 'type' was provided to identify the player, please specify one of id," \
+      ' name with team, type or both, or team and type'
+    )
     respond(message, :unprocessable_entity)
   end
 
@@ -174,7 +184,11 @@ class NflPlayerController < ApplicationController
   end
 
   def add_no_id_info_error_message_and_respond(message)
-    message.add_message(1, 'No attributes were provided to identify the player, please specify one of id, name with team, type or both, or team and type')
+    message.add_message(
+      1,
+      'No attributes were provided to identify the player, please specify one of id,' \
+      ' name with team, type or both, or team and type'
+    )
     respond(message, :unprocessable_entity)
   end
 end

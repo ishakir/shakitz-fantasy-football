@@ -1,11 +1,18 @@
 # -*- encoding : utf-8 -*-
 module WithGameWeek
-
   DAYS_IN_A_WEEK = 7
 
   def self.validate_game_week_number(game_week_number)
-    fail ArgumentError, "Game week number must be greater than 1, not #{game_week_number}" if game_week_number < 1
-    fail ArgumentError, "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}" if game_week_number > Settings.number_of_gameweeks
+    fail ArgumentError, game_week_too_small_message(game_week_number) if game_week_number < 1
+    fail ArgumentError, game_week_too_large_message(game_week_number) if game_week_number > Settings.number_of_gameweeks
+  end
+
+  def self.game_week_too_small_message(game_week_number)
+    "Game week number must be greater than 1, not #{game_week_number}"
+  end
+
+  def self.game_week_too_large_message(game_week_number)
+    "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}"
   end
 
   def for_current_game_week(list)
@@ -51,9 +58,6 @@ module WithGameWeek
     start_time = WithGameWeek.start_of_first_gameweek
 
     time_difference = eastern_current_time - start_time
-
-    converted_days = days.days
-    converted_hours = hours.hours
 
     total_converted_time = days.days + hours.hours
 

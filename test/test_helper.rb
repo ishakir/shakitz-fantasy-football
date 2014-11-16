@@ -80,7 +80,9 @@ class ActiveSupport::TestCase
   end
 
   def can_see_entity_row_index_eq(action, ent_obj, i, exp_row_name, obj_name)
-    assert_equal get_assigns(action, ent_obj)[i].name, exp_row_name, "#{i} #{obj_name} object entry on view page is not" + exp_row_name
+    assert_equal get_assigns(action, ent_obj)[i].name,
+                 exp_row_name,
+                 "#{i} #{obj_name} object entry on view page is not" + exp_row_name
   end
 
   def can_edit_entity_obj_team_name(action, params, ent_obj, exp_row_name, obj_name)
@@ -165,11 +167,7 @@ class ActiveSupport::TestCase
   end
 
   def validate_stats_update_response(filename, expected_response, expected_messages)
-    # Parse the json in the data file specified
-    json = parse_nfl_player_data_file(filename)
-
-    # Make the post request and validate the response
-    post :update_stats, format: :json, game_week: 1, player: json
+    send_request(filename)
     assert_response expected_response
 
     # Parse the response body
@@ -183,6 +181,14 @@ class ActiveSupport::TestCase
     expected_messages.each do |id|
       assert message_ids.include?(id), "#{id} not found in #{message_ids}"
     end
+  end
+
+  def send_request(filename)
+    # Parse the json in the data file specified
+    json = parse_nfl_player_data_file(filename)
+
+    # Make the post request and validate the response
+    post :update_stats, format: :json, game_week: 1, player: json
   end
 
   def check_stats(match_player, stats)
