@@ -1,6 +1,13 @@
 # -*- encoding : utf-8 -*-
 class NflPlayerType < ActiveRecord::Base
-  ALLOWED_TYPES = %w(QB WR RB TE D K)
+  QB = :QB
+  WR = :WR
+  RB = :RB
+  TE = :TE
+  D = :D
+  K = :K
+
+  ALLOWED_TYPES = [QB, WR, RB, TE, D, K]
 
   def self.find_unique_with(position)
     npt_obj_list = NflPlayerType.where(position_type: position)

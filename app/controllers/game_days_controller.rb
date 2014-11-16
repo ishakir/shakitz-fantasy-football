@@ -31,12 +31,12 @@ class GameDaysController < ApplicationController
   def find_ten_best_players(game_week)
     game_week = GameWeek.find_unique_with(game_week)
 
-    top_qbs = find_top_of_type('QB', NO_QBS_TO_SELECT, game_week)
-    top_rbs = find_top_of_type('RB', NO_RBS_TO_SELECT, game_week)
-    top_wrs = find_top_of_type('WR', NO_WRS_TO_SELECT, game_week)
-    top_tes = find_top_of_type('TE', NO_TES_TO_SELECT, game_week)
-    top_ds  = find_top_of_type('D',  NO_DS_TO_SELECT,  game_week)
-    top_ks  = find_top_of_type('K',  NO_KS_TO_SELECT,  game_week)
+    top_qbs = find_top_of_type(NflPlayerType::QB, NO_QBS_TO_SELECT, game_week)
+    top_rbs = find_top_of_type(NflPlayerType::RB, NO_RBS_TO_SELECT, game_week)
+    top_wrs = find_top_of_type(NflPlayerType::WR, NO_WRS_TO_SELECT, game_week)
+    top_tes = find_top_of_type(NflPlayerType::TE, NO_TES_TO_SELECT, game_week)
+    top_ds  = find_top_of_type(NflPlayerType::D,  NO_DS_TO_SELECT,  game_week)
+    top_ks  = find_top_of_type(NflPlayerType::K,  NO_KS_TO_SELECT,  game_week)
 
     best_team(
       qbs: top_qbs,
