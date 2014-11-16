@@ -17,34 +17,22 @@ class GameDaysController < ApplicationController
 
   def find_ten_best_players(game_week)
     game_week = GameWeek.find_unique_with(game_week)
-    top_qbs = find_top_of_type("QB", 2, game_week)
-    top_rbs = find_top_of_type("RB", 2, game_week)
-    top_wrs = find_top_of_type("WR", 3, game_week)
-    top_tes = find_top_of_type("TE", 2, game_week)
-    top_ds  = find_top_of_type("D", 1, game_week)
-    top_ks  = find_top_of_type("K", 2, game_week)
 
-    best_team = top_qbs
-                  .concat(top_rbs)
-                  .concat(top_ds)
-                  .concat(top_wrs.first(2))
-                  .push(top_tes.first)
-                  .push(top_ks.first)
+    top_qbs = find_top_of_type('QB', 2, game_week)
+    top_rbs = find_top_of_type('RB', 2, game_week)
+    top_wrs = find_top_of_type('WR', 3, game_week)
+    top_tes = find_top_of_type('TE', 2, game_week)
+    top_ds  = find_top_of_type('D', 1, game_week)
+    top_ks  = find_top_of_type('K', 2, game_week)
 
-    other_players = [top_wrs[2], top_tes[1], top_ks[1]]
-    best_team.push(
-      other_players.max_by(&:points)
+    best_team(
+      qbs: top_qbs,
+      rbs: top_rbs,
+      wrs: top_wrs,
+      tes: top_tes,
+      ds: top_ds,
+      ks: top_ks
     )
-
-    best_team
-  end
-
-  def find_top_of_type(type, number, game_week)
-    MatchPlayer
-      .joins(:nfl_player)
-      .where(game_week: game_week, nfl_players: { nfl_player_type_id: NflPlayerType.find_unique_with(type) })
-      .order(points: :desc)
-      .limit(number)
   end
 
   def which_team_has_player
@@ -73,6 +61,29 @@ class GameDaysController < ApplicationController
   end
 
   private
+
+  def best_team(params)
+    best_team = params[:qbs].concat(params[:rbs])
+                .concat(params[:ds])
+                .concat(params[:wrs].first(2))
+                .push(params[:tes].first)
+                .push(params[:ks].first)
+
+    other_players = [params[:wrs][2], params[:tes][1], params[:ks][1]]
+    best_team.push(
+      other_players.max_by(&:points)
+    )
+
+    best_team
+  end
+
+  def find_top_of_type(type, number, game_week)
+    MatchPlayer
+      .joins(:nfl_player)
+      .where(game_week: game_week, nfl_players: { nfl_player_type_id: NflPlayerType.find_unique_with(type) })
+      .order(points: :desc)
+      .limit(number)
+  end
 
   def find_player(users, _name, game_week)
     users.each do |user|

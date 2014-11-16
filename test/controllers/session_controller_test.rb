@@ -2,7 +2,7 @@
 require 'test_helper'
 
 class SessionControllerTest < ActionController::TestCase
-  test "should get new" do
+  test 'should get new' do
     #
   end
 end

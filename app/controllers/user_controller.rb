@@ -15,59 +15,44 @@ class UserController < ApplicationController
     validate_all_parameters([USER_NAME_KEY, TEAM_NAME_KEY, PASSWORD_KEY, PASSWORD_CONFIRMATION_KEY], params[:user])
     user = User.new
     if update_user_entity(user, params[:user]) && create_all_game_week_teams(user)
-      redirect_to action: :home, notice: "Signed up!"
+      redirect_to action: :home, notice: 'Signed up!'
     else
-      render "create"
+      render 'create'
     end
   end
 
   def home
     @t1 = Time.now
     @users = User.all
-    Rails.logger.info("Found all users, took #{Time.now - @t1} ms so far")
     @fixtures = Fixture.all
-    Rails.logger.info("Found all fixtures, took #{Time.now - @t1} ms so far")
     @game_week = WithGameWeek.current_game_week
-    Rails.logger.info("Found current game week, took #{Time.now - @t1} ms so far")
     @max_number_game_weeks = Settings.number_of_gameweeks
-    Rails.logger.info("Found max no game weeks, took #{Time.now - @t1} ms so far")
     @users = @users.sort_by { |u| -u.points }
-    Rails.logger.info("Sorted users by points, took #{Time.now - @t1} ms so far")
   end
 
   def show
     validate_all_parameters([USER_ID_KEY], params)
-    Rails.logger.info "Sucessfully found #{USER_ID_KEY} in parameters"
 
     user_id = params[USER_ID_KEY]
-    Rails.logger.info "User id is #{user_id}"
 
     @active_gameweek = WithGameWeek.current_game_week
 
-    Rails.logger.info "Calculate active game week as #{@active_gameweek}"
-
     @game_week_time_obj = {}
     if params.key?(GAME_WEEK_KEY)
-      Rails.logger.info "Game week key specified on request"
       @game_week = params[GAME_WEEK_KEY].to_i
     else
-      Rails.logger.info "Game week key specified on "
       @game_week = @active_gameweek
     end
 
     @game_week_time_obj['locked'] = GameWeek.find_unique_with(@game_week).locked?
 
-    Rails.logger.info "Calculated current game week to be #{@game_week}"
-
     players = return_nfl_player_and_team_data
-    Rails.logger.info "Found players"
 
     @nfl_players = players.to_json
 
     @stats = return_my_player_point_info
 
     @user = User.find(user_id)
-    Rails.logger.info "Found user"
   end
 
   def game_week_team
@@ -103,7 +88,7 @@ class UserController < ApplicationController
   # Subroutines
   def validate_password(params)
     return if params[PASSWORD_KEY] == params[PASSWORD_CONFIRMATION_KEY]
-    fail ArgumentError, "Password and password confirmation do not match"
+    fail ArgumentError, 'Password and password confirmation do not match'
   end
 
   def update_user_entity(user, params)
@@ -126,7 +111,7 @@ class UserController < ApplicationController
     payload = validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
 
     if GameWeek.find_unique_with(params[GAME_WEEK_KEY].to_i).locked?
-      fail ArgumentError, "Gameweek is currently locked, unable to make changes"
+      fail ArgumentError, 'Gameweek is currently locked, unable to make changes'
     end
 
     if payload[:status] == 400
@@ -154,12 +139,12 @@ class UserController < ApplicationController
 
   def validate_id_length(playing, benched)
     if playing.length != 10
-      return { response: "Invalid number of active players", status: 400 }
+      return { response: 'Invalid number of active players', status: 400 }
     end
     if benched.length != 8
-      return { response: "Invalid number of benched players", status: 400 }
+      return { response: 'Invalid number of benched players', status: 400 }
     end
-    { response: "OK", status: 200 }
+    { response: 'OK', status: 200 }
   end
 
   def show_my_team_info

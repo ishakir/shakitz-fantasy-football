@@ -1,4 +1,4 @@
-require "thor/util"
+require 'thor/util'
 
 module PointsStrategy
   def self.new(plugin, match_player)

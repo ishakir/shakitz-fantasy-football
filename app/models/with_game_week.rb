@@ -33,13 +33,13 @@ module WithGameWeek
   def self.start_of_first_gameweek
     Time.zone = 'Eastern Time (US & Canada)'
     start = Time.zone.parse(Settings.first_gameweek_start) + 2.hours
-    Rails.logger.info("Start time: #{start.strftime("%d/%m/%Y %H:%M:%S")}")
+    Rails.logger.info("Start time: #{start.strftime('%d/%m/%Y %H:%M:%S')}")
     start
   end
 
   def self.eastern_current_time
     eastern_time = DateTime.now.utc.in_time_zone('Eastern Time (US & Canada)')
-    Rails.logger.info("Eastern Time: #{eastern_time.strftime("%d/%m/%Y %H:%M:%S")}")
+    Rails.logger.info("Eastern Time: #{eastern_time.strftime('%d/%m/%Y %H:%M:%S')}")
     eastern_time
   end
 
@@ -63,7 +63,7 @@ module WithGameWeek
   end
 
   def self.current_game_week
-    Rails.logger.info "Calculating current game week"
+    Rails.logger.info 'Calculating current game week'
 
     eastern_current_time = WithGameWeek.eastern_current_time
     augmented_start_time = WithGameWeek.start_of_first_gameweek

@@ -22,7 +22,7 @@ class TeamPlayerController < ApplicationController
 
     GameWeekTeamPlayer.create!(game_week_team: user_team, match_player: nfl_player, playing: is_playing)
 
-    render json: { response: "OK", status: 200 }
+    render json: { response: 'OK', status: 200 }
   end
 
   def progress_game_week
@@ -65,6 +65,6 @@ class TeamPlayerController < ApplicationController
   end
 
   def validate_player_is_not_present_in_other_team(player)
-    fail ArgumentError, "This player is already in a team" unless GameWeekTeamPlayer.where(match_player: player).empty?
+    fail ArgumentError, 'This player is already in a team' unless GameWeekTeamPlayer.where(match_player: player).empty?
   end
 end

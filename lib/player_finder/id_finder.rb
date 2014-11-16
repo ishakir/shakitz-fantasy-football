@@ -34,7 +34,7 @@ module PlayerFinder
         51,
         "Player with id '#{@id}' has inconsistent name, '#{@name}' was specified in the request, " \
         "but '#{actual_name}' was found in the system. Stats have been updated in the system, " \
-        "but name has not."
+        'but name has not.'
       )
     end
 
@@ -45,7 +45,7 @@ module PlayerFinder
         53,
         "Player with id '#{@id}' has inconsistent team, '#{@team}' was specified in the request, " \
         "but '#{actual_team}' was found in the system. Stats have been updated in the system, " \
-        "but team has not."
+        'but team has not.'
       )
     end
 
@@ -56,7 +56,7 @@ module PlayerFinder
         52,
         "Player with id '#{@id}' has inconsistent type, '#{@type}' was specified in the request, " \
         "but '#{actual_type}' was found in the system. Stats have been updated in the system, " \
-        "but type has not."
+        'but type has not.'
       )
     end
   end

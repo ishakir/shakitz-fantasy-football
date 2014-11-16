@@ -1,20 +1,26 @@
 # -*- encoding : utf-8 -*-
 class TransferRequest < ActiveRecord::Base
+  STATUS_PENDING = :pending
+  STATUS_ACCEPTED = :accepted
+  STATUS_REJECTED = :rejected
+
+  ALLOWED_TYPES = [STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED]
+
   belongs_to :request_user,
              foreign_key: :request_user_id,
-             class_name: "User"
+             class_name: 'User'
 
   belongs_to :target_user,
              foreign_key: :target_user_id,
-             class_name: "User"
+             class_name: 'User'
 
   belongs_to :offered_player,
              foreign_key: :offered_player_id,
-             class_name: "NflPlayer"
+             class_name: 'NflPlayer'
 
   belongs_to :target_player,
              foreign_key: :target_player_id,
-             class_name: "NflPlayer"
+             class_name: 'NflPlayer'
 
   validates :request_user,
             presence: true
@@ -30,8 +36,6 @@ class TransferRequest < ActiveRecord::Base
 
   validate :users_are_different
   validate :players_are_different
-
-  ALLOWED_TYPES = %w(pending accepted rejected)
 
   validates :status,
             inclusion: { in: ALLOWED_TYPES, allow_nil: false }
