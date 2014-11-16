@@ -110,21 +110,35 @@ class ActiveSupport::TestCase
     get :generate
 
     all_users = User.all
+
+    # Create an array of arrays, user -> user representing vs fixtures
     fixtures_array = Array.new(all_users.size) do
       Array.new(all_users.size, 0)
     end
 
+    # Each time we encounter user i versus user j, implement the counter representing that user
+    sum_all_fixtures(all_users, fixtures_array)
+    assert_all_fixtures_played_equally(fixtures_array)
+  end
+
+  def sum_all_fixtures(all_users, fixtures_array)
     all_users.each do |user|
       user.opponents.each do |opponent|
         fixtures_array[user.id - 1][opponent.user.id - 1] += 1
       end
     end
+  end
 
+  def assert_all_fixtures_played_equally(fixtures_array)
     no_of_1_vs_2 = fixtures_array[0][1] + fixtures_array[1][0]
     0.upto(fixtures_array.size - 1) do |n|
-      (n + 1).upto(fixtures_array.size - 1) do |m|
-        assert_equal no_of_1_vs_2, fixtures_array[n][m] + fixtures_array[m][n]
-      end
+      assert_team_plays_everyone_equally(no_of_1_vs_2, n, fixtures_array)
+    end
+  end
+
+  def assert_team_plays_everyone_equally(expected_no_games, team_id, fixtures_array)
+    (team_id + 1).upto(fixtures_array.size - 1) do |m|
+      assert_equal expected_no_games, fixtures_array[team_id][m] + fixtures_array[m][team_id]
     end
   end
 
@@ -149,12 +163,28 @@ class ActiveSupport::TestCase
     get :generate
 
     # If odd, one team doesn't play per week
-    fixtures_per_gw = no_users.even? ? no_users / 2 : (no_users - 1) / 2
-    game_weeks_with_fixtures = no_users.even? ? 17 - (17 % (no_users - 1)) : 17 - (17 % no_users)
+    fixtures_per_gw = number_of_fixtures_per_game_week(no_users)
+    game_weeks_with_fixtures = number_of_game_weeks_with_fixtures(no_users)
 
     no_fixtures = fixtures_per_gw * game_weeks_with_fixtures
 
     assert_equal no_fixtures, Fixture.all.size
+  end
+
+  def number_of_fixtures_per_game_week(no_users)
+    return no_users / 2 if no_users.even? # Everyone plays each other once
+    (no_users - 1) / 2                    # Everyone but one plays each other once
+  end
+
+  # Number of game weeks - any weeks where we couldn't fit a whole round in
+  def number_of_game_weeks_with_fixtures(no_users)
+    if no_users.even?
+      # No byes, every one plays each other, so number of rounds is no_users - 1
+      NUMBER_OF_GAME_WEEKS - (NUMBER_OF_GAME_WEEKS % (no_users - 1))
+    else
+      # Each user has a bye per round + plays everyone once, so number of rounds is no_users
+      NUMBER_OF_GAME_WEEKS - (NUMBER_OF_GAME_WEEKS % no_users)
+    end
   end
 
   def parse_data_file(directory, filename)
@@ -174,12 +204,16 @@ class ActiveSupport::TestCase
     response_body = JSON.parse(response.body)
 
     # Check that the number and type of messages are correct
-    message_ids = response_body['messages'].map do |full_message_desc|
+    recieved_message_ids = response_body['messages'].map do |full_message_desc|
       full_message_desc['id']
     end
     assert_equal expected_messages.size, response_body['messages'].size
+    assert_all_ids_included(expected_messages, recieved_message_ids)
+  end
+
+  def assert_all_ids_included(expected_messages, recieved_message_ids)
     expected_messages.each do |id|
-      assert message_ids.include?(id), "#{id} not found in #{message_ids}"
+      assert recieved_message_ids.include?(id), "#{id} not found in #{recieved_message_ids}"
     end
   end
 

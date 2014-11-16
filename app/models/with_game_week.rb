@@ -28,15 +28,11 @@ module WithGameWeek
 
   def for_game_week(list, game_week_number)
     WithGameWeek.validate_game_week_number(game_week_number)
-    candidates = list.select do |item|
-      item.game_week.number == game_week_number
-    end
-    if candidates.empty?
-      fail ActiveRecord::RecordNotFound, "Nothing found for id #{id}, game week #{game_week_number}"
-    end
-    if candidates.size > 1
-      fail IllegalStateError, "#{candidates.size} found with id #{id}, game week #{game_week_number}"
-    end
+    candidates = all_with_correct_game_week(list, game_week_number)
+
+    fail ActiveRecord::RecordNotFound, no_candidate_message(id, game_week_number) if candidates.empty?
+    fail IllegalStateError, multiple_candidates_message(candidates.size, id, game_week_number) if candidates.size > 1
+
     candidates.first
   end
 
@@ -74,5 +70,21 @@ module WithGameWeek
 
     return 1 if game_week < 1
     game_week
+  end
+
+  private
+
+  def all_with_correct_game_week(list, game_week_number)
+    list.select do |item|
+      item.game_week.number == game_week_number
+    end
+  end
+
+  def no_candidate_message(id, game_week_number)
+    "Nothing found for id #{id}, game week #{game_week_number}"
+  end
+
+  def multiple_candidates_message(size, id, game_week_number)
+    "#{size} found with id #{id}, game week #{game_week_number}"
   end
 end
