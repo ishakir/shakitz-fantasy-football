@@ -48,6 +48,7 @@ Highest Priority new features
   * Who won the most weeks overall?
 * Visualizations
   * Points graphs over time
+  * Position graphs over time
 
 Setting up a development environment
 ====================================
