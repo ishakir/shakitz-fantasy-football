@@ -39,6 +39,8 @@ Highest Priority new features
 * Stats
   * Points missed per week / over whole season
   * League table if everyone selects perfect team
+  * League table of people who have picked perfect team
+  * List of users -> weeks where perfect team has been picked
   * Swaps that should have been made to get perfect team
   * Team of the Year
   * Bench of the week stats (overall winner (no wins), fixtures results, bench league table)
