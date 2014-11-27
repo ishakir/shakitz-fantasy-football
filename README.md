@@ -46,6 +46,7 @@ Highest Priority new features
   * Bench of the week stats (overall winner (no wins), fixtures results, bench league table)
   * Note times that bench has scored more than team
   * Who won the most weeks overall?
+  * Team stars (most points over all weeks for a user)
 * Visualizations
   * Points graphs over time
   * Position graphs over time
