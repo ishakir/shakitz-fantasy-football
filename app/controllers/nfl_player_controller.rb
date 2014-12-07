@@ -56,34 +56,12 @@ class NflPlayerController < ApplicationController
     return add_no_id_info_error_message_and_respond(message) unless params_validated?(params)
 
     id_json = params[PLAYER_JSON_KEY][ID_INFO_KEY]
-
     player_finder = PlayerFinder.new(id_json)
 
-    if player_finder == :only_team
-      return handle_only_team(message)
-    elsif player_finder == :only_type
-      return handle_only_type(message)
-    end
+    return handle_only_team(message) if player_finder == :only_team
+    return handle_only_type(message) if player_finder == :only_type
 
-    found_player = player_finder.player
-    if found_player == :none
-      player_finder.add_no_player_found_message(message)
-      return respond(message, :not_found)
-    elsif found_player == :too_many
-      player_finder.add_multiple_players_found_message(message)
-      return respond(message, :not_found)
-    end
-
-    # If there are any inconsistancies, flag them
-    player_finder.add_inconsistancy_messages(message)
-    match_player = found_player.player_for_game_week(params[GAME_WEEK_KEY])
-    update_stats_for_player(match_player, params[PLAYER_JSON_KEY][STATS_KEY])
-
-    points_strategy = PointsStrategy.new(Settings.points_strategy, match_player)
-    match_player.points = points_strategy.calculate_points
-    match_player.save!
-
-    respond(message, :ok)
+    process_found_player(params, player_finder, message)
   end
 
   private
@@ -156,6 +134,28 @@ class NflPlayerController < ApplicationController
     respond(message, :unprocessable_entity)
   end
 
+  def process_found_player(params, player_finder, message)
+    found_player = player_finder.player
+    if found_player == :none || found_player == :too_many
+      return add_no_player_error_message_and_respond(message, found_player, player_finder)
+    end
+
+    # If there are any inconsistancies, flag them
+    player_finder.add_inconsistancy_messages(message)
+    commit_stats_update_for_player(params[GAME_WEEK_KEY], params[PLAYER_JSON_KEY][STATS_KEY], found_player, message)
+  end
+
+  def commit_stats_update_for_player(game_week, stats_hash, found_player, message)
+    match_player = found_player.player_for_game_week(game_week)
+    update_stats_for_player(match_player, stats_hash)
+
+    points_strategy = PointsStrategy.new(Settings.points_strategy, match_player)
+    match_player.points = points_strategy.calculate_points
+    match_player.save!
+
+    respond(message, :ok)
+  end
+
   def update_stats_for_player(match_player, stats)
     return if stats.nil?
     all_stats_hash = stats.values.reduce(Hash.new) do |acc_hash, value|
@@ -188,5 +188,15 @@ class NflPlayerController < ApplicationController
       ' name with team, type or both, or team and type'
     )
     respond(message, :unprocessable_entity)
+  end
+
+  def add_no_player_error_message_and_respond(message, found_player, player_finder)
+    if found_player == :none
+      player_finder.add_no_player_found_message(message)
+      return respond(message, :not_found)
+    elsif found_player == :too_many
+      player_finder.add_multiple_players_found_message(message)
+      return respond(message, :not_found)
+    end
   end
 end

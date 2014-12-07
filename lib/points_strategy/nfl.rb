@@ -139,26 +139,8 @@ module PointsStrategy
     end
 
     def points_conceded_points
-      if @match_player.nfl_player.nfl_player_type.position_type == 'D'
-        case @match_player.points_conceded
-        when 0
-          10
-        when 1..6
-          7
-        when 7..13
-          4
-        when 14..20
-          1
-        when 21..27
-          0
-        when 28..34
-          -1
-        else
-          -4
-        end
-      else
-        0
-      end
+      return 0 unless @match_player.nfl_player.nfl_player_type.position_type == 'D'
+      points_conceded_for_defense
     end
 
     # Points from Kicker actions
@@ -168,6 +150,26 @@ module PointsStrategy
 
     def extra_points_kicked_points
       @match_player.extra_points_kicked
+    end
+
+    private
+
+    def points_conceded_for_defense
+      case @match_player.points_conceded
+      when 0 then 10
+      when 1..20 then small_points_conceded_for_defense
+      when 21..27 then 0
+      when 28..34 then -1
+      else -4
+      end
+    end
+
+    def small_points_conceded_for_defense
+      case @match_player.points_conceded
+      when 1..6 then 7
+      when 7..13 then 4
+      when 14..20 then 1
+      end
     end
   end
 end

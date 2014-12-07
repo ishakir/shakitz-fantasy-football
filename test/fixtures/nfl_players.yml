@@ -159,3 +159,9 @@ free_agent_<%= n%>:
   nfl_team_id: 2
   nfl_player_type_id: 2
 <% end %>
+
+test_defence:
+  id: 78
+  name: Defence
+  nfl_team_id: 1
+  nfl_player_type_id: 6

@@ -1,4 +1,7 @@
 # -*- encoding : utf-8 -*-
+require 'simplecov'
+SimpleCov.start
+
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -23,7 +26,7 @@ class ActiveSupport::TestCase
 
   NUMBER_OF_GAME_WEEKS = 17
 
-  LAST_NFL_PLAYER_NAME_IN_FIXTURES = 'free_agent_35'
+  LAST_NFL_PLAYER_NAME_IN_FIXTURES = 'Defence'
   MATCH_PLAYER_ONE_POINTS = 4
   MATCH_PLAYER_TWO_POINTS = 3
   GWT_STAFFORD_PICKS_POINTS = MATCH_PLAYER_ONE_POINTS * 10
