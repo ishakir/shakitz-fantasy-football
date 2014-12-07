@@ -9,10 +9,11 @@ class NflPlayerController < ApplicationController
   GAME_WEEK_KEY   = :game_week
   STATS_KEY       = :stats
 
-  NAME_KEY = :name
-  TEAM_KEY = :team
-  TYPE_KEY = :type
-  NFL_ID_KEY = :id
+  ID_KEY      = :id
+  NAME_KEY    = :name
+  TEAM_KEY    = :team
+  TYPE_KEY    = :type
+  NFL_ID_KEY  = :id
 
   def unpicked
     @players = NflPlayer.all
@@ -28,6 +29,15 @@ class NflPlayerController < ApplicationController
   def show
     id = params[:id]
     @player = NflPlayer.find(id)
+  end
+
+  def update
+    validate_at_least_number_of_parameters([NAME_KEY, TEAM_KEY, TYPE_KEY], params, 1)
+    nfl_player = NflPlayer.find(params[ID_KEY])
+
+    update_player(nfl_player, params)
+
+    render json: { status: 'success' }
   end
 
   def create
@@ -65,6 +75,13 @@ class NflPlayerController < ApplicationController
   end
 
   private
+
+  def update_player(nfl_player, params)
+    nfl_player.name = params[NAME_KEY] if params.key?(NAME_KEY)
+    nfl_player.nfl_team = find_team_from_name(params[TEAM_KEY]) if params.key?(TEAM_KEY)
+    nfl_player.nfl_player_type = find_type_from_name(params[TYPE_KEY]) if params.key?(TYPE_KEY)
+    nfl_player.save!
+  end
 
   def create_defence_player(params)
     fail ArgumentError if params.key?(NFL_ID_KEY)

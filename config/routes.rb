@@ -64,8 +64,13 @@ Footbawwl::Application.routes.draw do
   get "nfl_team/:id" => "nfl_team#show"     
   get "nfl_player/:id" => "nfl_player#show" 
   get "nfl_player/:id/game_week/:game_week" => "nfl_player#on_game_week"
+
+  get "stats" => "stats#show"
   
   resources :user
   resources :sessions
+
+  # New API-style routes
+  put "api/player/:id" => "nfl_player#update"
 
 end
