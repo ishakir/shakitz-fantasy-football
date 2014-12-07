@@ -53,7 +53,7 @@
 					<th>User</th>
 					<th>Team Name</th>
 					<th data-defaultsort="desc">Points</th>
-					<th data-recordformat="hello" data-firstsort="desc">Record</th>
+					<th data-firstsort="desc">Record</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -69,15 +69,18 @@
 					<td><%= user.team_name %></td>
 					<td><%= user.points %></td>
 					<% Rails.logger.info("Got points for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
-					<% results = user.all_results %>
+					<!-- <% results = user.all_results %> -->
+					<% results = {:wins => rand(10), :losses => rand(10), :draws => rand(2)} %>
+					<% win_percentage = (results[:wins].to_f + (0.5 * results[:draws])) / (results[:wins].to_f + results[:draws].to_f + results[:losses].to_f) %>
+					<% Rails.logger.info(win_percentage) %>
 					<% if results[:draws] == 0 %>
-					<td>
+					<td data-value="<%= win_percentage %>">
 						<%= results[:wins] %>-<%= results[:losses] %>
 					</td>
 					<% Rails.logger.info("Calculated fixtures information for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
 					<% else %>
-					<td>
-						<%= results[:wins] %>-<%= results[:draws] %>-<%= results[:losses] %>
+					<td data-value="<%= win_percentage %>">
+						<%= results[:wins] %>-<%= results[:losses] %>-<%= results[:draws] %>
 					</td>
 					<% Rails.logger.info("Calculated fixtures information for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
 					<% end %>
