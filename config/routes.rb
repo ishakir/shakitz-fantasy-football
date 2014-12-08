@@ -73,4 +73,7 @@ Footbawwl::Application.routes.draw do
   # New API-style routes
   put "api/player/:id" => "nfl_player#update"
 
+  get "api/users"                          => "user#api_all"
+  get "api/users/:id/game_week/:game_week" => "user#api_game_week"
+
 end

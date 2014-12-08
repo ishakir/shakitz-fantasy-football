@@ -70,6 +70,14 @@ class UserController < ApplicationController
     redirect_to action: :home
   end
 
+  def api_all
+    user_summaries = User.all.map do |user|
+      UserSummary.new(user)
+    end
+
+    render json: user_summaries
+  end
+
   private
 
   def validate_everything_for_declare_roster(params)

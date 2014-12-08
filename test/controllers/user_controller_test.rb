@@ -343,4 +343,46 @@ class UserControllerTest < ActionController::TestCase
     player_after = GameWeekTeamPlayer.where(match_player_id: 1, game_week_team_id: 1).first
     assert !player_after.playing
   end
+
+  test 'api users returns an array of the correct size' do
+    get :api_all
+    users = JSON.parse(response.body)
+
+    assert_equal NUMBER_OF_USERS, users.size
+  end
+
+  test 'api users have id attribute' do
+    get :api_all
+    user = JSON.parse(response.body)[0]
+
+    assert user.key?("id")
+  end
+
+  test 'api users have name attribute' do
+    get :api_all
+    user = JSON.parse(response.body)[0]
+
+    assert user.key?("name")
+  end
+
+  test 'api users have team_name attribute' do
+    get :api_all
+    user = JSON.parse(response.body)[0]
+
+    assert user.key?("team_name")
+  end
+
+  test 'api users have game_weeks attribute' do
+    get :api_all
+    user = JSON.parse(response.body)[0]
+
+    assert user.key?("game_weeks")
+  end
+
+  test 'game weeks contain game_weeks up to current' do
+    get :api_all
+    game_weeks = JSON.parse(response.body)[0]["game_weeks"]
+
+    assert game_weeks.key?("1")
+  end
 end
