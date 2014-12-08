@@ -9,10 +9,10 @@ class UserSummary
 
   private
 
-  def game_weeks(user)
+  def game_weeks(_user)
     Hash[
-      (1 .. WithGameWeek.current_game_week).map do |game_week|
-        [game_week, {url: "api/users/#{@id}/game_week/#{game_week}" }]
+      (1..WithGameWeek.current_game_week).map do |game_week|
+        [game_week, { url: "api/users/#{@id}/game_week/#{game_week}" }]
       end
     ]
   end

@@ -355,77 +355,77 @@ class UserControllerTest < ActionController::TestCase
     get :api_all
     user = JSON.parse(response.body)[0]
 
-    assert user.key?("id")
+    assert user.key?('id')
   end
 
   test 'api users have name attribute' do
     get :api_all
     user = JSON.parse(response.body)[0]
 
-    assert user.key?("name")
+    assert user.key?('name')
   end
 
   test 'api users have team_name attribute' do
     get :api_all
     user = JSON.parse(response.body)[0]
 
-    assert user.key?("team_name")
+    assert user.key?('team_name')
   end
 
   test 'api users have game_weeks attribute' do
     get :api_all
     user = JSON.parse(response.body)[0]
 
-    assert user.key?("game_weeks")
+    assert user.key?('game_weeks')
   end
 
   test 'game weeks contain game_weeks up to current' do
     get :api_all
-    game_weeks = JSON.parse(response.body)[0]["game_weeks"]
+    game_weeks = JSON.parse(response.body)[0]['game_weeks']
 
-    assert game_weeks.key?("1")
+    assert game_weeks.key?('1')
   end
 
   test 'api user gameweek contains user object' do
     get :api_game_week, user_id: 1, game_week: 1
     user_game_week = JSON.parse(response.body)
 
-    assert user_game_week.key?("user")
+    assert user_game_week.key?('user')
   end
 
   test 'api user gameweek contains user id' do
     get :api_game_week, user_id: 1, game_week: 1
-    user_reference = JSON.parse(response.body)["user"]
+    user_reference = JSON.parse(response.body)['user']
 
-    assert user_reference.key?("id")
+    assert user_reference.key?('id')
   end
 
   test 'api user gameweek contains user name' do
     get :api_game_week, user_id: 1, game_week: 1
-    user_reference = JSON.parse(response.body)["user"]
+    user_reference = JSON.parse(response.body)['user']
 
-    assert user_reference.key?("name")
+    assert user_reference.key?('name')
   end
 
   test 'api user gameweek contains user team_name' do
     get :api_game_week, user_id: 1, game_week: 1
-    user_reference = JSON.parse(response.body)["user"]
+    user_reference = JSON.parse(response.body)['user']
 
-    assert user_reference.key?("team_name")
+    assert user_reference.key?('team_name')
   end
 
   test 'api user gameweek contains bench object' do
     get :api_game_week, user_id: 1, game_week: 1
     user_game_week = JSON.parse(response.body)
 
-    assert user_game_week.key?("bench")
+    assert user_game_week.key?('bench')
   end
 
   test 'api user gameweek contains bench points' do
     get :api_game_week, user_id: 1, game_week: 1
-    bench = JSON.parse(response.body)["bench"]
+    bench = JSON.parse(response.body)['bench']
 
-    assert bench.key?("points")
+    assert bench.key?('points')
   end
 
   test "api user gameweek rejects if user doesn't exist" do
@@ -443,13 +443,13 @@ class UserControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test "api user gameweek rejects if user id is string" do
-    get :api_game_week, user_id: "hello", game_week: 1
+  test 'api user gameweek rejects if user id is string' do
+    get :api_game_week, user_id: 'hello', game_week: 1
     assert_response :unprocessable_entity
   end
 
-  test "api user gameweek rejects if game_week is string" do
-    get :api_game_week, user_id: 1, game_week: "hello"
+  test 'api user gameweek rejects if game_week is string' do
+    get :api_game_week, user_id: 1, game_week: 'hello'
     assert_response :unprocessable_entity
   end
 end
