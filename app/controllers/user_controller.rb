@@ -84,13 +84,17 @@ class UserController < ApplicationController
     user_id = params[USER_ID_KEY].to_i
     game_week = params[GAME_WEEK_KEY].to_i
 
-    fail ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
-    fail ArgumentError, "Game Week #{game_week} hasn't happened yet!" if game_week > WithGameWeek.current_game_week
+    validate_user_id_and_game_week(user_id, game_week)
 
     render json: UserGameWeek.new(User.find(user_id).team_for_game_week(game_week))
   end
 
   private
+
+  def validate_user_id_and_game_week(user_id, game_week)
+    fail ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
+    fail ArgumentError, "Game Week #{game_week} hasn't happened yet!" if game_week > WithGameWeek.current_game_week
+  end
 
   def validate_everything_for_declare_roster(params)
     validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
