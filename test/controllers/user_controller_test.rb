@@ -385,4 +385,71 @@ class UserControllerTest < ActionController::TestCase
 
     assert game_weeks.key?("1")
   end
+
+  test 'api user gameweek contains user object' do
+    get :api_game_week, user_id: 1, game_week: 1
+    user_game_week = JSON.parse(response.body)
+
+    assert user_game_week.key?("user")
+  end
+
+  test 'api user gameweek contains user id' do
+    get :api_game_week, user_id: 1, game_week: 1
+    user_reference = JSON.parse(response.body)["user"]
+
+    assert user_reference.key?("id")
+  end
+
+  test 'api user gameweek contains user name' do
+    get :api_game_week, user_id: 1, game_week: 1
+    user_reference = JSON.parse(response.body)["user"]
+
+    assert user_reference.key?("name")
+  end
+
+  test 'api user gameweek contains user team_name' do
+    get :api_game_week, user_id: 1, game_week: 1
+    user_reference = JSON.parse(response.body)["user"]
+
+    assert user_reference.key?("team_name")
+  end
+
+  test 'api user gameweek contains bench object' do
+    get :api_game_week, user_id: 1, game_week: 1
+    user_game_week = JSON.parse(response.body)
+
+    assert user_game_week.key?("bench")
+  end
+
+  test 'api user gameweek contains bench points' do
+    get :api_game_week, user_id: 1, game_week: 1
+    bench = JSON.parse(response.body)["bench"]
+
+    assert bench.key?("points")
+  end
+
+  test "api user gameweek rejects if user doesn't exist" do
+    get :api_game_week, user_id: 20, game_week: 1
+    assert_response :not_found
+  end
+
+  test 'api user gameweek rejects if game_week is not valid' do
+    get :api_game_week, user_id: 1, game_week: 55
+    assert_response :unprocessable_entity
+  end
+
+  test "api user gameweek rejects if game_week hasn't happened yet" do
+    get :api_game_week, user_id: 1, game_week: 10
+    assert_response :unprocessable_entity
+  end
+
+  test "api user gameweek rejects if user id is string" do
+    get :api_game_week, user_id: "hello", game_week: 1
+    assert_response :unprocessable_entity
+  end
+
+  test "api user gameweek rejects if game_week is string" do
+    get :api_game_week, user_id: 1, game_week: "hello"
+    assert_response :unprocessable_entity
+  end
 end
