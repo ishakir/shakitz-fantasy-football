@@ -69,8 +69,7 @@
 					<td><%= user.team_name %></td>
 					<td><%= user.points %></td>
 					<% Rails.logger.info("Got points for user #{user.name} in view, took #{Time.now - @t1} ms so far") %>
-					<!-- <% results = user.all_results %> -->
-					<% results = {:wins => rand(10), :losses => rand(10), :draws => rand(2)} %>
+					<% results = user.all_results %>
 					<% win_percentage = (results[:wins].to_f + (0.5 * results[:draws])) / (results[:wins].to_f + results[:draws].to_f + results[:losses].to_f) %>
 					<% Rails.logger.info(win_percentage) %>
 					<% if results[:draws] == 0 %>
