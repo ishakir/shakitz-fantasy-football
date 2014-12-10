@@ -11,7 +11,11 @@ class ApplicationController < ActionController::Base
   before_action :set_transfer_amount
 
   def set_transfer_amount
-    session[:user_id] ? @transfer_amount = TransferRequest.where(status: 'pending', target_user_id: session[:user_id]).count : @transfer_amount = 0
+    if session[:user_id]
+      @transfer_amount = TransferRequest.where(status: 'pending', target_user_id: session[:user_id]).count
+    else
+      @transfer_amount = 0
+    end
   end
 
   def validate_all_parameters(expected_params, params)
@@ -47,7 +51,11 @@ class ApplicationController < ActionController::Base
       name_tmp = { team: player.nfl_team.name }
       tmp[player.id] = player_tmp.merge!(name_tmp)
     end
-    tmp
+    tmp.to_json
+  end
+
+  def ok_response
+    { response: 'OK', status: 200 }
   end
 
   ### Controller exception handling
@@ -74,7 +82,6 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordInvalid do |error|
     trace_error(error)
-    puts error
     render_unprocessable_entity
   end
 

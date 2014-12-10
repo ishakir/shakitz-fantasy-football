@@ -58,11 +58,8 @@ class Fixture < ActiveRecord::Base
   end
 
   def drawn?
-    Rails.logger.info "Checking if fixture between #{home_team.user.name} and #{away_team.user.name} was drawn"
     home_points = home_team.points
     away_points = away_team.points
-    Rails.logger.info "#{home_team.user.name} points: #{home_points}"
-    Rails.logger.info "#{away_team.user.name} points: #{away_points}"
     home_points == away_points
   end
 

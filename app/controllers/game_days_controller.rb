@@ -1,16 +1,32 @@
 class GameDaysController < ApplicationController
-  NO_QBS_TO_SELECT = 2
-  NO_RBS_TO_SELECT = 2
-  NO_WRS_TO_SELECT = 3
-  NO_TES_TO_SELECT = 2
-  NO_DS_TO_SELECT  = 1
-  NO_KS_TO_SELECT  = 2
+  BEST_TEAM_SIZE = 10
 
-  MIN_NO_WRS = 2
-
-  WR_WILDCARD_INDEX = 2
-  TE_WILDCARD_INDEX = 1
-  K_WILDCARD_INDEX  = 1
+  BEST_TEAM_DEFINITION = {
+    NflPlayerType::QB => {
+      min: 2,
+      max: 2
+    },
+    NflPlayerType::RB => {
+      min: 2,
+      max: 2
+    },
+    NflPlayerType::WR => {
+      min: 2,
+      max: 3
+    },
+    NflPlayerType::TE => {
+      min: 1,
+      max: 2
+    },
+    NflPlayerType::K => {
+      min: 1,
+      max: 2
+    },
+    NflPlayerType::D => {
+      min: 1,
+      max: 1
+    }
+  }
 
   GAME_WEEK_KEY = :game_week
   PLAYER_ID_KEY = :player_id
@@ -23,71 +39,66 @@ class GameDaysController < ApplicationController
     validate_all_parameters([GAME_WEEK_KEY], params)
     @page_game_week = params[GAME_WEEK_KEY].to_i
     @current_game_week = WithGameWeek.current_game_week
-    @player_data = return_nfl_player_and_team_data.to_json
+    @player_data = return_nfl_player_and_team_data
     @users = User.all.sort_by { |u| -u.team_for_game_week(@page_game_week).points }
     @best_team = find_ten_best_players(@page_game_week)
   end
 
-  def find_ten_best_players(game_week)
-    game_week = GameWeek.find_unique_with(game_week)
-
-    top_qbs = find_top_of_type('QB', NO_QBS_TO_SELECT, game_week)
-    top_rbs = find_top_of_type('RB', NO_RBS_TO_SELECT, game_week)
-    top_wrs = find_top_of_type('WR', NO_WRS_TO_SELECT, game_week)
-    top_tes = find_top_of_type('TE', NO_TES_TO_SELECT, game_week)
-    top_ds  = find_top_of_type('D',  NO_DS_TO_SELECT,  game_week)
-    top_ks  = find_top_of_type('K',  NO_KS_TO_SELECT,  game_week)
-
-    best_team(
-      qbs: top_qbs,
-      rbs: top_rbs,
-      wrs: top_wrs,
-      tes: top_tes,
-      ds: top_ds,
-      ks: top_ks
-    )
-  end
-
   def which_team_has_player
     validate_all_parameters([GAME_WEEK_KEY, PLAYER_ID_KEY], params)
-
-    game_week = params[GAME_WEEK_KEY]
     nfl_player = NflPlayer.find(params[PLAYER_ID_KEY])
-    match_player = nfl_player.player_for_game_week(game_week)
-
-    game_week_team_players = GameWeekTeamPlayer.where(match_player: match_player)
-    found_user = nil if game_week_team_players.empty?
-    found_user = game_week_team_players.first.game_week_team.user unless game_week_team_players.empty?
-
-    team_data = nil if found_user.nil?
-    team_data = {
-      name: found_user.name,
-      team_name: found_user.team_name,
-      playing: game_week_team_players.first.playing
-    } unless found_user.nil?
-
-    return_data = { data: team_data }
+    game_week = params[GAME_WEEK_KEY]
 
     respond_to do |format|
-      format.json { render json: return_data }
+      format.json do
+        render json: {
+          data: form_team_data(nfl_player, game_week)
+        }
+      end
     end
   end
 
   private
 
-  def best_team(params)
-    best_team = params[:qbs].concat(params[:rbs])
-                .concat(params[:ds])
-                .concat(params[:wrs].first(MIN_NO_WRS))
-                .push(params[:tes].first)
-                .push(params[:ks].first)
-
-    other_players = [params[:wrs][WR_WILDCARD_INDEX], params[:tes][TE_WILDCARD_INDEX], params[:ks][K_WILDCARD_INDEX]]
-    best_team.push(
-      other_players.max_by(&:points)
+  def form_team_data(nfl_player, game_week)
+    game_week_team_players = GameWeekTeamPlayer.where(
+      match_player: nfl_player.player_for_game_week(game_week)
     )
+    return nil if game_week_team_players.empty?
 
-    best_team
+    found_user = game_week_team_players.first.game_week_team.user
+    {
+      name: found_user.name,
+      team_name: found_user.team_name,
+      playing: game_week_team_players.first.playing
+    }
+  end
+
+  def find_ten_best_players(game_week)
+    game_week = GameWeek.find_unique_with(game_week)
+
+    player_arrays = BEST_TEAM_DEFINITION.keys.reduce(best: [], remaining: []) do |player_arrays_acc, player_type|
+      add_players_of_type(player_type, player_arrays_acc, game_week)
+    end
+
+    best_players = player_arrays[:best]
+    remaining_players = player_arrays[:remaining]
+
+    best_players.concat(remaining_players.sort_by(&:points).last(BEST_TEAM_SIZE - best_players.size))
+  end
+
+  def add_players_of_type(player_type, player_arrays, game_week)
+    best_players = player_arrays[:best]
+    remaining_players = player_arrays[:remaining]
+
+    max = BEST_TEAM_DEFINITION[player_type][:max]
+    min = BEST_TEAM_DEFINITION[player_type][:min]
+
+    best_of_type = find_top_of_type(player_type, max, game_week)
+    best_players.concat(best_of_type.first(min))
+    remaining_players.concat(best_of_type.last(max - min))
+
+    { best: best_players, remaining: remaining_players }
   end
 
   def find_top_of_type(type, number, game_week)

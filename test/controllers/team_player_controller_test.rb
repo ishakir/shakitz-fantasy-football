@@ -20,7 +20,8 @@ class TeamPlayerControllerTest < ActionController::TestCase
   end
 
   test "can't add a player to a team that has 18 players" do
-    assert_equal NUMBER_OF_PLAYING + NUMBER_OF_BENCHED, User.find(1).team_for_game_week(DEFAULT_GAMEWEEK).match_players.size
+    assert_equal NUMBER_OF_PLAYING + NUMBER_OF_BENCHED,
+                 User.find(1).team_for_game_week(DEFAULT_GAMEWEEK).match_players.size
     post :add_player, user_id: 1, player_id: DEFAULT_PLAYER_ID
     assert_response :unprocessable_entity
   end

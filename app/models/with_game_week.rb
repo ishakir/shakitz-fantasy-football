@@ -1,8 +1,18 @@
 # -*- encoding : utf-8 -*-
 module WithGameWeek
+  DAYS_IN_A_WEEK = 7
+
   def self.validate_game_week_number(game_week_number)
-    fail ArgumentError, "Game week number must be greater than 1, not #{game_week_number}" if game_week_number < 1
-    fail ArgumentError, "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}" if game_week_number > Settings.number_of_gameweeks
+    fail ArgumentError, game_week_too_small_message(game_week_number) if game_week_number < 1
+    fail ArgumentError, game_week_too_large_message(game_week_number) if game_week_number > Settings.number_of_gameweeks
+  end
+
+  def self.game_week_too_small_message(game_week_number)
+    "Game week number must be greater than 1, not #{game_week_number}"
+  end
+
+  def self.game_week_too_large_message(game_week_number)
+    "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}"
   end
 
   def for_current_game_week(list)
@@ -18,29 +28,25 @@ module WithGameWeek
 
   def for_game_week(list, game_week_number)
     WithGameWeek.validate_game_week_number(game_week_number)
-    candidates = list.select do |item|
-      item.game_week.number == game_week_number
-    end
-    if candidates.empty?
-      fail ActiveRecord::RecordNotFound, "Nothing found for id #{id}, game week #{game_week_number}"
-    end
-    if candidates.size > 1
-      fail IllegalStateError, "#{candidates.size} found with id #{id}, game week #{game_week_number}"
-    end
+    candidates = all_with_correct_game_week(list, game_week_number)
+
+    fail ActiveRecord::RecordNotFound, no_candidate_message(id, game_week_number) if candidates.empty?
+    fail IllegalStateError, multiple_candidates_message(candidates.size, id, game_week_number) if candidates.size > 1
+
     candidates.first
   end
 
   def self.start_of_first_gameweek
     Time.zone = 'Eastern Time (US & Canada)'
-    start = Time.zone.parse(Settings.first_gameweek_start) + 2.hours
-    Rails.logger.info("Start time: #{start.strftime('%d/%m/%Y %H:%M:%S')}")
-    start
+    Time.zone.parse(Settings.first_gameweek_start) + 2.hours
   end
 
   def self.eastern_current_time
-    eastern_time = DateTime.now.utc.in_time_zone('Eastern Time (US & Canada)')
-    Rails.logger.info("Eastern Time: #{eastern_time.strftime('%d/%m/%Y %H:%M:%S')}")
-    eastern_time
+    DateTime.now.utc.in_time_zone('Eastern Time (US & Canada)')
+  end
+
+  def self.more_than_days_since_start?(days)
+    more_than_time_since_start?(days, 0)
   end
 
   def self.more_than_time_since_start?(days, hours)
@@ -48,34 +54,37 @@ module WithGameWeek
     start_time = WithGameWeek.start_of_first_gameweek
 
     time_difference = eastern_current_time - start_time
-    Rails.logger.info("Time difference is #{time_difference}")
-
-    converted_days = days.days
-    converted_hours = hours.hours
-
-    Rails.logger.info("Converted days is #{converted_days}")
-    Rails.logger.info("Converted hours is #{converted_hours}")
 
     total_converted_time = days.days + hours.hours
-    Rails.logger.info("Total converted time is #{total_converted_time}")
 
     time_difference > total_converted_time
   end
 
   def self.current_game_week
-    Rails.logger.info 'Calculating current game week'
-
     eastern_current_time = WithGameWeek.eastern_current_time
     augmented_start_time = WithGameWeek.start_of_first_gameweek
 
     days_since_start = ((eastern_current_time - augmented_start_time) / 1.day).floor
-    Rails.logger.info "Days since start is #{days_since_start}"
 
-    game_week = ((days_since_start - (days_since_start % 7)) / 7) + 1
-
-    Rails.logger.info "Returning from current_game_week with #{game_week}"
+    game_week = ((days_since_start - (days_since_start % DAYS_IN_A_WEEK)) / DAYS_IN_A_WEEK) + 1
 
     return 1 if game_week < 1
     game_week
+  end
+
+  private
+
+  def all_with_correct_game_week(list, game_week_number)
+    list.select do |item|
+      item.game_week.number == game_week_number
+    end
+  end
+
+  def no_candidate_message(id, game_week_number)
+    "Nothing found for id #{id}, game week #{game_week_number}"
+  end
+
+  def multiple_candidates_message(size, id, game_week_number)
+    "#{size} found with id #{id}, game week #{game_week_number}"
   end
 end

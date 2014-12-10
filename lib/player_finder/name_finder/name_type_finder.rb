@@ -10,7 +10,10 @@ module PlayerFinder
       end
 
       def add_no_player_found_message(message)
-        message.add_message(13, "No player was found with name '#{@name}' and type '#{@type}'")
+        message.add_message(
+          13,
+          "No player was found with name '#{@name}' and type '#{@type}'"
+        )
       end
 
       def add_multiple_players_found_message(message)
@@ -34,7 +37,9 @@ module PlayerFinder
       private
 
       def multiple_players_message
-        "Multiple players were found with name '#{@name}' and type '#{@type}', please specify the team to uniquely identify the player. Alternatively provide the player's id."
+        "Multiple players were found with name '#{@name}' and type" \
+        " '#{@type}', please specify the team to uniquely identify the" \
+        " player. Alternatively provide the player's id."
       end
     end
   end

@@ -11,28 +11,46 @@ class FixturesController < ApplicationController
 
   def fixtures_for_week
     validate_all_parameters([GAME_WEEK], params)
-    @fixtures = Fixture.joins(home_team: :game_week).where(game_weeks: { number: params[:game_week] })
 
-    @list = @fixtures.map do |fixture|
-      { home_team_id: fixture.home_team.id, home_name: fixture.home_team.user.team_name, away_team_id: fixture.away_team.id, away_name: fixture.away_team.user.team_name }
+    list = all_fixtures_for_week(params[GAME_WEEK]).map do |fixture|
+      fixture_model_to_resource(fixture)
     end
 
-    render json: @list.to_json
+    render json: list.to_json
+  end
+
+  private
+
+  def fixture_model_to_resource(fixture)
+    {
+      home_team_id: fixture.home_team.id,
+      home_name: fixture.home_team.user.team_name,
+      away_team_id: fixture.away_team.id,
+      away_name: fixture.away_team.user.team_name
+    }
+  end
+
+  def all_fixtures_for_week(game_week)
+    Fixture.joins(home_team: :game_week).where(game_weeks: { number: game_week })
   end
 
   def generate_fixture_schedule(users)
     cycle_length = users.size.even? ? users.size - 1 : users.size
     RRSchedule::Schedule.new(
       teams: users,
-      rules: [
-        RRSchedule::Rule.new(
-          wday: 6,
-          ps: (0..users.size), # We have as many places to play as teams, that means
-          gt: ['7:00PM']         # everyone can fit into "one gameweek"
-        )
-      ],
+      rules: get_rules(users.size),
       cycles: (NUMBER_OF_GAMEWEEKS / cycle_length).floor # Enough cycles to fit into < NUMBER_OF_GAMEWEEKS game weeks
-    ).generate                                                                # Will need to re-think this if no-users > 8
+    ).generate                                           # Will need to re-think this if no-users > 8
+  end
+
+  def get_rules(no_users)
+    [
+      RRSchedule::Rule.new(
+        wday: 6,
+        ps: (0..no_users), # We have as many places to play as teams, that means
+        gt: ['7:00PM']     # everyone can fit into "one gameweek"
+      )
+    ]
   end
 
   def save_fixture_schedule(schedule)

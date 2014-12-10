@@ -2,6 +2,11 @@
 class GameWeek < ActiveRecord::Base
   include WithGameWeek
 
+  HOURS_UNTIL_5_PM = 17
+
+  # Game week starts on a tuesday (after MNF)
+  DAYS_IN_WEEK_BEFORE_LOCK = 2
+
   def self.find_unique_with(game_week)
     WithGameWeek.validate_game_week_number(game_week)
 
@@ -36,24 +41,20 @@ class GameWeek < ActiveRecord::Base
   end
 
   def active?
-    days_for_game_week_start = (number - 1) * 7
-    days_for_game_week_end = number * 7
+    days_for_game_week_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
+    days_for_game_week_end = number * WithGameWeek::DAYS_IN_A_WEEK
 
-    is_after_game_week_start = WithGameWeek.more_than_time_since_start?(days_for_game_week_start, 0)
-    is_after_game_week_end = WithGameWeek.more_than_time_since_start?(days_for_game_week_end, 0)
+    is_after_game_week_start = WithGameWeek.more_than_days_since_start?(days_for_game_week_start)
+    is_after_game_week_end = WithGameWeek.more_than_days_since_start?(days_for_game_week_end)
 
     is_after_game_week_start && !is_after_game_week_end
   end
-
-  def locked?
-    days_for_game_week_start = (number - 1) * 7
+  
+   def locked?
+    days_for_game_week_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
     days_until_thursday = days_for_game_week_start + 2
-    thanksgiving_week = 13
-    hour_to_lock_at = 17
-    if(number == thanksgiving_week)
-      hour_to_lock_at = 10
-    end
-    WithGameWeek.more_than_time_since_start?(days_until_thursday, hour_to_lock_at)
 
+    WithGameWeek.more_than_time_since_start?(days_until_thursday, HOURS_UNTIL_5_PM)
   end
+
 end

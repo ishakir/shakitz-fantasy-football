@@ -52,11 +52,7 @@ class User < ActiveRecord::Base
     return no_results if game_week_number == 0
 
     teams_up_to_game_week(game_week_number).each_with_object(no_results) do |game_week_team, hash|
-      result = game_week_team.head_to_head_result
-      hash[:wins]   += 1 if result == :won
-      hash[:draws]  += 1 if result == :drawn
-      hash[:losses] += 1 if result == :lost
-      hash
+      update_results_hash(game_week_team, hash)
     end
   end
 
@@ -84,5 +80,13 @@ class User < ActiveRecord::Base
 
   def last_game_week
     WithGameWeek.current_game_week - 1
+  end
+
+  def update_results_hash(game_week_team, hash)
+    result = game_week_team.head_to_head_result
+    hash[:wins]   += 1 if result == :won
+    hash[:draws]  += 1 if result == :drawn
+    hash[:losses] += 1 if result == :lost
+    hash
   end
 end

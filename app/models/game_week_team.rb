@@ -6,13 +6,21 @@ class GameWeekTeam < ActiveRecord::Base
     # There should only we one of these
     no_of_gwt_objs = gwt_obj_list.size
     if no_of_gwt_objs == 0
-      fail ActiveRecord::RecordNotFound, "Didn't find a record with user_id '#{user_id}' and game week '#{game_week}'"
+      fail ActiveRecord::RecordNotFound, no_record_found_message(user_id, game_week)
     elsif no_of_gwt_objs > 1
-      fail IllegalStateError, "Found #{no_of_gwt_objs} game week teams with uid '#{user_id}' and game week '#{game_week}'"
+      fail IllegalStateError, multiple_records_found_message(no_of_gwt_objs, user_id, game_week)
     end
 
     # Return what must be the only element
     gwt_obj_list.first
+  end
+
+  def self.no_record_found_message(user_id, game_week)
+    "Didn't find a record with user_id '#{user_id}' and game week '#{game_week}'"
+  end
+
+  def self.multiple_records_found_message(no_found, user_id, game_week)
+    "Found #{no_found} game week teams with uid '#{user_id}' and game week '#{game_week}'"
   end
 
   belongs_to :user

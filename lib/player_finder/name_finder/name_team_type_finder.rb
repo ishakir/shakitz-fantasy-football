@@ -9,11 +9,14 @@ module PlayerFinder
       end
 
       def add_no_player_found_message(message)
-        message.add_message(16, "No player was found with name '#{@name}', type '#{@type}' and team '#{@team}'")
+        message.add_message(
+          16,
+          "No player was found with name '#{@name}', type '#{@type}' and team '#{@team}'"
+        )
       end
 
       def add_multiple_players_found_message(message)
-        message.add_message(25, "Multiple players were found with name '#{@name}', team '#{@team}' and type '#{@type}' please specify the id to uniquely identify the player.")
+        message.add_message(25, multiple_players_message)
       end
 
       def add_inconsistancy_messages(_message)
@@ -29,6 +32,14 @@ module PlayerFinder
         return :none     if players.empty?
         return :too_many if players.size > 1
         players.shift
+      end
+
+      private
+
+      def multiple_players_message
+        "Multiple players were found with name '#{@name}', team '#{@team}'" \
+        " and type '#{@type}' please specify the id to uniquely identify" \
+        " the player. Alternatively provide the player's id."
       end
     end
   end

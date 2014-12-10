@@ -28,7 +28,9 @@ module PlayerFinder
       private
 
       def multiple_players_message
-        "Multiple players were found with name 'name', please specify team, type or both to uniquely identify the player. Alternatively provide the player's id."
+        "Multiple players were found with name 'name', please specify team," \
+        ' type or both to uniquely identify the player.'\
+        " Alternatively provide the player's id."
       end
     end
   end

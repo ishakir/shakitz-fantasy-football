@@ -21,20 +21,7 @@ class TransferRequestController < ApplicationController
     validate_all_create_parameters(params)
 
     transfer_request = params[TRANSFER_REQUEST_ID_KEY]
-
-    request_user = User.find(transfer_request[REQUEST_USER_ID_KEY])
-    target_user = User.find(transfer_request[TARGET_USER_ID_KEY])
-
-    offered_player = NflPlayer.find(transfer_request[OFFERED_PLAYER_ID_KEY])
-    target_player = NflPlayer.find(transfer_request[TARGET_PLAYER_ID_KEY])
-
-    TransferRequest.create!(
-      request_user: request_user,
-      target_user: target_user,
-      offered_player: offered_player,
-      target_player: target_player,
-      status: TransferRequest::STATUS_PENDING
-    )
+    create_transfer_request(transfer_request)
 
     redirect_to transfer_request_path
   end
@@ -58,9 +45,27 @@ class TransferRequestController < ApplicationController
 
   private
 
+  def create_transfer_request(transfer_request_params)
+    TransferRequest.create!(
+      request_user: User.find(transfer_request_params[REQUEST_USER_ID_KEY]),
+      target_user: User.find(transfer_request_params[TARGET_USER_ID_KEY]),
+      offered_player: NflPlayer.find(transfer_request_params[OFFERED_PLAYER_ID_KEY]),
+      target_player: NflPlayer.find(transfer_request_params[TARGET_PLAYER_ID_KEY]),
+      status: TransferRequest::STATUS_PENDING
+    )
+  end
+
   def validate_all_create_parameters(params)
     validate_all_parameters([TRANSFER_REQUEST_ID_KEY], params)
-    validate_all_parameters([REQUEST_USER_ID_KEY, TARGET_USER_ID_KEY, OFFERED_PLAYER_ID_KEY, TARGET_PLAYER_ID_KEY], params[TRANSFER_REQUEST_ID_KEY])
+    validate_all_parameters(
+      [
+        REQUEST_USER_ID_KEY,
+        TARGET_USER_ID_KEY,
+        OFFERED_PLAYER_ID_KEY,
+        TARGET_PLAYER_ID_KEY
+      ],
+      params[TRANSFER_REQUEST_ID_KEY]
+    )
   end
 
   def find_and_resolve_transfer_request(transfer_request_id, action_type)
@@ -101,9 +106,6 @@ class TransferRequestController < ApplicationController
 
   def find_game_week_team_player(game_week_team, player)
     match_player = player.player_for_current_game_week
-    list = GameWeekTeamPlayer.where(game_week_team: game_week_team, match_player: match_player)
-    fail IllegalStateError, "zero game_week_team_players found with game_week_team_id #{game_week_team.id} and match_player_id #{match_player.id}" if list.empty?
-    fail IllegalStateError, "#{list.size} game_week_team_players found with game_week_team_id #{game_week_team.id} and match_player_id #{match_player.id}" if list.size > 1
-    list.first
+    GameWeekTeamPlayer.find_unique_with(game_week_team, match_player)
   end
 end

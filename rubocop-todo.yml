@@ -15,9 +15,13 @@ ClassAndModuleChildren:
 # Offense count: 1
 # Configuration parameters: CountComments.
 ClassLength:
-  Max: 270
+  Max: 354
 
 # Need to do this at some point
 # Offense count: 36
 Documentation:
   Enabled: false
+
+# 80 is outdated, let's use 120
+LineLength:
+  Max: 120

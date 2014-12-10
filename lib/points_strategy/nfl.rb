@@ -3,42 +3,63 @@ require 'points_strategy/base'
 module PointsStrategy
   class Nfl < PointsStrategy::Base
     def calculate_points
-      total_points = 0
+      sum_array([
+        passing_points,
+        recieving_points,
+        rushing_points,
+        defence_points,
+        kicking_points
+      ])
+    end
 
-      # Add points generally gained by QBs / WRs
-      total_points += passing_yards_points
-      total_points += passing_td_points
-      total_points += passing_twoptm_points
+    private
 
-      total_points += receiving_yards_points
-      total_points += receiving_td_points
-      total_points += receiving_twoptm_points
+    def kicking_points
+      sum_array([
+        field_goals_kicked_points,
+        extra_points_kicked_points
+      ])
+    end
 
-      total_points += times_sacked_points
+    def defence_points
+      sum_array([
+        defense_touchdowns_points,
+        sacks_made_points,
+        interceptions_caught_points,
+        points_conceded_points,
+        fumbles_won_points
+      ])
+    end
 
-      # total_points += offensive_safety_points
-      total_points += interceptions_thrown_points
+    def rushing_points
+      sum_array([
+        rushing_yards_points,
+        rushing_td_points,
+        rushing_twoptm_points,
+        fumbles_lost_points
+      ])
+    end
 
-      # Add points generally gained by RBs
-      total_points += rushing_yards_points
-      total_points += rushing_td_points
-      total_points += rushing_twoptm_points
-      total_points += fumbles_lost_points
+    def recieving_points
+      sum_array([
+        receiving_yards_points,
+        receiving_td_points,
+        receiving_twoptm_points
+      ])
+    end
 
-      # Add points generally gained by Defence
-      total_points += defense_touchdowns_points
-      total_points += sacks_made_points
-      total_points += interceptions_caught_points
-      total_points += points_conceded_points
-      total_points += fumbles_won_points
-      # total_points += defensive_safety_points
+    def passing_points
+      sum_array([
+        passing_yards_points,
+        passing_td_points,
+        passing_twoptm_points,
+        times_sacked_points,
+        interceptions_thrown_points
+      ])
+    end
 
-      # Add points generally gained by Kickers
-      total_points += field_goals_kicked_points
-      total_points += extra_points_kicked_points
-
-      # Return total points
-      total_points
+    def sum_array(a)
+      a.inject(:+)
     end
 
     # Points from QB / Reciever actions
@@ -118,26 +139,8 @@ module PointsStrategy
     end
 
     def points_conceded_points
-      if @match_player.nfl_player.nfl_player_type.position_type == 'D'
-        case @match_player.points_conceded
-        when 0
-          10
-        when 1..6
-          7
-        when 7..13
-          4
-        when 14..20
-          1
-        when 21..27
-          0
-        when 28..34
-          -1
-        else
-          -4
-        end
-      else
-        0
-      end
+      return 0 unless @match_player.nfl_player.nfl_player_type.position_type == 'D'
+      points_conceded_for_defense
     end
 
     # Points from Kicker actions
@@ -147,6 +150,26 @@ module PointsStrategy
 
     def extra_points_kicked_points
       @match_player.extra_points_kicked
+    end
+
+    private
+
+    def points_conceded_for_defense
+      case @match_player.points_conceded
+      when 0 then 10
+      when 1..20 then small_points_conceded_for_defense
+      when 21..27 then 0
+      when 28..34 then -1
+      else -4
+      end
+    end
+
+    def small_points_conceded_for_defense
+      case @match_player.points_conceded
+      when 1..6 then 7
+      when 7..13 then 4
+      when 14..20 then 1
+      end
     end
   end
 end

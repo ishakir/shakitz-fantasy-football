@@ -35,7 +35,21 @@ Highest Priority new features
 * Allow custom team sizes
 * Fixtures for > 8 users
 * Enhanced home page with more interesting info (team of the week, recent transfer activity etc...)
-* Graphs for users points over time
+
+* Stats
+  * Points missed per week / over whole season
+  * League table if everyone selects perfect team
+  * League table of people who have picked perfect team
+  * List of users -> weeks where perfect team has been picked
+  * Swaps that should have been made to get perfect team
+  * Team of the Year
+  * Bench of the week stats (overall winner (no wins), fixtures results, bench league table)
+  * Note times that bench has scored more than team
+  * Who won the most weeks overall?
+  * Team stars (most points over all weeks for a user)
+* Visualizations
+  * Points graphs over time
+  * Position graphs over time
 
 Setting up a development environment
 ====================================

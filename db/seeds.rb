@@ -15,7 +15,7 @@
   NflTeam.create!(name: team)
 end
 
-["QB", "WR", "TE", "RB", "K", "D"].each do |position|
+NflPlayerType.ALLOWED_TYPES.each do |position|
   NflPlayerType.create!(position_type: position)
 end
 

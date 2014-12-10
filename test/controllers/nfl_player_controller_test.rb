@@ -137,6 +137,52 @@ class NflPlayerControllerTest < ActionController::TestCase
 
     assert_equal 17, nfl_player.match_players.size
   end
+  ##################################
+  # Tests for update
+  ##################################
+  test 'should update name' do
+    put :update, id: 1, name: 'changed'
+    assert_response :success
+
+    nfl_player = NflPlayer.find(1)
+    assert_equal 'changed', nfl_player.name
+  end
+
+  test 'should update team' do
+    put :update, id: 1, team: 'DETROIT!'
+    assert_response :success
+
+    nfl_player = NflPlayer.find(1)
+    assert_equal 'DETROIT!', nfl_player.nfl_team.name
+  end
+
+  test 'should update type' do
+    put :update, id: 1, type: 'QB'
+    assert_response :success
+
+    nfl_player = NflPlayer.find(1)
+    assert_equal 'QB', nfl_player.nfl_player_type.position_type
+  end
+
+  test "if player doesn't exist, request is rejected" do
+    put :update, id: 33_392, name: 'hello'
+    assert_response :not_found
+  end
+
+  test "if team doesn't exist, request is rejected" do
+    put :update, id: 1, team: 'Another team'
+    assert_response :not_found
+  end
+
+  test "if type doesn't exist, request is rejected" do
+    put :update, id: 1, type: 'IK'
+    assert_response :not_found
+  end
+
+  test 'should reject if no arguments supplied' do
+    put :update, id: 1
+    assert_response :unprocessable_entity
+  end
 
   ##################################
   # Tests for update_stats

@@ -26,42 +26,42 @@ class NflPlayerTypeTest < ActiveSupport::TestCase
   test 'should allow position type QB' do
     NflPlayerType.find(1).destroy!
     player_type = NflPlayerType.new
-    player_type.position_type = 'QB'
+    player_type.position_type = NflPlayerType::QB
     assert player_type.save
   end
 
   test 'should allow position type RB' do
     NflPlayerType.find(4).destroy!
     player_type = NflPlayerType.new
-    player_type.position_type = 'RB'
+    player_type.position_type = NflPlayerType::RB
     assert player_type.save
   end
 
   test 'should allow position type WR' do
     NflPlayerType.find(2).destroy!
     player_type = NflPlayerType.new
-    player_type.position_type = 'WR'
+    player_type.position_type = NflPlayerType::WR
     assert player_type.save
   end
 
   test 'should allow position type TE' do
     NflPlayerType.find(3).destroy!
     player_type = NflPlayerType.new
-    player_type.position_type = 'TE'
+    player_type.position_type = NflPlayerType::TE
     assert player_type.save
   end
 
   test 'should allow position type K' do
     NflPlayerType.find(5).destroy!
     player_type = NflPlayerType.new
-    player_type.position_type = 'K'
+    player_type.position_type = NflPlayerType::K
     assert player_type.save
   end
 
   test 'should allow position type D' do
     NflPlayerType.find(6).destroy!
     player_type = NflPlayerType.new
-    player_type.position_type = 'D'
+    player_type.position_type = NflPlayerType::D
     assert player_type.save
   end
 
@@ -73,7 +73,7 @@ class NflPlayerTypeTest < ActiveSupport::TestCase
 
   test 'player type must be unique' do
     player_type = NflPlayerType.new
-    player_type.position_type = 'D'
+    player_type.position_type = NflPlayerType::D
     assert !player_type.save
   end
 end

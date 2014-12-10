@@ -89,7 +89,7 @@ class UserTest < ActiveSupport::TestCase
     gwts = user.teams_up_to_game_week(9)
     one_to_nine = 1..9
     gwts.each do |game_week_team|
-      assert one_to_nine.include?(game_week_team.game_week.number), "Team with number #{game_week_team.game_week.number} not expected"
+      assert one_to_nine.include?(game_week_team.game_week.number)
     end
   end
 

@@ -219,3 +219,45 @@ bad_te:
   nfl_player_id: 9
   game_week_id: 7
   points: 6
+
+zero_defence:
+  id: 125
+  nfl_player_id: 78
+  game_week_id: 1
+  points_conceded: 0
+
+three_defence:
+  id: 126
+  nfl_player_id: 78
+  game_week_id: 2
+  points_conceded: 3
+
+ten_defence:
+  id: 127
+  nfl_player_id: 78
+  game_week_id: 3
+  points_conceded: 10
+
+seventeen_defence:
+  id: 128
+  nfl_player_id: 78
+  game_week_id: 4
+  points_conceded: 17
+
+twenty_four_defence:
+  id: 129
+  nfl_player_id: 78
+  game_week_id: 5
+  points_conceded: 24
+
+thirty_one_defence:
+  id: 130
+  nfl_player_id: 78
+  game_week_id: 6
+  points_conceded: 31
+
+thirty_eight_defence:
+  id: 131
+  nfl_player_id: 78
+  game_week_id: 7
+  points_conceded: 38
