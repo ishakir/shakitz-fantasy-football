@@ -24,10 +24,10 @@ class ApplicationController < ActionController::Base
       fail ArgumentError, "Expecting '#{parameter}' in params, but could not find it"
     end
   end
-  
+
   def validate_user_session(user_id)
     if session[:user_id] != user_id
-      fail ArgumentError, "User is not authorised to perform this action"
+      fail ArgumentError, 'User is not authorised to perform this action'
     end
   end
 

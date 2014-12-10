@@ -49,12 +49,11 @@ class GameWeek < ActiveRecord::Base
 
     is_after_game_week_start && !is_after_game_week_end
   end
-  
-   def locked?
+
+  def locked?
     days_for_game_week_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
     days_until_thursday = days_for_game_week_start + 2
 
     WithGameWeek.more_than_time_since_start?(days_until_thursday, HOURS_UNTIL_5_PM)
-  end
-
+ end
 end

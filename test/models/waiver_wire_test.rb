@@ -16,7 +16,7 @@ class WaiverWireTest < ActiveSupport::TestCase
       )
     end
   end
-  
+
   test 'offered player must be present' do
     user = User.find(2)
     player_two = NflPlayer.find(4)
@@ -30,7 +30,7 @@ class WaiverWireTest < ActiveSupport::TestCase
       )
     end
   end
-  
+
   test 'targeted player must be present' do
     user = User.find(2)
     player_one = NflPlayer.find(3)
@@ -44,7 +44,7 @@ class WaiverWireTest < ActiveSupport::TestCase
       )
     end
   end
-  
+
   test 'game week must be present' do
     user = User.find(2)
     player_one = NflPlayer.find(3)
@@ -58,7 +58,7 @@ class WaiverWireTest < ActiveSupport::TestCase
       )
     end
   end
-  
+
   test 'round must be present' do
     user = User.find(2)
     player_one = NflPlayer.find(3)
@@ -73,7 +73,7 @@ class WaiverWireTest < ActiveSupport::TestCase
       )
     end
   end
-  
+
   test 'incoming priority must be present' do
     user = User.find(2)
     player_one = NflPlayer.find(3)
@@ -88,24 +88,23 @@ class WaiverWireTest < ActiveSupport::TestCase
       )
     end
   end
-  
+
   test "can't add multiple targets under same priority in same round" do
     user = User.find(2)
     player_one = NflPlayer.find(3)
     player_two = NflPlayer.find(4)
     game_week = GameWeek.find(1)
-    params = { 
-        user: user,
-        offered_player: player_one,
-        targeted_player: player_two,
-        game_week: game_week,
-        round: 1,
-        incoming_priority: 1
+    params = {
+      user: user,
+      offered_player: player_one,
+      targeted_player: player_two,
+      game_week: game_week,
+      round: 1,
+      incoming_priority: 1
       }
     WaiverWire.create!(params)
     assert_raise ActiveRecord::RecordNotUnique do
       (WaiverWire.create!(params))
     end
   end
-  
 end
