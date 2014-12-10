@@ -48,7 +48,12 @@ class GameWeek < ActiveRecord::Base
   def locked?
     days_for_game_week_start = (number - 1) * 7
     days_until_thursday = days_for_game_week_start + 2
+    thanksgiving_week = 13
+    hour_to_lock_at = 17
+    if(number == thanksgiving_week)
+      hour_to_lock_at = 10
+    end
+    WithGameWeek.more_than_time_since_start?(days_until_thursday, hour_to_lock_at)
 
-    WithGameWeek.more_than_time_since_start?(days_until_thursday, 17)
   end
 end
