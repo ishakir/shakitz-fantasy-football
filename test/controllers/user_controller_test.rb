@@ -238,6 +238,11 @@ class UserControllerTest < ActionController::TestCase
     post :update, user_id: 1
     assert_response :unprocessable_entity
   end
+  
+  test "can't update roster if session id doesn't match with requesting user id" do
+    post :declare_roster, user_id: 2, game_week: 1, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
+    assert_response :unprocessable_entity
+  end
 
   test "can't update roster if user_id doesnt exist" do
     post :declare_roster, user_id: 40, game_week: 1, playing_player_id: valid_active_player, benched_player_id: valid_benched_player
