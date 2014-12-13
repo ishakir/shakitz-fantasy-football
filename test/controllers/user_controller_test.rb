@@ -386,6 +386,27 @@ class UserControllerTest < ActionController::TestCase
     assert game_weeks.key?('1')
   end
 
+  test 'api users have points attribute' do
+    get :api_all
+    user = JSON.parse(response.body)[0]
+
+    assert user.key?('points')
+  end
+
+  test 'points contains total points' do
+    get :api_all
+    points = JSON.parse(response.body)[0]['points']
+
+    assert points.key?('total')
+  end
+
+  test 'points contains url' do
+    get :api_all
+    points = JSON.parse(response.body)[0]['points']
+
+    assert points.key?('url')
+  end
+
   test 'api user gameweek contains user object' do
     get :api_game_week, user_id: 1, game_week: 1
     user_game_week = JSON.parse(response.body)
@@ -451,5 +472,71 @@ class UserControllerTest < ActionController::TestCase
   test 'api user gameweek rejects if game_week is string' do
     get :api_game_week, user_id: 1, game_week: 'hello'
     assert_response :unprocessable_entity
+  end
+
+  test 'api user points rejects if user id is string' do
+    get :api_points, user_id: 'hello'
+    assert_response :unprocessable_entity
+  end
+
+  test 'api user gameweek rejects if user doesnt exist' do
+    get :api_points, user_id: 20
+    assert_response :not_found
+  end
+
+  test 'api points contains user reference object' do
+    get :api_points, user_id: 1
+    points_obj = JSON.parse(response.body)
+
+    assert points_obj.key?('user')
+  end
+
+  test 'api points contains points object' do
+    get :api_points, user_id: 1
+    points_obj = JSON.parse(response.body)
+
+    assert points_obj.key?('points')
+  end
+
+  test 'api points object contains total points' do
+    get :api_points, user_id: 1
+    points_obj = JSON.parse(response.body)['points']
+
+    assert points_obj.key?('total')
+  end
+
+  test 'api points object contains total bench points' do
+    get :api_points, user_id: 1
+    points_obj = JSON.parse(response.body)['points']
+
+    assert points_obj.key?('total_bench')
+  end
+
+  test 'api points object contains game_weeks_object' do
+    get :api_points, user_id: 1
+    points_obj = JSON.parse(response.body)['points']
+
+    assert points_obj.key?('game_weeks')
+  end
+
+  test 'api points game week object has points' do
+    get :api_points, user_id: 1
+    game_week_obj = JSON.parse(response.body)['points']['game_weeks']['1']
+
+    assert game_week_obj.key?('points')
+  end
+
+  test 'api points game week object has bench points' do
+    get :api_points, user_id: 1
+    game_week_obj = JSON.parse(response.body)['points']['game_weeks']['1']
+
+    assert game_week_obj.key?('bench_points')
+  end
+
+  test 'api points game week object has url' do
+    get :api_points, user_id: 1
+    game_week_obj = JSON.parse(response.body)['points']['game_weeks']['1']
+
+    assert game_week_obj.key?('url')
   end
 end

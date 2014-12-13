@@ -76,6 +76,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def bench_points
+    game_week_teams.reduce(0) do |sum, game_week_team|
+      sum + game_week_team.bench_points
+    end
+  end
+
   private
 
   def last_game_week

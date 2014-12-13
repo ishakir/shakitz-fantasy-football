@@ -228,9 +228,24 @@ class UserTest < ActiveSupport::TestCase
     assert assertion, 'ERROR: Found some of the gameweek teams, even when we deleted their user'
   end
 
+  test 'user responds to points' do
+    user = User.find(1)
+    assert_respond_to user, :points
+  end
+
+  test 'user responds to bench_points' do
+    user = User.find(1)
+    assert_respond_to user, :bench_points
+  end
+
   test 'Can get users total points' do
     user = User.find(1)
     assert_equal USER_ONE_POINTS, user.points, 'Failed to get total team points'
+  end
+
+  test 'can get users total bench points' do
+    user = User.find(1)
+    assert_equal 56, user.bench_points
   end
 
   test 'username must be unique' do

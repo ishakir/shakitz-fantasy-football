@@ -89,6 +89,14 @@ class UserController < ApplicationController
     render json: UserGameWeek.new(User.find(user_id).team_for_game_week(game_week))
   end
 
+  def api_points
+    validate_all_parameters([USER_ID_KEY], params)
+    user_id = params[USER_ID_KEY].to_i
+    fail ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
+
+    render json: UserPoints.new(User.find(user_id))
+  end
+
   private
 
   def validate_user_id_and_game_week(user_id, game_week)
