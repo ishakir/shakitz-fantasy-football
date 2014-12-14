@@ -25,6 +25,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def validate_user_session(user_id)
+    if session[:user_id] != user_id
+      fail ArgumentError, 'User is not authorised to perform this action'
+    end
+  end
+
   def validate_at_least_number_of_parameters(expected_params, params, minimum_expected)
     parameters_found = []
 
