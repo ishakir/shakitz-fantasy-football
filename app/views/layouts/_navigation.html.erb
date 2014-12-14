@@ -28,6 +28,9 @@
 					<li class="<%= active?("/game_day") %>">
 						<a href="/game_day">Game Day</a>
 					</li>
+					<li class="<% active?("/stats") %>">
+						<a href="/stats">Stats</a>
+					</li>
 				</ul>
 				<% if session[:user_id] %>
 				<ul class="nav navbar-nav navbar-right">

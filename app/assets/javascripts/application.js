@@ -20,6 +20,7 @@
 //= require moment.min
 //= require bootstrap-sortable
 //= require bootstrap-select
+//= require underscore
 
 var initPlayerSuggestions = function(data, callback) {
   // constructs the suggestion engine

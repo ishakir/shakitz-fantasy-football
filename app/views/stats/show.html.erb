@@ -1,0 +1,81 @@
+<%= javascript_include_tag "stats" %>
+<div class="row">
+  <div class="col-md-3 column">
+    <ul class="nav nav-pills nav-stacked">
+      <!-- <li role="presentation" class="active">
+        <a href="#pointsGraph" data-toggle="tab">Points Graph</a>
+      </li>
+      <li role="presentation">
+        <a href="#cumulativePointsGraph" data-toggle="tab">Cumulative Points Graph</a>
+      </li>
+      <li role="presentation">
+        <a href="#positionGraph" data-toggle="tab">Position Graph</a>
+      </li> -->
+      <li role="presentation" class="active">
+        <a href="#benchOfTheWeek" data-toggle="tab">Bench of the Week</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-9 column">
+    <div class="row">
+      <div class="tab-content">
+        <!--<div id="pointsGraph" class="tab-pane active">
+          <div class="col-md-10 column">
+            <canvas id="pointsChart" width="650" height="600"></canvas>
+          </div>
+          <div class="col-md-2 column">
+            <div style="padding-top: 200px;" id="pointsChartLegend"></div>
+          </div>
+        </div>
+        <div id="cumulativePointsGraph" class="tab-pane">
+          <div class="col-md-10 column">
+            <canvas id="cumulativePointsChart" width="650" height="600"></canvas>
+          </div>
+          <div class="col-md-2 column">
+            <div style="padding-top: 200px;" id="cumulativePointsChartLegend"></div>
+          </div>
+        </div>
+        <div id="positionGraph" class="tab-pane">
+          <div class="col-md-10 column">
+            <canvas id="positionChart" width="650" height="600"></canvas>
+          </div>
+          <div>
+            <div style="padding-top: 200px;" id="positionChartLegend"></div>
+          </div>-->
+          <div id="benchOfTheWeek" class="tab-pane active">
+            <div class="row">
+              <div class="col-md-12 column">
+                <table class="table sortable" id="benchTable">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Team Name</th>
+                      <th>Total Bench Points</th>
+                      <th>Bench of the Week wins</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 column">
+                <p id="noBenchesBetterThanTeam" align="center" class="no-interesting-bench">At no point has a user's benched exceeded the number of points scored by the active team.</p>
+                <p id="betterWellDone" align="center" class="no-interesting-bench">Well Done!</p>
+                <ul id="betterList" class="list-group">
+                </ul>
+              </div>
+              <div class="col-md-6 column">
+                <p id="noHundredPointBench" align="center" class="no-interesting-bench">At no point has a user's benched exceeded 100 points.</p>
+                <p id="noHundredWellDone" align="center" class="no-interesting-bench">Well Done!</p>
+                <ul id="noHundredList" class="list-group">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

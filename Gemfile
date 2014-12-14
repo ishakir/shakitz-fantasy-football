@@ -11,6 +11,8 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'jquery-rails'
+# gem 'chart-js-rails'
+gem 'underscore-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -50,6 +52,10 @@ gem 'twitter-typeahead-rails'
 
 #another select third-party plugin
 gem 'bootstrap-select-rails'
+
+# gem 'rufus-scheduler'
+
+# gem 'simplecov'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
