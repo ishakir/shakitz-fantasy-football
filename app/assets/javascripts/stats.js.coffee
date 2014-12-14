@@ -1,14 +1,17 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-# legendTemplate = '<div class="btn-group-vertical" role="group">
+# legendTemplate = "<div class="btn-group-vertical" role="group">
 #                     <% for (var i=0; i<datasets.length; i++){%>
-#                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" disabled="true" style="color: <%=datasets[i].strokeColor%>;">
+#                       <button type="button"
+#                               class="btn btn-default dropdown-toggle"
+#                               data-toggle="dropdown"
+#                               aria-expanded="false" disabled="true" style="color: <%=datasets[i].strokeColor%>;">
 #                       <%if(datasets[i].label){%>
 #                         <%=datasets[i].label%>
 #                       <%}%>
 #                     <%}%>
-#                   </div>'
+#                   </div>"
 
 # fillColor = "rgba(220,220,220,0)"
 # pointColor = "rgba(0,0,0,0)"
@@ -372,7 +375,7 @@
 #   user_points = users.map (user) -> points_for_user(user.id)
 
 #   # Points Graph!!
-#   points_data = user_points.map (user, index) -> 
+#   points_data = user_points.map (user, index) ->
 #     data = [1 .. no_gameweeks].map (game_week) -> user.points.game_weeks[game_week]
 #     {
 #       label : user.user.name,
@@ -389,7 +392,7 @@
 #   }
 
 #   pointsChart = new Chart($("#pointsChart").get(0).getContext("2d")).Line(
-#     pointsData, 
+#     pointsData,
 #     {
 #       showTooltips : false,
 #       bezierCurveTension: 0.1,
@@ -424,7 +427,7 @@
 #   }
 
 #   pointsChart = new Chart($("#cumulativePointsChart").get(0).getContext("2d")).Line(
-#     cumulativePointsData, 
+#     cumulativePointsData,
 #     {
 #       showTooltips : false,
 #       legendTemplate : legendTemplate,
@@ -490,7 +493,7 @@
 #   }
 
 #   positionChart = new Chart($("#positionChart").get(0).getContext("2d")).Line(
-#     randomData, 
+#     randomData,
 #     {
 #       showTooltips : false,
 #       bezierCurveTension : 0.05,
@@ -534,7 +537,7 @@ process_user = (user) ->
       weekly_data[game_week][user.user.id] = game_week_points.bench_points
 
       benches_exceeding_100_points.push({
-        user: user.user.name, 
+        user: user.user.name,
         game_week: game_week,
         points: game_week_points.bench_points
       }) if game_week_points.bench_points > 100
@@ -578,13 +581,20 @@ render_page = ->
 add_elements_to_table = (users) ->
   for user, index in users
     user.wins = 0 unless user.wins
-    table_row;
+    table_start
     if(index == 0)
-      table_row = "<tr class=\"success\"><td>#{user.name}</td><td>#{user.team_name}</td><td>#{user.points}</td><td>#{user.wins}</td></tr>"
+      table_start = "<tr class=\"success\">"
     else if(index == users.length - 1)
-      table_row = "<tr class=\"danger\"><td>#{user.name}</td><td>#{user.team_name}</td><td>#{user.points}</td><td>#{user.wins}</td></tr>"
+      table_start = "<tr class=\"danger\">"
     else
-      table_row = "<tr><td>#{user.name}</td><td>#{user.team_name}</td><td>#{user.points}</td><td>#{user.wins}</td></tr>"
+      table_start = "<tr>"
+    table_row = """
+                #{table_start}
+                  <td>#{user.name}</td>
+                  <td>#{user.team_name}</td>
+                  <td>#{user.points}</td>
+                  <td>#{user.wins}</td>
+                </tr>"""
     $("#benchTable tr:last").after(table_row)
 
 add_benches_exceeding_100_points = ->
@@ -603,7 +613,8 @@ add_bench_exceeding_100_points = (info) ->
   $.bootstrapSortable()
 
 add_bench_that_beat_team = (info) ->
-  sentence = "In week #{info.game_week} #{info.user}'s bench scored #{info.bench_points} points, beating their active team (#{info.points} points)"
+  sentence = "In week #{info.game_week} #{info.user}'s bench scored #{info.bench_points} points,
+              beating their active team (#{info.points} points)"
   $('#betterList').append("<li class=\"list-group-item\">#{sentence}</li>")
   $.bootstrapSortable()
 

@@ -19,6 +19,7 @@ gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
+gem 'coffeelint'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -53,7 +54,7 @@ gem 'twitter-typeahead-rails'
 #another select third-party plugin
 gem 'bootstrap-select-rails'
 
-# gem 'rufus-scheduler'
+gem 'rufus-scheduler'
 
 # gem 'simplecov'
 

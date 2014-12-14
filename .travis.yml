@@ -6,3 +6,5 @@ rvm:
 script:
   - rubocop -R
   - rake test
+  - rake assets:precompile RAILS_ENV="production"
+  - rake coffeelint
