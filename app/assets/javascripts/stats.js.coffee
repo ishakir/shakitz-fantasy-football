@@ -532,6 +532,7 @@ process_user = (user) ->
 
     for own game_week of user.points.game_weeks
       game_week_points = user.points.game_weeks[game_week]
+      continue if game_week_points.bench_points == 0
 
       weekly_data[game_week] = {} if !weekly_data[game_week]
       weekly_data[game_week][user.user.id] = game_week_points.bench_points
