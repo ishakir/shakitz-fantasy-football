@@ -51,9 +51,7 @@ module WithGameWeek
 
   def self.more_than_time_since_start?(days, hours)
     eastern_current_time = WithGameWeek.eastern_current_time
-    start_time = WithGameWeek.start_of_first_gameweek
-
-    time_difference = eastern_current_time - start_time
+    time_difference = eastern_current_time - WithGameWeek.start_of_first_gameweek
 
     total_converted_time = days.days + hours.hours
 

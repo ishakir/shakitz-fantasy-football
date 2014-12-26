@@ -3,9 +3,14 @@ class GameWeek < ActiveRecord::Base
   include WithGameWeek
 
   HOURS_UNTIL_5_PM = 17
+  HOURS_UNTIL_NOON = 12
+
+  # Final game week
+  WEEK_17 = 17
 
   # Game week starts on a tuesday (after MNF)
   DAYS_IN_WEEK_BEFORE_LOCK = 2
+  DAYS_IN_WEEK_BEFORE_SUNDAY_LOCK = 5
 
   def self.find_unique_with(game_week)
     WithGameWeek.validate_game_week_number(game_week)
@@ -52,8 +57,14 @@ class GameWeek < ActiveRecord::Base
 
   def locked?
     days_for_game_week_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
-    days_until_thursday = days_for_game_week_start + 2
-
-    WithGameWeek.more_than_time_since_start?(days_until_thursday, HOURS_UNTIL_5_PM)
+    game_start = HOURS_UNTIL_5_PM
+    days_before_lock = DAYS_IN_WEEK_BEFORE_LOCK
+    today = Date.today
+    if (today == Date.civil(today.year, 11, Date.calculate_mday(today.year, 11, :fourth, :thursday)))
+      game_start = HOURS_UNTIL_NOON
+    elsif (WithGameWeek.current_game_week == WEEK_17)
+      days_before_lock = DAYS_IN_WEEK_BEFORE_SUNDAY_LOCK
+    end
+    WithGameWeek.more_than_time_since_start?(days_for_game_week_start + days_before_lock, game_start)
   end
 end

@@ -1,6 +1,21 @@
 
 var min_num_game_week = 1;
 
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+var escapeHtml = function (string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+  };
+  
 var ajaxGameWeek = function(id){
 	$.ajax({
 	  type: "GET",
@@ -13,9 +28,9 @@ var ajaxGameWeek = function(id){
 	  	}
 	  	
 	  	$.each(data, function(key, d){
-	  		html+= "<tr><td align=\"center\"><strong>"+d.home_name+"</strong>";
+	  		html+= "<tr><td align=\"center\"><strong>"+escapeHtml(d.home_name)+"</strong>";
 	  		html+= "  <em>vs</em>  ";
-	  		html+= "<strong>"+d.away_name+"</strong></td></tr>"; 
+	  		html+= "<strong>"+escapeHtml(d.away_name)+"</strong></td></tr>"; 
 	  	});
 	  	$("#fixtureTable").html(html);
 	  });

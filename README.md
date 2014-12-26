@@ -17,6 +17,8 @@ Shakitz is the open source implementation of a fantasy football league. Key feat
 * Player for player trades between users
 * Game Day page for Sundays
 * Default NFL points spreads + options to customize
+* Stats page including:
+    * "Bench" stats
 
 Shakitz had an alpha run during the 2014 preseason, and is currently in the middle of a beta run during the 2014 regular season. We hope these runs will iron out any creases making the system ready for running in full in 2015.
 
@@ -43,7 +45,8 @@ Highest Priority new features
   * List of users -> weeks where perfect team has been picked
   * Swaps that should have been made to get perfect team
   * Team of the Year
-  * Bench of the week stats (overall winner (no wins), fixtures results, bench league table)
+  * Bench of the week fixtures?
+  * List of bench fo the week weekly winners
   * Note times that bench has scored more than team
   * Who won the most weeks overall?
   * Team stars (most points over all weeks for a user)

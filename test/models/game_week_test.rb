@@ -48,4 +48,11 @@ class GameWeekTest < ActiveSupport::TestCase
     game_week.number = 1
     assert !game_week.save
   end
+
+  test 'that the game week is locked on a thursday before the 5pm game' do
+    skip("Need to find a better way of faking start time that doesn't damage other stuff")
+    t = Time.new(2014, 11, 13, 20, 25, 0, '-05:00') # First game of week 11
+    Timecop.travel(t.in_time_zone('EST'))
+    assert GameWeek.find(11).locked?
+  end
 end
