@@ -2,9 +2,9 @@
 require 'test_helper'
 
 class TransferRequestTest < ActiveSupport::TestCase
-  test 'transfer request responds to request_user' do
+  test 'transfer request responds to offering_user' do
     transfer_request = TransferRequest.find(1)
-    assert_respond_to transfer_request, :request_user
+    assert_respond_to transfer_request, :offering_user
   end
 
   test 'transfer request responds to target_user' do
@@ -22,8 +22,8 @@ class TransferRequestTest < ActiveSupport::TestCase
     assert_respond_to transfer_request, :target_player
   end
 
-  test 'transfer request gives the correct request_user' do
-    assert_equal 1, TransferRequest.find(1).request_user.id
+  test 'transfer request gives the correct offering_user' do
+    assert_equal 1, TransferRequest.find(1).offering_user.id
   end
 
   test 'transfer request gives the correct target_user' do
@@ -38,7 +38,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     assert_equal 2, TransferRequest.find(1).target_player.id
   end
 
-  test 'request_user must be present' do
+  test 'offering_user must be present' do
     user = User.find(1)
     player_one = NflPlayer.find(1)
     player_two = NflPlayer.find(2)
@@ -57,7 +57,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player_two = NflPlayer.find(4)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        request_user: user,
+        offering_user: user,
         offered_player: player_one,
         target_player: player_two
       )
@@ -70,7 +70,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player = NflPlayer.find(5)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        request_user: user_one,
+        offering_user: user_one,
         target_user: user_two,
         target_player: player
       )
@@ -83,7 +83,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player = NflPlayer.find(6)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        request_user: user_one,
+        offering_user: user_one,
         target_user: user_two,
         offered_player: player
       )
@@ -96,7 +96,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player_two = NflPlayer.find(2)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        request_user: user,
+        offering_user: user,
         target_user: user,
         offered_player: player_one,
         target_player: player_two
@@ -110,7 +110,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player = NflPlayer.find(1)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        request_user: user_one,
+        offering_user: user_one,
         target_user: user_two,
         offered_player: player,
         target_player: player

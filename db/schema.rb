@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227232309) do
+ActiveRecord::Schema.define(version: 20141228021327) do
 
   create_table "fixtures", force: true do |t|
     t.integer  "home_team_id"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 20141227232309) do
   end
 
   create_table "transfer_requests", force: true do |t|
-    t.integer  "request_user_id"
+    t.integer  "offering_user_id"
     t.integer  "target_user_id"
     t.integer  "offered_player_id"
     t.integer  "target_player_id"
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20141227232309) do
   end
 
   add_index "transfer_requests", ["offered_player_id"], name: "index_transfer_requests_on_offered_player_id"
-  add_index "transfer_requests", ["request_user_id"], name: "index_transfer_requests_on_request_user_id"
+  add_index "transfer_requests", ["offering_user_id"], name: "index_transfer_requests_on_offering_user_id"
   add_index "transfer_requests", ["target_player_id"], name: "index_transfer_requests_on_target_player_id"
   add_index "transfer_requests", ["target_user_id"], name: "index_transfer_requests_on_target_user_id"
 

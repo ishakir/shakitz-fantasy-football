@@ -6,8 +6,8 @@ class TransferRequest < ActiveRecord::Base
 
   ALLOWED_TYPES = [STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED]
 
-  belongs_to :request_user,
-             foreign_key: :request_user_id,
+  belongs_to :offering_user,
+             foreign_key: :offering_user_id,
              class_name: 'User'
 
   belongs_to :target_user,
@@ -22,7 +22,7 @@ class TransferRequest < ActiveRecord::Base
              foreign_key: :target_player_id,
              class_name: 'NflPlayer'
 
-  validates :request_user,
+  validates :offering_user,
             presence: true
 
   validates :target_user,
@@ -41,11 +41,11 @@ class TransferRequest < ActiveRecord::Base
             inclusion: { in: ALLOWED_TYPES, allow_nil: false }
 
   def users_are_different
-    return unless request_user.present? && target_user.present?
-    request_user_id = request_user.id
+    return unless offering_user.present? && target_user.present?
+    offering_user_id = offering_user.id
     target_user_id = target_user.id
-    return unless request_user_id == target_user_id
-    errors.add(:users, "Request and target users are the same, with id #{request_user_id}")
+    return unless offering_user_id == target_user_id
+    errors.add(:users, "Request and target users are the same, with id #{offering_user_id}")
   end
 
   def players_are_different
