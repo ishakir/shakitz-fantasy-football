@@ -1,0 +1,2 @@
+module WaiverWiresHelper
+end
