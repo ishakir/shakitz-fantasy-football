@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140713162845) do
+ActiveRecord::Schema.define(version: 20141227232309) do
 
   create_table "fixtures", force: true do |t|
     t.integer  "home_team_id"
@@ -117,5 +117,20 @@ ActiveRecord::Schema.define(version: 20140713162845) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "waiver_wires", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "player_out_id"
+    t.integer  "player_in_id"
+    t.integer  "incoming_priority"
+    t.integer  "game_week_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "waiver_wires", ["game_week_id"], name: "index_waiver_wires_on_game_week_id"
+  add_index "waiver_wires", ["player_in_id"], name: "index_waiver_wires_on_player_in_id"
+  add_index "waiver_wires", ["player_out_id"], name: "index_waiver_wires_on_player_out_id"
+  add_index "waiver_wires", ["user_id"], name: "index_waiver_wires_on_user_id"
 
 end

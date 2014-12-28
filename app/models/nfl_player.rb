@@ -6,7 +6,8 @@ class NflPlayer < ActiveRecord::Base
   belongs_to :nfl_player_type
 
   has_many :match_players
-
+  has_many :inward_waiver_players, class_name: 'WaiverWire', foreign_key: 'player_in_id'
+  has_many :outward_waiver_players, class_name: 'WaiverWire', foreign_key: 'player_out_id'
   validates :name,
             presence: true
 
