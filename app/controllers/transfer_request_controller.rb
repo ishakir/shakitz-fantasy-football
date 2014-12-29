@@ -2,7 +2,7 @@
 require 'illegal_state_error'
 
 class TransferRequestController < ApplicationController
-  REQUEST_USER_ID_KEY   = :request_user_id
+  OFFERING_USER_ID_KEY   = :offering_user_id
   TARGET_USER_ID_KEY    = :target_user_id
   OFFERED_PLAYER_ID_KEY = :offered_player_id
   TARGET_PLAYER_ID_KEY  = :target_player_id
@@ -47,7 +47,7 @@ class TransferRequestController < ApplicationController
 
   def create_transfer_request(transfer_request_params)
     TransferRequest.create!(
-      request_user: User.find(transfer_request_params[REQUEST_USER_ID_KEY]),
+      offering_user: User.find(transfer_request_params[OFFERING_USER_ID_KEY]),
       target_user: User.find(transfer_request_params[TARGET_USER_ID_KEY]),
       offered_player: NflPlayer.find(transfer_request_params[OFFERED_PLAYER_ID_KEY]),
       target_player: NflPlayer.find(transfer_request_params[TARGET_PLAYER_ID_KEY]),
@@ -59,7 +59,7 @@ class TransferRequestController < ApplicationController
     validate_all_parameters([TRANSFER_REQUEST_ID_KEY], params)
     validate_all_parameters(
       [
-        REQUEST_USER_ID_KEY,
+        OFFERING_USER_ID_KEY,
         TARGET_USER_ID_KEY,
         OFFERED_PLAYER_ID_KEY,
         TARGET_PLAYER_ID_KEY
@@ -77,7 +77,7 @@ class TransferRequestController < ApplicationController
   end
 
   def handle_swap(transfer_request)
-    offered_game_week_team = transfer_request.request_user.team_for_current_game_week
+    offered_game_week_team = transfer_request.offering_user.team_for_current_game_week
     targeted_game_week_team = transfer_request.target_user.team_for_current_game_week
 
     # Get the game_week_team_players
@@ -98,7 +98,7 @@ class TransferRequestController < ApplicationController
 
   def does_user_have_actions_to_complete(pending_transfers)
     pending_transfers.each do |p|
-      next unless p['request_user_id'] == session[:user_id] || p['target_user_id'] == session[:user_id]
+      next unless p['offering_user_id'] == session[:user_id] || p['target_user_id'] == session[:user_id]
       return true
     end
     false

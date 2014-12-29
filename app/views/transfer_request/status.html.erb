@@ -25,7 +25,7 @@
 								<li id="incoming_<%= transfer.id %>" class="actionable-transfers out">
 									<span>You were offered <%= transfer.offered_player.name %> for
 										<%= transfer.target_player.name  %> from 
-										<%= transfer.request_user.name %></span>
+										<%= transfer.offering_user.name %></span>
 									<div class="pull-right">
 									  <button type="button" class="btn btn-default btn-sm btn-danger">Reject</button>
 									  <button type="button" class="btn btn-default btn-sm btn-success">Accept</button>
@@ -37,11 +37,11 @@
 					</ul>
 					<h4 class="incoming action">Outgoing</h4>
 					<ul>
-						<% if @pending_transfers.where(request_user_id: session[:user_id]).count == 0 %>
+						<% if @pending_transfers.where(offering_user_id: session[:user_id]).count == 0 %>
 							<li class="actionable-transfers inc">You currently have no outgoing transfers</li>
 						<% else %>
 							<% @pending_transfers.each do |transfer| %>
-								<% if transfer.request_user.id == session[:user_id] %>
+								<% if transfer.offering_user.id == session[:user_id] %>
 								<li id="outgoing_<%= transfer.id %>" class="actionable-transfers inc">
 									<span>You offered <%= transfer.offered_player.name %> for
 										<%= transfer.target_player.name  %> from 
@@ -86,7 +86,7 @@
 								<% else %>
 								<tr>
 								<% end %>
-									<td><%= transfer.request_user.name %></td>
+									<td><%= transfer.offering_user.name %></td>
 									<td><%= transfer.offered_player.name %></td>
 									<td><%= transfer.target_user.name %></td>
 									<td><%= transfer.target_player.name  %></td>
@@ -133,7 +133,7 @@
 							<% else %>
 							<tr>
 							<% end %>
-								<td><%= transfer.request_user.name %></td>
+								<td><%= transfer.offering_user.name %></td>
 								<td><%= transfer.offered_player.name %></td>
 								<td><%= transfer.target_user.name %></td>
 								<td><%= transfer.target_player.name  %></td>

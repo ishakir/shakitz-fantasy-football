@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 3
+  player_out_id: 2
+  player_in_id: 3
+  incoming_priority: 1
+  game_week_id: 1
+
+two:
+  user_id: 2
+  player_out_id: 4
+  player_in_id: 5
+  incoming_priority: 1
+  game_week_id: 2
