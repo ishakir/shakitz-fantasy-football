@@ -177,6 +177,6 @@ class UserController < ApplicationController
       [player.nfl_player_id, player.nfl_player.name, player.nfl_player.nfl_team.name]
     end
   end
-  
+
   helper_method :return_player_name_for_active_game_week_team
 end
