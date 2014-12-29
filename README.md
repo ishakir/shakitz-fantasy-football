@@ -47,7 +47,6 @@ Highest Priority new features
   * Team of the Year
   * Bench of the week fixtures?
   * List of bench fo the week weekly winners
-  * Note times that bench has scored more than team
   * Who won the most weeks overall?
   * Team stars (most points over all weeks for a user)
 * Visualizations
