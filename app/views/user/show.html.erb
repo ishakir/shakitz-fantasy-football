@@ -125,7 +125,7 @@
 				<% end %>
 			</table>
 			<% Rails.logger.info "Succesfully rendered benched-roster players" %>
-			<% if session[:user_id] == @user.id && @active_gameweek == @game_week && !@game_week_time_obj['locked'] %>
+			<% if session[:user_id] == @user.id && @active_gameweek == @game_week && !@game_week_time_obj[:locked] %>
 			<button id="swapButton" class="btn btn-primary btn-lg swap-player-btn">Save changes</button>
 			<% end %>
 		</div>
