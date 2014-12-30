@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class WaiverWiresControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @valid_params = {
       user: 1,
@@ -77,5 +74,27 @@ class WaiverWiresControllerTest < ActionController::TestCase
     params[:player_out] = 90
     post :add, request: [params]
     assert_response :not_found
+  end
+
+  test 'adding waiver wire request fails with an invalid incoming priority' do
+    params = @valid_params
+    params[:incoming_priority] = 0
+    post :add, request: [params]
+    assert_response :unprocessable_entity
+  end
+
+  test 'adding multiple waiver wire requests succeeds' do
+    second_request = @valid_params
+    second_request[:incoming_priority] = 2
+    second_request[:player_out] = 3
+    post :add, request: [@valid_params, second_request]
+    assert_response :success
+  end
+
+  test 'adding multiple waiver wire requests with conflicting priorities fails' do
+    original_count = WaiverWire.all.length
+    second_request = @valid_params
+    post :add, request: [@valid_params, second_request]
+    assert_equal original_count + 1, WaiverWire.all.length, 'Incorrect number of waiver wire requests were processed'
   end
 end
