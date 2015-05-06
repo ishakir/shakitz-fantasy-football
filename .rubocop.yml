@@ -1,5 +1,5 @@
 # rubocop rules for footbawwl project
-inherit_from: rubocop-todo.yml
+inherit_from: rubocop-rules.yml
 
 # Ignore autogened code, include a couple not named *.rb
 AllCops:
