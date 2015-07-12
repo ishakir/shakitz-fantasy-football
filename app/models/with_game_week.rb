@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 module WithGameWeek
   DAYS_IN_A_WEEK = 7
-
   def self.validate_game_week_number(game_week_number)
     fail ArgumentError, game_week_too_small_message(game_week_number) if game_week_number < 1
     fail ArgumentError, game_week_too_large_message(game_week_number) if game_week_number > Settings.number_of_gameweeks
@@ -37,12 +36,7 @@ module WithGameWeek
   end
 
   def self.start_of_first_gameweek
-    Time.zone = 'Eastern Time (US & Canada)'
     Time.zone.parse(Settings.first_gameweek_start) + 2.hours
-  end
-
-  def self.eastern_current_time
-    DateTime.now.utc.in_time_zone('Eastern Time (US & Canada)')
   end
 
   def self.more_than_days_since_start?(days)
@@ -50,7 +44,7 @@ module WithGameWeek
   end
 
   def self.more_than_time_since_start?(days, hours)
-    eastern_current_time = WithGameWeek.eastern_current_time
+    eastern_current_time = Time.zone.now
     time_difference = eastern_current_time - WithGameWeek.start_of_first_gameweek
 
     total_converted_time = days.days + hours.hours
@@ -59,7 +53,7 @@ module WithGameWeek
   end
 
   def self.current_game_week
-    eastern_current_time = WithGameWeek.eastern_current_time
+    eastern_current_time = Time.zone.now
     augmented_start_time = WithGameWeek.start_of_first_gameweek
 
     days_since_start = ((eastern_current_time - augmented_start_time) / 1.day).floor
