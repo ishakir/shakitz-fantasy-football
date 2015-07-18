@@ -175,7 +175,7 @@ class NflPlayerController < ApplicationController
 
   def update_stats_for_player(match_player, stats)
     return if stats.nil?
-    all_stats_hash = stats.values.reduce({}) do |acc_hash, value|
+    all_stats_hash = stats.values.reduce(Hash.new) do |acc_hash, value|
       acc_hash.merge(value)
     end
     match_player.assign_attributes(all_stats_hash)

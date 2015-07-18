@@ -22,7 +22,7 @@ class UserController < ApplicationController
   end
 
   def home
-    @t1 = Time.zone.now
+    @t1 = Time.now
     @users = User.all
     @fixtures = Fixture.all
     @game_week = WithGameWeek.current_game_week

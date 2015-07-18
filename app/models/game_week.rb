@@ -59,7 +59,7 @@ class GameWeek < ActiveRecord::Base
     days_for_game_week_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
     game_start = HOURS_UNTIL_5_PM
     days_before_lock = DAYS_IN_WEEK_BEFORE_LOCK
-    today = Time.zone.today
+    today = Date.today
     if (today == Date.civil(today.year, 11, Date.calculate_mday(today.year, 11, :fourth, :thursday)))
       game_start = HOURS_UNTIL_NOON
     elsif (WithGameWeek.current_game_week == WEEK_17)

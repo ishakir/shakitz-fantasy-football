@@ -86,8 +86,8 @@ class User < ActiveRecord::Base
 
   def update_results_hash(game_week_team, hash)
     result = game_week_team.head_to_head_result
-    hash[:wins] += 1 if result == :won
-    hash[:draws] += 1 if result == :drawn
+    hash[:wins]   += 1 if result == :won
+    hash[:draws]  += 1 if result == :drawn
     hash[:losses] += 1 if result == :lost
     hash
   end
