@@ -21,8 +21,7 @@
 # And let's not lock our Gemfile, let's go free man
 Gemfile.lock
 
-# Let's also ignore anything python related for now
-*.py
+# Python ignores
 *.pyc
 .pydevproject
 
