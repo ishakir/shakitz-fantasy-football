@@ -22,7 +22,7 @@ module PlayerFinder
         players = NflPlayer.where(name: @name)
         return :none     if players.empty?
         return :too_many if players.size > 1
-        players.shift
+        players[0]
       end
 
       private

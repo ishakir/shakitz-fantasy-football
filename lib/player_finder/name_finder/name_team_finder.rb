@@ -25,10 +25,10 @@ module PlayerFinder
         teams = NflTeam.where(name: @team)
         fail IllegalStateError unless teams.size == 1
 
-        players = NflPlayer.where(name: @name, nfl_team: teams.shift)
+        players = NflPlayer.where(name: @name, nfl_team: teams[0])
         return :none     if players.empty?
         return :too_many if players.size > 1
-        players.shift
+        players[0]
       end
 
       private

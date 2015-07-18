@@ -54,7 +54,7 @@ module WithGameWeek
   end
 
   def self.current_game_week
-    eastern_current_time = WithGameWeek.eastern_current_time
+    eastern_current_time = Time.zone.now
     augmented_start_time = WithGameWeek.start_of_first_gameweek
 
     days_since_start = ((eastern_current_time - augmented_start_time) / 1.day).floor

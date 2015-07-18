@@ -6,6 +6,7 @@ one:
   target_user_id: 2
   offered_player_id: 1 
   target_player_id: 2
+  status: 0
 
 two:
   id: 2
@@ -13,27 +14,28 @@ two:
   target_user_id: 4
   offered_player_id: 2
   target_player_id: 4
-  
+  status: 0
+
 three:
   id: 3
   offering_user_id: 1
   target_user_id: 2
   offered_player_id: 2
   target_player_id: 10
-  status: "pending"
-  
+  status: 0 # pending
+
 four:
   id: 4
   offering_user_id: 1
   target_user_id: 2
   offered_player_id: 8
   target_player_id: 15
-  status: "accepted"
-  
+  status: 1 # accepted
+
 five:
   id: 5
   offering_user_id: 3
   target_user_id: 5
   offered_player_id: 15
   target_player_id: 25
-  status: "rejected"
+  status: 2 # rejected

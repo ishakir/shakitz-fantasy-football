@@ -28,10 +28,10 @@ module PlayerFinder
         types = NflPlayerType.where(position_type: @type)
         fail IllegalStateError unless teams.size == 1 && types.size == 1
 
-        players = NflPlayer.where(name: @name, nfl_team: teams.shift, nfl_player_type: types.shift)
+        players = NflPlayer.where(name: @name, nfl_team: teams[0], nfl_player_type: types[0])
         return :none     if players.empty?
         return :too_many if players.size > 1
-        players.shift
+        players[0]
       end
 
       private

@@ -79,7 +79,7 @@ class TransferRequestControllerTest < ActionController::TestCase
     post :create, transfer_request: params
     assert_response :redirect
 
-    assert_equal 'pending', TransferRequest.last.status
+    assert TransferRequest.last.pending?
   end
 
   test 'create redirects to transfer page' do
@@ -107,7 +107,7 @@ class TransferRequestControllerTest < ActionController::TestCase
     post :resolve, transfer_request: { id: 2, action_type: 'reject' }
     assert_redirected_to controller: :transfer_request, action: :status
 
-    assert_equal 'rejected', TransferRequest.find(2).status
+    assert TransferRequest.find(2).rejected?
   end
 
   test "users are swapped if it's accepted" do
@@ -125,7 +125,7 @@ class TransferRequestControllerTest < ActionController::TestCase
     post :resolve, transfer_request: { id: 2, action_type: 'accept' }
     assert_redirected_to controller: :transfer_request, action: :status
 
-    assert_equal 'accepted', TransferRequest.find(2).status
+    assert TransferRequest.find(2).accepted?
   end
 
   test 'transfer request is destroyed when cancelled' do
@@ -142,13 +142,13 @@ class TransferRequestControllerTest < ActionController::TestCase
   end
 
   test 'status returns all of the pending transfer requests' do
-    expected_size = TransferRequest.where(status: 'pending').length
+    expected_size = TransferRequest.where(status: :pending).length
     actual_size = get_assigns(:status, :pending_transfers).length
     assert_equal expected_size, actual_size
   end
 
   test 'status returns all of the completed transfer requests' do
-    expected_size = TransferRequest.where.not(status: 'pending').length
+    expected_size = TransferRequest.where.not(status: :pending).length
     actual_size = get_assigns(:status, :completed_transfers).length
     assert_equal expected_size, actual_size
   end
