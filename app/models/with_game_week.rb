@@ -37,12 +37,7 @@ module WithGameWeek
   end
 
   def self.start_of_first_gameweek
-    Time.zone = 'Eastern Time (US & Canada)'
     Time.zone.parse(Settings.first_gameweek_start) + 2.hours
-  end
-
-  def self.eastern_current_time
-    DateTime.now.utc.in_time_zone('Eastern Time (US & Canada)')
   end
 
   def self.more_than_days_since_start?(days)
@@ -50,7 +45,7 @@ module WithGameWeek
   end
 
   def self.more_than_time_since_start?(days, hours)
-    eastern_current_time = WithGameWeek.eastern_current_time
+    eastern_current_time = Time.zone.now
     time_difference = eastern_current_time - WithGameWeek.start_of_first_gameweek
 
     total_converted_time = days.days + hours.hours
