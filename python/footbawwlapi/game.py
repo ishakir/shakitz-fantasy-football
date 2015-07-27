@@ -25,8 +25,8 @@ class Game:
     return defensive_player_list
 
 class Player:
-  def get_api_facade(self):
-    return footbawwlapi.facade.NflPlayerFacade(self)
+  def get_api_facade(self, host, port):
+    return footbawwlapi.facade.NflPlayerFacade(host, port, self)
 
 class OffencePlayer(Player):
   

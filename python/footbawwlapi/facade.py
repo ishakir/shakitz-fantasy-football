@@ -1,8 +1,7 @@
 import json
 import requests
 
-# Define some constant to be used throughout
-BASE_URL = "http://localhost:3000"
+# Define some constants to be used throughout
 JSON_REQUEST_HEADERS = {
   'Content-type': 'application/json'
 }
@@ -13,9 +12,12 @@ JSON_REQUEST_RESPONSE_HEADERS = {
 
 class APIFacade(object):
 
+  def __init__(self, host, port):
+    self.base_url = "http://{}:{}".format(host, port)
+
   def make_call_to(self, path, dict, headers):
     data = json.dumps(dict)
-    full_url = BASE_URL + path
+    full_url = self.base_url + path
     return requests.post(
       full_url,
       data = data,
@@ -25,7 +27,8 @@ class APIFacade(object):
 
 class NflPlayerFacade(APIFacade):
 
-  def __init__(self, player):
+  def __init__(self, host, port, player):
+    super(NflPlayerFacade, self).__init__(host, port)
     self.player = player
 
   def create(self):

@@ -3,11 +3,14 @@ import nflgame
 
 from footbawwlapi.game import Game
 
-def create_all_players(year, kind, game_weeks):
+def create_all_players(host, port, year, kind, game_weeks):
   games = []
   for week in game_weeks:
     for game in nflgame.games(year, week = week, kind = kind):
       games.append(Game(game, week))
+
+  if not games:
+    raise RuntimeError("Couldn't find any {}-games in {}, did you get the year right?".format(kind, year))
 
   offensive_players = {}
   defensive_players = {}
@@ -25,7 +28,7 @@ def create_all_players(year, kind, game_weeks):
   counter = 1
   for key, value in all_players.iteritems():
     print "Uploading player "+value.name+" "+str(counter)+"/"+str(total_no_players)
-    response = value.get_api_facade().create()
+    response = value.get_api_facade(host, port).create()
     if response.status_code != 200:
       print "Error creating player "+player.name+" code was "+str(response.status_code)
     counter += 1
