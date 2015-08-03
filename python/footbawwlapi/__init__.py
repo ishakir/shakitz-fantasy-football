@@ -33,9 +33,9 @@ def create_all_players(host, port, year, kind, game_weeks):
       print "Error creating player "+player.name+" code was "+str(response.status_code)
     counter += 1
 
-def update_player_stats(player):
+def update_player_stats(host, port, player):
   print "Updating stats for player "+player.name
-  api_facade = player.get_api_facade()
+  api_facade = player.get_api_facade(host, port)
   response = api_facade.update_stats()
   if response.status_code != 200:
     print "ERROR: Got response code "+str(response.status_code)+" from player "+player.name+" in team "+player.team
@@ -55,5 +55,5 @@ def update_stats(year, kind, game_week):
   for nfl_game in games:
     game = Game(nfl_game, game_week)
     for player in game.all_players():
-      update_player_stats(player)
+      update_player_stats(host, port, player)
       
