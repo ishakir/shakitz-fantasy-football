@@ -37,7 +37,7 @@ module WithGameWeek
   end
 
   def self.start_of_first_gameweek
-    Time.zone.parse(Settings.first_gameweek_start) + 2.hours
+    Time.zone.parse(Settings.first_gameweek_start)
   end
 
   def self.more_than_days_since_start?(days)
