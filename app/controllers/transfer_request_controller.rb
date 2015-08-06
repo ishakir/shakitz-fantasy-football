@@ -2,7 +2,7 @@
 require 'illegal_state_error'
 
 class TransferRequestController < ApplicationController
-  OFFERING_USER_ID_KEY   = :offering_user_id
+  OFFERING_USER_ID_KEY = :offering_user_id
   TARGET_USER_ID_KEY    = :target_user_id
   OFFERED_PLAYER_ID_KEY = :offered_player_id
   TARGET_PLAYER_ID_KEY  = :target_player_id

@@ -19,7 +19,7 @@ class TeamPlayerController < ApplicationController
     GameWeekTeamPlayer.create!(
       game_week_team: user_team,
       match_player: match_player,
-      playing:  all_playing_positions_filled?(user_team)
+      playing: all_playing_positions_filled?(user_team)
     )
 
     render json: ok_response
