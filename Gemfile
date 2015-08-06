@@ -45,7 +45,7 @@ end
 gem 'rubocop'
 gem 'magic_encoding'
 gem 'rrschedule'
-gem 'rails_config'
+gem 'rails_config', '0.4.2'
 gem 'mysql2'
 
 #third-party plugin to make select boxes nicer
