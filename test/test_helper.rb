@@ -110,7 +110,7 @@ class ActiveSupport::TestCase
     Fixture.delete_all
     delete_last_users(NUMBER_OF_USERS - no_users)
 
-    get :generate
+    FixturesGenerator.new.generate
 
     all_users = User.all
 
@@ -149,7 +149,7 @@ class ActiveSupport::TestCase
     Fixture.delete_all
     delete_last_users(NUMBER_OF_USERS - no_users)
 
-    get :generate
+    FixturesGenerator.new.generate
 
     user_1_no_fixtures = User.find(1).opponents.size
 
@@ -163,7 +163,7 @@ class ActiveSupport::TestCase
     Fixture.delete_all
     delete_last_users(NUMBER_OF_USERS - no_users)
 
-    get :generate
+    FixturesGenerator.new.generate
 
     # If odd, one team doesn't play per week
     fixtures_per_gw = number_of_fixtures_per_game_week(no_users)
