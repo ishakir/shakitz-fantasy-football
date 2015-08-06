@@ -11,8 +11,8 @@ def format_for_rufus(time)
 end
 
 def schedule_stats_update(week_number, time, scheduler)
-	year = Time.now.year
-	kind = "REG"
+	year = WithGameWeek.start_of_first_gameweek.year
+	kind = Settings.season_type
 	port = Rails::Server.new.options[:Port]
 	rufus_time = format_for_rufus(time)
 	Rails.logger.info "Scheduling stats update for week #{week_number} at #{rufus_time}"
@@ -24,8 +24,8 @@ def schedule_stats_update(week_number, time, scheduler)
 	end
 end
 
-if not Rails.env.production?
-	puts "Not in production mode, so not scheduling stats updates"
+if not Settings.schedule or File.basename($0) == "rake"
+	Rails.logger.info "Not in production mode, so not scheduling stats updates"
 else
 	# Scheule stats updates every 15 mins during the games, which can happen on 
 	all_update_times_in_est = (0 ... Settings.number_of_gameweeks).map do |week_number|
@@ -42,7 +42,7 @@ else
 	end
 
 	all_update_times_in_local_timezone = all_update_times_in_est.map do |times|
-		times.map do |time| time.in_time_zone('London') end
+		times.map do |time| time.in_time_zone(Settings.local_timezone) end
 	end
 
 	scheduler = Rufus::Scheduler.new

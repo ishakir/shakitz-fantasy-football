@@ -1,3 +1,6 @@
-first_gameweek_start: <%= Time.now.strftime("%d/%m/%Y") %>
+first_gameweek_start: 02/09/2014
 number_of_gameweeks: 17
 points_strategy: nfl
+schedule: false
+season_type: REG
+local_timezone: London

@@ -6,6 +6,9 @@ from footbawwlapi.game import Game
 def create_all_players(host, port, year, kind, game_weeks):
   games = []
   for week in game_weeks:
+    print year
+    print week
+    print kind
     for game in nflgame.games(year, week = week, kind = kind):
       games.append(Game(game, week))
 
@@ -46,10 +49,10 @@ def update_player_stats(host, port, player):
     if response.status_code == 404:
       print "Creating player "+player.name
       api_facade.create()
-      update_player_stats(player)
+      update_player_stats(host, port, player)
 
 
-def update_stats(year, kind, game_week):
+def update_stats(host, port, year, kind, game_week):
   games = nflgame.games(year, week = game_week, kind = kind)
 
   for nfl_game in games:
