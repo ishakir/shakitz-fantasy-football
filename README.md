@@ -32,7 +32,6 @@ Highest Priority new features
 * Complete implementation of waver wire
 * Trades involving more than one player per side
 * Loan trades with a "trade-back" date
-* Complete automation of initial player creation, fixture generation, team locking and stats updates
 * Automated provisioning of production instances
 * Allow custom team sizes
 * Fixtures for > 8 users
