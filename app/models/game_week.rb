@@ -55,7 +55,7 @@ class GameWeek < ActiveRecord::Base
     is_after_game_week_start && !is_after_game_week_end
   end
 
-  def locked?
+  def lock_time
     days_for_game_week_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
     game_start = HOURS_UNTIL_5_PM
     days_before_lock = DAYS_IN_WEEK_BEFORE_LOCK
@@ -65,6 +65,10 @@ class GameWeek < ActiveRecord::Base
     elsif (WithGameWeek.current_game_week == WEEK_17)
       days_before_lock = DAYS_IN_WEEK_BEFORE_SUNDAY_LOCK
     end
-    WithGameWeek.more_than_time_since_start?(days_for_game_week_start + days_before_lock, game_start)
+    WithGameWeek.start_of_first_gameweek + (days_for_game_week_start + days_before_lock).days + game_start.hours
+  end
+
+  def locked?
+    Time.zone.now > lock_time
   end
 end
