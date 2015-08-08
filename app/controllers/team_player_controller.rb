@@ -44,11 +44,10 @@ class TeamPlayerController < ApplicationController
   end
 
   def first_match_player(nfl_player_id)
-      NflPlayer.find(nfl_player_id).player_for_game_week(DEFAULT_GAMEWEEK)
+    NflPlayer.find(nfl_player_id).player_for_game_week(DEFAULT_GAMEWEEK)
   end
 
   def first_game_week_team(user_id)
-      User.find(user_id).team_for_game_week(DEFAULT_GAMEWEEK)
+    User.find(user_id).team_for_game_week(DEFAULT_GAMEWEEK)
   end
-
 end

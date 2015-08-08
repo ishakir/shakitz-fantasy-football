@@ -3,7 +3,6 @@ require 'test_helper'
 require 'game_week_progresser'
 
 class ProgressGameWeekTest < ActionController::TestCase
-
   test 'progress_game_week copies all players into next game week team' do
     GameWeekProgresser.new.progress_game_week(1)
     game_week_team = GameWeekTeam.find(19)

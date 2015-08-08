@@ -44,5 +44,4 @@ class TeamPlayerControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal previous_size + 1, User.find(DEFAULT_USER_ID).team_for_game_week(DEFAULT_GAMEWEEK).match_players.size
   end
-
 end
