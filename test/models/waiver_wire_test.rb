@@ -2,19 +2,57 @@ require 'test_helper'
 
 class WaiverWireTest < ActiveSupport::TestCase
   def setup
+    WaiverWire.delete_all
     @valid_params = {
-      user: User.find(1),
+      user: User.find(8),
       player_out: NflPlayer.find(3),
       player_in: NflPlayer.find(4),
       game_week: GameWeek.find(1),
-      incoming_priority: 1
+      incoming_priority: 5
     }
+    @params = [{
+      user: User.find(1),
+      player_out: NflPlayer.find(8),
+      player_in: NflPlayer.find(44),
+      game_week: GameWeek.find(1),
+      incoming_priority: 1
+    }, {
+      user: User.find(1),
+      player_out: NflPlayer.find(8),
+      player_in: NflPlayer.find(45),
+      game_week: GameWeek.find(1),
+      incoming_priority: 2
+    }, {
+      user: User.find(2),
+      player_out: NflPlayer.find(24),
+      player_in: NflPlayer.find(46),
+      game_week: GameWeek.find(1),
+      incoming_priority: 1
+    }, {
+      user: User.find(2),
+      player_out: NflPlayer.find(25),
+      player_in: NflPlayer.find(45),
+      game_week: GameWeek.find(1),
+      incoming_priority: 2
+    }, {
+      user: User.find(2),
+      player_out: NflPlayer.find(26),
+      player_in: NflPlayer.find(44),
+      game_week: GameWeek.find(1),
+      incoming_priority: 3
+    }, {
+      user: User.find(2),
+      player_out: NflPlayer.find(27),
+      player_in: NflPlayer.find(47),
+      game_week: GameWeek.find(1),
+      incoming_priority: 4
+    }]
   end
 
   test 'can add valid waiver wire request' do
     WaiverWire.create!(@valid_params)
-    assert_equal User.find(1), WaiverWire.last.user
-    assert_equal 1, WaiverWire.last.incoming_priority
+    assert_equal User.find(8), WaiverWire.last.user
+    assert_equal 5, WaiverWire.last.incoming_priority
   end
 
   test 'user must be present' do
@@ -52,5 +90,51 @@ class WaiverWireTest < ActiveSupport::TestCase
     assert_raise ActiveRecord::RecordInvalid do
       (WaiverWire.create!(@valid_params))
     end
+  end
+
+  test 'user can have multiple waiver wire requests' do
+    WaiverWire.create!(@valid_params)
+    new_params = @valid_params
+    new_params[:incoming_priority] = 3
+    new_params[:player_out] = NflPlayer.find(5)
+
+    WaiverWire.create!(new_params)
+    assert_equal User.find(8), WaiverWire.last.user
+    assert_equal 3, WaiverWire.last.incoming_priority
+  end
+
+  test 'correctly resolves only the first of the users waiver wire request as they both have same outgoing player' do
+    WaiverWire.create!(@params)
+    user_1 = WaiverWire.find_by user: 1
+    user_1_second_round = WaiverWire.find_by user: 1, incoming_priority: 2
+
+    WaiverWire.resolve
+    assert user_1.user.team_for_current_game_week.match_players
+      .include? MatchPlayer.find_by nfl_player_id: user_1['player_in_id'].to_i
+    assert user_1_second_round.user.team_for_current_game_week.match_players
+      .exclude? MatchPlayer.find_by nfl_player_id: user_1_second_round['player_in_id'].to_i
+  end
+
+  test 'correct user gets incoming player based on the order of last weeks results' do
+    WaiverWire.create!(@params)
+    u = WaiverWire.find_by user: 2
+    assert u.user.team_for_current_game_week.match_players
+      .exclude? MatchPlayer.find_by nfl_player_id: u['player_in_id'].to_i
+    WaiverWire.resolve
+    assert u.user.team_for_current_game_week.match_players
+      .exclude? MatchPlayer.find_by nfl_player_id: u['player_in_id'].to_i
+  end
+
+  test 'correct user gets incoming player despite someone requesting him in a later round' do
+    WaiverWire.create!(@params)
+    u1 = WaiverWire.find_by user: 1, incoming_priority: 1
+    u2 = WaiverWire.find_by user: 2, incoming_priority: 3
+    assert_equal u1['player_in_id'].to_i, u2['player_in_id'].to_i
+    assert_not_equal u1['incoming_priorirty'].to_i, u2['incoming_priority'].to_i
+    WaiverWire.resolve
+    assert u1.user.team_for_current_game_week.match_players
+      .include? MatchPlayer.find_by nfl_player_id: u1['player_in_id'].to_i
+    assert u2.user.team_for_current_game_week.match_players
+      .exclude? MatchPlayer.find_by nfl_player_id: u2['player_in_id'].to_i
   end
 end
