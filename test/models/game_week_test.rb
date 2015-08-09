@@ -54,4 +54,36 @@ class GameWeekTest < ActiveSupport::TestCase
     # t = Time.new(2014, 11, 13, 20, 25, 0, '-05:00') # First game of week 11
     # assert GameWeek.find(11).locked?
   end
+
+  test 'can get points for all users for a specific gameweek' do
+    all_points = GameWeek.get_all_points_for_gameweek(1)
+    assert all_points
+  end
+
+  test 'points for all users for a specific gameweek contains a user key' do
+    all_points = GameWeek.get_all_points_for_gameweek(1)
+    assert all_points.at(0).key?(:user_id)
+  end
+
+  test 'points for all users for a specific gameweek contains a points key' do
+    all_points = GameWeek.get_all_points_for_gameweek(1)
+    assert all_points.at(0).key?(:points)
+  end
+
+  test 'points for all users for a specific gameweek returns items for all users' do
+    all_points = GameWeek.get_all_points_for_gameweek(1)
+    assert_equal all_points.size, User.all.size
+  end
+
+  test 'points for all users for an invalid gameweek raises record not found' do
+    assert_raise ActiveRecord::RecordNotFound do
+      GameWeek.get_all_points_for_gameweek(25)
+    end
+  end
+
+  test 'points for all users for with no arguments raises argument error' do
+    assert_raise ArgumentError do
+      GameWeek.get_all_points_for_gameweek
+    end
+  end
 end
