@@ -43,7 +43,7 @@ var initPlayerSuggestions = function(data, callback) {
       source: playerList.ttAdapter(),
       templates: {
         suggestion: function (datum) {
-               return "<span>"+datum.value + " <span class='text-muted small'> in " + datum.team + "</span></span>";
+               return "<div>"+datum.value + " <span class='text-muted small'> in " + datum.team + "</span></div>";
         }
       }
   }).bind('typeahead:selected', function($e, player){
