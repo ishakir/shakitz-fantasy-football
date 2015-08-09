@@ -161,13 +161,14 @@ free_agent_<%= n%>:
 <% end %>
 
 <% 36.times do |n| %>
-waiver_<%= n%>:
+waiver_<%= n %>:
   id: <%= 99 + n %>
   nfl_id: <%= 99 + n %>
   name: waiver_<%= n %>
-  nfl_team_id: <= n % 3 %>
-  nfl_player_type_id: <= n % 5 %>
+  nfl_team_id: <%= (n % 3) + 1 %>
+  nfl_player_type_id: <%= (n % 5) + 1 %>
 <% end %>
+
 
 test_defence:
   id: 78
