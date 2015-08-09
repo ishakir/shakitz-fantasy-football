@@ -11,7 +11,7 @@ else
 		scheduler.in '1m' do
 			Rails.logger.info("Attemping to upload initial players")
 			year = WithGameWeek.start_of_first_gameweek.year
-			port = Rails::Server.new.options[:Port]
+			port = Settings.port
 			kind = Settings.season_type
 			result = `python python/create_initial_players.py --host localhost --port #{port} --year #{year} --kind #{kind}`
 			Rails.logger.info("Finished uploading initial players, stdout was:")
