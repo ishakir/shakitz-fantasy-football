@@ -13,7 +13,7 @@ end
 def schedule_stats_update(week_number, time, scheduler)
 	year = WithGameWeek.start_of_first_gameweek.year
 	kind = Settings.season_type
-	port = Rails::Server.new.options[:Port]
+	port = Settings.port
 	rufus_time = format_for_rufus(time)
 	Rails.logger.info "Scheduling stats update for week #{week_number} at #{rufus_time}"
 	scheduler.at rufus_time do
