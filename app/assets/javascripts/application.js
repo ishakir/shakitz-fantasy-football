@@ -27,7 +27,6 @@ var initPlayerSuggestions = function(data, callback) {
   var playerList = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    limit: 32,
     local: $.map(data, function(p) { return { value: p.player.name, id: p.player.id, team: p.team }; })
   });
   // kicks off the loading/processing of `local` and `prefetch`
@@ -35,11 +34,12 @@ var initPlayerSuggestions = function(data, callback) {
 
   $('#bloodhound .typeahead').typeahead({
     hint: true,
-      highlight: true,
+  	highlight: true,
     minLength: 1
   }, {
     name: 'nfl_players',
       displayKey: 'value',
+      limit: 32,
       source: playerList.ttAdapter(),
       templates: {
         suggestion: function (datum) {
