@@ -35,7 +35,9 @@
   color: #999
 }
 
-.tt-dropdown-menu {
+.tt-menu {
+  max-height: 150px;
+  overflow-y: auto;
   width: 422px;
   margin-top: 12px;
   padding: 8px 0;
@@ -56,8 +58,9 @@
   line-height: 24px;
 }
 
-.tt-suggestion.tt-cursor {
+.tt-suggestion:hover {
   color: #fff;
+  cursor: pointer;
   background-color: #0097cf;
 
 }
