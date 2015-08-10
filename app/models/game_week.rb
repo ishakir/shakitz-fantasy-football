@@ -70,6 +70,8 @@ class GameWeek < ActiveRecord::Base
     Time.zone.now > lock_time
   end
 
+  private
+
   def days_before_lock
     if (WithGameWeek.current_game_week == WEEK_17)
       DAYS_IN_WEEK_BEFORE_SUNDAY_LOCK
