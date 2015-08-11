@@ -6,7 +6,7 @@ if not Settings.schedule or File.basename($0) == "rake"
 else
 	scheduler = ShakitzScheduler.new
 	
-	GameWeek.all.each do |game_week|
+	GameWeek.all[0...-1].each do |game_week|
 		scheduler.at game_week.lock_time, "progression for week #{game_week.number}" do
 			Rails.logger.info("Progressing from game week #{game_week.number} to game week #{game_week.number + 1}")
 			GameWeekProgresser.new.progress_game_week(game_week.number)
