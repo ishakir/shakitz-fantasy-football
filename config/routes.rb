@@ -68,6 +68,7 @@ Footbawwl::Application.routes.draw do
   resources :sessions
   
   # Waiver wire routes
+  get "waiver_wire" => "waiver_wires#show"
   post "waiver_wire/request" => "waiver_wires#add", :as => "waiver_wire_request"
   post "waiver_wire/remove" => "waiver_wires#delete", :as => "waiver_wire_delete_request"
 

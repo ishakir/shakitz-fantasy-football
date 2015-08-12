@@ -1,4 +1,6 @@
 class WaiverWiresController < ApplicationController
+  include PlayerNameModule
+  
   USER_KEY = :user
   PLAYER_IN_KEY = :player_in
   PLAYER_OUT_KEY = :player_out
@@ -10,6 +12,12 @@ class WaiverWiresController < ApplicationController
     @priority_array = {} # ensure we don't get duplicate incoming priority values by storing it all in a hash
     process_requested_waiver_wire_request_additions(params['request'])
     add_requests_to_database
+  end
+  
+  def show
+    @users = User.all
+    @game_week = WithGameWeek.current_game_week
+    @nfl_players = NflPlayer.players_with_no_team_for_current_game_week
   end
 
   def process_requested_waiver_wire_request_additions(requests)
