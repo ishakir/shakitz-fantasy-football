@@ -1,7 +1,11 @@
 <%= javascript_include_tag "waiver_wire" %>
 <script>
+	<% if !session[:user_id].nil? %>
+	var user = <%= session[:user_id] %>;
+	<% end %>
+	var gameWeek = <%= raw @game_week.to_json %>;
 	var players = <%= raw @nfl_players.to_json %>;
-	players = players.map(function(p){ console.log(p);var player = {}; player.player = p; player.team = p.team; return player;});
+	players = players.map(function(p){ var player = {}; player.player = p; player.team = p.team; return player;});
 </script>
 <div class="container fluid">
 	<div class="row clearfix">
@@ -14,10 +18,6 @@
 		</div>
 		<div class="col-md-12">
 			<% if !session[:user_id].nil? %>
-				<%#= form_for :waiver_wire, :url => waiver_wire_request_path, :html => {:id => 'create_waiver_wire'}, :method => :post  do |f| %>
-				 	<%#= f.hidden_field :player_in, :id=>'offered_player_id' %>
-				 	<%#= f.hidden_field :player_out, :id=>'requested_player_id' %>
-				 	<%#= f.hidden_field :game_week, :id=>'offering_user_id', :value=>session[:user_id] %>
 					<div class="row">
 						<div class="col-md-4" style="margin-top:1em;">
 							<span>Player Offered:&nbsp;</span>
@@ -29,19 +29,18 @@
 						</div>
 						<div class="col-md-4">
 							<div id="bloodhound">
-		      					<input id="playerText" class="typeahead small-typeahead center" type="text" placeholder="Find Player">
+		      					<input id="incoming-player-text" class="typeahead small-typeahead center" type="text" placeholder="Find Player">
 							 </div>
 		 				</div>
 		 				<div class="col-md-4">
 	 						<button id="addBtn" class="btn btn-default">Add to waiver</button>
 	 					</div>
 					</div>
-				<%# end %>	
 			<% end %>
 		</div>
 		<div class="col-md-12">
 			<div class="row">
-				<table class="table" id="diagnosis_list">
+				<table class="table" id="waiver-list">
 				   <thead>
 				      <tr>
 				         <th>Priority</th>
@@ -51,31 +50,13 @@
 				      </tr>
 				   </thead>
 				   <tbody>
-				      <tr>
-				         <td class='priority'>1</td>
-				         <td>George Washington</td>
-				         <td>Apple</td>
-				         <td><a class='btn btn-delete btn-danger'>Delete</a></td>
-				      </tr>
-				      <tr>
-				         <td class='priority'>2</td>
-				         <td>John Adams</td>
-				         <td>Pear</td>
-				         <td><a class='btn btn-delete btn-danger'>Delete</a></td>
-				      </tr>
-				      <tr>
-				         <td class='priority'>3</td>
-				         <td>Thomas Jefferson</td>
-				         <td>Banana</td>
-				         <td><a class='btn btn-delete btn-danger'>Delete</a></td>
-				      </tr>
 				   </tbody>
 				</table>
 				<!-- Table code taken from http://www.avtex.com/blog/2015/01/27/drag-and-drop-sorting-of-table-rows-in-priority-order/ -->
 			</div>
 			<div class="row">
 			  <div class="footer">
-			    <button type="submit" class="btn btn-default">Submit Waiver List</button>
+			    <button id="submitWaiver" class="btn btn-default">Submit Waiver List</button>
 			  </div>
 		    </div>	
 		</div>

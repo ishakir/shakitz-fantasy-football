@@ -24,7 +24,7 @@ class WaiverWiresController < ApplicationController
     requests.each do |p|
       validate_waiver_wire_params(p)
       key = p[:incoming_priority]
-      @priority_array[key.to_sym] = p
+      @priority_array[key.to_s.to_sym] = p
     end
   end
 
