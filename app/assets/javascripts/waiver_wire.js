@@ -63,7 +63,7 @@ $(document).ready(function() { //Helper function to keep table row from collapsi
    		outgoingId: $('#my-player').find(":selected")[0].id.split('-')[1],
    		incoming: $('#incoming-player-text').typeahead('val'),
 	 	incomingId: incomingId,
-   		incoming_priority: $('#waiver-list tr').length//headers count as one row
+   		priority: $('#waiver-list tr').length//headers count as one row
    	};
    	if(!obj.outgoing || !obj.incoming || !obj.incomingId || !obj.outgoingId){
    		return;
@@ -91,7 +91,7 @@ function renumber_table(tableID) {
 function updateTable(obj) {
 	var html = '';
 	for(var i = 0; i < obj.length; i++) {
-	   	html += '<tr><td class="priority">'+obj[i].incoming_priority+'</td><td id="outgoing-'+obj[i].outgoingId+
+	   	html += '<tr><td class="priority">'+obj[i].priority+'</td><td id="outgoing-'+obj[i].outgoingId+
 	   		'" class="outgoing">'+obj[i].outgoing+'</td><td id="incoming-'+obj[i].incomingId+'" class="incoming">'+
 	   		obj[i].incoming+'</td><td><a class="btn btn-delete btn-danger">Delete</a></td></tr>';
 	}

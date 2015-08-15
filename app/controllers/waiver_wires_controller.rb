@@ -30,7 +30,7 @@ class WaiverWiresController < ApplicationController
     requests = []
     WaiverWire.where(user_id: user).each do |w|
       request = {
-        incoming_priority: w.incoming_priority,
+        priority: w.incoming_priority,
         outgoing: NflPlayer.find(w.player_out_id).name,
         outgoingId: w.player_out_id,
         incoming: NflPlayer.find(w.player_in_id).name,
