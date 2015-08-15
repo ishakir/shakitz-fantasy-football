@@ -97,4 +97,15 @@ class WaiverWiresControllerTest < ActionController::TestCase
     post :add, request: [@valid_params, second_request]
     assert_equal original_count + 1, WaiverWire.all.length, 'Incorrect number of waiver wire requests were processed'
   end
+  
+  test 'adding a request when an existing one for that users priority updates the entry in the database with the latest request' do
+    params = @valid_params
+    post :add, request: [@valid_params]
+    assert_response :success
+    
+    params[:player_out] = 5
+    post :add, request: [params]
+    assert_response :success
+    assert_equal 5, WaiverWire.last.player_out[:id]
+  end
 end

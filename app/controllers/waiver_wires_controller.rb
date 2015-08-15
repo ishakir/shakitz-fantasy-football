@@ -10,16 +10,37 @@ class WaiverWiresController < ApplicationController
   def add
     fail ArgumentError, 'Incorrect post submitted' unless params.key?(:request)
     @priority_array = {} # ensure we don't get duplicate incoming priority values by storing it all in a hash
-    process_requested_waiver_wire_request_additions(params['request'])
-    add_requests_to_database
+    if params['request'].present?
+      process_requested_waiver_wire_request_additions(params['request'])
+      remove_existing_requests_for_user
+      add_requests_to_database
+    else
+      WaiverWire.where({user_id: session[:user_id]}).destroy_all
+    end
   end
   
   def show
     @users = User.all
     @game_week = WithGameWeek.current_game_week
+    @waiver_requests = get_existing_requests_for_user(session[:user_id])
     @nfl_players = NflPlayer.players_with_no_team_for_current_game_week
   end
 
+  def get_existing_requests_for_user(user)
+    requests = []
+    WaiverWire.where({user_id: user}).each do |w|
+      request = {
+        incoming_priority: w.incoming_priority,
+        outgoing: NflPlayer.find(w.player_out_id).name,
+        outgoingId: w.player_out_id,
+        incoming: NflPlayer.find(w.player_in_id).name,
+        incomingId: w.player_in_id,
+      }
+      requests.push(request)
+    end
+    requests
+  end
+  
   def process_requested_waiver_wire_request_additions(requests)
     requests.each do |p|
       validate_waiver_wire_params(p)
@@ -37,6 +58,14 @@ class WaiverWiresController < ApplicationController
         game_week: GameWeek.find(v[GAME_WEEK_KEY].to_i),
         incoming_priority: v[PRIORITY_KEY].to_i
       )
+    end
+  end
+  
+  def remove_existing_requests_for_user
+    @priority_array.each do |k, v|
+      if WaiverWire.where({ user_id: v[USER_KEY].to_i, incoming_priority: v[PRIORITY_KEY].to_i}).present?
+        WaiverWire.destroy_all(:user_id => v[USER_KEY].to_i)
+      end
     end
   end
 

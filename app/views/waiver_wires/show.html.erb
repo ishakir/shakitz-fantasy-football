@@ -3,6 +3,7 @@
 	<% if !session[:user_id].nil? %>
 	var user = <%= session[:user_id] %>;
 	<% end %>
+	var existingRequests = <%= raw @waiver_requests.to_json %> || [];
 	var gameWeek = <%= raw @game_week.to_json %>;
 	var players = <%= raw @nfl_players.to_json %>;
 	players = players.map(function(p){ var player = {}; player.player = p; player.team = p.team; return player;});
