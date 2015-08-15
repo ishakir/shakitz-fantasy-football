@@ -69,7 +69,7 @@ class NflPlayerTest < ActiveSupport::TestCase
 
   test "can't create NflPlayer with a string that's the empty string" do
     assert_raise ActiveRecord::RecordInvalid do
-        NflPlayer.create!(name: '', nfl_player_type: NflPlayerType.find(1), nfl_team: NflTeam.find(1))
+      NflPlayer.create!(name: '', nfl_player_type: NflPlayerType.find(1), nfl_team: NflTeam.find(1))
     end
   end
 
@@ -139,7 +139,7 @@ class NflPlayerTest < ActiveSupport::TestCase
     nfl_player = NflPlayer.find(1)
     assert_equal 1, nfl_player.player_for_current_game_week.game_week.number
   end
-  
+
   test 'can get all players without a team for the current gameweek' do
     total_count = NflPlayer.all.size
     assert_not_equal NflPlayer.players_with_no_team_for_current_game_week.size, total_count

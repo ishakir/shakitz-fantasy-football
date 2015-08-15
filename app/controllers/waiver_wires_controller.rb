@@ -1,6 +1,6 @@
 class WaiverWiresController < ApplicationController
   include PlayerNameModule
-  
+
   USER_KEY = :user
   PLAYER_IN_KEY = :player_in
   PLAYER_OUT_KEY = :player_out
@@ -15,10 +15,10 @@ class WaiverWiresController < ApplicationController
       remove_existing_requests_for_user
       add_requests_to_database
     else
-      WaiverWire.where({user_id: session[:user_id]}).destroy_all
+      WaiverWire.where(user_id: session[:user_id]).destroy_all
     end
   end
-  
+
   def show
     @users = User.all
     @game_week = WithGameWeek.current_game_week
@@ -28,19 +28,19 @@ class WaiverWiresController < ApplicationController
 
   def get_existing_requests_for_user(user)
     requests = []
-    WaiverWire.where({user_id: user}).each do |w|
+    WaiverWire.where(user_id: user).each do |w|
       request = {
         incoming_priority: w.incoming_priority,
         outgoing: NflPlayer.find(w.player_out_id).name,
         outgoingId: w.player_out_id,
         incoming: NflPlayer.find(w.player_in_id).name,
-        incomingId: w.player_in_id,
+        incomingId: w.player_in_id
       }
       requests.push(request)
     end
     requests
   end
-  
+
   def process_requested_waiver_wire_request_additions(requests)
     requests.each do |p|
       validate_waiver_wire_params(p)
@@ -60,11 +60,11 @@ class WaiverWiresController < ApplicationController
       )
     end
   end
-  
+
   def remove_existing_requests_for_user
-    @priority_array.each do |k, v|
-      if WaiverWire.where({ user_id: v[USER_KEY].to_i, incoming_priority: v[PRIORITY_KEY].to_i}).present?
-        WaiverWire.destroy_all(:user_id => v[USER_KEY].to_i)
+    @priority_array.each do |_k, v|
+      if WaiverWire.where(user_id: v[USER_KEY].to_i, incoming_priority: v[PRIORITY_KEY].to_i).present?
+        WaiverWire.destroy_all(user_id: v[USER_KEY].to_i)
       end
     end
   end
