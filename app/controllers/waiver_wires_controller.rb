@@ -55,7 +55,7 @@ class WaiverWiresController < ApplicationController
         user: User.find(v[USER_KEY].to_i),
         player_out: NflPlayer.find(v[PLAYER_OUT_KEY].to_i),
         player_in: NflPlayer.find(v[PLAYER_IN_KEY].to_i),
-        game_week: GameWeek.find(v[GAME_WEEK_KEY].to_i),
+        game_week: GameWeek.find_by_number(v[GAME_WEEK_KEY].to_i),
         incoming_priority: v[PRIORITY_KEY].to_i
       )
     end
