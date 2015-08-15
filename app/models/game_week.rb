@@ -53,7 +53,7 @@ class GameWeek < ActiveRecord::Base
 
   def active?
     # Number of days from season start to start of this gameweek
-    game_week_start_days_offset_from_season_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK 
+    game_week_start_days_offset_from_season_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
     # Number of days from season start to the end of this gameweek
     game_week_end_days_offset_from_season_start = number * WithGameWeek::DAYS_IN_A_WEEK
 
@@ -66,7 +66,8 @@ class GameWeek < ActiveRecord::Base
   def lock_time
     # Number of days from season start to start of this gameweek
     game_week_start_days_offset_from_season_start = (number - 1) * WithGameWeek::DAYS_IN_A_WEEK
-    WithGameWeek.start_of_first_gameweek + (game_week_start_days_offset_from_season_start + days_before_lock).days + game_start.hours
+    total_day_offset = game_week_start_days_offset_from_season_start + days_before_lock
+    WithGameWeek.start_of_first_gameweek + total_day_offset.days + game_start.hours
   end
 
   def locked?
