@@ -30,7 +30,7 @@ else
 		host = "localhost"
 		port = Settings.port
 		year = WithGameWeek.start_of_first_gameweek.year
-		king = Settings.season_type
+		kind = Settings.season_type
 
 		times.each do |time|
 			scheduler.at time, "stats update for week #{week_number}" do

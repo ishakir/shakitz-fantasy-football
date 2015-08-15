@@ -9,7 +9,7 @@ else
 		generation_time = WithGameWeek.start_of_first_gameweek + 2.days
 		ShakitzScheduler.new.at generation_time, "fixtures generation" do
 			Rails.logger.info "Running fixtures generation"
-			FixtureGenerator.new.generate
+			FixturesGenerator.new.generate
 		end
 	else
 		Rails.logger.info "Already found fixtures, so not generating"
