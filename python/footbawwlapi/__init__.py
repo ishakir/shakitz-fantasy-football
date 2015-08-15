@@ -6,9 +6,6 @@ from footbawwlapi.game import Game
 def create_all_players(host, port, year, kind, game_weeks):
   games = []
   for week in game_weeks:
-    print year
-    print week
-    print kind
     for game in nflgame.games(year, week = week, kind = kind):
       games.append(Game(game, week))
 
