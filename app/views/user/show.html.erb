@@ -9,7 +9,7 @@
 	var players = <%= raw @nfl_players %>;
 	var stats = <%= raw @stats %>;
 	var userName = "<%= @user.name %>";
-	var isLoggedIn = <%= session[:user_id] %>
+	var isLoggedIn = "<%= session[:user_id] %>" || false;
 	<% Rails.logger.info "Found @nfl_players" %>
 	<% if session[:user_id] == @user.id %>
 		<% Rails.logger.info "User_id #{@user.id} is same as session id #{session[:user_id]}" %>

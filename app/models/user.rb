@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
   include WithGameWeek
+  include PlayerNameModule
 
   attr_accessor :password
   before_save :encrypt_password

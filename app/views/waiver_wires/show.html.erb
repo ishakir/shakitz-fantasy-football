@@ -1,0 +1,65 @@
+<%= javascript_include_tag "waiver_wire" %>
+<script>
+	<% if !session[:user_id].nil? %>
+	var user = <%= session[:user_id] %>;
+	<% end %>
+	var existingRequests = <%= raw @waiver_requests.to_json %> || [];
+	var gameWeek = <%= raw @game_week.to_json %>;
+	var players = <%= raw @nfl_players.to_json %>;
+	players = players.map(function(p){ var player = {}; player.player = p; player.team = p.team; return player;});
+</script>
+<div class="container fluid">
+	<div class="row clearfix">
+		<div class="col-md-12 ">
+			<div class="page-header">
+				<h2>
+					Shakitz Footbawwl Waiver Wire
+				</h2>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<% if !session[:user_id].nil? %>
+					<div class="row">
+						<div class="col-md-4" style="margin-top:1em;">
+							<span>Player Offered:&nbsp;</span>
+							<select id="my-player" class="selectpicker my-player">
+							 <%= return_player_name_for_active_game_week_team(session[:user_id]).each do |u| %>
+							 	<option id="nfl_p_id-<%= u[0] %>" data-subtext="<%= u[2] %>"><%= u[1] %></option>
+							 <% end %>
+							 </select>
+						</div>
+						<div class="col-md-4">
+							<div id="bloodhound">
+		      					<input id="incoming-player-text" class="typeahead small-typeahead center" type="text" placeholder="Find Player">
+							 </div>
+		 				</div>
+		 				<div class="col-md-4">
+	 						<button id="addBtn" class="btn btn-default">Add to waiver</button>
+	 					</div>
+					</div>
+			<% end %>
+		</div>
+		<div class="col-md-12">
+			<div class="row">
+				<table class="table" id="waiver-list">
+				   <thead>
+				      <tr>
+				         <th>Priority</th>
+				         <th>Outgoing Player</th>
+				         <th>Incoming Player</th>
+				         <th>&nbsp;</th>
+				      </tr>
+				   </thead>
+				   <tbody>
+				   </tbody>
+				</table>
+				<!-- Table code taken from http://www.avtex.com/blog/2015/01/27/drag-and-drop-sorting-of-table-rows-in-priority-order/ -->
+			</div>
+			<div class="row">
+			  <div class="footer">
+			    <button id="submitWaiver" class="btn btn-default">Submit Waiver List</button>
+			  </div>
+		    </div>	
+		</div>
+	</div>
+</div>
