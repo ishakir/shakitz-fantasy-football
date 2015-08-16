@@ -34,7 +34,7 @@ def create_all_players(host, port, year, kind, game_weeks):
     counter += 1
 
 def update_player_stats(host, port, player):
-  print "Updating stats for player {} ({})".fornat(player.name, player.playerid)
+  print "Updating stats for player {} ({})".format(player.name, player.playerid)
   api_facade = player.get_api_facade(host, port)
   response = api_facade.update_stats()
   if response.status_code != 200:
