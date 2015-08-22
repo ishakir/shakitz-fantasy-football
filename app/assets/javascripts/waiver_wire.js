@@ -10,19 +10,24 @@ var waiverList = [];
 
 //code taken from http://www.avtex.com/blog/2015/01/27/drag-and-drop-sorting-of-table-rows-in-priority-order/ 
 $(document).ready(function() { //Helper function to keep table row from collapsing when being sorted   
+	selector();
+	updateTable(existingRequests);
+	checkWhetherToLockWaiver();
+	assignListeners();
+   	
+}.bind(this));
+
+function checkWhetherToLockWaiver() {
+	if(gameWeekTimeObj.locked){
+		$("#submitWaiver").prop("disabled", true);
+		$("#submitWaiver").html("Waivers locked until next gamweek");
+	}
+}
+
+function assignListeners() {
 	$('#incoming-player-text').on("typeahead:selected typeahead:autocompleted", function(e,datum) { 
 		incomingId = datum.id; 
 	});
-	selector();
-	updateTable(existingRequests);
-   var fixHelperModified = function(e, tr) {
-      var $originals = tr.children();
-      var $helper = tr.clone();
-      $helper.children().each(function(index) {
-         $(this).width($originals.eq(index).width());
-      });
-      return $helper;
-   };
    $("#waiver-list tbody").sortable({
       helper: fixHelperModified,
       stop: function(event, ui) {
@@ -78,8 +83,16 @@ $(document).ready(function() { //Helper function to keep table row from collapsi
    	waiverList.push(request);
    	updateTable([obj]);
    });
-}.bind(this));
-//Renumber table rows 
+};
+
+function fixHelperModified(e, tr) {
+  var $originals = tr.children();
+  var $helper = tr.clone();
+  $helper.children().each(function(index) {
+     $(this).width($originals.eq(index).width());
+  });
+  return $helper;
+};
 function renumber_table(tableID) {
    $(tableID + " tr").each(function(i, tr) {
    	  updateWaiverRequest(tr);

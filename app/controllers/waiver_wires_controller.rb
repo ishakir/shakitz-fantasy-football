@@ -22,6 +22,7 @@ class WaiverWiresController < ApplicationController
   def show
     @users = User.all
     @game_week = WithGameWeek.current_game_week
+    @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).locked? }
     @waiver_requests = get_existing_requests_for_user(session[:user_id])
     @nfl_players = NflPlayer.players_with_no_team_for_current_game_week
   end

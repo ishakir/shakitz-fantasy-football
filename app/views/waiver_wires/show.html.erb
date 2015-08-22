@@ -3,6 +3,7 @@
 	<% if !session[:user_id].nil? %>
 	var user = <%= session[:user_id] %>;
 	<% end %>
+	var gameWeekTimeObj = <%= raw @game_week_time_obj.to_json.gsub("</", "<\\/")  %>;
 	var existingRequests = <%= raw @waiver_requests.to_json %> || [];
 	var gameWeek = <%= raw @game_week.to_json %>;
 	var players = <%= raw @nfl_players.to_json %>;
