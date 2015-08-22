@@ -6,9 +6,12 @@ class UserController < ApplicationController
   PASSWORD_KEY = :password
   PASSWORD_CONFIRMATION_KEY = :password_confirmation
   GAME_WEEK_KEY = :game_week
+  ACTIVE_USER_ID_KEY = :active_user
 
   PLAYING_PLAYER_ID_KEY = :playing_player_id
   BENCHED_PLAYER_ID_KEY = :benched_player_id
+
+  MIN_TEAM_NAME_LENGTH = 3
 
   def create
     validate_password(params[:user])
@@ -70,6 +73,17 @@ class UserController < ApplicationController
     redirect_to action: :home
   end
 
+  def change_team_name
+    validate_all_parameters([USER_ID_KEY, ACTIVE_USER_ID_KEY, TEAM_NAME_KEY], params)
+    validate_team_name(params[TEAM_NAME_KEY])
+    if params[USER_ID_KEY] != params[ACTIVE_USER_ID_KEY]
+      render status: :unprocessable_entity, json: { response: 'Unauthorized' }
+      return
+    end
+    result = User.where(id: params[USER_ID_KEY].to_i).update_all(team_name: params[TEAM_NAME_KEY])
+    render json: { response: 'Success', updated_rows: result }
+  end
+
   def api_all
     user_summaries = User.all.map do |user|
       UserSummary.new(user)
@@ -108,6 +122,10 @@ class UserController < ApplicationController
     validate_all_parameters([USER_ID_KEY, GAME_WEEK_KEY, PLAYING_PLAYER_ID_KEY, BENCHED_PLAYER_ID_KEY], params)
     validate_id_length(params[PLAYING_PLAYER_ID_KEY], params[BENCHED_PLAYER_ID_KEY])
     validate_game_week_active(params[GAME_WEEK_KEY].to_i)
+  end
+
+  def validate_team_name(team_name)
+    fail ArgumentError, '#params[TEAM_NAME_KEY] is toos short' if team_name.length < MIN_TEAM_NAME_LENGTH
   end
 
   def put_game_week_data_in_assigns(params)
