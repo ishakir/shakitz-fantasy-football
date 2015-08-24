@@ -217,7 +217,7 @@ var setEditTeamNameHandlers = function(){
 	    })
 	    .done(function( msg ) {
 	      if(msg.response === 'Success'){
-	        $('.team-name').html($('#team_name').val());
+	        $('.team-name').html(userName + ' - ' + $('#team_name').val());
 	      } else {
 	      	//TODO proper error message
 	        console.error(msg);
