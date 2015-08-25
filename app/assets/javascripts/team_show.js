@@ -202,6 +202,36 @@ var setAddPlayerButtonHandler = function(){
 	}
 };
 
+var setEditTeamNameHandlers = function(){
+  $('.edit_button').click(function(){
+  	if(!isLoggedIn){
+  		return;
+  	}
+	$("#changeTeamNameModal").modal('show');
+	$("#change_team_name").submit(function(){
+		initSpinner();
+	    $.ajax({
+	      type: "POST",
+	      url: "/user/change_team_name",
+	      data: $(this).serialize()
+	    })
+	    .done(function( msg ) {
+	      if(msg.response === 'Success'){
+	        $('.team-name').html(userName + ' - ' + $('#team_name').val());
+	      } else {
+	      	//TODO proper error message
+	        console.error(msg);
+	      }
+	      $("#changeTeamNameModal").modal('hide');
+	    })
+	    .always(function(){
+    	  spinner.stop();
+	    });
+      return false;
+	});
+  });
+};
+
 var setSaveButtonHandler = function(){
   $("#swapButton").click(function(){
   	initSpinner();
@@ -308,5 +338,6 @@ $(function(){
 	  }
 	  setAddPlayerButtonHandler();
 	  setGameWeekToggleButtonHandlers();
+	  setEditTeamNameHandlers();
 	  selector();
 });

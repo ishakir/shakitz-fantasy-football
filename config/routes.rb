@@ -20,7 +20,7 @@ Footbawwl::Application.routes.draw do
   get "user/:user_id" => "user#show"
   post "user/declare_roster" => "user#declare_roster"
   get "user/:user_id/game_week/:game_week" => "user#show"
-  
+  post "user/change_team_name" => "user#change_team_name", :as => "change_team_name"
   get "user/:user_id/myteam" => "user#show_my_team_info"
 
   # Game Day View

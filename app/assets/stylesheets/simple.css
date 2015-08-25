@@ -40,3 +40,10 @@ header {
   color: #b94a48;
 }
 
+.edit_button {
+  height:16px;
+  margin-top: 2.2em;
+  margin-left: 4em;
+  cursor: pointer;
+}
+

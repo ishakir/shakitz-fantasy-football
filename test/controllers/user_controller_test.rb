@@ -355,6 +355,38 @@ class UserControllerTest < ActionController::TestCase
     assert !player_after.playing
   end
 
+  test 'change team name works for current user' do
+    active_user = 1
+    post :change_team_name,
+         user_id: 1,
+         active_user: 1,
+         team_name: 'Test'
+
+    assert_equal 'Test', User.find(1).team_name
+  end
+
+  test 'change team name fails if team name is less than three characters' do
+    post :change_team_name,
+         user_id: 1,
+         active_user: 1,
+         team_name: ''
+    assert_response :unprocessable_entity
+  end
+
+  test 'change team name fails if user is not active user' do
+    post :change_team_name,
+         user_id: 1,
+         active_user: 2,
+         team_name: 'Test'
+    assert_response :unprocessable_entity
+  end
+
+  test 'change team name fails if missing paramaters' do
+    post :change_team_name,
+         user_id: 1
+    assert_response :unprocessable_entity
+  end
+
   test 'api users returns an array of the correct size' do
     get :api_all
     users = JSON.parse(response.body)
