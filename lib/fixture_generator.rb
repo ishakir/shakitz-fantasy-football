@@ -2,14 +2,6 @@
 class FixturesGenerator
   NUMBER_OF_GAMEWEEKS = Settings.number_of_gameweeks
 
-  def self.generate
-    if Fixtures.all.empty?
-      FixturesGenerator.new.generate()
-    else
-      raise 'Attempted to generate fixtures, but fixtures already existed so aborting'
-    end
-  end
-
   def generate
     users = User.all.map(&:id)
     schedule = generate_fixture_schedule(users)
