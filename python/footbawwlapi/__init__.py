@@ -39,14 +39,21 @@ def update_player_stats(host, port, player):
   response = api_facade.update_stats()
   if response.status_code != 200:
     print "ERROR: Got response code "+str(response.status_code)+" from player "+player.name+" in team "+player.team
-    response_json = json.loads(response.text)
-    print response_json
-    for message in response_json['messages']:
-      print message['message']
     if response.status_code == 404:
       print "Creating player "+player.name
       api_facade.create()
       update_player_stats(host, port, player)
+    else:
+      try:
+        response_json = json.loads(response.text)
+      except ValueError as e:
+        print "Unable to parse response as json!"
+        print response.text
+        raise
+      print response_json
+      for message in response_json['messages']:
+        print message['message']
+    
 
 
 def update_stats(host, port, year, kind, game_week):
