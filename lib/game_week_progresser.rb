@@ -1,5 +1,4 @@
 class GameWeekProgresser
-
   def progress_game_week(previous_game_week_number)
     User.all.each do |user|
       progress_game_week_team(user, previous_game_week_number)
