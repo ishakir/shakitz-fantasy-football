@@ -121,7 +121,7 @@ var validatePositionCount = function(oldNode, newNode){
 };
 
 var isTeamValid = function(qbCnt, rbCnt, dCnt, teCnt, kCnt, wrCnt){
-  if(qbCnt !== 2 || rbCnt !== 2 || dCnt !== 1){
+  if(qbCnt !== 2 || rbCnt !== 2 || dCnt !== 1 || teCnt < 1 || kCnt < 1 || wrCnt < 1){
   	return false;
   }
   if(teCnt + kCnt + wrCnt > 5){
