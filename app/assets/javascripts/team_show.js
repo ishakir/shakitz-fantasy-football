@@ -64,26 +64,66 @@ var validatePositionCount = function(oldNode, newNode){
          break;
     }
   });
-  if(qbCnt == 2 && rbCnt == 2 && dCnt == 1 && (validRestOfTeam(teCnt, kCnt, wrCnt))){
-    var oldPos, newPos;
-    $(oldNode).find(".player-pos").each(function(i, value){
-      oldPos = value.innerHTML.trim();
-    });
-    $(newNode).find(".player-pos").each(function(i, value){
-      newPos = value.innerHTML.trim();  
-    });
-    if(oldPos == newPos){
-      return true;
-    }
-    if((oldPos == "WR" || oldPos == "TE" || oldPos == "K") &&
-    	(newPos == "WR" || newPos == "TE" || newPos == "K")){
-    	return true;
+  var oldPos, newPos;
+  $(oldNode).find(".player-pos").each(function(i, value){
+    oldPos = value.innerHTML.trim();
+  });
+  $(newNode).find(".player-pos").each(function(i, value){
+    newPos = value.innerHTML.trim();  
+  });
+  if(oldPos !== newPos){
+  	switch(oldPos){
+  	  case "QB": 
+        qbCnt--;
+        break;
+      case "WR": 
+        wrCnt--;
+        break;
+      case "RB":
+        rbCnt--;
+        break;
+      case "TE":
+        teCnt--;
+        break;
+      case "K":
+        kCnt--;
+        break;
+      case "D":
+        dCnt--;
+        break;
+      default:
+         break;
   	}
-  } 
-  return false;
+  	switch(newPos){
+      case "QB": 
+        qbCnt++;
+        break;
+      case "WR": 
+        wrCnt++;
+        break;
+      case "RB":
+        rbCnt++;
+        break;
+      case "TE":
+        teCnt++;
+        break;
+      case "K":
+        kCnt++;
+        break;
+      case "D":
+        dCnt++;
+        break;
+      default:
+         break;
+    }
+  }
+  return isTeamValid(qbCnt, rbCnt, dCnt, teCnt, kCnt, wrCnt);
 };
 
-var validRestOfTeam = function(teCnt, kCnt, wrCnt){
+var isTeamValid = function(qbCnt, rbCnt, dCnt, teCnt, kCnt, wrCnt){
+  if(qbCnt !== 2 || rbCnt !== 2 || dCnt !== 1){
+  	return false;
+  }
   if(teCnt + kCnt + wrCnt > 5){
     return false;
   } else if(wrCnt > 3){
