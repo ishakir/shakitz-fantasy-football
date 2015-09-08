@@ -33,6 +33,12 @@ var swapElements = function(node, id){
 };
 
 var validatePositionCount = function(oldNode, newNode){
+  var oldTableId = $(oldNode).closest('table').attr('id');
+  var newTableId = $(newNode).closest('table').attr('id');
+  if(oldTableId === 'activeTable' && newTableId === 'activeTable'){
+  	//both are from active roster, return true
+  	return true;
+  }
   var qbCnt = 0, wrCnt = 0, rbCnt = 0, teCnt = 0, kCnt = 0, dCnt = 0;  
   $(".active-roster .player-pos").each(function(i, value){
     switch(value.innerHTML.trim()){

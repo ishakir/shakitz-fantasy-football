@@ -8,7 +8,7 @@ end.any?
 
 if have_already_progressed
   fail "We appear to have already progressed from #{current_gw} to #{next_gw}, aborting"
-elsif current_gw < 1 or next_gw > Settings.number_of_gameweeks
+elsif current_gw < 1 || next_gw > Settings.number_of_gameweeks
   fail "We can't progress from game week #{current_gw} to #{next_gw} as one of them doesn't exist, aborting"
 else
   GameWeekProgresser.new.progress_game_week(current_gw)
