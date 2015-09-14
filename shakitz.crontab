@@ -7,8 +7,8 @@
 #
 # In the long term it would be nice to write a script that runs in the rails context and generates this.
 
-10,25,40,55 18-23 * * 1,4,7 /home/rails/bin/rails runner -e production scripts/update_stats.rb >> /home/rails/log/update_stats.rb 2>&1
-5,20,35,50 0-6 * * 1,2,5 /home/rails/bin/rails runner -e production scripts/update_stats.rb >> /home/rails/log/update_stats.rb 2>&1
-0 0 * * 5 /home/rails/bin/rails runner -e production scripts/progress_game_week.rb >> /home/rails/log/progress_game_week.rb 2>&1
-0 0 9 9 * /home/rails/bin/rails runner -e production scripts/upload_initial_players.rb >> /home/rails/log/upload_initial_players.rb 2>&1
-0 0 10 9 * home/rails/bin/rails runner -e production scripts/schedule_fixtures.rb >> /home/rails/log/schedule_fixture.rb 2>&1
+10,25,40,55 18-23 * * 1,4,7 /home/rails/bin/rails runner -e production /home/rails/scripts/update_stats.rb >> /home/rails/log/update_stats.rb 2>&1
+5,20,35,50 0-6 * * 1,2,5 /home/rails/bin/rails runner -e production /home/rails/scripts/update_stats.rb >> /home/rails/log/update_stats.rb 2>&1
+0 0 * * 5 /home/rails/bin/rails runner -e production /home/rails/scripts/progress_game_week.rb >> /home/rails/log/progress_game_week.rb 2>&1
+0 0 9 9 * /home/rails/bin/rails runner -e production /home/rails/scripts/upload_initial_players.rb >> /home/rails/log/upload_initial_players.rb 2>&1
+0 0 10 9 * home/rails/bin/rails runner -e production /home/rails/scripts/generate_fixtures.rb >> /home/rails/log/generate_fixtures.rb 2>&1
