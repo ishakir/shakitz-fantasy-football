@@ -21,7 +21,6 @@ module Footbawwl
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
       config.i18n.enforce_available_locales = true
       config.i18n.default_locale = :en
-      config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
       config.autoload_paths += %W(#{config.root}/lib/modules)
       config.time_zone = "EST"
 
