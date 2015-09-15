@@ -52,12 +52,15 @@ function assignListeners() {
       dataType: 'json',
       contentType: 'application/json'
     })
-    .done(function( msg ) {
-      spinner.stop();
+    .done(function(msg){
+      var successMessage = 'Waiver wire successfully submitted. You will be able to modify it until Wednesday 10pm (UK)';
+	  $('#waiverModal').modal('show');
+	  $('#waiverMessage').text(successMessage);
     })
     .fail(function(msg){
 	  	if(msg.status != 200){
-	  		console.error(msg);
+  		  $('#waiverModal').modal('show');
+		  $('#waiverMessage').text('Error submitting waiver request: ' + msg);
 	  	}
     });
    });

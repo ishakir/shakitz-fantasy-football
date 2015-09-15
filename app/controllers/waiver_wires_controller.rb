@@ -17,6 +17,7 @@ class WaiverWiresController < ApplicationController
     else
       WaiverWire.where(user_id: session[:user_id]).destroy_all
     end
+    render json: { response: 'Success' }
   end
 
   def show
