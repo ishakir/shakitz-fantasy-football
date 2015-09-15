@@ -1,0 +1,15 @@
+# It is important to note that this crontrab is fairly specific:
+#
+# * It's made for a machine running in the EST timezone
+# * It assums that the root of the rails project is sitting at /home/rails
+# * It assumes that you have a /home/rails/log directory
+# * The dates for upload_initial_players and schedule_fixtures are specific to the 2015 season and will need updating season by season
+#
+# In the long term it would be nice to write a script that runs in the rails context and generates this.
+
+10,25,40,55 12-23 * * 1,4,7 /home/rails/bin/rails runner -e production /home/rails/scripts/update_stats.rb >> /home/rails/log/update_stats.rb 2>&1
+5,20,35,50 0-2 * * 1,2,5 /home/rails/bin/rails runner -e production /home/rails/scripts/update_stats.rb >> /home/rails/log/update_stats.log 2>&1
+0 18 * * 4 /home/rails/bin/rails runner -e production /home/rails/scripts/progress_game_week.rb >> /home/rails/log/progress_game_week.log 2>&1
+0 18 * * 3 /home/rails/bin/rails runner -e production /home/rails/scripts/resolve_waiver_wire.rb >> /home/rails/log/resolve_waiver_wire.log 2>&1
+0 0 10 9 * /home/rails/bin/rails runner -e production /home/rails/scripts/upload_initial_players.rb >> /home/rails/log/upload_initial_players.log 2>&1
+0 0 11 9 * home/rails/bin/rails runner -e production /home/rails/scripts/generate_fixtures.rb >> /home/rails/log/generate_fixtures.rb 2>&1
