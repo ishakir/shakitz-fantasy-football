@@ -41,7 +41,7 @@ class WaiverWiresController < ApplicationController
       requests.push(outgoing: NflPlayer.find(w.player_out_id).name,
                     incoming: NflPlayer.find(w.player_in_id).name,
                     user: User.find(w.user_id).name,
-                    game_week: GameWeek.find_unique_with(w.game_week_id).number)
+                    game_week: GameWeek.find(w.game_week_id).number)
     end
     requests
   end
