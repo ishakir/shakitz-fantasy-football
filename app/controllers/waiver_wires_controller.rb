@@ -31,7 +31,13 @@ class WaiverWiresController < ApplicationController
 
   def grab_waiver_history
     requests = []
-    WaiverWire.where('game_week_id <= ?', GameWeek.find_unique_with(@game_week)).each do |w|
+    if @game_week_time_obj[:locked]
+      sql = 'game_week_id <= ?'
+    else
+      sql = 'game_week_id < ?'
+    end
+
+    WaiverWire.where(sql, GameWeek.find_unique_with(@game_week)).each do |w|
       requests.push(outgoing: NflPlayer.find(w.player_out_id).name,
                     incoming: NflPlayer.find(w.player_in_id).name,
                     user: User.find(w.user_id).name,
@@ -42,7 +48,8 @@ class WaiverWiresController < ApplicationController
 
   def grab_existing_requests_for_user(user)
     requests = []
-    WaiverWire.where(user_id: user, game_week_id: GameWeek.find_unique_with(@game_week+1)).each do |w|
+    next_game_week = WithGameWeek.current_game_week + 1
+    WaiverWire.where(user_id: user, game_week_id: GameWeek.find_unique_with(next_game_week)).each do |w|
       requests.push(priority: w.incoming_priority,
                     outgoing: NflPlayer.find(w.player_out_id).name,
                     outgoingId: w.player_out_id,
