@@ -24,21 +24,30 @@ class WaiverWiresController < ApplicationController
     @users = User.all
     @game_week = WithGameWeek.current_game_week
     @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).locked? }
-    @waiver_requests = get_existing_requests_for_user(session[:user_id])
+    @waiver_requests = grab_existing_requests_for_user(session[:user_id])
+    @waiver_history = grab_waiver_history
     @nfl_players = NflPlayer.players_with_no_team_for_current_game_week
   end
 
-  def get_existing_requests_for_user(user)
+  def grab_waiver_history
+    requests = []
+    WaiverWire.where('game_week_id < ?', GameWeek.find_unique_with(@game_week).id).each do |w|
+      requests.push(outgoing: NflPlayer.find(w.player_out_id).name,
+                    incoming: NflPlayer.find(w.player_in_id).name,
+                    user: User.find(w.user_id).name,
+                    game_week: GameWeek.find_unique_with(w.game_week_id).number)
+    end
+    requests
+  end
+
+  def grab_existing_requests_for_user(user)
     requests = []
     WaiverWire.where(user_id: user).each do |w|
-      request = {
-        priority: w.incoming_priority,
-        outgoing: NflPlayer.find(w.player_out_id).name,
-        outgoingId: w.player_out_id,
-        incoming: NflPlayer.find(w.player_in_id).name,
-        incomingId: w.player_in_id
-      }
-      requests.push(request)
+      requests.push(priority: w.incoming_priority,
+                    outgoing: NflPlayer.find(w.player_out_id).name,
+                    outgoingId: w.player_out_id,
+                    incoming: NflPlayer.find(w.player_in_id).name,
+                    incomingId: w.player_in_id)
     end
     requests
   end
