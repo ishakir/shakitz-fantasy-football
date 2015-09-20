@@ -27,10 +27,10 @@ class TransferRequestController < ApplicationController
   end
 
   def status
-    @has_actions = does_user_have_actions_to_complete(TransferRequest.where(status: :pending))
-    @pending_transfers = TransferRequest.where(status: :pending)
-    @completed_transfers = TransferRequest.where.not(status: :pending)
-  end
+    @has_actions = does_user_have_actions_to_complete(TransferRequest.where(status: TransferRequest::STATUS_PENDING))
+    @pending_transfers = TransferRequest.where(status: TransferRequest::STATUS_PENDING)
+    @completed_transfers = TransferRequest.where.not(status: TransferRequest::STATUS_PENDING)
+   end
 
   def resolve
     validate_all_parameters([ACTION_KEY, ID_KEY], params[TRANSFER_REQUEST_ID_KEY])
@@ -50,7 +50,8 @@ class TransferRequestController < ApplicationController
       offering_user: User.find(transfer_request_params[OFFERING_USER_ID_KEY]),
       target_user: User.find(transfer_request_params[TARGET_USER_ID_KEY]),
       offered_player: NflPlayer.find(transfer_request_params[OFFERED_PLAYER_ID_KEY]),
-      target_player: NflPlayer.find(transfer_request_params[TARGET_PLAYER_ID_KEY])
+      target_player: NflPlayer.find(transfer_request_params[TARGET_PLAYER_ID_KEY]),
+      status: TransferRequest::STATUS_PENDING
     )
   end
 
@@ -71,7 +72,7 @@ class TransferRequestController < ApplicationController
     transfer_request = TransferRequest.find(transfer_request_id)
 
     handle_swap(transfer_request) if action_type == ACTION_ACCEPT
-    transfer_request.rejected! if action_type == ACTION_REJECT
+    transfer_request.update!(status: TransferRequest::STATUS_REJECTED) if action_type == ACTION_REJECT
     transfer_request.destroy! if action_type == ACTION_CANCEL
   end
 
@@ -92,7 +93,7 @@ class TransferRequestController < ApplicationController
     targeted_game_week_team_player.save!
 
     # Change status
-    transfer_request.accepted!
+    transfer_request.update!(status: TransferRequest::STATUS_ACCEPTED)
   end
 
   def does_user_have_actions_to_complete(pending_transfers)

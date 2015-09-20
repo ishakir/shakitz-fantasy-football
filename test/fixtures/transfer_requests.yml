@@ -14,7 +14,6 @@ two:
   target_user_id: 4
   offered_player_id: 2
   target_player_id: 4
-  status: 0
 
 three:
   id: 3
@@ -22,7 +21,7 @@ three:
   target_user_id: 2
   offered_player_id: 2
   target_player_id: 10
-  status: 0 # pending
+  status: 'pending'
 
 four:
   id: 4
@@ -30,7 +29,7 @@ four:
   target_user_id: 2
   offered_player_id: 8
   target_player_id: 15
-  status: 1 # accepted
+  status: 'accepted'
 
 five:
   id: 5
@@ -38,4 +37,4 @@ five:
   target_user_id: 5
   offered_player_id: 15
   target_player_id: 25
-  status: 2 # rejected
+  status: 'rejected'

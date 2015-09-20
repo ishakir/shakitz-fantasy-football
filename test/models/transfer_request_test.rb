@@ -22,58 +22,6 @@ class TransferRequestTest < ActiveSupport::TestCase
     assert_respond_to transfer_request, :target_player
   end
 
-  test 'transfer request responds to pending' do
-    transfer_request = TransferRequest.find(1)
-    assert_respond_to transfer_request, :pending?
-  end
-
-  test 'transfer request responds to accepted' do
-    transfer_request = TransferRequest.find(1)
-    assert_respond_to transfer_request, :accepted?
-  end
-
-  test 'transfer request responds to rejected' do
-    transfer_request = TransferRequest.find(1)
-    assert_respond_to transfer_request, :rejected?
-  end
-
-  test 'default status is pending' do
-    transfer_request = TransferRequest.find(1)
-    assert transfer_request.pending?
-  end
-
-  test 'a transfer request can have accepted status' do
-    transfer_request = TransferRequest.find(4)
-    assert transfer_request.accepted?
-  end
-
-  test 'a transfer request can have rejected status' do
-    transfer_request = TransferRequest.find(5)
-    assert transfer_request.rejected?
-  end
-
-  test 'can change status' do
-    transfer_request = TransferRequest.find(1)
-    transfer_request.accepted!
-    assert transfer_request.accepted?
-  end
-
-  test 'status change is persisted' do
-    transfer_request = TransferRequest.find(1)
-    transfer_request.accepted!
-    transfer_request.save!
-
-    same_transfer_request = TransferRequest.find(1)
-    assert same_transfer_request.accepted?
-  end
-
-  test 'cant change status to something random' do
-    transfer_request = TransferRequest.find(1)
-    assert_raise ArgumentError do
-      transfer_request.status = 3
-    end
-  end
-
   test 'transfer request gives the correct offering_user' do
     assert_equal 1, TransferRequest.find(1).offering_user.id
   end

@@ -6,7 +6,7 @@ class CreateTransferRequests < ActiveRecord::Migration
       t.references :target_user, index: true
       t.references :offered_player, index: true
       t.references :target_player, index: true
-      t.integer :status, default: 0, null: false
+      t.string :status, default: "pending"
       
       t.timestamps
     end

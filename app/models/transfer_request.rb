@@ -1,5 +1,13 @@
 # -*- encoding : utf-8 -*-
 class TransferRequest < ActiveRecord::Base
+  
+  STATUS_PENDING = :pending   
+  STATUS_ACCEPTED = :accepted    
+  STATUS_REJECTED = :rejected    
+   
+  ALLOWED_TYPES = [STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED]   
+
+
   belongs_to :offering_user,
              foreign_key: :offering_user_id,
              class_name: 'User'
@@ -31,7 +39,8 @@ class TransferRequest < ActiveRecord::Base
   validate :users_are_different
   validate :players_are_different
 
-  enum status: [:pending, :accepted, :rejected]
+  validates :status,
+            inclusion: { in: ALLOWED_TYPES, allow_nil: false }
 
   def users_are_different
     return unless offering_user.present? && target_user.present?
