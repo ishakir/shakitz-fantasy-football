@@ -98,7 +98,7 @@ class WaiverWiresControllerTest < ActionController::TestCase
     assert_equal original_count + 1, WaiverWire.all.length, 'Incorrect number of waiver wire requests were processed'
   end
 
-  test 'adding a request when an existing one for that users priority updates the entry in the database with the latest request' do
+  test 'adding a request with same users priority overwrites the entry in the database with the latest request' do
     params = @valid_params
     post :add, request: [@valid_params]
     assert_response :success

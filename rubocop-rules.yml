@@ -15,11 +15,11 @@ ClassAndModuleChildren:
 # Offense count: 1
 # Configuration parameters: CountComments.
 ClassLength:
-  Max: 426
+  Max: 460
   
 # That blessed ABC metric
 Metrics/AbcSize:
-  Max: 16
+  Max: 17
 
 # Need to do this at some point
 # Offense count: 36

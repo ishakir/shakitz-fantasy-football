@@ -137,4 +137,19 @@ class WaiverWireTest < ActiveSupport::TestCase
     assert u2.user.team_for_current_game_week.match_players
       .exclude? MatchPlayer.find_by nfl_player_id: u2['player_in_id'].to_i
   end
+
+  test 'adding two waiver requests, one that does not get executed gets removed afterwards' do
+    WaiverWire.create!(@params[0])
+    old_length = WaiverWire.count
+
+    params = @params[0]
+    params[:player_in] = NflPlayer.find(5)
+    params[:incoming_priority] = 2
+    WaiverWire.create!(params)
+    assert_equal old_length + 1, WaiverWire.count
+
+    WaiverWire.resolve
+    refute WaiverWire.exists?(user: params[:user], incoming_priority: params[:incoming_priority],
+                              player_in: params[:player_in]), 'Un-executed waiver is still present'
+  end
 end

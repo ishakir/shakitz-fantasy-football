@@ -356,7 +356,6 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test 'change team name works for current user' do
-    active_user = 1
     post :change_team_name,
          user_id: 1,
          active_user: 1,

@@ -83,7 +83,8 @@ class WaiverWiresController < ApplicationController
 
   def remove_existing_requests_for_user
     @priority_array.each do |_k, v|
-      if WaiverWire.where(user_id: v[USER_KEY].to_i, game_week_id: v[GAME_WEEK_KEY].to_i, incoming_priority: v[PRIORITY_KEY].to_i).present?
+      if WaiverWire.where(user_id: v[USER_KEY].to_i, game_week_id: v[GAME_WEEK_KEY].to_i,
+                          incoming_priority: v[PRIORITY_KEY].to_i).present?
         WaiverWire.destroy_all(user_id: v[USER_KEY].to_i, game_week_id: v[GAME_WEEK_KEY].to_i)
       end
     end
