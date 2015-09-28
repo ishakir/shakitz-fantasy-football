@@ -38,8 +38,12 @@ class WaiverWiresController < ApplicationController
     end
 
     WaiverWire.where(sql, GameWeek.find_unique_with(@game_week)).each do |w|
-      requests.push(outgoing: NflPlayer.find(w.player_out_id).name,
-                    incoming: NflPlayer.find(w.player_in_id).name,
+      outgoing_player = NflPlayer.find(w.player_out_id)
+      incoming_player = NflPlayer.find(w.player_in_id)
+      requests.push(outgoing: outgoing_player.name,
+                    outgoing_team: NflTeam.find(outgoing_player.nfl_team_id).name,
+                    incoming: incoming_player.name,
+                    incoming_team: NflTeam.find(incoming_player.nfl_team_id).name,
                     user: User.find(w.user_id).name,
                     game_week: GameWeek.find(w.game_week_id).number)
     end

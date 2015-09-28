@@ -92,8 +92,8 @@
 						<tr>
 						<% end %>
 							<td><%= waiver[:user] %></td>
-							<td><%= waiver[:outgoing] %></td>
-							<td><%= waiver[:incoming] %></td>
+							<td><%= waiver[:outgoing] %> - <small><%= waiver[:outgoing_team] %></small></td>
+							<td><%= waiver[:incoming] %> - <small><%= waiver[:incoming_team] %></small></td>
 							<td><%= waiver[:game_week]  %></td>
 						</tr>
 					<% end %>
