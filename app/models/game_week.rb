@@ -70,8 +70,16 @@ class GameWeek < ActiveRecord::Base
     WithGameWeek.start_of_first_gameweek + total_day_offset.days + game_start.hours
   end
 
+  def waiver_lock_time
+    lock_time - 1.day
+  end
+
   def locked?
     Time.zone.now > lock_time
+  end
+
+  def waiver_locked?
+    Time.zone.now > waiver_lock_time
   end
 
   private

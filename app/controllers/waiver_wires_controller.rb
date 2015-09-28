@@ -23,7 +23,7 @@ class WaiverWiresController < ApplicationController
   def show
     @users = User.all
     @game_week = WithGameWeek.current_game_week
-    @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).locked? }
+    @game_week_time_obj = { locked: GameWeek.find_unique_with(@game_week).waiver_locked? }
     @waiver_requests = grab_existing_requests_for_user(session[:user_id])
     @waiver_history = grab_waiver_history
     @nfl_players = NflPlayer.players_with_no_team_for_current_game_week
@@ -31,7 +31,7 @@ class WaiverWiresController < ApplicationController
 
   def grab_waiver_history
     requests = []
-    if @game_week_time_obj[:locked]
+    if @game_week_time_obj[:waiver_locked]
       sql = 'game_week_id <= ?'
     else
       sql = 'game_week_id < ?'
@@ -48,15 +48,17 @@ class WaiverWiresController < ApplicationController
 
   def grab_existing_requests_for_user(user)
     requests = []
-    next_game_week = WithGameWeek.current_game_week + 1
-    WaiverWire.where(user_id: user, game_week_id: GameWeek.find_unique_with(next_game_week)).each do |w|
-      requests.push(priority: w.incoming_priority,
-                    outgoing: NflPlayer.find(w.player_out_id).name,
-                    outgoingId: w.player_out_id,
-                    incoming: NflPlayer.find(w.player_in_id).name,
-                    incomingId: w.player_in_id)
+    unless @game_week_time_obj[:waiver_locked]
+      next_game_week = WithGameWeek.current_game_week
+      WaiverWire.where(user_id: user, game_week_id: GameWeek.find_unique_with(next_game_week)).each do |w|
+        requests.push(priority: w.incoming_priority,
+                      outgoing: NflPlayer.find(w.player_out_id).name,
+                      outgoingId: w.player_out_id,
+                      incoming: NflPlayer.find(w.player_in_id).name,
+                      incomingId: w.player_in_id)
+      end
     end
-    requests
+    requests.sort_by { |r| r[:priority] }
   end
 
   def process_requested_waiver_wire_request_additions(requests)
@@ -81,8 +83,8 @@ class WaiverWiresController < ApplicationController
 
   def remove_existing_requests_for_user
     @priority_array.each do |_k, v|
-      if WaiverWire.where(user_id: v[USER_KEY].to_i, incoming_priority: v[PRIORITY_KEY].to_i).present?
-        WaiverWire.destroy_all(user_id: v[USER_KEY].to_i)
+      if WaiverWire.where(user_id: v[USER_KEY].to_i, game_week_id: v[GAME_WEEK_KEY].to_i, incoming_priority: v[PRIORITY_KEY].to_i).present?
+        WaiverWire.destroy_all(user_id: v[USER_KEY].to_i, game_week_id: v[GAME_WEEK_KEY].to_i)
       end
     end
   end

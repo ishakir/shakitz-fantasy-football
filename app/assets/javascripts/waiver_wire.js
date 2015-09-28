@@ -11,16 +11,31 @@ var waiverList = [];
 //code taken from http://www.avtex.com/blog/2015/01/27/drag-and-drop-sorting-of-table-rows-in-priority-order/ 
 $(document).ready(function() { //Helper function to keep table row from collapsing when being sorted   
 	selector();
+	if(existingRequests){
+		convertExistingWaivers();
+	}
 	updateTable(existingRequests);
 	checkWhetherToLockWaiver();
-	assignListeners();
-   	
+	assignListeners();	
 }.bind(this));
 
 function checkWhetherToLockWaiver() {
 	if(gameWeekTimeObj.locked){
 		$("#submitWaiver").prop("disabled", true);
 		$("#submitWaiver").html("Waivers locked until next gamweek");
+	}
+}
+
+function convertExistingWaivers() {
+	for(var i = 0; i < existingRequests.length; i++){
+		var request = existingRequests[i];
+		waiverList.push({
+			user: user,
+	   		player_in: request.incomingId,
+	   		player_out: request.outgoingId,
+	   		game_week: gameWeek,
+	   		incoming_priority: request.priority
+   		}); 
 	}
 }
 
@@ -39,7 +54,9 @@ function assignListeners() {
       tableID = '#' + $(this).closest('table').attr('id');
       r = confirm('Delete this item?');
       if (r) {
-         $(this).closest('tr').remove();
+      	 var row = $(this).closest('tr');
+      	 removeWaiver(row);
+         row.remove();
          renumber_table(tableID);
       }
    });
@@ -98,9 +115,9 @@ function fixHelperModified(e, tr) {
 };
 function renumber_table(tableID) {
    $(tableID + " tr").each(function(i, tr) {
-   	  updateWaiverRequest(tr);
       count = $(this).parent().children().index($(this)) + 1;
       $(this).find('.priority').html(count);
+ 	  updateWaiverRequest(tr);
    });
 };
 
@@ -124,9 +141,21 @@ function updateWaiverRequest(tr) {
 			for(var i = 0; i < waiverList.length; i++){
 				var waiver = waiverList[i];
 				if(waiver.player_in == inId && waiver.player_out == outId){
-					waiverList[i].incoming_priority = $($(td).find('.priority')[0]).html();
+					waiverList[i].incoming_priority = parseInt($($(td).find('.priority')[0]).html(), 10);
 				}
 			}
 		}
 	});
+}
+
+function removeWaiver(row) {
+	var priority = parseInt($($(row).find('.priority')[0]).html(), 10);
+	var outgoingId = parseInt($(row).find('.outgoing')[0].id.split('-')[1], 10);
+	var incomingId = parseInt($(row).find('.incoming')[0].id.split('-')[1], 10);
+	for(var i = waiverList.length-1; i >= 0; i--){
+		if(incomingId === waiverList[i].player_in && outgoingId === waiverList[i].player_out &&
+			priority === waiverList[i].incoming_priority){
+				waiverList.splice(i, 1);
+		}
+	}
 }
