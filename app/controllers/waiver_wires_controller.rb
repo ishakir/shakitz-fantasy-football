@@ -31,7 +31,7 @@ class WaiverWiresController < ApplicationController
 
   def grab_waiver_history
     requests = []
-    if @game_week_time_obj[:waiver_locked]
+    if @game_week_time_obj[:locked]
       sql = 'game_week_id <= ?'
     else
       sql = 'game_week_id < ?'
@@ -48,7 +48,7 @@ class WaiverWiresController < ApplicationController
 
   def grab_existing_requests_for_user(user)
     requests = []
-    unless @game_week_time_obj[:waiver_locked]
+    unless @game_week_time_obj[:locked]
       next_game_week = WithGameWeek.current_game_week
       WaiverWire.where(user_id: user, game_week_id: GameWeek.find_unique_with(next_game_week)).each do |w|
         requests.push(priority: w.incoming_priority,
