@@ -1,4 +1,4 @@
-today = Date.today
+today = Time.zone.today
 
 # If it's tuesday upload for the week before
 current_game_week = WithGameWeek.current_game_week

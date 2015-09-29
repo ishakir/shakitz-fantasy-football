@@ -30,7 +30,7 @@ class TransferRequestController < ApplicationController
     @has_actions = does_user_have_actions_to_complete(TransferRequest.where(status: TransferRequest::STATUS_PENDING))
     @pending_transfers = TransferRequest.where(status: TransferRequest::STATUS_PENDING)
     @completed_transfers = TransferRequest.where.not(status: TransferRequest::STATUS_PENDING)
-   end
+  end
 
   def resolve
     validate_all_parameters([ACTION_KEY, ID_KEY], params[TRANSFER_REQUEST_ID_KEY])
