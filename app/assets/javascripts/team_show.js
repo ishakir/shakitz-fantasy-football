@@ -343,7 +343,7 @@ var promptTransferRequest = function(name, id){
 	if(!isLoggedIn){
 		return;
 	}
-	var playerId = id.substring('Row')[0];
+	var playerId = id.split('Row')[0];
 	$("#requestModal").modal('show');
 	initSelectPicker();
 	$('.selectpicker.opponent-player').selectpicker('val', name);
