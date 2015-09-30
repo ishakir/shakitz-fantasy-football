@@ -12,7 +12,8 @@ class WaiverWire < ActiveRecord::Base
 
   def self.waiver_list
     waiver_list = []
-    WaiverWire.all.find_each do |waiver| # loop over all waiver wire requests
+    gw = GameWeek.find_by number: WithGameWeek.current_game_week
+    WaiverWire.where(game_week_id: gw.id).find_each do |waiver| # loop over all waiver wire requests
       # find matching user id, and get points
       GameWeek.get_all_points_for_gameweek(WithGameWeek.current_game_week).each do |order|
         next if order[:user_id] != waiver.user_id
