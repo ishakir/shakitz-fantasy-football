@@ -331,22 +331,24 @@ var populateStats = function(){
 var setTableTransferRequestHandlers = function(){
   $(".benched tr").click(function() {
     $node = $(this);
-    promptTransferRequest($($node[0]).find("span")[0].innerHTML, $node[0].id);
+    promptTransferRequest($($node[0]).find("span")[0].innerHTML);
   });
   $(".active-roster tr").click(function() {
     $node = $(this);
-    promptTransferRequest($($node[0]).find("span")[0].innerHTML, $node[0].id);
+    promptTransferRequest($($node[0]).find("span")[0].innerHTML);
   });
 };
 
-var promptTransferRequest = function(name, id){	
+var promptTransferRequest = function(name){	
 	if(!isLoggedIn){
 		return;
 	}
-	var playerId = id.substring('Row')[0];
 	$("#requestModal").modal('show');
 	initSelectPicker();
 	$('.selectpicker.opponent-player').selectpicker('val', name);
+	
+	//Get the player id from the option dropdown box after setting it
+	var playerId = $('.selectpicker.opponent-player').find(":selected").attr('id').split('-')[1];
 	setDefaultPlayerId(playerId);
 };
 
