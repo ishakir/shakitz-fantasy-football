@@ -72,3 +72,5 @@ gem 'holidays'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+gem 'timecop'
