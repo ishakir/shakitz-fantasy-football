@@ -136,6 +136,9 @@ class UserController < ApplicationController
 
   def update_game_week_team_roster(params)
     game_week_team = User.find(params[USER_ID_KEY]).team_for_game_week(params[GAME_WEEK_KEY])
+    if game_week_team.game_week.locked?
+      fail ArgumentError, 'Teams are now locked for this week'
+    end
     update_players_status(params[PLAYING_PLAYER_ID_KEY], game_week_team, true)
     update_players_status(params[BENCHED_PLAYER_ID_KEY], game_week_team, false)
   end
