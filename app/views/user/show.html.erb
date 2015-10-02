@@ -71,6 +71,7 @@
 			<% Rails.logger.info "Succesfully rendered game_week_team points" %>
 		</div>
 	</div>
+	<% player_type_order = ["QB", "RB", "WR", "TE", "K", "D"] %>
 	<div id="rosters">
 		<div id="left-Box">
 			<h4>Active Roster</h3>
@@ -79,7 +80,7 @@
 					<th>Player</th>
 					<th>Points</th>
 				</tr>
-				<% @user.team_for_game_week(@game_week).match_players_playing.each do |match_player| %>
+				<% @user.team_for_game_week(@game_week).match_players_playing.sort_by{ |player| player_type_order.find_index(player.nfl_player.nfl_player_type.position_type)}.each do |match_player| %>
 				<tr id="<%= match_player.id %>Row">
 					<td id="<%= match_player.id %>">
 						<span class="player-name"><%= match_player.nfl_player.name %></span><br />
@@ -110,7 +111,7 @@
 					<th>Player</th>
 					<th>Points</th>
 				</tr>
-				<% @user.team_for_game_week(@game_week).match_players_benched.each do |match_player| %>
+				<% @user.team_for_game_week(@game_week).match_players_benched.sort_by{ |player| player_type_order.find_index(player.nfl_player.nfl_player_type.position_type)}.each do |match_player| %>
 				<tr id="<%= match_player.id %>Row">
 					<td id="<%= match_player.id %>">
 						<span class="player-name"><%= match_player.nfl_player.name %></span><br />
