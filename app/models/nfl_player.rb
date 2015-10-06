@@ -26,6 +26,10 @@ class NflPlayer < ActiveRecord::Base
     for_current_game_week(match_players)
   end
 
+  def player_for_current_unlocked_game_week
+    for_current_unlocked_game_week(match_players)
+  end
+
   def self.players_with_no_team_for_current_game_week
     players_with_team = []
     players_with_no_team = []

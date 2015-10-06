@@ -19,6 +19,10 @@ module WithGameWeek
     for_game_week(list, WithGameWeek.current_game_week)
   end
 
+  def for_current_unlocked_game_week(list)
+    for_game_week(list, WithGameWeek.current_unlocked_game_week)
+  end
+
   def up_to_game_week(list, game_week_number)
     WithGameWeek.validate_game_week_number(game_week_number)
     list.select do |item|
@@ -63,6 +67,15 @@ module WithGameWeek
 
     return 1 if game_week < 1
     game_week
+  end
+
+  def self.current_unlocked_game_week
+    current_game_week = GameWeek.find_unique_with(current_game_week())
+    if current_game_week.locked?
+      current_game_week.number + 1
+    else
+      current_game_week.number
+    end
   end
 
   private

@@ -261,3 +261,33 @@ thirty_eight_defence:
   nfl_player_id: 78
   game_week_id: 7
   points_conceded: 38
+
+transfer_request_offered_week_one:
+  id: 132
+  nfl_player_id: 200
+  game_week_id: 1
+
+transfer_request_offered_week_two:
+  id: 133
+  nfl_player_id: 200
+  game_week_id: 2
+
+transfer_request_offered_week_three:
+  id: 134
+  nfl_player_id: 200
+  game_week_id: 3
+
+transfer_request_target_week_one:
+  id: 135
+  nfl_player_id: 201
+  game_week_id: 1
+
+transfer_request_target_week_two:
+  id: 136
+  nfl_player_id: 201
+  game_week_id: 2
+
+transfer_request_target_week_three:
+  id: 137
+  nfl_player_id: 201
+  game_week_id: 3
