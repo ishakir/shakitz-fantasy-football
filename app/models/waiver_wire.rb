@@ -11,18 +11,13 @@ class WaiverWire < ActiveRecord::Base
   validates :incoming_priority, presence: true
 
   def self.waiver_list
-    waiver_list = []
+    # We want to get last week's gameweek to get the correct user order
+    last_gw = GameWeek.find_by number: (WithGameWeek.current_game_week - 1)
     gw = GameWeek.find_by number: WithGameWeek.current_game_week
-    WaiverWire.where(game_week: gw.id).find_each do |waiver| # loop over all waiver wire requests
-      # find matching user id, and get points
-      GameWeek.get_all_points_for_gameweek(WithGameWeek.current_game_week).each do |order|
-        next if order[:user_id] != waiver.user_id
-        tmp_waiver = waiver.attributes # copy attributes
-        tmp_waiver['points'] = order[:points].to_s # append points to new object
-        waiver_list.push(tmp_waiver)
-      end
-    end
-    waiver_list
+
+    waiver_list = WaiverWire.where(game_week: gw.id).to_a.map(&:serializable_hash) # Get all waivers for this week
+    gw_points = GameWeek.get_all_points_for_gameweek(last_gw)
+    waiver_list.sort_by! { |w| [w[:incoming_priority], gw_points[w[:user_id]]] }
   end
 
   def self.resolve
@@ -35,7 +30,7 @@ class WaiverWire < ActiveRecord::Base
       # Don't re-add players, or execute if incoming player doesn't exist.
       if transferred_list.include?(w['player_in_id'].to_i) ||
          transferred_list.include?(w['player_out_id'].to_i) || player_in_match.nil?
-        WaiverWire.find(w['id']).destroy # Waiver won't get executed, lets destroy it
+        WaiverWire.find(w['id'].to_i).destroy! # Waiver won't get executed, lets destroy it
         next
       end
       Rails.logger.info "Swapping out #{player_out_match.id} for #{player_in_match.id}"

@@ -60,16 +60,6 @@ class GameWeekTest < ActiveSupport::TestCase
     assert all_points
   end
 
-  test 'points for all users for a specific gameweek contains a user key' do
-    all_points = GameWeek.get_all_points_for_gameweek(1)
-    assert all_points.at(0).key?(:user_id)
-  end
-
-  test 'points for all users for a specific gameweek contains a points key' do
-    all_points = GameWeek.get_all_points_for_gameweek(1)
-    assert all_points.at(0).key?(:points)
-  end
-
   test 'points for all users for a specific gameweek returns items for all users' do
     all_points = GameWeek.get_all_points_for_gameweek(1)
     assert_equal all_points.size, User.all.size
