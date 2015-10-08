@@ -42,7 +42,7 @@ class GameWeek < ActiveRecord::Base
     # Get all user points for a specific gameweek and return
     points = {}
     User.all.find_each do |v|
-      points[v.id] = GameWeekTeam.find_unique_with(v.id, game_week).points
+      points[v.id] = v.team_for_game_week(game_week.number).points
     end
     points
   end
