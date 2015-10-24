@@ -28,7 +28,7 @@ var CommentBoard = React.createClass({
         {this.state.comments.map(function(commentData){
           return <Comment key={commentData.id} data={commentData} />;
         })}
-        <CommentSubmit url={this.props.post}/>
+        <CommentSubmit url={this.props.post} user_id={this.props.user_id}/>
       </div>
     );
   }

@@ -41,6 +41,6 @@ class CommentsController < ApplicationController
   end
 
   def convert_time(js_time)
-    Time.at(js_time / 1000.0)
+    Time.at(js_time.to_i / 1000.0)
   end
 end
