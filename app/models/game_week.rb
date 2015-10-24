@@ -39,9 +39,12 @@ class GameWeek < ActiveRecord::Base
   validate :number_is_in_correct_range
 
   def self.get_all_points_for_gameweek(game_week)
-    User.all.map do|v|
-      { user_id: v.id, points: GameWeekTeam.find_unique_with(v.id, game_week).points }
+    # Get all user points for a specific gameweek and return
+    points = {}
+    User.all.find_each do |v|
+      points[v.id] = v.team_for_game_week(game_week.number).points
     end
+    points
   end
 
   def number_is_in_correct_range

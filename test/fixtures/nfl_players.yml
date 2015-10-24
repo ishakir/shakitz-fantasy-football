@@ -175,3 +175,15 @@ test_defence:
   name: Defence
   nfl_team_id: 1
   nfl_player_type_id: 6
+
+transfer_request_test_offered_player:
+  id: 200
+  name: Transfer Request Offered Player
+  nfl_team_id: 2
+  nfl_player_type_id: 1
+
+transfer_request_test_target_player:
+  id: 201
+  name: Transfer Request Target Player
+  nfl_team_id: 2
+  nfl_player_type_id: 1

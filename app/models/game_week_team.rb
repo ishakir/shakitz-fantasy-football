@@ -16,7 +16,7 @@ class GameWeekTeam < ActiveRecord::Base
   end
 
   def self.no_record_found_message(user_id, game_week)
-    "Didn't find a record with user_id '#{user_id}' and game week '#{game_week}'"
+    "Didn't find a record with user_id '#{user_id}' and game week number '#{game_week.number}'"
   end
 
   def self.multiple_records_found_message(no_found, user_id, game_week)

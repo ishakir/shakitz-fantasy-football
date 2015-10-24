@@ -121,6 +121,19 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_equal 3, game_week_team_player_two.game_week_team.user.id
   end
 
+  test 'users are swapped for next weeks gwtps if week is already locked' do
+    Timecop.travel(Time.zone.now + 11.days) do
+      post :resolve, transfer_request: { id: 2, action_type: 'accept' }
+      assert_redirected_to controller: :transfer_request, action: :status
+
+      game_week_team_player_one = GameWeekTeamPlayer.find(58)
+      game_week_team_player_two = GameWeekTeamPlayer.find(59)
+
+      assert_equal 4, game_week_team_player_one.game_week_team.user.id
+      assert_equal 3, game_week_team_player_two.game_week_team.user.id
+    end
+  end
+
   test 'transfer status is changed to accepted if accepted' do
     post :resolve, transfer_request: { id: 2, action_type: 'accept' }
     assert_redirected_to controller: :transfer_request, action: :status

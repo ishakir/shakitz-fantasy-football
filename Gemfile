@@ -11,11 +11,13 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'jquery-rails'
-# gem 'chart-js-rails'
 gem 'underscore-rails'
 
 # React it up
 gem 'react-rails', '~> 1.4.0'
+
+# ChartJS Rails gem but it doesn't seem to work at the moment. Using CDN instead
+# gem 'chart-js-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

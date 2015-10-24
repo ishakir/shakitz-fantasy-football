@@ -77,8 +77,8 @@ class TransferRequestController < ApplicationController
   end
 
   def handle_swap(transfer_request)
-    offered_game_week_team = transfer_request.offering_user.team_for_current_game_week
-    targeted_game_week_team = transfer_request.target_user.team_for_current_game_week
+    offered_game_week_team = transfer_request.offering_user.team_for_current_unlocked_game_week
+    targeted_game_week_team = transfer_request.target_user.team_for_current_unlocked_game_week
 
     # Get the game_week_team_players
     offered_game_week_team_player = find_game_week_team_player(offered_game_week_team, transfer_request.offered_player)
@@ -105,7 +105,7 @@ class TransferRequestController < ApplicationController
   end
 
   def find_game_week_team_player(game_week_team, player)
-    match_player = player.player_for_current_game_week
+    match_player = player.player_for_current_unlocked_game_week
     GameWeekTeamPlayer.find_unique_with(game_week_team, match_player)
   end
 end
