@@ -1,17 +1,20 @@
 <%= javascript_include_tag "stats" %>
+<script>
+  points = <%= raw @points.to_json %>
+</script>
 <div class="row">
   <div class="col-md-3 column">
     <ul class="nav nav-pills nav-stacked">
-      <!-- <li role="presentation" class="active">
+      <li role="presentation" class="active">
         <a href="#pointsGraph" data-toggle="tab">Points Graph</a>
       </li>
-      <li role="presentation">
+      <!-- <li role="presentation">
         <a href="#cumulativePointsGraph" data-toggle="tab">Cumulative Points Graph</a>
       </li>
       <li role="presentation">
         <a href="#positionGraph" data-toggle="tab">Position Graph</a>
       </li> -->
-      <li role="presentation" class="active">
+      <li role="presentation">
         <a href="#benchOfTheWeek" data-toggle="tab">Bench of the Week</a>
       </li>
     </ul>
@@ -19,7 +22,7 @@
   <div class="col-md-9 column">
     <div class="row">
       <div class="tab-content">
-        <!--<div id="pointsGraph" class="tab-pane active">
+        <div id="pointsGraph" class="tab-pane active">
           <div class="col-md-10 column">
             <canvas id="pointsChart" width="650" height="600"></canvas>
           </div>
@@ -27,7 +30,7 @@
             <div style="padding-top: 200px;" id="pointsChartLegend"></div>
           </div>
         </div>
-        <div id="cumulativePointsGraph" class="tab-pane">
+        <!--<div id="cumulativePointsGraph" class="tab-pane">
           <div class="col-md-10 column">
             <canvas id="cumulativePointsChart" width="650" height="600"></canvas>
           </div>
@@ -42,7 +45,7 @@
           <div>
             <div style="padding-top: 200px;" id="positionChartLegend"></div>
           </div>-->
-          <div id="benchOfTheWeek" class="tab-pane active">
+          <div id="benchOfTheWeek" class="tab-pane">
             <div class="row">
               <div class="col-md-12 column">
                 <table class="table sortable" id="benchTable">
@@ -50,27 +53,53 @@
                     <tr>
                       <th>User</th>
                       <th>Team Name</th>
-                      <th>Total Bench Points</th>
-                      <th>Bench of the Week wins</th>
+                      <th data-defaultsort="desc">Total Bench Points</th>
+                      <th data-firstsort="desc">Bench of the Week wins</th>
                     </tr>
                   </thead>
                   <tbody>
+                    <% @rows.each_with_index do |hash, index| %>
+                      <% if index == 0 %>
+                        <tr class="success">
+                      <% elsif index == @rows.size - 1 %>
+                        <tr class="danger">
+                      <% else %>
+                        <tr>
+                      <% end %>
+                        <td><%= hash["user"].name %></td>
+                        <td><%= hash["user"].team_name %></td>
+                        <td><%= hash[:total_bench_points] %></td>
+                        <td><%= hash[:wins] %></td>
+                      </tr>
+                    <% end %>
                   </tbody>
                 </table>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 column">
-                <p id="noBenchesBetterThanTeam" align="center" class="no-interesting-bench">At no point has a user's benched exceeded the number of points scored by the active team.</p>
-                <p id="betterWellDone" align="center" class="no-interesting-bench">Well Done!</p>
-                <ul id="betterList" class="list-group">
-                </ul>
+                <% if @bench_greater_than_team.empty? %>
+                  <p id="noBenchesBetterThanTeam" align="center" class="no-interesting-bench">At no point has a user's benched exceeded the number of points scored by the active team.</p>
+                  <p id="betterWellDone" align="center" class="no-interesting-bench">Well Done!</p>
+                <% else %>
+                  <ul id="betterList" class="list-group">
+                    <% @bench_greater_than_team.each do |game_week_team| %>
+                      <li class="list-group-item">In week <%= game_week_team.game_week.number %> <%= game_week_team.user.name %>'s bench scored <%= game_week_team.bench_points %> points, beating their active team (<%= game_week_team.points %> points)</li>
+                    <% end %>
+                  </ul>
+                <% end %>
               </div>
               <div class="col-md-6 column">
-                <p id="noHundredPointBench" align="center" class="no-interesting-bench">At no point has a user's benched exceeded 100 points.</p>
-                <p id="noHundredWellDone" align="center" class="no-interesting-bench">Well Done!</p>
-                <ul id="noHundredList" class="list-group">
-                </ul>
+                <% if @bench_greater_than_one_hundred.empty? %>
+                  <p id="noHundredPointBench" align="center" class="no-interesting-bench">At no point has a user's benched exceeded 100 points.</p>
+                  <p id="noHundredWellDone" align="center" class="no-interesting-bench">Well Done!</p>
+                <% else %>
+                  <ul id="noHundredList" class="list-group">
+                    <% @bench_greater_than_one_hundred.each do |game_week_team| %>
+                      <li class="list-group-item">In week <%= game_week_team.game_week.number %> <%= game_week_team.user.name %>'s bench scored <%= game_week_team.bench_points %> points!</li>
+                    <% end %>
+                  </ul>
+                <% end %>
               </div>
             </div>
           </div>
