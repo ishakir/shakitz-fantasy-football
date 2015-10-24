@@ -20,7 +20,6 @@
 //= require bootstrap-sortable
 //= require bootstrap-select
 //= require underscore
-//= require Chart
 
 var initPlayerSuggestions = function(data, callback) {
   // constructs the suggestion engine
