@@ -20,6 +20,9 @@
 //= require bootstrap-sortable
 //= require bootstrap-select
 //= require underscore
+//= require react
+//= require react_ujs
+//= require components
 
 var initPlayerSuggestions = function(data, callback) {
   // constructs the suggestion engine

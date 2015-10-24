@@ -34,6 +34,9 @@
 					<li class="<% active?("/stats") %>">
 						<a href="/stats">Stats</a>
 					</li>
+					<li class="<% active?("/comments") %>">
+						<a href="/comments">Smack Board</a>
+					</li>
 				</ul>
 				<% if session[:user_id] %>
 				<ul class="nav navbar-nav navbar-right">
@@ -49,4 +52,3 @@
 				<% end %>
 			</div>
 		</nav>
-
