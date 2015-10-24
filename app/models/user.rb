@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
            presence: { on: create }
 
   has_many :game_week_teams, dependent: :destroy
+  has_many :comments
 
   def self.authenticate(name, password)
     user = find_by_name(name)

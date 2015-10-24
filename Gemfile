@@ -14,6 +14,9 @@ gem 'jquery-rails'
 # gem 'chart-js-rails'
 gem 'underscore-rails'
 
+# React it up
+gem 'react-rails', '~> 1.4.0'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 

@@ -275,7 +275,7 @@ class UserControllerTest < ActionController::TestCase
   end
 
   test "can't update roster if game week is locked" do
-    Timecop.travel(Time.now + 4.days) do 
+    Timecop.travel(Time.now + 4.days) do
       post :declare_roster,
            user_id: 1,
            game_week: 1,

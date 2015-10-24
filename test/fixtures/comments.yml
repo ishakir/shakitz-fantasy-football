@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  text: "What you want son"
+  timestamp: "2015-10-24 12:40:29 -0500"
+
+two:
+  user_id: 1
+  text: "Answer me!"
+  timestamp: "2015-10-24 12:41:29 -0500"
+
+three:
+  user_id: 2
+  text: "Why is Bortles so damn good!!!"
+  timestamp: "2015-10-24 12:43:32 -0500"
+
+two:
+  user_id: 1
+  text: ":("
+  timestamp: "2015-10-24 14:41:51 -0500"
