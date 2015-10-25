@@ -30,14 +30,14 @@ h5:after {
 
 #comment-board{
   width: 700px;
-  height: auto;
+  height: 700px;
   overflow-y: scroll;
   background-color: #FFF;
   margin: 0 auto;
 }
 
 .comment-container {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 }
 
 .input {
@@ -52,7 +52,6 @@ h5:after {
 .comment{
   margin-top: 0.5em;
   margin-left: 3.5em;
-  line-height: 0.65em;
 }
 
 .image-rank {
@@ -72,5 +71,4 @@ h5:after {
   color: #C9C9C9;
   font-size: 90%;
   float: right;
-  margin-right: 20em;
 }

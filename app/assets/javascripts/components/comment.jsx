@@ -1,7 +1,8 @@
 var Comment = React.createClass({
   convertTime: function(){
-    return new Date(this.props.data.timestamp);
+    return new Date(this.props.data.timestamp).toUTCString();
   },
+  
   render: function() {
     var time = '' + this.convertTime();
     return (
