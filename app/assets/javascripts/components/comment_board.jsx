@@ -15,6 +15,7 @@ var CommentBoard = React.createClass({
         });
       }
     }.bind(this));
+  	this.scrollToBottom();
   },
 
   scrollToBottom: function() {
@@ -24,7 +25,6 @@ var CommentBoard = React.createClass({
   
   componentDidMount: function() {
     this.loadCommentsFromServer();
-  	this.scrollToBottom();
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   },
 
