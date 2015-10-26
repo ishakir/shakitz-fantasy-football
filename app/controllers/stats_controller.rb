@@ -37,15 +37,17 @@ class StatsController < ApplicationController
 		end
 
 		@points = Hash[
-			User.all.each_with_index.map do |user, index| 
+			User.all.map do |user| 
 				sum = 0
 				[
 					user.name, 
 					(1 .. current_game_week).map do |game_week|
 						user.team_for_game_week(game_week).points 
 					end.map do |points|
-						# index + 1 is the gameweek number
-						sum += (points / (index + 1))
+						sum += points
+					end.each_with_index.map do |cumulative_points, index|
+						# index + 1 is the number of gameweeks up till now
+						cumulative_points / (index + 1)
 					end
 				]
 			end
