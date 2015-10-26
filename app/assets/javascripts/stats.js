@@ -29,7 +29,7 @@ $(document).ready(function() {
 	var labels = Object.keys(points)
 
 	var data = {
-		labels: [""].concat(points[labels[0]].map(function(value, index) { return "Week " + (index + 1)})),
+		labels: points[labels[0]].map(function(value, index) { return "Week " + (index + 1)}),
 		datasets: labels.map(function(username, index) {
 			return {
 				label: username,
@@ -37,7 +37,7 @@ $(document).ready(function() {
 	        	strokeColor : strokeColors[index],
 	        	pointColor : pointColor,
 	        	pointStrokeColor : pointStrokeColor,
-	        	data: [0].concat(points[username])
+	        	data: points[username]
 			};
 		}),
 	};
