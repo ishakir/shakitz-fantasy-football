@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829181111) do
+ActiveRecord::Schema.define(version: 20151024142918) do
+
+  create_table "comments", force: true do |t|
+    t.integer  "user_id"
+    t.text     "text"
+    t.datetime "timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
 
   create_table "fixtures", force: true do |t|
     t.integer  "home_team_id"
@@ -93,17 +103,6 @@ ActiveRecord::Schema.define(version: 20150829181111) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "transfer_request_players", force: true do |t|
-    t.integer  "nfl_player_id"
-    t.integer  "transfer_request_id"
-    t.boolean  "offered"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "transfer_request_players", ["nfl_player_id"], name: "index_transfer_request_players_on_nfl_player_id"
-  add_index "transfer_request_players", ["transfer_request_id"], name: "index_transfer_request_players_on_transfer_request_id"
 
   create_table "transfer_requests", force: true do |t|
     t.integer  "offering_user_id"

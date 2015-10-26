@@ -1,7 +1,8 @@
-<%= javascript_include_tag "stats" %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <script>
-  points = <%= raw @points.to_json %>
+  var points = <%= raw @points.to_json %>
 </script>
+<%= javascript_include_tag "stats" %>
 <div class="row">
   <div class="col-md-3 column">
     <ul class="nav nav-pills nav-stacked">

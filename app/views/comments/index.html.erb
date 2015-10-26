@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="row clearfix ">
+    <h2>Smack it up</h2>
+    <% if session[:user_id] %>
+		<%= react_component('CommentBoard', user_id: session[:user_id], url: get_comments_path, post: post_comments_path, pollInterval: 3000) %>
+  	<% else %>
+  		<p>Please sign in</p>
+	<% end %>
+  </div>
+</div>
