@@ -19,6 +19,8 @@ var strokeColors = [
 	"rgb(0,0,255)",
 	"rgb(0,255,255)",
 	"rgb(255,0,255)",
+	"rgb(102,0,102)",
+	"rgb(0,102,51)",
 ];
 
 var fillColor = "rgba(220,220,220,0)";

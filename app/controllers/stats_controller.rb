@@ -1,17 +1,23 @@
 class StatsController < ApplicationController
 	def show
 		current_game_week = WithGameWeek.current_game_week
+		current_game_week_with_some_stats = WithGameWeek.current_unlocked_game_week - 1
+
 		all_game_week_teams = User.all.map do |user|
 			(1 .. current_game_week).map do |game_week|
 				user.team_for_game_week(game_week)
 			end
 		end
 
-		@bench_greater_than_team = all_game_week_teams.flatten.select do |game_week_team|
+		without_current_week = all_game_week_teams.map do |list|
+			list[0...-1]
+		end
+
+		@bench_greater_than_team = without_current_week.flatten.select do |game_week_team|
 			game_week_team.bench_points > game_week_team.points
 		end
 
-		@bench_greater_than_one_hundred = all_game_week_teams.flatten.select do |game_week_team|
+		@bench_greater_than_one_hundred = without_current_week.flatten.select do |game_week_team|
 			game_week_team.bench_points > 100
 		end
 
@@ -25,7 +31,6 @@ class StatsController < ApplicationController
 
 		(1 ... current_game_week).each do |game_week|
 			user = User.all.map{|user| user.team_for_game_week(game_week)}.max_by{|game_week_team| game_week_team.bench_points}.user
-			puts user
 			rows_hash[user][:wins] = rows_hash[user][:wins] + 1
 		end
 
@@ -41,7 +46,7 @@ class StatsController < ApplicationController
 				sum = 0
 				[
 					user.name, 
-					(1 .. current_game_week).map do |game_week|
+					(1 .. current_game_week_with_some_stats).map do |game_week|
 						user.team_for_game_week(game_week).points 
 					end.map do |points|
 						sum += points
