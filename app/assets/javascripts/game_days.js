@@ -1,6 +1,7 @@
 var ENTER_KEY_CODE = 13;
 
-$(document).ready(function() {
+$(function() {
+  checkForNewSmack();
   selector();
   $("#teamText").hide();
   $("#playingOrBenched").hide();
@@ -8,14 +9,14 @@ $(document).ready(function() {
 
 var selector = function(){
   initPlayerSuggestions(
-    playerData, 
+    playerData,
     function(player) {
       checkPlayerTeamAndUpdate(player.id);
   });
 };
 
 var checkPlayerTeamAndUpdate = function(playerId) {
-  var request_url = "/game_day/" + pageGameWeek + "/which_team"
+  var request_url = "/game_day/" + pageGameWeek + "/which_team";
   $.getJSON(
     request_url,
     { player_id: playerId }
@@ -24,7 +25,7 @@ var checkPlayerTeamAndUpdate = function(playerId) {
     var playingOrBenched = $("#playingOrBenched");
     teamText.show();
     playingOrBenched.removeClass("text-danger text-success");
-    if(response.data == null) {
+    if(response.data === null) {
       playingOrBenched.hide();
       teamText.text("Player is a free agent");
     } else {
@@ -39,4 +40,4 @@ var checkPlayerTeamAndUpdate = function(playerId) {
       playingOrBenched.show();
     }
   });
-}
+};

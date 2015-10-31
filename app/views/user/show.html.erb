@@ -18,6 +18,7 @@
 		<% Rails.logger.info "Didn't find user_id from session" %>
 		var isUser = false;
 	<% end %>
+	var lastComment = <%= raw @last_comment %>;
 </script>
 <div class="container">
 	<div class="row clearfix">

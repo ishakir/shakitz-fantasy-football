@@ -31,4 +31,5 @@ var setOutgoingHandlers = function(){
 
 $(function(){
 	setActionHandlers();
+	checkForNewSmack();
 });

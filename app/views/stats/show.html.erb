@@ -1,6 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <script>
   var points = <%= raw @points.to_json %>
+  var lastComment = <%= raw @last_comment %>;
 </script>
 <%= javascript_include_tag "stats" %>
 <div class="row">

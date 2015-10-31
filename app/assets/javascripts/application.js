@@ -24,6 +24,22 @@
 //= require react_ujs
 //= require components
 
+var checkForNewSmack = function() {
+    var newTimestamp = getLatestTimestamp();
+    if(!newTimestamp){
+      return;
+    }
+
+    var lastTimestamp = new Date(localStorage.getItem('lastComment'));
+    if(!lastTimestamp || lastTimestamp < newTimestamp){
+        $('.smack-badge').html('!');
+    }
+};
+
+var getLatestTimestamp = function() {
+  return (lastComment) ? new Date(lastComment) : null;
+};
+
 var initPlayerSuggestions = function(data, callback) {
   // constructs the suggestion engine
   var playerList = new Bloodhound({

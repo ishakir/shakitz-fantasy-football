@@ -27,6 +27,7 @@ class WaiverWiresController < ApplicationController
     @waiver_requests = grab_existing_requests_for_user(session[:user_id])
     @waiver_history = grab_waiver_history
     @nfl_players = NflPlayer.players_with_no_team_for_current_game_week
+    @last_comment = get_timestamp_of_last_comment
   end
 
   def grab_waiver_history

@@ -27,11 +27,12 @@ var fillColor = "rgba(220,220,220,0)";
 var pointColor = "rgba(0,0,0,0)";
 var pointStrokeColor = "#fff";
 
-$(document).ready(function() {
+$(function() {
+	checkForNewSmack();
 	var labels = Object.keys(points);
 
 	var data = {
-		labels: points[labels[0]].map(function(value, index) { 
+		labels: points[labels[0]].map(function(value, index) {
 			return "Week " + (index + 1);
 		}),
 		datasets: labels.map(function(username, index) {

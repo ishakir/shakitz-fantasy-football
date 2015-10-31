@@ -1,6 +1,6 @@
 var selector = function() {
   initPlayerSuggestions(
-    players, 
+    players,
     function(player) {
       playerToBeAdded = player.id;
   });
@@ -8,15 +8,16 @@ var selector = function() {
 var incomingId = -1;
 var waiverList = [];
 
-//code taken from http://www.avtex.com/blog/2015/01/27/drag-and-drop-sorting-of-table-rows-in-priority-order/ 
-$(document).ready(function() { //Helper function to keep table row from collapsing when being sorted   
-	selector();
+//code taken from http://www.avtex.com/blog/2015/01/27/drag-and-drop-sorting-of-table-rows-in-priority-order/
+$(function() { //Helper function to keep table row from collapsing when being sorted
+  checkForNewSmack();
+  selector();
 	if(existingRequests){
 		convertExistingWaivers();
 	}
 	updateTable(existingRequests);
 	checkWhetherToLockWaiver();
-	assignListeners();	
+	assignListeners();
 }.bind(this));
 
 function checkWhetherToLockWaiver() {
@@ -35,13 +36,13 @@ function convertExistingWaivers() {
 	   		player_out: request.outgoingId,
 	   		game_week: gameWeek,
 	   		incoming_priority: request.priority
-   		}); 
+   		});
 	}
 }
 
 function assignListeners() {
-	$('#incoming-player-text').on("typeahead:selected typeahead:autocompleted", function(e,datum) { 
-		incomingId = datum.id; 
+	$('#incoming-player-text').on("typeahead:selected typeahead:autocompleted", function(e,datum) {
+		incomingId = datum.id;
 	});
    $("#waiver-list tbody").sortable({
       helper: fixHelperModified,
@@ -49,7 +50,7 @@ function assignListeners() {
          renumber_table('#waiver-list');
       }
    }).disableSelection();
-   //Delete button in table rows     
+   //Delete button in table rows
    $('table').on('click', '.btn-delete', function() {
       tableID = '#' + $(this).closest('table').attr('id');
       r = confirm('Delete this item?');
@@ -81,7 +82,7 @@ function assignListeners() {
 	  	}
     });
    });
-   
+
    $('#addBtn').on('click', function(e){
    	var obj = {
    		outgoing: $('#my-player').val(),
@@ -98,7 +99,7 @@ function assignListeners() {
    		player_in: obj.incomingId,
    		player_out: parseInt(obj.outgoingId, 10),
    		game_week: gameWeek,
-   		incoming_priority: obj.priority, 
+   		incoming_priority: obj.priority,
    	};
    	waiverList.push(request);
    	updateTable([obj]);

@@ -42,6 +42,7 @@ class GameDaysController < ApplicationController
     @player_data = return_nfl_player_and_team_data
     @users = User.all.sort_by { |u| -u.team_for_game_week(@page_game_week).points }
     @best_team = find_ten_best_players(@page_game_week)
+    @last_comment = get_timestamp_of_last_comment
   end
 
   def which_team_has_player

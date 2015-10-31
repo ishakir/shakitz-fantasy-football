@@ -8,6 +8,7 @@
 	var gameWeek = <%= raw @game_week.to_json %>;
 	var players = <%= raw @nfl_players.to_json %>;
 	players = players.map(function(p){ var player = {}; player.player = p; player.team = p.team; return player;});
+	var lastComment = <%= raw @last_comment %>;
 </script>
 <div class="container fluid">
 	<div class="row clearfix">

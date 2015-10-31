@@ -29,7 +29,7 @@ var swapElements = function(node, id){
     $("#"+id).removeClass("second-select", 400);
     $("#"+currentlyClicked).removeClass("first-select", 400);
     currentlyClicked = null;
-  }  
+  }
 };
 
 var validatePositionCount = function(oldNode, newNode){
@@ -39,13 +39,13 @@ var validatePositionCount = function(oldNode, newNode){
   	//both are from active roster, return true
   	return true;
   }
-  var qbCnt = 0, wrCnt = 0, rbCnt = 0, teCnt = 0, kCnt = 0, dCnt = 0;  
+  var qbCnt = 0, wrCnt = 0, rbCnt = 0, teCnt = 0, kCnt = 0, dCnt = 0;
   $(".active-roster .player-pos").each(function(i, value){
     switch(value.innerHTML.trim()){
-      case "QB": 
+      case "QB":
         qbCnt++;
         break;
-      case "WR": 
+      case "WR":
         wrCnt++;
         break;
       case "RB":
@@ -69,14 +69,14 @@ var validatePositionCount = function(oldNode, newNode){
     oldPos = value.innerHTML.trim();
   });
   $(newNode).find(".player-pos").each(function(i, value){
-    newPos = value.innerHTML.trim();  
+    newPos = value.innerHTML.trim();
   });
   if(oldPos !== newPos){
   	switch(oldPos){
-  	  case "QB": 
+  	  case "QB":
         qbCnt--;
         break;
-      case "WR": 
+      case "WR":
         wrCnt--;
         break;
       case "RB":
@@ -95,10 +95,10 @@ var validatePositionCount = function(oldNode, newNode){
          break;
   	}
   	switch(newPos){
-      case "QB": 
+      case "QB":
         qbCnt++;
         break;
-      case "WR": 
+      case "WR":
         wrCnt++;
         break;
       case "RB":
@@ -170,7 +170,7 @@ var populateIdArrays = function(){
 var setAlertHandler = function(){
   $('.alert .close').on('click', function(e) {
       $(this).parent().hide();
-  });    
+  });
 };
 
 var initSpinner = function(){
@@ -301,7 +301,7 @@ var setSaveButtonHandler = function(){
 
 var selector = function() {
   initPlayerSuggestions(
-    players, 
+    players,
     function(player) {
       playerToBeAdded = player.id;
   });
@@ -339,14 +339,14 @@ var setTableTransferRequestHandlers = function(){
   });
 };
 
-var promptTransferRequest = function(name){	
+var promptTransferRequest = function(name){
 	if(!isLoggedIn){
 		return;
 	}
 	$("#requestModal").modal('show');
 	initSelectPicker();
 	$('.selectpicker.opponent-player').selectpicker('val', name);
-	
+
 	//Get the player id from the option dropdown box after setting it
 	var playerId = $('.selectpicker.opponent-player').find(":selected").attr('id').split('-')[1];
 	setDefaultPlayerId(playerId);
@@ -357,11 +357,11 @@ var initSelectPicker = function(){
 	$('.selectpicker.opponent-player').change(function(e) {
 		changePlayerId('#requested_player_id',e.target.selectedOptions[0].id.split("-")[1]);
 	});
-	
+
 	$('.selectpicker.my-player').selectpicker();
 	$('.selectpicker.my-player').change(function(e){
 		changePlayerId('#offered_player_id', e.target.selectedOptions[0].id.split("-")[1]);
-	});	
+	});
 };
 
 var setDefaultPlayerId = function(requestedId){
@@ -376,6 +376,7 @@ var changePlayerId = function(node, id){
 
 
 $(function(){
+    checkForNewSmack();
 	  populateStats();
 	  if(isUser && (currentGameWeek === activeGameWeek) && !gameWeekTimeObj.locked){
 	    setTableHandlers();
