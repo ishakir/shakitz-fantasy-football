@@ -29,11 +29,15 @@ h5:after {
 }
 
 #comment-board{
-  width: 700px;
+  width: 95%;
   height: 700px;
-  overflow-y: scroll;
+  overflow-y: hidden;
   background-color: #FFF;
-  margin: 0 auto;
+  margin-left: -2em
+}
+
+#comment-board:hover{
+  overflow-y: scroll;
 }
 
 .comment-container {
@@ -42,9 +46,10 @@ h5:after {
 
 .input {
   margin-top: 1em;
+  margin-left: 3em;
   font-size: 1em;
   padding: 0.25em;
-  width: 100%;
+  width: 96%;
   border: 1px solid #eee;
   border-radius: 5px;
 }

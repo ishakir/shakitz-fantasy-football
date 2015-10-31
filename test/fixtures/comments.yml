@@ -15,7 +15,47 @@ three:
   text: "Why is Bortles so damn good!!!"
   timestamp: "2015-10-24 12:43:32 -0500"
 
-two:
+four:
   user_id: 1
   text: ":("
   timestamp: "2015-10-24 14:41:51 -0500"
+
+five:
+  user_id: 1
+  text: "This is great chat."
+  timestamp: "2015-10-25 12:40:29 -0500"
+
+six:
+  user_id: 1
+  text: "-.-"
+  timestamp: "2015-10-25 12:41:29 -0500"
+
+seven:
+  user_id: 2
+  text: "Mate settle down"
+  timestamp: "2015-10-25 12:43:32 -0500"
+
+eight:
+  user_id: 1
+  text: ":("
+  timestamp: "2015-10-24 14:41:51 -0500"
+
+nine:
+  user_id: 1
+  text: "Don't tell me what to do"
+  timestamp: "2015-10-26 12:40:29 -0500"
+
+ten:
+  user_id: 1
+  text: "You don't know me."
+  timestamp: "2015-10-26 12:41:29 -0500"
+
+eleven:
+  user_id: 2
+  text: "This is too much."
+  timestamp: "2015-10-26 12:43:32 -0500"
+
+twelve:
+  user_id: 2
+  text: "I can't even"
+  timestamp: "2015-10-26 14:41:51 -0500"
