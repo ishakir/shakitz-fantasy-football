@@ -77,6 +77,7 @@ class GameDaysController < ApplicationController
 
   def find_ten_best_players(game_week)
     game_week = GameWeek.find_unique_with(game_week)
+    Rails.logger.info "Finding best team for game week #{game_week}"
 
     player_arrays = BEST_TEAM_DEFINITION.keys.reduce(best: [], remaining: []) do |player_arrays_acc, player_type|
       add_players_of_type(player_type, player_arrays_acc, game_week)
@@ -89,6 +90,7 @@ class GameDaysController < ApplicationController
   end
 
   def add_players_of_type(player_type, player_arrays, game_week)
+    Rails.logger.info "Adding players for #{player_type}"
     best_players = player_arrays[:best]
     remaining_players = player_arrays[:remaining]
 
@@ -99,6 +101,8 @@ class GameDaysController < ApplicationController
     best_players.concat(best_of_type.first(min))
     remaining_players.concat(best_of_type.last(max - min))
 
+    Rails.logger.info "Best is now: #{best_players.map { |player| player.nfl_player.name }}"
+    Rails.logger.info "Remaining is now: #{remaining_players.map { |player| player.nfl_player.name }}"
     { best: best_players, remaining: remaining_players }
   end
 
