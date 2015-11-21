@@ -22,7 +22,9 @@ class ApplicationController < ActionController::Base
     if session[:user_id]
       time = Comment.find(Comment.order(timestamp: :desc).limit(1)).timestamp.to_time.to_i
       @last_comment = time * 1000
-    end
+    else
+      @last_comment = 0
+   end
   end
 
   def validate_all_parameters(expected_params, params)
