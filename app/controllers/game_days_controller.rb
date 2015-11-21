@@ -98,8 +98,8 @@ class GameDaysController < ApplicationController
     min = BEST_TEAM_DEFINITION[player_type][:min]
 
     best_of_type = find_top_of_type(player_type, max, game_week)
-    best_players.concat(best_of_type[0 .. (min - 1)])
-    remaining_players.concat(best_of_type[min .. (max - 1)])
+    best_players.concat(best_of_type[0..(min - 1)])
+    remaining_players.concat(best_of_type[min..(max - 1)])
 
     Rails.logger.info "Best is now: #{best_players.map { |player| player.nfl_player.name }}"
     Rails.logger.info "Remaining is now: #{remaining_players.map { |player| player.nfl_player.name }}"
