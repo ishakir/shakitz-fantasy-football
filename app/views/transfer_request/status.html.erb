@@ -26,8 +26,8 @@
 							<% @pending_transfers.each do |transfer| %>
 								<% if transfer.target_user.id == session[:user_id] %>
 								<li id="incoming_<%= transfer.id %>" class="actionable-transfers out">
-									<span>You were offered <%= transfer.offered_player.name %> for
-										<%= transfer.target_player.name  %> from 
+									<span>You were offered <%= transfer.offered_players[0].name %> for
+										<%= transfer.target_players[0].name  %> from 
 										<%= transfer.offering_user.name %></span>
 									<div class="pull-right">
 									  <button type="button" class="btn btn-default btn-sm btn-danger">Reject</button>
@@ -46,8 +46,8 @@
 							<% @pending_transfers.each do |transfer| %>
 								<% if transfer.offering_user.id == session[:user_id] %>
 								<li id="outgoing_<%= transfer.id %>" class="actionable-transfers inc">
-									<span>You offered <%= transfer.offered_player.name %> for
-										<%= transfer.target_player.name  %> from 
+									<span>You offered <%= transfer.offered_players[0].name %> for
+										<%= transfer.target_players[0].name  %> from 
 										<%= transfer.target_user.name %></span>
 									  <button type="button" class="btn btn-default btn-sm btn-danger pull-right">Cancel</button>
 								</li>
@@ -90,9 +90,9 @@
 								<tr>
 								<% end %>
 									<td><%= transfer.offering_user.name %></td>
-									<td><%= transfer.offered_player.name %></td>
+									<td><%= transfer.offered_players[0].name %></td>
 									<td><%= transfer.target_user.name %></td>
-									<td><%= transfer.target_player.name  %></td>
+									<td><%= transfer.target_players[0].name  %></td>
 									<td><%= transfer.created_at %></td>
 								</tr>
 							<% end %>
@@ -137,9 +137,9 @@
 							<tr>
 							<% end %>
 								<td><%= transfer.offering_user.name %></td>
-								<td><%= transfer.offered_player.name %></td>
+								<td><%= transfer.offered_players[0].name %></td>
 								<td><%= transfer.target_user.name %></td>
-								<td><%= transfer.target_player.name  %></td>
+								<td><%= transfer.target_players[0].name  %></td>
 								<td><%= transfer.updated_at %></td>
 								<td><%= transfer.status %></td>
 							</tr>

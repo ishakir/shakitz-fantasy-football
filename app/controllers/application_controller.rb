@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def set_transfer_amount
     if session[:user_id]
-      @transfer_amount = TransferRequest.where(status: 'pending', target_user_id: session[:user_id]).count
+      @transfer_amount = TransferRequest.where(status: :pending, target_user_id: session[:user_id]).count
     else
       @transfer_amount = 0
     end

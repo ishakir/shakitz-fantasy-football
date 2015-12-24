@@ -104,19 +104,27 @@ ActiveRecord::Schema.define(version: 20151024142918) do
     t.datetime "updated_at"
   end
 
-  create_table "transfer_requests", force: true do |t|
-    t.integer  "offering_user_id"
-    t.integer  "target_user_id"
-    t.integer  "offered_player_id"
-    t.integer  "target_player_id"
-    t.string   "status",            default: "pending"
+  create_table "transfer_request_players", force: true do |t|
+    t.integer  "nfl_player_id"
+    t.integer  "transfer_request_id"
+    t.boolean  "offered"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "transfer_requests", ["offered_player_id"], name: "index_transfer_requests_on_offered_player_id"
+  add_index "transfer_request_players", ["nfl_player_id"], name: "index_transfer_request_players_on_nfl_player_id"
+  add_index "transfer_request_players", ["transfer_request_id"], name: "index_transfer_request_players_on_transfer_request_id"
+
+  create_table "transfer_requests", force: true do |t|
+    t.integer  "offering_user_id"
+    t.integer  "target_user_id"
+    t.integer  "trade_back_game_week_id"
+    t.string   "status",                  default: "pending", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   add_index "transfer_requests", ["offering_user_id"], name: "index_transfer_requests_on_offering_user_id"
-  add_index "transfer_requests", ["target_player_id"], name: "index_transfer_requests_on_target_player_id"
   add_index "transfer_requests", ["target_user_id"], name: "index_transfer_requests_on_target_user_id"
 
   create_table "users", force: true do |t|

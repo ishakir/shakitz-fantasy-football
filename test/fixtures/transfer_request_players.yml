@@ -1,0 +1,61 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nfl_player_id: 1
+  transfer_request_id: 1
+  offered: true
+
+two:
+  nfl_player_id: 2
+  transfer_request_id: 1
+  offered: false
+
+three:
+  nfl_player_id: 200
+  transfer_request_id: 2
+  offered: true
+
+four:
+  nfl_player_id: 201
+  transfer_request_id: 2
+  offered: false
+
+five:
+  nfl_player_id: 2
+  transfer_request_id: 3
+  offered: true
+
+six:
+  nfl_player_id: 10
+  transfer_request_id: 3
+  offered: false
+
+seven:
+  nfl_player_id: 8
+  transfer_request_id: 4
+  offered: true
+
+eight:
+  nfl_player_id: 15
+  transfer_request_id: 4
+  offered: false
+
+nine:
+  nfl_player_id: 15
+  transfer_request_id: 5
+  offered: true
+
+ten:
+  nfl_player_id: 25
+  transfer_request_id: 5
+  offered: false
+
+eleven:
+  nfl_player_id: 15
+  transfer_request_id: 6
+  offered: true
+
+twelve:
+  nfl_player_id: 25
+  transfer_request_id: 6
+  offered: false

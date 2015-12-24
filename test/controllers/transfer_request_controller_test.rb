@@ -2,80 +2,90 @@
 require 'test_helper'
 
 class TransferRequestControllerTest < ActionController::TestCase
-  test 'create should reject if offering_user_id is not supplied' do
-    post :create, target_user_id: 1, offered_player_id: 2, target_player_id: 3
+  test 'create should reject if offering_user_ids is not supplied' do
+    post :create, target_user_id: 1, offered_player_ids: [2], target_player_ids: [3]
     assert_response :unprocessable_entity
   end
 
-  test 'create should reject if target_user_id is not supplied' do
-    post :create, offering_user_id: 1, offered_player_id: 2, target_player_id: 3
+  test 'create should reject if target_user_ids is not supplied' do
+    post :create, offering_user_id: 1, offered_player_ids: [2], target_player_ids: [3]
     assert_response :unprocessable_entity
   end
 
-  test 'create should reject if offered_player_id is not supplied' do
-    post :create, offering_user_id: 1, target_user_id: 2, target_player_id: 3
+  test 'create should reject if offered_player_ids is not supplied' do
+    post :create, offering_user_id: 1, target_user_id: 2, target_player_ids: [3]
     assert_response :unprocessable_entity
   end
 
-  test 'create should reject if target_player_id is not supplied' do
-    post :create, offering_user_id: 1, target_user_id: 2, offered_player_id: 3
+  test 'create should reject if target_player_ids is not supplied' do
+    post :create, offering_user_id: 1, target_user_id: 2, offered_player_ids: [3]
     assert_response :unprocessable_entity
   end
 
-  test 'create should reject if offering_user_id is invalid' do
+  test 'create should reject if offering_user_ids is invalid' do
     post :create, transfer_request: {
       offering_user_id: -2,
       target_user_id: 2,
-      offered_player_id: 3,
-      target_player_id: 4
+      offered_player_ids: [3],
+      target_player_ids: [4]
     }
     assert_response :not_found
   end
 
-  test "create should reject if target_user_id can't be found" do
+  test "create should reject if target_user_ids can't be found" do
     post :create, transfer_request: {
       offering_user_id: 1,
       target_user_id: 50_000,
-      offered_player_id: 3,
-      target_player_id: 4
+      offered_player_ids: [3],
+      target_player_ids: [4]
     }
     assert_response :not_found
   end
 
-  test 'create should reject if offered_player_id is invalid' do
+  test 'create should reject if offered_player_ids is invalid' do
     post :create, transfer_request: {
       offering_user_id: 1,
       target_user_id: 2,
-      offered_player_id: 'a string',
-      target_player_id: 4
+      offered_player_ids: 'a string',
+      target_player_ids: 4
     }
-    assert_response :not_found
+    assert_response :unprocessable_entity
   end
 
-  test "create should reject if target_player_id can't be found" do
+  test 'create should reject if an offered_player_id is invalid' do
     post :create, transfer_request: {
       offering_user_id: 1,
       target_user_id: 2,
-      offered_player_id: 3,
-      target_player_id: 50_000
+      offered_player_ids: ['a string'],
+      target_player_ids: 4
+    }
+    assert_response :unprocessable_entity
+  end
+
+  test "create should reject if a target_player_id can't be found" do
+    post :create, transfer_request: {
+      offering_user_id: 1,
+      target_user_id: 2,
+      offered_player_ids: [3],
+      target_player_ids: [50_000]
     }
     assert_response :not_found
   end
 
   test 'if all are valid then a transfer request is created' do
-    params = { offering_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
+    params = { offering_user_id: 1, target_user_id: 2, offered_player_ids: [3], target_player_ids: [4] }
     post :create, transfer_request: params
     assert_response :redirect
 
     transfer_request = TransferRequest.last
     assert_equal 1, transfer_request.offering_user.id
     assert_equal 2, transfer_request.target_user.id
-    assert_equal 3, transfer_request.offered_player.id
-    assert_equal 4, transfer_request.target_player.id
+    assert transfer_request.offered_players.include?(NflPlayer.find(3))
+    assert transfer_request.target_players.include?(NflPlayer.find(4))
   end
 
   test 'status is set to pending after creating a new transfer request' do
-    params = { offering_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
+    params = { offering_user_id: 1, target_user_id: 2, offered_player_ids: [3], target_player_ids: [4] }
     post :create, transfer_request: params
     assert_response :redirect
 
@@ -83,7 +93,7 @@ class TransferRequestControllerTest < ActionController::TestCase
   end
 
   test 'create redirects to transfer page' do
-    params = { offering_user_id: 1, target_user_id: 2, offered_player_id: 3, target_player_id: 4 }
+    params = { offering_user_id: 1, target_user_id: 2, offered_player_ids: [3], target_player_ids: [4] }
     post :create, transfer_request: params
     assert_redirected_to '/transfer/status'
   end
@@ -139,15 +149,6 @@ class TransferRequestControllerTest < ActionController::TestCase
     assert_redirected_to controller: :transfer_request, action: :status
 
     assert_equal 'accepted', TransferRequest.find(2).status
-  end
-
-  test 'transfer request is destroyed when cancelled' do
-    post :resolve, transfer_request: { id: 2, action_type: 'cancel' }
-    assert_redirected_to controller: :transfer_request, action: :status
-
-    assert_raise ActiveRecord::RecordNotFound do
-      TransferRequest.find(2)
-    end
   end
 
   test 'status returns a non nil object' do

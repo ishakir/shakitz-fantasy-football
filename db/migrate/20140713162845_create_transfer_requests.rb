@@ -4,10 +4,8 @@ class CreateTransferRequests < ActiveRecord::Migration
     create_table :transfer_requests do |t|
       t.references :request_user, index: true
       t.references :target_user, index: true
-      t.references :offered_player, index: true
-      t.references :target_player, index: true
-      t.string :status, default: "pending"
-      
+      t.references :trade_back_game_week
+      t.string :status, default: "pending", null: false
       t.timestamps
     end
   end

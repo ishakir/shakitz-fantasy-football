@@ -2,6 +2,18 @@
 require 'test_helper'
 
 class TransferRequestTest < ActiveSupport::TestCase
+  def create_transfer_request(offering_user, target_user, offered_players, target_players)
+    tr = TransferRequest.create!(offering_user: offering_user, target_user: target_user)
+    offered_players.each do |offered_player|
+      tr.transfer_request_players.create!(nfl_player: offered_player, offered: true)
+    end
+    target_players.each do |target_player|
+      tr.transfer_request_players.create!(nfl_player: target_player, transfer_request: tr, offered: false)
+    end
+    # Save ensures we revalidate
+    tr.save!
+  end
+
   test 'transfer request responds to offering_user' do
     transfer_request = TransferRequest.find(1)
     assert_respond_to transfer_request, :offering_user
@@ -14,12 +26,60 @@ class TransferRequestTest < ActiveSupport::TestCase
 
   test 'transfer request responds to offered_player' do
     transfer_request = TransferRequest.find(1)
-    assert_respond_to transfer_request, :offered_player
+    assert_respond_to transfer_request, :offered_players
   end
 
   test 'transfer request responds to target_player' do
     transfer_request = TransferRequest.find(1)
-    assert_respond_to transfer_request, :target_player
+    assert_respond_to transfer_request, :target_players
+  end
+
+  test 'transfer request responds to trade back game week' do
+    transfer_request = TransferRequest.find(1)
+    assert_respond_to transfer_request, :trade_back_game_week
+  end
+
+  test 'transfer request responds to pending' do
+    transfer_request = TransferRequest.find(1)
+    assert_respond_to transfer_request, :status
+  end
+
+  test 'default status is pending' do
+    transfer_request = TransferRequest.find(1)
+    assert_equal 'pending', transfer_request.status
+  end
+
+  test 'a transfer request can have accepted status' do
+    transfer_request = TransferRequest.find(4)
+    assert_equal 'accepted', transfer_request.status
+  end
+
+  test 'a transfer request can have rejected status' do
+    transfer_request = TransferRequest.find(5)
+    assert 'rejected', transfer_request.status
+  end
+
+  test 'a transfer request can have cancelled status' do
+    transfer_request = TransferRequest.find(6)
+    assert_equal 'cancelled', transfer_request.status
+  end
+
+  test 'can change status' do
+    transfer_request = TransferRequest.find(1)
+    transfer_request.update!(status: TransferRequest::STATUS_ACCEPTED)
+    assert_equal 'accepted', transfer_request.status
+  end
+
+  test 'cant change status to something random' do
+    transfer_request = TransferRequest.find(1)
+    assert_raise ActiveRecord::RecordInvalid do
+      transfer_request.update!(status: 'gobbledigook')
+    end
+  end
+
+  test 'transfer request gives correct trade back gameweek' do
+    transfer_request = TransferRequest.find(2)
+    assert_equal 1, transfer_request.trade_back_game_week.number
   end
 
   test 'transfer request gives the correct offering_user' do
@@ -31,11 +91,11 @@ class TransferRequestTest < ActiveSupport::TestCase
   end
 
   test 'transfer request gives the correct offered_player' do
-    assert_equal 1, TransferRequest.find(1).offered_player.id
+    assert_equal 1, TransferRequest.find(1).offered_players[0].id
   end
 
   test 'transfer request gives the correct target_player' do
-    assert_equal 2, TransferRequest.find(1).target_player.id
+    assert_equal 2, TransferRequest.find(1).target_players[0].id
   end
 
   test 'offering_user must be present' do
@@ -44,9 +104,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player_two = NflPlayer.find(2)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        target_user: user,
-        offered_player: player_one,
-        target_player: player_two
+        target_user: user
       )
     end
   end
@@ -57,9 +115,7 @@ class TransferRequestTest < ActiveSupport::TestCase
     player_two = NflPlayer.find(4)
     assert_raise ActiveRecord::RecordInvalid do
       TransferRequest.create!(
-        offering_user: user,
-        offered_player: player_one,
-        target_player: player_two
+        offering_user: user
       )
     end
   end
@@ -69,10 +125,8 @@ class TransferRequestTest < ActiveSupport::TestCase
     user_two = User.find(4)
     player = NflPlayer.find(5)
     assert_raise ActiveRecord::RecordInvalid do
-      TransferRequest.create!(
-        offering_user: user_one,
-        target_user: user_two,
-        target_player: player
+      create_transfer_request(
+        user_one, user_two, [], [player]
       )
     end
   end
@@ -82,10 +136,8 @@ class TransferRequestTest < ActiveSupport::TestCase
     user_two = User.find(6)
     player = NflPlayer.find(6)
     assert_raise ActiveRecord::RecordInvalid do
-      TransferRequest.create!(
-        offering_user: user_one,
-        target_user: user_two,
-        offered_player: player
+      create_transfer_request(
+        user_one, user_two, [player], []
       )
     end
   end
@@ -95,11 +147,8 @@ class TransferRequestTest < ActiveSupport::TestCase
     player_one = NflPlayer.find(1)
     player_two = NflPlayer.find(2)
     assert_raise ActiveRecord::RecordInvalid do
-      TransferRequest.create!(
-        offering_user: user,
-        target_user: user,
-        offered_player: player_one,
-        target_player: player_two
+      create_transfer_request(
+        user, user, [player_one], [player_two]
       )
     end
   end
@@ -109,11 +158,8 @@ class TransferRequestTest < ActiveSupport::TestCase
     user_two = User.find(2)
     player = NflPlayer.find(1)
     assert_raise ActiveRecord::RecordInvalid do
-      TransferRequest.create!(
-        offering_user: user_one,
-        target_user: user_two,
-        offered_player: player,
-        target_player: player
+      create_transfer_request(
+        user_one, user_two, [player], [player]
       )
     end
   end
