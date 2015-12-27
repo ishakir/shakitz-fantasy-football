@@ -46,7 +46,8 @@ class WaiverWiresController < ApplicationController
                     incoming: incoming_player.name,
                     incoming_team: NflTeam.find(incoming_player.nfl_team_id).name,
                     user: User.find(w.user_id).name,
-                    game_week: GameWeek.find(w.game_week_id).number)
+                    game_week: GameWeek.find(w.game_week_id).number,
+                    status: WaiverWire::STATUS_ACCEPTED)
     end
     requests
   end
@@ -81,7 +82,8 @@ class WaiverWiresController < ApplicationController
         player_out: NflPlayer.find(v[PLAYER_OUT_KEY].to_i),
         player_in: NflPlayer.find(v[PLAYER_IN_KEY].to_i),
         game_week: GameWeek.find_by_number(v[GAME_WEEK_KEY].to_i),
-        incoming_priority: v[PRIORITY_KEY].to_i
+        incoming_priority: v[PRIORITY_KEY].to_i,
+        status: WaiverWire::STATUS_PENDING
       )
     end
   end

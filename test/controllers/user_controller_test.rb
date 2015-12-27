@@ -386,5 +386,4 @@ class UserControllerTest < ActionController::TestCase
          user_id: 1
     assert_response :unprocessable_entity
   end
-
 end

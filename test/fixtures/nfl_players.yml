@@ -187,3 +187,27 @@ transfer_request_test_target_player:
   name: Transfer Request Target Player
   nfl_team_id: 2
   nfl_player_type_id: 1
+
+waiver_wire_player_out_one:
+  id: 250
+  name: Waiver Wire Player Out
+  nfl_team_id: 2
+  nfl_player_type_id: 1
+
+waiver_wire_player_out_two:
+  id: 253
+  name: Waiver Wire Player Out Two
+  nfl_team_id: 2
+  nfl_player_type_id: 1
+
+waiver_wire_player_in_one:
+  id: 251
+  name: Waiver Wire Player In
+  nfl_team_id: 2
+  nfl_player_type_id: 1
+
+waiver_wire_player_in_two:
+  id: 252
+  name: Waiver Wire Player In Two
+  nfl_team_id: 2
+  nfl_player_type_id: 1

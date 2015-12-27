@@ -291,3 +291,23 @@ transfer_request_target_week_three:
   id: 137
   nfl_player_id: 201
   game_week_id: 3
+
+waiver_wire_out_week_4:
+  id: 138
+  nfl_player_id: 250
+  game_week_id: 4
+
+waiver_wire_in_week_4:
+  id: 139
+  nfl_player_id: 251
+  game_week_id: 4
+
+waiver_wire_in_2_week_4:
+  id: 140
+  nfl_player_id: 252
+  game_week_id: 4
+
+waiver_wire_out_2_week_4:
+  id: 141
+  nfl_player_id: 253
+  game_week_id: 4

@@ -1,4 +1,10 @@
 class WaiverWire < ActiveRecord::Base
+  STATUS_PENDING = :pending
+  STATUS_ACCEPTED = :accepted
+  STATUS_REJECTED = :rejected
+
+  ALLOWED_TYPES = [STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED]
+
   belongs_to :user
   belongs_to :player_out, class_name: 'NflPlayer'
   belongs_to :player_in, class_name: 'NflPlayer'
@@ -9,44 +15,51 @@ class WaiverWire < ActiveRecord::Base
   validates :player_in, presence: true
   validates :game_week, presence: true
   validates :incoming_priority, presence: true
+  validates :status, inclusion: { in: ALLOWED_TYPES, allow_nil: false }
 
-  def self.waiver_list
+  def self.waiver_list(game_week, priority_function = method(:priority_then_points_comparison))
     # We want to get last week's gameweek to get the correct user order
-    last_gw = GameWeek.find_by number: (WithGameWeek.current_game_week - 1)
-    gw = GameWeek.find_by number: WithGameWeek.current_game_week
+    previous_game_week = GameWeek.find_by number: (game_week - 1)
+    current_game_week = GameWeek.find_by number: game_week
 
-    waiver_list = WaiverWire.where(game_week: gw.id).to_a.map(&:serializable_hash) # Get all waivers for this week
-    gw_points = GameWeek.get_all_points_for_gameweek(last_gw)
-    waiver_list.sort_by! { |w| [w[:incoming_priority], gw_points[w[:user_id]]] }
+    waiver_list = WaiverWire.where(game_week: current_game_week.id)
+    waiver_list.sort_by { |w| priority_function.call(w, previous_game_week) }
   end
 
-  def self.resolve
-    waiver = waiver_list
+  def self.priority_then_points_comparison(waiver, game_week)
+    [waiver.incoming_priority, waiver.user.team_for_game_week(game_week.number).points]
+  end
 
-    transferred_list = [] # keep memory of who has been added
-    waiver.each do |w|
-      player_out_match = MatchPlayer.find_by nfl_player_id: w['player_out_id'].to_i, game_week_id: w['game_week_id'].to_i
-      player_in_match = MatchPlayer.find_by nfl_player_id: w['player_in_id'].to_i, game_week_id: w['game_week_id'].to_i
-      # Don't re-add players, or execute if incoming player doesn't exist.
-      if transferred_list.include?(w['player_in_id'].to_i) ||
-         transferred_list.include?(w['player_out_id'].to_i) || player_in_match.nil?
-        WaiverWire.find(w['id'].to_i).destroy! # Waiver won't get executed, lets destroy it
-        next
+  def self.resolve(game_week)
+    waivers = waiver_list(game_week)
+
+    waivers.each do |waiver|
+      player_out_match = waiver.player_out.player_for_game_week(game_week)
+      player_in_match = waiver.player_in.player_for_game_week(game_week)
+
+      player_out_still_in_team = !player_out_match.game_week_team.nil?
+      player_in_still_available = player_in_match.game_week_team.nil?
+
+      if player_out_still_in_team && player_in_still_available
+        Rails.logger.info "Proceeding with swap for #{waiver.user.name}, dropping #{waiver.player_out.name}, picking up #{waiver.player_in.name}"
+        player_team = waiver.user.team_for_game_week(game_week)
+
+        GameWeekTeamPlayer.create!(
+          game_week_team: player_team,
+          match_player: player_in_match,
+          playing: player_out_match.game_week_team_players[0].playing?
+        )
+
+        player_team.match_players.delete(player_out_match)
+        waiver.update!(status: WaiverWire::STATUS_ACCEPTED)
+      else
+        if !player_out_still_in_team
+          Rails.logger.info "Could not execute waiver for #{waiver.user.name} as #{waiver.player_out.name} is no longer in their team"
+        elsif !player_in_still_available
+          Rails.logger.info "Could not execute waiver for #{waiver.user.name} as #{waiver.player_in.name} has already been taken"
+        end
+        waiver.update!(status: WaiverWire::STATUS_REJECTED)
       end
-      Rails.logger.info "Swapping out #{player_out_match.id} for #{player_in_match.id}"
-      player_out = player_out_match.game_week_team_players
-      Rails.logger.info "Outgoing player has gwtp: #{player_out}"
-      player_team = User.find(w['user_id']).team_for_current_game_week
-      is_playing = player_out[0].playing?
-
-      GameWeekTeamPlayer.create!(
-        game_week_team: player_team,
-        match_player: player_in_match,
-        playing: is_playing
-      )
-      transferred_list.push(w['player_in_id'].to_i)
-      transferred_list.push(w['player_out_id'].to_i)
-      player_team.match_players.delete(player_out_match) # delete player from game week team
     end
   end
 end

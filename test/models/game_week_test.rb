@@ -51,7 +51,7 @@ class GameWeekTest < ActiveSupport::TestCase
 
   # TODO, a specific test for thanksgiving, perhaps this is what that test was supposed to be for?
   test 'that the game week is locked on a thursday before the 5pm game' do
-    Timecop.travel(Time.zone.now.beginning_of_day() + 2.days + 18.hours) do
+    Timecop.travel(Time.zone.now.beginning_of_day + 2.days + 18.hours) do
       assert GameWeek.find(1).locked?
     end
   end

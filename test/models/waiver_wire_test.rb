@@ -2,51 +2,14 @@ require 'test_helper'
 
 class WaiverWireTest < ActiveSupport::TestCase
   def setup
-    WaiverWire.delete_all
     @valid_params = {
       user: User.find(8),
       player_out: NflPlayer.find(3),
       player_in: NflPlayer.find(4),
       game_week: GameWeek.find(2),
-      incoming_priority: 5
+      incoming_priority: 5,
+      status: WaiverWire::STATUS_PENDING
     }
-    @params = [{
-      user: User.find(1),
-      player_out: NflPlayer.find(8),
-      player_in: NflPlayer.find(44),
-      game_week: GameWeek.find(2),
-      incoming_priority: 1
-    }, {
-      user: User.find(1),
-      player_out: NflPlayer.find(8),
-      player_in: NflPlayer.find(4),
-      game_week: GameWeek.find(2),
-      incoming_priority: 2
-    }, {
-      user: User.find(2),
-      player_out: NflPlayer.find(24),
-      player_in: NflPlayer.find(46),
-      game_week: GameWeek.find(2),
-      incoming_priority: 1
-    }, {
-      user: User.find(2),
-      player_out: NflPlayer.find(25),
-      player_in: NflPlayer.find(45),
-      game_week: GameWeek.find(2),
-      incoming_priority: 2
-    }, {
-      user: User.find(2),
-      player_out: NflPlayer.find(26),
-      player_in: NflPlayer.find(44),
-      game_week: GameWeek.find(2),
-      incoming_priority: 3
-    }, {
-      user: User.find(2),
-      player_out: NflPlayer.find(27),
-      player_in: NflPlayer.find(47),
-      game_week: GameWeek.find(2),
-      incoming_priority: 4
-    }]
   end
 
   test 'can add valid waiver wire request' do
@@ -103,64 +66,128 @@ class WaiverWireTest < ActiveSupport::TestCase
     assert_equal 3, WaiverWire.last.incoming_priority
   end
 
-  test 'correctly resolves only the first of the users waiver wire request as they both have same outgoing player' do
-    Timecop.travel(Time.zone.now + 7.days) do
-      WaiverWire.create!(@params)
-      user_1 = WaiverWire.find_by user: 1, incoming_priority: 1
-      user_1_second_round = WaiverWire.find_by user: 1, incoming_priority: 2
-      gw = GameWeek.find_by number: WithGameWeek.current_game_week
-
-      WaiverWire.resolve
-      assert user_1.user.team_for_current_game_week.match_players
-        .include? MatchPlayer.find_by nfl_player_id: user_1['player_in_id'].to_i, game_week_id: gw.id
-      assert user_1_second_round.user.team_for_current_game_week.match_players
-        .exclude? MatchPlayer.find_by nfl_player_id: user_1_second_round['player_in_id'].to_i, game_week_id: gw.id
-    end
+  def order_by_player_in_id(waiver, _game_week)
+    waiver.player_in_id
   end
 
-  test 'correct user gets incoming player based on the order of last weeks results' do
-    Timecop.travel(Time.zone.now + 7.days) do
-      WaiverWire.create!(@params)
-      u = WaiverWire.find_by user: 2
-      assert u.user.team_for_current_game_week.match_players
-        .exclude? MatchPlayer.find_by nfl_player_id: u['player_in_id'].to_i
-      WaiverWire.resolve
-      assert u.user.team_for_current_game_week.match_players
-        .exclude? MatchPlayer.find_by nfl_player_id: u['player_in_id'].to_i
-    end
+  def order_by_reverse_player_in_id(waiver, _game_week)
+    -waiver.player_in_id
   end
 
-  test 'correct user gets incoming player despite someone requesting him in a later round' do
-    Timecop.travel(Time.zone.now + 7.days) do
-      WaiverWire.create!(@params)
-      u1 = WaiverWire.find_by user: 1, incoming_priority: 1
-      u2 = WaiverWire.find_by user: 2, incoming_priority: 3
-      gw = GameWeek.find_by number: WithGameWeek.current_game_week
+  test 'waiver list respects the sorting method provided' do
+    waiver_lower_player_in_id = WaiverWire.create!({ user: User.find(1), player_out_id: 1, player_in_id: 6, game_week: GameWeek.find_by(number: 2), incoming_priority: 1, status: WaiverWire::STATUS_PENDING })
+    waiver_higher_player_in_id = WaiverWire.create!({ user: User.find(1), player_out_id: 3, player_in_id: 7, game_week: GameWeek.find_by(number: 2), incoming_priority: 2, status: WaiverWire::STATUS_PENDING })
 
-      assert_equal u1['player_in_id'].to_i, u2['player_in_id'].to_i
-      assert_not_equal u1['incoming_priorirty'].to_i, u2['incoming_priority'].to_i
-      WaiverWire.resolve
-      assert u1.user.team_for_current_game_week.match_players
-        .include? MatchPlayer.find_by nfl_player_id: u1['player_in_id'].to_i, game_week_id: gw.id
-      assert u2.user.team_for_current_game_week.match_players
-        .exclude? MatchPlayer.find_by nfl_player_id: u2['player_in_id'].to_i, game_week_id: gw.id
-    end
+    waiver_list_created_at = WaiverWire.waiver_list(2, method(:order_by_player_in_id))
+    assert_equal 2, waiver_list_created_at.length
+    assert_equal waiver_lower_player_in_id, waiver_list_created_at[0]
+
+    waiver_list_created_at_reverse = WaiverWire.waiver_list(2, method(:order_by_reverse_player_in_id))
+    assert_equal 2, waiver_list_created_at_reverse.length
+    assert_equal waiver_higher_player_in_id, waiver_list_created_at_reverse[0]
   end
 
-  test 'adding two waiver requests, one that does not get executed gets removed afterwards' do
-    Timecop.travel(Time.zone.now + 7.days) do
-      WaiverWire.create!(@params[0])
-      old_length = WaiverWire.count
+  # For week 2 user with id 2 has waiver priority
+  test 'priority then points comparison works' do
+    user_1_priority_2 = WaiverWire.create!({ user: User.find(1), player_out_id: 3, player_in_id: 8, game_week: GameWeek.find_by(number: 2), incoming_priority: 2, status: WaiverWire::STATUS_PENDING })
+    user_1_priority_1 = WaiverWire.create!({ user: User.find(1), player_out_id: 1, player_in_id: 6, game_week: GameWeek.find_by(number: 2), incoming_priority: 1, status: WaiverWire::STATUS_PENDING })
+    user_2_priority_1 = WaiverWire.create!({ user: User.find(2), player_out_id: 2, player_in_id: 7, game_week: GameWeek.find_by(number: 2), incoming_priority: 1, status: WaiverWire::STATUS_PENDING })
 
-      params = @params[0]
-      params[:player_in] = NflPlayer.find(5)
-      params[:incoming_priority] = 2
-      WaiverWire.create!(params)
-      assert_equal old_length + 1, WaiverWire.count
+    waiver_list = WaiverWire.waiver_list(2)
+    assert_equal 3, waiver_list.length
+    assert_equal user_2_priority_1, waiver_list[0]
+    assert_equal user_1_priority_1, waiver_list[1]
+    assert_equal user_1_priority_2, waiver_list[2]
+  end
 
-      WaiverWire.resolve
-      refute WaiverWire.exists?(user: params[:user], incoming_priority: params[:incoming_priority],
-                                player_in: params[:player_in]), 'Un-executed waiver is still present'
-    end
+  # For week 4 user with id 2 should still have priority
+  # User 1 has game week team id 4
+  # User 2 has game week team id 21
+
+  def assert_accepted(waiver)
+    assert_equal WaiverWire::STATUS_ACCEPTED.to_s, WaiverWire.find(waiver.id).status
+  end
+
+  def assert_rejected(waiver)
+    assert_equal WaiverWire::STATUS_REJECTED.to_s, WaiverWire.find(waiver.id).status
+  end
+
+  def assert_in_no_team(nfl_player)
+    assert_nil nfl_player.player_for_game_week(4).game_week_team
+  end
+
+  def assert_in_team_with_status(user, nfl_player, status)
+    match_player = nfl_player.player_for_game_week(4)
+    assert_equal user.team_for_game_week(4), match_player.game_week_team
+    assert_equal status, match_player.game_week_team_players[0].playing
+  end
+
+  test 'simple swap is completed' do
+    user = User.find(1)
+    out_player = NflPlayer.find(250)
+    in_player = NflPlayer.find(251)
+    waiver = WaiverWire.create!(user: user, player_out: out_player, player_in: in_player, game_week: GameWeek.find_by(number: 4), incoming_priority: 1, status: WaiverWire::STATUS_PENDING)
+
+    WaiverWire.resolve(4)
+
+    assert_accepted waiver
+    assert_in_no_team out_player
+    assert_in_team_with_status user, in_player, false
+  end
+
+  test 'if two requests are made with the same player out, the incoming priority will determine which swap is done' do
+    user = User.find(1)
+    out_player = NflPlayer.find(250)
+    not_in_player = NflPlayer.find(251)
+    actual_in_player = NflPlayer.find(252)
+
+    rejected_waiver = WaiverWire.create!(user: user, player_out: out_player, player_in: not_in_player, game_week: GameWeek.find_by(number: 4), incoming_priority: 2, status: WaiverWire::STATUS_PENDING)
+    accepted_waiver = WaiverWire.create!(user: user, player_out: out_player, player_in: actual_in_player, game_week: GameWeek.find_by(number: 4), incoming_priority: 1, status: WaiverWire::STATUS_PENDING)
+
+    WaiverWire.resolve(4)
+
+    assert_accepted accepted_waiver
+    assert_rejected rejected_waiver
+    assert_in_no_team out_player
+    assert_in_no_team not_in_player
+    assert_in_team_with_status user, actual_in_player, false
+  end
+
+  test 'if two requests are made with the same player in, the incoming priority will determine which swap is done' do
+    user = User.find(1)
+    actual_out_player = NflPlayer.find(250)
+    not_out_player = NflPlayer.find(253)
+    in_player = NflPlayer.find(251)
+
+    accepted_waiver = WaiverWire.create!(user: user, player_out: actual_out_player, player_in: in_player, game_week: GameWeek.find_by(number: 4), incoming_priority: 1, status: WaiverWire::STATUS_PENDING)
+    rejected_waiver = WaiverWire.create!(user: user, player_out: not_out_player, player_in: in_player, game_week: GameWeek.find_by(number: 4), incoming_priority: 2, status: WaiverWire::STATUS_PENDING)
+
+    WaiverWire.resolve(4)
+
+    assert_accepted accepted_waiver
+    assert_rejected rejected_waiver
+    assert_in_no_team actual_out_player
+    assert_in_team_with_status user, not_out_player, true
+    assert_in_team_with_status user, in_player, false
+  end
+
+  test 'if both requests are legimite in series, both are executed' do
+    user = User.find(1)
+    out_player_1 = NflPlayer.find(250)
+    out_player_2 = NflPlayer.find(253)
+    in_player_1 = NflPlayer.find(251)
+    in_player_2 = NflPlayer.find(252)
+
+    waiver_1 = WaiverWire.create!(user: user, player_out: out_player_1, player_in: in_player_1, game_week: GameWeek.find_by(number: 4), incoming_priority: 1, status: WaiverWire::STATUS_PENDING)
+    waiver_2 = WaiverWire.create!(user: user, player_out: out_player_2, player_in: in_player_2, game_week: GameWeek.find_by(number: 4), incoming_priority: 2, status: WaiverWire::STATUS_PENDING)
+
+    WaiverWire.resolve(4)
+
+    assert_accepted waiver_1
+    assert_accepted waiver_2
+    assert_in_no_team out_player_1
+    assert_in_no_team out_player_2
+    assert_in_team_with_status user, in_player_1, false
+    assert_in_team_with_status user, in_player_2, true
   end
 end

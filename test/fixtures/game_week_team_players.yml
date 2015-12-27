@@ -86,3 +86,15 @@ sir_no_match_player_user_eight:
   game_week_team_id: 120
   match_player_id: 100
   playing: false
+
+waiver_wire_match_player_out_week_4:
+  id: 100
+  game_week_team_id: 4
+  match_player_id: 138
+  playing: false
+
+waiver_wire_match_player_out_2_week_4:
+  id: 101
+  game_week_team_id: 4
+  match_player_id: 141
+  playing: true

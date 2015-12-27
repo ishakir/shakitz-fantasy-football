@@ -6,6 +6,7 @@ class CreateWaiverWires < ActiveRecord::Migration
       t.references :player_in, index: true
       t.integer :incoming_priority
       t.references :game_week, index: true
+      t.string :status, default: "pending"
 
       t.timestamps
     end

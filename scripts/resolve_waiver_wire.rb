@@ -1,1 +1,1 @@
-WaiverWire.resolve
+WaiverWire.resolve(WithGameWeek.current_game_week)

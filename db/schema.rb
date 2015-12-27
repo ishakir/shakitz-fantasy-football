@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 20151024142918) do
     t.integer  "player_in_id"
     t.integer  "incoming_priority"
     t.integer  "game_week_id"
+    t.string   "status",            default: "pending"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
