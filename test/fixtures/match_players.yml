@@ -116,7 +116,7 @@ mp_free_agent_<%= n+60 %>:
 mp_free_agent_two_<%= n+60 %>:
   id: <%= 190 + n %>
   nfl_player_id: <%= 42 + n %>
-  game_week_id: 2
+  game_week_id: 3
   points: 0
 <% end %>
 

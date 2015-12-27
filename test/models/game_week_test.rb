@@ -49,10 +49,11 @@ class GameWeekTest < ActiveSupport::TestCase
     assert !game_week.save
   end
 
+  # TODO, a specific test for thanksgiving, perhaps this is what that test was supposed to be for?
   test 'that the game week is locked on a thursday before the 5pm game' do
-    skip("Need to find a better way of faking start time that doesn't damage other stuff")
-    # t = Time.new(2014, 11, 13, 20, 25, 0, '-05:00') # First game of week 11
-    # assert GameWeek.find(11).locked?
+    Timecop.travel(Time.zone.now.beginning_of_day() + 2.days + 18.hours) do
+      assert GameWeek.find(1).locked?
+    end
   end
 
   test 'can get points for all users for a specific gameweek' do
