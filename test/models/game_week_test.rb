@@ -57,19 +57,13 @@ class GameWeekTest < ActiveSupport::TestCase
   end
 
   test 'can get points for all users for a specific gameweek' do
-    all_points = GameWeek.get_all_points_for_gameweek(1)
+    all_points = GameWeek.get_all_points_for_gameweek(GameWeek.find_by(number: 1))
     assert all_points
   end
 
   test 'points for all users for a specific gameweek returns items for all users' do
-    all_points = GameWeek.get_all_points_for_gameweek(1)
+    all_points = GameWeek.get_all_points_for_gameweek(GameWeek.find_by(number: 1))
     assert_equal all_points.size, User.all.size
-  end
-
-  test 'points for all users for an invalid gameweek raises record not found' do
-    assert_raise ActiveRecord::RecordNotFound do
-      GameWeek.get_all_points_for_gameweek(25)
-    end
   end
 
   test 'points for all users for with no arguments raises argument error' do

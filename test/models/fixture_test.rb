@@ -60,9 +60,6 @@ class FixtureTest < ActiveSupport::TestCase
 
   test 'loser is GameWeekTeam' do
     fixture = Fixture.find(1)
-    puts fixture.home_team
-    puts fixture.away_team
-    puts fixture.drawn?
     assert_kind_of GameWeekTeam, fixture.loser
   end
 

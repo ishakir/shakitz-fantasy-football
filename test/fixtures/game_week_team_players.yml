@@ -56,14 +56,6 @@ gwteamplayer_out_<%= n + 44 %>:
   playing: true
 <% end %>
 
-<% 10.times do |n| %>
-gwteamplayer_out_<%= n + 60 %>:
-  id: <%= n + 60 %>
-  game_week_team_id: 18
-  match_player_id: <%= n + 59 %>
-  playing: true
-<% end %>
-
 # User three has one player in his game week team
 staffpick_week_one_user_three:
   id: 55
