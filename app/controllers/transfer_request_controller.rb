@@ -30,7 +30,7 @@ class TransferRequestController < ApplicationController
     @has_actions = does_user_have_actions_to_complete(TransferRequest.where(status: TransferRequest::STATUS_PENDING))
     @pending_transfers = TransferRequest.where(status: TransferRequest::STATUS_PENDING)
     @completed_transfers = TransferRequest.where.not(status: TransferRequest::STATUS_PENDING)
-    @last_comment = get_timestamp_of_last_comment
+    @last_comment = timestamp_of_last_comment
   end
 
   def resolve

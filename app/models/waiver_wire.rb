@@ -26,40 +26,59 @@ class WaiverWire < ActiveRecord::Base
     waiver_list.sort_by { |w| priority_function.call(w, previous_game_week) }
   end
 
-  def self.priority_then_points_comparison(waiver, game_week)
-    [waiver.incoming_priority, waiver.user.team_for_game_week(game_week.number).points]
-  end
-
   def self.resolve(game_week)
     waivers = waiver_list(game_week)
 
     waivers.each do |waiver|
-      player_out_match = waiver.player_out.player_for_game_week(game_week)
-      player_in_match = waiver.player_in.player_for_game_week(game_week)
+      resolve_waiver(waiver, game_week)
+    end
+  end
 
-      player_out_still_in_team = !player_out_match.game_week_team.nil?
-      player_in_still_available = player_in_match.game_week_team.nil?
+  def self.priority_then_points_comparison(waiver, game_week)
+    [waiver.incoming_priority, waiver.user.team_for_game_week(game_week.number).points]
+  end
 
-      if player_out_still_in_team && player_in_still_available
-        Rails.logger.info "Proceeding with swap for #{waiver.user.name}, dropping #{waiver.player_out.name}, picking up #{waiver.player_in.name}"
-        player_team = waiver.user.team_for_game_week(game_week)
+  def self.execute_swap(player_team, player_out_match, player_in_match)
+    GameWeekTeamPlayer.create!(
+      game_week_team: player_team,
+      match_player: player_in_match,
+      playing: player_out_match.game_week_team_players[0].playing?
+    )
 
-        GameWeekTeamPlayer.create!(
-          game_week_team: player_team,
-          match_player: player_in_match,
-          playing: player_out_match.game_week_team_players[0].playing?
-        )
+    player_team.match_players.delete(player_out_match)
+  end
 
-        player_team.match_players.delete(player_out_match)
-        waiver.update!(status: WaiverWire::STATUS_ACCEPTED)
-      else
-        if !player_out_still_in_team
-          Rails.logger.info "Could not execute waiver for #{waiver.user.name} as #{waiver.player_out.name} is no longer in their team"
-        elsif !player_in_still_available
-          Rails.logger.info "Could not execute waiver for #{waiver.user.name} as #{waiver.player_in.name} has already been taken"
-        end
-        waiver.update!(status: WaiverWire::STATUS_REJECTED)
-      end
+  def self.proceed_with_swap(waiver, player_out_match, player_in_match, game_week)
+    Rails.logger.info "Proceeding with swap for #{waiver.user.name}, " \
+                        "dropping #{waiver.player_out.name}, " \
+                        "picking up #{waiver.player_in.name}"
+    player_team = waiver.user.team_for_game_week(game_week)
+    execute_swap(player_team, player_out_match, player_in_match)
+    waiver.update!(status: WaiverWire::STATUS_ACCEPTED)
+  end
+
+  def self.resolve_unprocessable_swap(waiver, player_out_still_in_team, player_in_still_available)
+    if !player_out_still_in_team
+      Rails.logger.info "Could not execute waiver for #{waiver.user.name} " \
+                        "as #{waiver.player_out.name} is no longer in their team"
+    elsif !player_in_still_available
+      Rails.logger.info "Could not execute waiver for #{waiver.user.name} " \
+                        "as #{waiver.player_in.name} has already been taken"
+    end
+    waiver.update!(status: WaiverWire::STATUS_REJECTED)
+  end
+
+  def self.resolve_waiver(waiver, game_week)
+    player_out_match = waiver.player_out.player_for_game_week(game_week)
+    player_in_match = waiver.player_in.player_for_game_week(game_week)
+
+    player_out_still_in_team = !player_out_match.game_week_team.nil?
+    player_in_still_available = player_in_match.game_week_team.nil?
+
+    if player_out_still_in_team && player_in_still_available
+      proceed_with_swap(waiver, player_out_match, player_in_match, game_week)
+    else
+      resolve_unprocessable_swap(waiver, player_out_still_in_team, player_in_still_available)
     end
   end
 end

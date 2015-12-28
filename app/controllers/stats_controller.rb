@@ -1,6 +1,6 @@
 class StatsController < ApplicationController
   def show
-    @last_comment = get_timestamp_of_last_comment
+    @last_comment = timestamp_of_last_comment
     current_game_week = WithGameWeek.current_game_week
     current_game_week_with_some_stats = WithGameWeek.current_unlocked_game_week - 1
 

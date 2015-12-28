@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_timestamp_of_last_comment
+  def timestamp_of_last_comment
     if session[:user_id]
       time = Comment.find(Comment.order(timestamp: :desc).limit(1)).timestamp.to_time.to_i
       @last_comment = time * 1000

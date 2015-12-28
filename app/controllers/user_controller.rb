@@ -31,7 +31,7 @@ class UserController < ApplicationController
     @game_week = WithGameWeek.current_game_week
     @max_number_game_weeks = Settings.number_of_gameweeks
     @users = @users.sort_by { |u| -u.points }
-    @last_comment = get_timestamp_of_last_comment
+    @last_comment = timestamp_of_last_comment
   end
 
   def show
@@ -42,7 +42,7 @@ class UserController < ApplicationController
     @nfl_players = return_nfl_player_and_team_data
     @stats = return_my_player_point_info
     @user = User.find(params[USER_ID_KEY])
-    @last_comment = get_timestamp_of_last_comment
+    @last_comment = timestamp_of_last_comment
   end
 
   def declare_roster
