@@ -58,7 +58,7 @@ gem 'bootstrap-select-rails'
 gem 'rufus-scheduler'
 
 #Extends Date class to help us identify Thanksgiving
-gem 'holidays'
+gem 'holidays', '2.2.0'
 
 # gem 'simplecov'
 
