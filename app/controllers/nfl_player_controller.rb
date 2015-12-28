@@ -60,7 +60,7 @@ class NflPlayerController < ApplicationController
 
   def update_stats
     # Setup the messages to return
-    message = ApplicationController::ResponseMessage.new
+    message = ResponseMessage.new
 
     # Check that player json is a thing
     return add_no_id_info_error_message_and_respond(message) unless params_validated?(params)
