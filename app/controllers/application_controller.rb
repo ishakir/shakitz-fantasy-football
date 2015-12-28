@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       @last_comment = time * 1000
     else
       @last_comment = 0
-   end
+    end
   end
 
   def validate_all_parameters(expected_params, params)

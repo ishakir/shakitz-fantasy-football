@@ -31,7 +31,7 @@ class StatsController < ApplicationController
     end
 
     (1...current_game_week).each do |game_week|
-      user = User.all.map { |user| user.team_for_game_week(game_week) }.max_by(&:bench_points).user
+      user = User.all.map { |u| u.team_for_game_week(game_week) }.max_by(&:bench_points).user
       rows_hash[user][:wins] = rows_hash[user][:wins] + 1
     end
 
