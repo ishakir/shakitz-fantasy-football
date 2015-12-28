@@ -94,7 +94,7 @@ class WaiverWireTest < ActiveSupport::TestCase
     assert_equal 2, waiver_list_created_at.length
     assert_equal waiver_lower_player_in_id, waiver_list_created_at[0]
 
-    waiver_list_created_at_reverse = WaiverWire.waiver_list(2, method(:order_by_reverse_player_in_id))
+    waiver_list_created_at_reverse = WaiverWire.waiver_list(4, method(:order_by_reverse_player_in_id))
     assert_equal 2, waiver_list_created_at_reverse.length
     assert_equal waiver_higher_player_in_id, waiver_list_created_at_reverse[0]
   end
