@@ -88,7 +88,7 @@ class GameWeek < ActiveRecord::Base
   private
 
   def days_before_lock
-    if (WithGameWeek.current_game_week == WEEK_17)
+    if WithGameWeek.current_game_week == WEEK_17
       DAYS_IN_WEEK_BEFORE_SUNDAY_LOCK
     else
       DAYS_IN_WEEK_BEFORE_LOCK
@@ -97,7 +97,7 @@ class GameWeek < ActiveRecord::Base
 
   def game_start
     today = Time.zone.now
-    if (today == Date.civil(today.year, 11, Date.calculate_mday(today.year, 11, :fourth, :thursday)))
+    if today == Date.civil(today.year, 11, Date.calculate_mday(today.year, 11, :fourth, :thursday))
       HOURS_UNTIL_NOON
     else
       HOURS_UNTIL_5_PM
