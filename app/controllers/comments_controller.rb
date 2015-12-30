@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
 
   def show
     comments = []
-    Comment.limit(MAX_COMMENTS_TO_LOAD).order('id desc').each do |c|
+    Comment.limit(MAX_COMMENTS_TO_LOAD).order('id asc').each do |c|
       tmp = c.as_json
       tmp[TIMESTAMP_KEY] = c[TIMESTAMP_KEY].to_f * 1000
       tmp['user_name'] = User.find(c['user_id']).name
@@ -42,6 +42,6 @@ class CommentsController < ApplicationController
   end
 
   def convert_time(js_time)
-    Time.at(js_time.to_i / 1000.0)
+    Time.zone.at(js_time.to_i / 1000.0)
   end
 end
