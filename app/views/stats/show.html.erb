@@ -60,7 +60,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% @rows.each_with_index do |hash, index| %>
+                    <% @rows.each_with_index do |pair, index| %>
                       <% if index == 0 %>
                         <tr class="success">
                       <% elsif index == @rows.size - 1 %>
@@ -68,10 +68,10 @@
                       <% else %>
                         <tr>
                       <% end %>
-                        <td><%= hash["user"].name %></td>
-                        <td><%= hash["user"].team_name %></td>
-                        <td><%= hash[:total_bench_points] %></td>
-                        <td><%= hash[:wins] %></td>
+                        <td><%= pair[0].name %></td>
+                        <td><%= pair[0].team_name %></td>
+                        <td><%= pair[1][:total_bench_points] %></td>
+                        <td><%= pair[1][:wins] %></td>
                       </tr>
                     <% end %>
                   </tbody>

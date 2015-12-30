@@ -22,9 +22,9 @@ class StatsController < ApplicationController
       game_week_team.bench_points > 100
     end
 
-    rows_hash = {}
+    @rows = {}
     all_game_week_teams.each do |game_week_teams|
-      rows_hash[game_week_teams[0].user] = {
+      @rows[game_week_teams[0].user] = {
         total_bench_points: game_week_teams.map(&:bench_points).sum,
         wins: 0
       }
@@ -32,14 +32,7 @@ class StatsController < ApplicationController
 
     (1...current_game_week).each do |game_week|
       user = User.all.map { |u| u.team_for_game_week(game_week) }.max_by(&:bench_points).user
-      rows_hash[user][:wins] = rows_hash[user][:wins] + 1
-    end
-
-    @rows = rows_hash.map do |user, hash|
-      hash['user'] = user
-      hash
-    end.sort_by do |hash|
-      hash['total_bench_points']
+      @rows[user][:wins] = @rows[user][:wins] + 1
     end
 
     @points = Hash[
