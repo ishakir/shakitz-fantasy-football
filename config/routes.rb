@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 Footbawwl::Application.routes.draw do
 
+  get 'final' => "final#show"
+
   resources :comments
 
   get "comments/all" => "comments#show", :as => "get_comments"

@@ -60,6 +60,8 @@ gem 'rufus-scheduler'
 #Extends Date class to help us identify Thanksgiving
 gem 'holidays', '2.2.0'
 
+gem 'descriptive_statistics'
+
 # gem 'simplecov'
 
 # Use ActiveModel has_secure_password

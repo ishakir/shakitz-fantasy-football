@@ -3,63 +3,59 @@ require 'points_strategy/base'
 module PointsStrategy
   class Nfl < PointsStrategy::Base
     def calculate_points
-      sum_array([
+      [
         passing_points,
         recieving_points,
         rushing_points,
         defence_points,
         kicking_points
-      ])
+      ].sum
     end
 
     private
 
     def kicking_points
-      sum_array([
+      [
         field_goals_kicked_points,
         extra_points_kicked_points
-      ])
+      ].sum
     end
 
     def defence_points
-      sum_array([
+      [
         defense_touchdowns_points,
         sacks_made_points,
         interceptions_caught_points,
         points_conceded_points,
         fumbles_won_points
-      ])
+      ].sum
     end
 
     def rushing_points
-      sum_array([
+      [
         rushing_yards_points,
         rushing_td_points,
         rushing_twoptm_points,
         fumbles_lost_points
-      ])
+      ].sum
     end
 
     def recieving_points
-      sum_array([
+      [
         receiving_yards_points,
         receiving_td_points,
         receiving_twoptm_points
-      ])
+      ].sum
     end
 
     def passing_points
-      sum_array([
+      [
         passing_yards_points,
         passing_td_points,
         passing_twoptm_points,
         times_sacked_points,
         interceptions_thrown_points
-      ])
-    end
-
-    def sum_array(a)
-      a.inject(:+)
+      ].sum
     end
 
     # Points from QB / Reciever actions

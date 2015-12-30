@@ -30,6 +30,13 @@ class NflPlayer < ActiveRecord::Base
     for_current_unlocked_game_week(match_players)
   end
 
+  def points
+    # This is a functional "fold"
+    match_players.reduce(0) do |sum, match_player|
+      sum + match_player.points
+    end
+  end
+
   def self.players_with_no_team_for_current_game_week
     players_with_team = []
     players_with_no_team = []

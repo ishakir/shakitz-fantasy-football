@@ -1,0 +1,11 @@
+<h1>Final#show</h1>
+<p>Find me in app/views/final/show.html.erb</p>
+<p><%= @winner.to_json %></p>
+<p><%= @head_to_head_winner.to_json %></p>
+<p><%= @total_points_proportion.to_json %></p>
+<% @total_points_proportion_by_user.each do |user, prop| %>
+	<p><%= user.name %>:</p>
+	<p><%= prop.to_json %></p>
+<% end %>
+<p><%= @std_dev_per_user.to_json %></p>
+<p><%= @best_team.to_json %></p>
