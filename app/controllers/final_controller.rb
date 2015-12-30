@@ -23,9 +23,7 @@ class FinalController < ApplicationController
 
   def proportion_of_points_by_type(match_players)
     grouped = match_players.group_by { |player| player.nfl_player.nfl_player_type.position_type }
-    summed = Hash[grouped.map { |type, mps| [type, mps.map(&:points).sum] }]
-    total = summed.values.sum
-    Hash[summed.map { |type, points| [type, (points.to_f * 100) / total] }]
+    Hash[grouped.map { |type, mps| [type, mps.map(&:points).sum] }]
   end
 
   def winner

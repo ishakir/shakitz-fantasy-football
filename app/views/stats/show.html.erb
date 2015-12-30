@@ -68,7 +68,7 @@
                       <% else %>
                         <tr>
                       <% end %>
-                        <td><%= pair[0].name %></td>
+                        <td><%= link_to pair[0].name, controller: :user, action: :show, user_id: pair[0].id %></td>
                         <td><%= pair[0].team_name %></td>
                         <td><%= pair[1][:total_bench_points] %></td>
                         <td><%= pair[1][:wins] %></td>
