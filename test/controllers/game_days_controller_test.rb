@@ -95,76 +95,76 @@ class GameDaysControllerTest < ActionController::TestCase
 
   test 'best team contains great qb' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(110)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(110).nfl_player
   end
 
   test 'best team contains good qb' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(111)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(111).nfl_player
   end
 
   test 'best team does not contain bad qb' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert !(best_team.include? MatchPlayer.find(112))
+    assert !(Hash[best_team].keys.include? MatchPlayer.find(112).nfl_player)
   end
 
   test 'best team contains great rb' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(113)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(113).nfl_player
   end
 
   test 'best team contains good rb' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(114)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(114).nfl_player
   end
 
   test 'best team does not contain bad rb' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert !(best_team.include? MatchPlayer.find(115))
+    assert !(Hash[best_team].keys.include? MatchPlayer.find(115).nfl_player)
   end
 
   test 'best team contains great wr' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(116)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(116).nfl_player
   end
 
   test 'best team contains good wr' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(117)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(117).nfl_player
   end
 
   test 'best team does not contain bad wr' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert !(best_team.include? MatchPlayer.find(118))
+    assert !(Hash[best_team].keys.include? MatchPlayer.find(118).nfl_player)
   end
 
   test 'best team contains good kicker' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(119)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(119).nfl_player
   end
 
   test 'best team does not contain bad kicker' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert !(best_team.include? MatchPlayer.find(120))
+    assert !(Hash[best_team].keys.include? MatchPlayer.find(120).nfl_player)
   end
 
   test 'best team contains good defence' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(121)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(121).nfl_player
   end
 
   test 'best team does not contain bad defence' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert !(best_team.include? MatchPlayer.find(122))
+    assert !(Hash[best_team].keys.include? MatchPlayer.find(122).nfl_player)
   end
 
   test 'best team contains good te' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(123)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(123).nfl_player
   end
 
   test 'best team contains bad te' do
     best_team = get_assigns :show, :best_team, game_week: 7
-    assert_includes best_team, MatchPlayer.find(124)
+    assert_includes Hash[best_team].keys, MatchPlayer.find(124).nfl_player
   end
 end

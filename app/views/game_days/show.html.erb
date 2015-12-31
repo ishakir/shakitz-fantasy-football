@@ -71,22 +71,22 @@
       </div>
     </div>
     <div class="col-md-5">
-      <h3>Team of the week <span class="gameday-week-points-label"> <%= @best_team.reduce(0) { |total, match_player| total+= match_player.points} %> points</span></h3>
+      <h3>Team of the week <span class="gameday-week-points-label"> <%= @best_team.reduce(0) { |total, val| total += val[1]} %> points</span></h3>
       <table class="table">
         <tr>
           <th>Player</th>
           <th>Points</th>
         </tr>
-        <% @best_team.each do |match_player| %>
-        <tr id="<%= match_player.id %>Row">
-          <td id="<%= match_player.id %>" class="nopad">
-            <span class="player-name"><%= match_player.nfl_player.name %></span><br />
+        <% @best_team.each do |nfl_player, points| %>
+        <tr id="<%= nfl_player.id %>Row">
+          <td id="<%= nfl_player.id %>" class="nopad">
+            <span class="player-name"><%= nfl_player.name %></span><br />
             <span class="player-info">
-              <span class="player-pos"><%= match_player.nfl_player.nfl_player_type.position_type %></span> - 
-              <%= match_player.nfl_player.nfl_team.name %>
+              <span class="player-pos"><%= nfl_player.nfl_player_type.position_type %></span> - 
+              <%= nfl_player.nfl_team.name %>
             </span>
           </td>
-          <td><span id="<%= match_player.nfl_player.id %>_points" class="point-stats"><%= match_player.points %></span></td>
+          <td><span id="<%= nfl_player.id %>_points" class="point-stats"><%= points %></span></td>
         </tr>
         <% end %>
       </table>

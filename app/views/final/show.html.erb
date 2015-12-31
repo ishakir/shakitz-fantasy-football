@@ -1,0 +1,118 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+<%= javascript_include_tag "final" %>
+<script>
+  var overall_points_distribution = <%= raw @total_points_proportion.to_json %>
+  var user_specific_points_distribution = <%= raw Hash[@total_points_proportion_by_user.map { |user, prop| [user.name, prop] }].to_json %>
+</script>
+<div class="row">
+	<div class="cold-md-12 column">
+		<% results = @head_to_head_winner.all_results %>
+		<h1 align="center">Congratulations to the winner <%= @winner.name %> (<%= @winner.points %> points)</h1>
+		<h3 align="center">and to <%= @head_to_head_winner.name %> (
+			<% if results[:draws] == 0 %>
+				<%= results[:wins] %>-<%= results[:losses] %>
+			<% else %>
+				<%= results[:wins] %>-<%= results[:draws] %>-<%= results[:losses] %>
+			<% end %>
+		)</h3>
+	</div>
+</div>
+<div class="row">
+  	<div class="col-md-3 column">
+    	<ul class="nav nav-pills nav-stacked">
+      		<li role="presentation">
+        		<a href="#bestTeam" data-toggle="tab">Team Of The Year</a>
+      		</li>
+      		<li role="presentation">
+        		<a href="#spread" data-toggle="tab">Spread</a>
+      		</li>
+      		<li role="presentation" class="active">
+        		<a href="#pointsDistribution" data-toggle="tab">Points Distribution</a>
+      		</li>
+    	</ul>
+  	</div>
+  	<div class="col-md-9 column">
+    	<div class="row">
+      		<div class="tab-content">
+        		<div id="bestTeam" class="tab-pane">
+            		<div class="row">
+              			<div class="col-md-12 column">
+              				<h3>Team of the Year <span class="gameday-week-points-label"> <%= @best_team.reduce(0) { |total, val| total += val[1]} %> points</span></h3>
+						      <table class="table">
+						        <tr>
+						          <th>Player</th>
+						          <th>Points</th>
+						        </tr>
+						        <% @best_team.each do |nfl_player, points| %>
+						        <tr id="<%= nfl_player.id %>Row">
+						          <td id="<%= nfl_player.id %>" class="nopad">
+						            <span class="player-name"><%= nfl_player.name %></span><br />
+						            <span class="player-info">
+						              <span class="player-pos"><%= nfl_player.nfl_player_type.position_type %></span> - 
+						              <%= nfl_player.nfl_team.name %>
+						            </span>
+						          </td>
+						          <td><span id="<%= nfl_player.id %>_points" class="point-stats"><%= points %></span></td>
+						        </tr>
+						        <% end %>
+						      </table>
+						    </div>
+              			</div>
+              	</div>
+              	<div id="spread" class="tab-pane">
+            		<div class="row">
+              			<div class="col-md-12 column">
+              				<table class="table sortable">
+						        <thead>
+						          <tr>
+						            <th>User</th>
+						            <th>Team Name</th>
+						            <th data-defaultsort="desc">Standard Deviation</th>
+						          </tr>
+						        </thead>
+						        <tbody>
+						          <% @std_dev_per_user.each do |user, std_dev| %>
+							          <tr>
+							            <td><%= link_to user.name, controller: :user, action: :show, user_id: user.id %></td>
+							            <td><%= user.team_name %></td>
+							            <td><%= std_dev %></td>
+							          </tr>
+						          <% end %>
+						        </tbody>
+						    </table>
+              			</div>
+              		</div>
+              	</div>
+              	<div id="pointsDistribution" class="tab-pane active">
+              		<div class="row">
+              			<div class="col-md-12 column">
+              				<div class="dropdown">
+							  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							    Dropdown
+							    <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							    <li><a href="#">Overall</a></li>
+							    <li role="separator" class="divider"></li>
+							    <% @total_points_proportion_by_user.each do |user, prop| %>
+							    	<li><a href="#"><%= user.name %></a></li>
+							    <% end %>
+							  </ul>
+							</div>
+              			</div>
+              		</div>
+              		<div class="row">
+              			<div class="col-md-12 column">
+              				<h4 id="chartHeader" align="center">Displaying overall points spread</p>
+              			</div>
+              		</div>
+            		<div class="row">
+              			<div class="col-md-12 column">
+            				<canvas id="distributionChart" width="650" height="600"></canvas>
+				        </div>
+              		</div>
+              	</div>
+        	</div>
+    	</div>
+    </div>
+</div>

@@ -1,33 +1,6 @@
+require 'best_team'
+
 class GameDaysController < ApplicationController
-  BEST_TEAM_SIZE = 10
-
-  BEST_TEAM_DEFINITION = {
-    NflPlayerType::QB => {
-      min: 2,
-      max: 2
-    },
-    NflPlayerType::RB => {
-      min: 2,
-      max: 2
-    },
-    NflPlayerType::WR => {
-      min: 2,
-      max: 3
-    },
-    NflPlayerType::TE => {
-      min: 1,
-      max: 2
-    },
-    NflPlayerType::K => {
-      min: 1,
-      max: 2
-    },
-    NflPlayerType::D => {
-      min: 1,
-      max: 1
-    }
-  }
-
   GAME_WEEK_KEY = :game_week
   PLAYER_ID_KEY = :player_id
 
@@ -41,7 +14,7 @@ class GameDaysController < ApplicationController
     @current_game_week = WithGameWeek.current_game_week
     @player_data = return_nfl_player_and_team_data
     @users = User.all.sort_by { |u| -u.team_for_game_week(@page_game_week).points }
-    @best_team = find_ten_best_players(@page_game_week)
+    @best_team = best_players
     @last_comment = timestamp_of_last_comment
   end
 
@@ -61,6 +34,12 @@ class GameDaysController < ApplicationController
 
   private
 
+  def best_players
+    BestTeam.find_ten_best_players(
+      MatchPlayer.where(game_week: GameWeek.find_by(number: @page_game_week)).map { |mp| [mp.nfl_player, mp.points] }
+    )
+  end
+
   def form_team_data(nfl_player, game_week)
     game_week_team_players = GameWeekTeamPlayer.where(
       match_player: nfl_player.player_for_game_week(game_week)
@@ -73,53 +52,5 @@ class GameDaysController < ApplicationController
       team_name: found_user.team_name,
       playing: game_week_team_players.first.playing
     }
-  end
-
-  def find_ten_best_players(game_week)
-    Rails.logger.info "Finding best team for game week #{game_week}"
-    game_week = GameWeek.find_unique_with(game_week)
-
-    player_arrays = BEST_TEAM_DEFINITION.keys.reduce(best: [], remaining: []) do |player_arrays_acc, player_type|
-      add_players_of_type(player_type, player_arrays_acc, game_week)
-    end
-
-    best_players = player_arrays[:best]
-    remaining_players = player_arrays[:remaining]
-
-    best_players.concat(remaining_players.sort_by(&:points).last(BEST_TEAM_SIZE - best_players.size))
-  end
-
-  def add_players_of_type(player_type, player_arrays, game_week)
-    Rails.logger.info "Adding players for #{player_type}"
-    best_players = player_arrays[:best]
-    remaining_players = player_arrays[:remaining]
-
-    max = BEST_TEAM_DEFINITION[player_type][:max]
-    min = BEST_TEAM_DEFINITION[player_type][:min]
-
-    best_of_type = find_top_of_type(player_type, max, game_week)
-    best_players.concat(best_of_type[0..(min - 1)])
-    remaining_players.concat(best_of_type[min..(max - 1)])
-
-    Rails.logger.info "Best is now: #{best_players.map { |player| player.nfl_player.name }}"
-    Rails.logger.info "Remaining is now: #{remaining_players.map { |player| player.nfl_player.name }}"
-    { best: best_players, remaining: remaining_players }
-  end
-
-  def find_top_of_type(type, number, game_week)
-    MatchPlayer
-      .joins(:nfl_player)
-      .where(game_week: game_week, nfl_players: { nfl_player_type_id: NflPlayerType.find_unique_with(type) })
-      .order(points: :desc)
-      .limit(number)
-  end
-
-  def find_player(users, _name, game_week)
-    users.each do |user|
-      user.team_for_game_week(game_week).match_players do |match_player|
-        return user if match_player.nfl_player.name
-      end
-    end
-    nil
   end
 end

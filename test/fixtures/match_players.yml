@@ -76,7 +76,7 @@ mp_<%= n %>_<%= m %>:
   points_conceded: 30
   field_goals_kicked: 0
   extra_points_kicked: 0
-  points: 2
+  points: <%= n < 8 ? 13 : 2 %>
 <% end %>
 <% end %>
 
