@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   USER_KEY = :user
   TEXT_KEY = :text
   TIMESTAMP_KEY = :timestamp
-  MAX_COMMENTS_TO_LOAD = 200
+  MAX_COMMENTS_TO_LOAD = 150
 
   def create
     fail ArgumentError, 'Incorrect post submitted' unless params.key?(:request)
@@ -17,11 +17,11 @@ class CommentsController < ApplicationController
 
   def show
     comments = []
-    Comment.limit(MAX_COMMENTS_TO_LOAD).order('id asc').each do |c|
+    Comment.order('id desc').limit(MAX_COMMENTS_TO_LOAD).each do |c|
       tmp = c.as_json
       tmp[TIMESTAMP_KEY] = c[TIMESTAMP_KEY].to_f * 1000
       tmp['user_name'] = User.find(c['user_id']).name
-      comments.push(tmp)
+      comments.unshift(tmp) #Ensure earlier comments appear at top
     end
     render json: comments
   end
