@@ -1,6 +1,8 @@
 require 'best_team'
 
 class FinalController < ApplicationController
+  caches_page :show
+
   def show
     @winner = winner
     @head_to_head_winner = head_to_head_winner

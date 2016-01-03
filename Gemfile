@@ -60,6 +60,7 @@ gem 'rufus-scheduler'
 gem 'holidays', '2.2.0'
 
 gem 'descriptive_statistics'
+gem 'actionpack-page_caching'
 
 # gem 'simplecov'
 

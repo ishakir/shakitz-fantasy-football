@@ -23,6 +23,6 @@ module Footbawwl
       config.i18n.default_locale = :en
       config.autoload_paths += %W(#{config.root}/lib/modules)
       config.time_zone = "EST"
-
+      config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/deploy"
   end
 end
