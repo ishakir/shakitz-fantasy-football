@@ -35,9 +35,14 @@ class GameDaysController < ApplicationController
   private
 
   def best_players
-    BestTeam.find_ten_best_players(
-      MatchPlayer.where(game_week: GameWeek.find_by(number: @page_game_week)).map { |mp| [mp.nfl_player, mp.points] }
-    )
+    # Prevents exception on opening gameweek, only return best players if match players exist
+    if MatchPlayer.exists?
+      BestTeam.find_ten_best_players(
+        MatchPlayer.where(game_week: GameWeek.find_by(number: @page_game_week)).map { |mp| [mp.nfl_player, mp.points] }
+      )
+    else
+      []
+    end
   end
 
   def form_team_data(nfl_player, game_week)
