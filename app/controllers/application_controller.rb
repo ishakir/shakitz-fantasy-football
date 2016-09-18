@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   def timestamp_of_last_comment
     # Only get the last comment time if there are any and the user is logged in
-    if session[:user_id] and Comment.exists?
+    if session[:user_id] && Comment.exists?
       time = Comment.find(Comment.order(timestamp: :desc).limit(1)).timestamp.in_time_zone.to_i
       @last_comment = time * 1000
     else
