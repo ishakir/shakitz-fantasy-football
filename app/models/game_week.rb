@@ -19,11 +19,8 @@ class GameWeek < ActiveRecord::Base
 
     # There should only we one of these
     no_of_gw_objs = gw_obj_list.size
-    if no_of_gw_objs == 0
-      fail ActiveRecord::RecordNotFound, "Didn't find a record with game week '#{game_week}'"
-    elsif no_of_gw_objs > 1
-      fail IllegalStateError, "Found #{no_of_gw_objs} game weeks with game week '#{game_week}'"
-    end
+    raise ActiveRecord::RecordNotFound, "Didn't find a record with game week '#{game_week}'" if no_of_gw_objs.zero?
+    raise IllegalStateError, "Found #{no_of_gw_objs} game weeks with game week '#{game_week}'" if no_of_gw_objs > 1
 
     # Return what must be the only element
     gw_obj_list.first

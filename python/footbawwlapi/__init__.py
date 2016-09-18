@@ -9,7 +9,7 @@ def create_all_players(host, port, year, kind, game_weeks):
     for game in nflgame.games(year, week = week, kind = kind):
       games.append(Game(game, week))
 
-  if not games:
+  if not len(games) > 0:
     raise RuntimeError("Couldn't find any {}-games in {}, did you get the year right?".format(kind, year))
 
   offensive_players = {}

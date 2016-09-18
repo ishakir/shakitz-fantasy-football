@@ -8,7 +8,7 @@ class WaiverWiresController < ApplicationController
   PRIORITY_KEY = :incoming_priority
 
   def add
-    fail ArgumentError, 'Incorrect post submitted' unless params.key?(:request)
+    raise ArgumentError, 'Incorrect post submitted' unless params.key?(:request)
     @priority_array = {} # ensure we don't get duplicate incoming priority values by storing it all in a hash
     if params['request'].present?
       process_requested_waiver_wire_request_additions(params['request'])
@@ -32,11 +32,11 @@ class WaiverWiresController < ApplicationController
 
   def grab_waiver_history
     requests = []
-    if @game_week_time_obj[:locked]
-      sql = 'game_week_id <= ?'
-    else
-      sql = 'game_week_id < ?'
-    end
+    sql = if @game_week_time_obj[:locked]
+            'game_week_id <= ?'
+          else
+            'game_week_id < ?'
+          end
 
     WaiverWire.where(sql, GameWeek.find_unique_with(@game_week)).each do |w|
       outgoing_player = NflPlayer.find(w.player_out_id)
@@ -107,20 +107,20 @@ class WaiverWiresController < ApplicationController
   end
 
   def validate_user(user)
-    fail ArgumentError, 'User does not exist' unless User.find(user)
+    raise ArgumentError, 'User does not exist' unless User.find(user)
   end
 
   def validate_players(incoming_player, outgoing_player)
-    fail ArgumentError, 'Player ids cannot be identical' unless incoming_player != outgoing_player
-    fail ArgumentError, 'Incoming player does not exist' unless NflPlayer.find(incoming_player)
-    fail ArgumentError, 'Outgoing player does not exist' unless NflPlayer.find(outgoing_player)
+    raise ArgumentError, 'Player ids cannot be identical' unless incoming_player != outgoing_player
+    raise ArgumentError, 'Incoming player does not exist' unless NflPlayer.find(incoming_player)
+    raise ArgumentError, 'Outgoing player does not exist' unless NflPlayer.find(outgoing_player)
   end
 
   def validate_game_week(game_week)
-    fail ArgumentError, 'Gameweek needs to be active gameweek' unless game_week == WithGameWeek.current_game_week
+    raise ArgumentError, 'Gameweek needs to be active gameweek' unless game_week == WithGameWeek.current_game_week
   end
 
   def validate_incoming_priority(priority)
-    fail ArgumentError, 'Incoming priority needs to be a valid number from one onwards' unless priority > 0
+    raise ArgumentError, 'Incoming priority needs to be a valid number from one onwards' unless priority > 0
   end
 end

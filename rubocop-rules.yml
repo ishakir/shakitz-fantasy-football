@@ -16,10 +16,10 @@ ClassAndModuleChildren:
 # Configuration parameters: CountComments.
 ClassLength:
   Max: 460
-  
+
 # That blessed ABC metric
 Metrics/AbcSize:
-  Max: 17
+  Max: 25
 
 # Need to do this at some point
 # Offense count: 36
@@ -29,3 +29,7 @@ Documentation:
 # 80 is outdated, let's use 120
 LineLength:
   Max: 120
+
+# 10 has proven to be unreasonably prohibitive to development time, I think 20 is fine
+MethodLength:
+  Max: 20

@@ -148,8 +148,6 @@ module PointsStrategy
       @match_player.extra_points_kicked
     end
 
-    private
-
     def points_conceded_for_defense
       case @match_player.points_conceded
       when 0 then 10

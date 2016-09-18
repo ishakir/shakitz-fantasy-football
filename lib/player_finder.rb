@@ -17,7 +17,7 @@ module PlayerFinder
     return :only_type                  if id_hash.key?(TEAM_KEY)
   end
 
-  private
+  private_class_method
 
   def self.team_and_type?(id_hash)
     id_hash.key?(TYPE_KEY) && id_hash.key?(TEAM_KEY)

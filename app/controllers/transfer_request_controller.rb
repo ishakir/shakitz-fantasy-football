@@ -11,11 +11,11 @@ class TransferRequestController < ApplicationController
   ACTION_KEY = :action_type
   ID_KEY     = :id
 
-  ACTION_ACCEPT = 'accept'
-  ACTION_REJECT = 'reject'
-  ACTION_CANCEL = 'cancel'
+  ACTION_ACCEPT = 'accept'.freeze
+  ACTION_REJECT = 'reject'.freeze
+  ACTION_CANCEL = 'cancel'.freeze
 
-  ALL_ACTIONS = [ACTION_ACCEPT, ACTION_CANCEL, ACTION_REJECT]
+  ALL_ACTIONS = [ACTION_ACCEPT, ACTION_CANCEL, ACTION_REJECT].freeze
 
   def create
     validate_all_create_parameters(params)
@@ -37,7 +37,7 @@ class TransferRequestController < ApplicationController
     validate_all_parameters([ACTION_KEY, ID_KEY], params[TRANSFER_REQUEST_ID_KEY])
 
     action_type = params[TRANSFER_REQUEST_ID_KEY][ACTION_KEY]
-    fail ArgumentError, 'Action should be accept, cancel or reject' unless ALL_ACTIONS.include?(action_type)
+    raise ArgumentError, 'Action should be accept, cancel or reject' unless ALL_ACTIONS.include?(action_type)
 
     find_and_resolve_transfer_request(params[TRANSFER_REQUEST_ID_KEY][ID_KEY], action_type)
 

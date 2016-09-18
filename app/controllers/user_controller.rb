@@ -78,11 +78,14 @@ class UserController < ApplicationController
   def change_team_name
     validate_all_parameters([USER_ID_KEY, ACTIVE_USER_ID_KEY, TEAM_NAME_KEY], params)
     validate_team_name(params[TEAM_NAME_KEY])
+
     if params[USER_ID_KEY] != params[ACTIVE_USER_ID_KEY]
-      render status: :unprocessable_entity, json: { response: 'Unauthorized' }
-      return
+      raise NotAuthorised,
+            "Attempt to change team name of uid#{params[USER_ID_KEY]} by " \
+            "unauthorized user #{params[ACTIVE_USER_ID_KEY]}"
     end
-    result = User.where(id: params[USER_ID_KEY].to_i).update_all(team_name: params[TEAM_NAME_KEY])
+
+    result = persist_team_name_change(params[USER_ID_KEY].to_i, params[TEAM_NAME_KEY])
     render json: { response: 'Success', updated_rows: result }
   end
 
@@ -108,7 +111,7 @@ class UserController < ApplicationController
   def api_points
     validate_all_parameters([USER_ID_KEY], params)
     user_id = params[USER_ID_KEY].to_i
-    fail ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
+    raise ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
 
     render json: UserPoints.new(User.find(user_id))
   end
@@ -116,8 +119,8 @@ class UserController < ApplicationController
   private
 
   def validate_user_id_and_game_week(user_id, game_week)
-    fail ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
-    fail ArgumentError, "Game Week #{game_week} hasn't happened yet!" if game_week > WithGameWeek.current_game_week
+    raise ArgumentError, "#{params[USER_ID_KEY]} is not a valid user id!" if user_id <= 0
+    raise ArgumentError, "Game Week #{game_week} hasn't happened yet!" if game_week > WithGameWeek.current_game_week
   end
 
   def validate_everything_for_declare_roster(params)
@@ -127,7 +130,7 @@ class UserController < ApplicationController
   end
 
   def validate_team_name(team_name)
-    fail ArgumentError, '#params[TEAM_NAME_KEY] is toos short' if team_name.length < MIN_TEAM_NAME_LENGTH
+    raise ArgumentError, '#params[TEAM_NAME_KEY] is toos short' if team_name.length < MIN_TEAM_NAME_LENGTH
   end
 
   def put_game_week_data_in_assigns(params)
@@ -139,7 +142,7 @@ class UserController < ApplicationController
   def update_game_week_team_roster(params)
     game_week_team = User.find(params[USER_ID_KEY]).team_for_game_week(params[GAME_WEEK_KEY])
     if game_week_team.game_week.locked?
-      fail ArgumentError, 'Teams are now locked for this week'
+      raise ArgumentError, 'Teams are now locked for this week'
     end
     update_players_status(params[PLAYING_PLAYER_ID_KEY], game_week_team, true)
     update_players_status(params[BENCHED_PLAYER_ID_KEY], game_week_team, false)
@@ -155,12 +158,12 @@ class UserController < ApplicationController
 
   def validate_password(params)
     return if params[PASSWORD_KEY] == params[PASSWORD_CONFIRMATION_KEY]
-    fail ArgumentError, 'Password and password confirmation do not match'
+    raise ArgumentError, 'Password and password confirmation do not match'
   end
 
   def validate_game_week_active(game_week_number)
     game_week = GameWeek.find_unique_with(game_week_number)
-    fail ArgumentError, 'Gameweek is currently locked, unable to make changes' if game_week.locked?
+    raise ArgumentError, 'Gameweek is currently locked, unable to make changes' if game_week.locked?
   end
 
   def update_user_entity(user, params)
@@ -179,8 +182,8 @@ class UserController < ApplicationController
   end
 
   def validate_id_length(playing, benched)
-    fail ArgumentError, 'Invalid number of active players' if playing.length != 10
-    fail ArgumentError, 'Invalid number of benched players' if benched.length != 8
+    raise ArgumentError, 'Invalid number of active players' if playing.length != 10
+    raise ArgumentError, 'Invalid number of benched players' if benched.length != 8
   end
 
   def show_my_team_info
@@ -191,5 +194,9 @@ class UserController < ApplicationController
   def return_my_player_point_info
     user = User.find(params[USER_ID_KEY])
     user.team_for_game_week(@game_week).match_players.to_json
+  end
+
+  def persist_team_name_change(user_id, new_name)
+    User.where(id: user_id).update_all(team_name: new_name)
   end
 end

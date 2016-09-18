@@ -36,11 +36,11 @@ class TeamPlayerController < ApplicationController
   end
 
   def validate_team_is_not_already_full(team)
-    fail ActiveRecord::RecordInvalid if team.match_players.size >= MAX_PLAYING_SIZE + MAX_BENCH_SIZE
+    raise ActiveRecord::RecordInvalid if team.match_players.size >= MAX_PLAYING_SIZE + MAX_BENCH_SIZE
   end
 
   def validate_player_is_not_present_in_other_team(player)
-    fail ArgumentError, 'This player is already in a team' unless GameWeekTeamPlayer.where(match_player: player).empty?
+    raise ArgumentError, 'This player is already in a team' unless GameWeekTeamPlayer.where(match_player: player).empty?
   end
 
   def first_match_player(nfl_player_id)

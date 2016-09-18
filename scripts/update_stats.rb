@@ -27,5 +27,5 @@ if week_number > 0 && week_number < Settings.number_of_gameweeks + 1
   Rails.logger.info('Finished uploading stats, stdout was: ')
   Rails.logger.info(result)
 else
-  fail "Cannot update stats for week #{week_number} as it doesn't exist!"
+  raise "Cannot update stats for week #{week_number} as it doesn't exist!"
 end

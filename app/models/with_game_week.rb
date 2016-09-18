@@ -3,15 +3,15 @@ module WithGameWeek
   DAYS_IN_A_WEEK = 7
 
   def self.validate_game_week_number(game_week_number)
-    fail ArgumentError, game_week_too_small_message(game_week_number) if game_week_number < 1
-    fail ArgumentError, game_week_too_large_message(game_week_number) if game_week_number > Settings.number_of_gameweeks
+    raise ArgumentError, game_week_too_small_message(game_week_number) if game_week_number < 1
+    raise ArgumentError, game_week_too_large(game_week_number) if game_week_number > Settings.number_of_gameweeks
   end
 
   def self.game_week_too_small_message(game_week_number)
     "Game week number must be greater than 1, not #{game_week_number}"
   end
 
-  def self.game_week_too_large_message(game_week_number)
+  def self.game_week_too_large(game_week_number)
     "Game week number must be less than #{Settings.number_of_gameweeks}, not #{game_week_number}"
   end
 
@@ -34,8 +34,8 @@ module WithGameWeek
     WithGameWeek.validate_game_week_number(game_week_number)
     candidates = all_with_correct_game_week(list, game_week_number)
 
-    fail ActiveRecord::RecordNotFound, no_candidate_message(id, game_week_number) if candidates.empty?
-    fail IllegalStateError, multiple_candidates_message(candidates.size, id, game_week_number) if candidates.size > 1
+    raise ActiveRecord::RecordNotFound, no_candidate_message(id, game_week_number) if candidates.empty?
+    raise IllegalStateError, multiple_candidates_message(candidates.size, id, game_week_number) if candidates.size > 1
 
     candidates.first
   end

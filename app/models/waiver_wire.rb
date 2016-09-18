@@ -3,7 +3,7 @@ class WaiverWire < ActiveRecord::Base
   STATUS_ACCEPTED = :accepted
   STATUS_REJECTED = :rejected
 
-  ALLOWED_TYPES = [STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED]
+  ALLOWED_TYPES = [STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED].freeze
 
   belongs_to :user
   belongs_to :player_out, class_name: 'NflPlayer'

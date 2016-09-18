@@ -2,6 +2,8 @@
 require 'illegal_state_error'
 require 'active_record/validations'
 class ApplicationController < ActionController::Base
+  NotAuthorised = Class.new(StandardError)
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
@@ -30,12 +32,12 @@ class ApplicationController < ActionController::Base
   def validate_all_parameters(expected_params, params)
     expected_params.each do |parameter|
       next if params.key?(parameter)
-      fail ArgumentError, "Expecting '#{parameter}' in params, but could not find it"
+      raise ArgumentError, "Expecting '#{parameter}' in params, but could not find it"
     end
   end
 
   def validate_user_session(user_id)
-    fail ArgumentError, 'User is not authorised to perform this action' if session[:user_id] != user_id
+    raise ArgumentError, 'User is not authorised to perform this action' if session[:user_id] != user_id
   end
 
   def validate_at_least_number_of_parameters(expected_params, params, minimum_expected)
@@ -47,7 +49,7 @@ class ApplicationController < ActionController::Base
 
     return unless parameters_found.size < minimum_expected
     parameters_found_string = parameters_found.join(', ')
-    fail ArgumentError, "Expected at least #{minimum_expected} but found #{parameters_found_string}"
+    raise ArgumentError, "Expected at least #{minimum_expected} but found #{parameters_found_string}"
   end
 
   def return_nfl_player_and_team_data
@@ -90,6 +92,11 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordInvalid do |error|
     trace_error(error)
     render_unprocessable_entity
+  end
+
+  rescue_from ApplicationController::NotAuthorised do |error|
+    trace_error(error)
+    render status: :unprocessable_entity, json: { response: 'Unauthorized' }
   end
 
   # Stuff that's going to return a 500
