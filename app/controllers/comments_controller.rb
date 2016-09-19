@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   MAX_COMMENTS_TO_LOAD = 150
 
   def create
-    fail ArgumentError, 'Incorrect post submitted' unless params.key?(:request)
+    raise ArgumentError, 'Incorrect post submitted' unless params.key?(:request)
     comment = params[:request].symbolize_keys
     validate_comment_params(comment)
     comment[USER_KEY] = User.find(comment[USER_KEY])
@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
       tmp = c.as_json
       tmp[TIMESTAMP_KEY] = c[TIMESTAMP_KEY].to_f * 1000
       tmp['user_name'] = User.find(c['user_id']).name
-      comments.unshift(tmp) #Ensure earlier comments appear at top
+      comments.unshift(tmp) # Ensure earlier comments appear at top
     end
     render json: comments
   end
@@ -32,7 +32,7 @@ class CommentsController < ApplicationController
   end
 
   def validate_user(user)
-    fail ArgumentError, 'User does not exist' unless User.find(user)
+    raise ArgumentError, 'User does not exist' unless User.find(user)
   end
 
   private

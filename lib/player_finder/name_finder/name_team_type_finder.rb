@@ -26,7 +26,7 @@ module PlayerFinder
       def player
         teams = NflTeam.where(name: @team)
         types = NflPlayerType.where(position_type: @type)
-        fail IllegalStateError unless teams.size == 1 && types.size == 1
+        raise IllegalStateError unless teams.size == 1 && types.size == 1
 
         players = NflPlayer.where(name: @name, nfl_team: teams[0], nfl_player_type: types[0])
         return :none     if players.empty?

@@ -2,7 +2,7 @@
 require 'test_helper'
 
 class MatchPlayerTest < ActiveSupport::TestCase
-  NON_STAT_ATTIBUTES = %w(id nfl_player_id game_week_id created_at updated_at)
+  NON_STAT_ATTIBUTES = %w(id nfl_player_id game_week_id created_at updated_at).freeze
 
   test 'can see player touchdown stat' do
     obj = MatchPlayer.find(1).nfl_player

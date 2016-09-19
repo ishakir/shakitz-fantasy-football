@@ -5,11 +5,8 @@ class GameWeekTeam < ActiveRecord::Base
 
     # There should only we one of these
     no_of_gwt_objs = gwt_obj_list.size
-    if no_of_gwt_objs == 0
-      fail ActiveRecord::RecordNotFound, no_record_found_message(user_id, game_week)
-    elsif no_of_gwt_objs > 1
-      fail IllegalStateError, multiple_records_found_message(no_of_gwt_objs, user_id, game_week)
-    end
+    raise ActiveRecord::RecordNotFound, no_record_found_message(user_id, game_week) if no_of_gwt_objs.zero?
+    raise IllegalStateError, multiple_records_found_message(no_of_gwt_objs, user_id, game_week) if no_of_gwt_objs > 1
 
     # Return what must be the only element
     gwt_obj_list.first
@@ -59,7 +56,7 @@ class GameWeekTeam < ActiveRecord::Base
     # "Or" is not implemented yet :/
     fixtures = Fixture.where("home_team_id = #{id} or away_team_id = #{id}")
     return nil if fixtures.empty?
-    fail IllegalStateException if fixtures.size > 1
+    raise IllegalStateException if fixtures.size > 1
     fixtures[0]
   end
 
@@ -73,7 +70,7 @@ class GameWeekTeam < ActiveRecord::Base
     return :won if fixture.won_by?(self)
     return :drawn if fixture.drawn?
     return :lost if fixture.lost_by?(self)
-    fail IllegalStateException, "fixture wasn't won, drawn or lost by this team!"
+    raise IllegalStateException, "fixture wasn't won, drawn or lost by this team!"
   end
 
   def points

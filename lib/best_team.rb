@@ -26,7 +26,7 @@ module BestTeam
       min: 1,
       max: 1
     }
-  }
+  }.freeze
 
   # Players should be an NflPlayer -> points hash
   def self.find_ten_best_players(players)

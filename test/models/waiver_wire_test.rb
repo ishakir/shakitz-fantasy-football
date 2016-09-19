@@ -51,7 +51,7 @@ class WaiverWireTest < ActiveSupport::TestCase
   test "can't add multiple targets under same priority in same round" do
     WaiverWire.create!(@valid_params)
     assert_raise ActiveRecord::RecordInvalid do
-      (WaiverWire.create!(@valid_params))
+      WaiverWire.create!(@valid_params)
     end
   end
 

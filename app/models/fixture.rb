@@ -41,7 +41,7 @@ class Fixture < ActiveRecord::Base
 
   def assert_team_is_playing(team)
     return if team.id == home_team.id || team.id == away_team.id
-    fail ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
+    raise ArgumentError, "Team provided with id #{team.id} is not playing in this fixture!"
   end
 
   def winner

@@ -199,7 +199,7 @@ class NflPlayerControllerTest < ActionController::TestCase
     receiving_twoptm: 1,
     field_goals_kicked: 7,
     extra_points_kicked: 20
-  }
+  }.freeze
 
   test 'should reject no player attribute' do
     post :update_stats, format: :json, game_week: 1

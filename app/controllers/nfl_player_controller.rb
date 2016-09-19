@@ -84,7 +84,7 @@ class NflPlayerController < ApplicationController
   end
 
   def create_defence_player(params)
-    fail ArgumentError if params.key?(NFL_ID_KEY)
+    raise ArgumentError if params.key?(NFL_ID_KEY)
 
     team = find_team_from_name(params[TEAM_KEY])
     type = find_type_from_name(params[TYPE_KEY])
@@ -123,13 +123,13 @@ class NflPlayerController < ApplicationController
 
   def find_team_from_name(team_name)
     teams = NflTeam.where(name: team_name)
-    fail ActiveRecord::RecordNotFound if teams.size != 1
+    raise ActiveRecord::RecordNotFound if teams.size != 1
     teams.first
   end
 
   def find_type_from_name(type)
     types = NflPlayerType.where(position_type: type)
-    fail ActiveRecord::RecordNotFound if types.size != 1
+    raise ActiveRecord::RecordNotFound if types.size != 1
     types.first
   end
 

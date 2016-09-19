@@ -31,6 +31,6 @@ class MatchPlayer < ActiveRecord::Base
 
   def fail_too_many_game_week_teams
     users = game_week_teams.map { |game_week_team| game_week_team.user.name }.join(',')
-    fail IllegalStateError, "More than one team (#{users}) for #{nfl_player.name} in week #{game_week.number}!"
+    raise IllegalStateError, "More than one team (#{users}) for #{nfl_player.name} in week #{game_week.number}!"
   end
 end

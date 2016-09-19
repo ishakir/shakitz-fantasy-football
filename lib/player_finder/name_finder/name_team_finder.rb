@@ -23,7 +23,7 @@ module PlayerFinder
 
       def player
         teams = NflTeam.where(name: @team)
-        fail IllegalStateError unless teams.size == 1
+        raise IllegalStateError unless teams.size == 1
 
         players = NflPlayer.where(name: @name, nfl_team: teams[0])
         return :none     if players.empty?
