@@ -133,9 +133,9 @@ class ActiveSupport::TestCase
   end
 
   def assert_all_fixtures_played_equally(fixtures_array)
-    no_of_1_vs_2 = fixtures_array[0][1] + fixtures_array[1][0]
+    numof1vs2 = fixtures_array[0][1] + fixtures_array[1][0]
     0.upto(fixtures_array.size - 1) do |n|
-      assert_team_plays_everyone_equally(no_of_1_vs_2, n, fixtures_array)
+      assert_team_plays_everyone_equally(numof1vs2, n, fixtures_array)
     end
   end
 
@@ -151,11 +151,11 @@ class ActiveSupport::TestCase
 
     FixturesGenerator.new.generate
 
-    user_1_no_fixtures = User.find(1).opponents.size
+    user1numfixtures = User.find(1).opponents.size
 
     # Check users no 2 - no_users for same number of games
     (no_users - 1).times do |n|
-      assert_equal user_1_no_fixtures, User.find(2 + n).opponents.size
+      assert_equal user1numfixtures, User.find(2 + n).opponents.size
     end
   end
 
