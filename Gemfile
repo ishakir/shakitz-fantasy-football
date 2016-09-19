@@ -42,7 +42,7 @@ group :development do
   gem 'rails_layout'
 end
 
-gem 'rubocop'
+gem 'rubocop', '0.43.0'
 gem 'magic_encoding'
 gem 'rrschedule'
 gem 'rails_config', '0.4.2'
