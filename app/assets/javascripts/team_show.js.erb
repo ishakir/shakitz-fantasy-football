@@ -316,7 +316,7 @@ var populateStats = function(){
 				"<img src='<%= asset_path('swap.png') %>' alt='Submit transfer request'/>Transfer</div>";
 		} 
 		header +=	"</div> <div class='sh-point-col'></div></div>";
-		var hasStatInfo = false;
+		var hasStatInfo = false, hasPointsAboveZero = false;
 		var innerContent = "<div class='sh-point-flex-container'>";
 		$.each(value, function(k, v){
 			if(k.indexOf('id') > -1 || k.indexOf('_at') > -1 || k.indexOf('points') > -1){
@@ -325,14 +325,17 @@ var populateStats = function(){
 			hasStatInfo = true;
 			var imgUrl = decideOnIcon(k);
 			var keySpaced = k.replace(/_/g, ' ');
-			innerContent += "<div class='sh-point-row-container'><div class='sh-point-row'><img src='"+imgUrl+
-				"' class='sh-point-row-icon' /><p>" + keySpaced + " - " + v + "</p></div></div>";
-
+			if(v !== 0) {
+				innerContent += "<div class='sh-point-row-container'><div class='sh-point-row'><img src='"+imgUrl+
+					"' class='sh-point-row-icon' /><p>" + keySpaced + " - " + v + "</p></div></div>";	
+				hasPointsAboveZero = true;
+			}
 		});
-		if(!hasStatInfo){
+		if(!hasStatInfo || !hasPointsAboveZero){
 			innerContent += "<div class='sh-point-row'>No data to show</div>";
 		}
 		$('#' + value.id + 'RowDetail').append(header + innerContent + "</div></div></td>");
+		$($('#' + value.id + '_stat_table').find('.sh-point-container')[0]).css('display', 'block');
 	});
 };
 
