@@ -7,11 +7,11 @@ var playerToBeAdded;
 
 
 var setTableHandlers = function(){
-  $(".benched tr").click(function() {
+  $(".benched tr .player-td-info").click(function() {
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
   });
-  $(".active-roster tr").click(function() {
+  $(".active-roster tr .player-td-info").click(function() {
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
   });
