@@ -80,15 +80,69 @@
 }
 
 #left-Box{
-  float:left;
-  width:45%;
   margin-bottom:3em;
 }
 
 #right-Box{
-  float:right;
-  width:45%;
   margin-bottom:3em;
+}
+
+/** Point Info **/
+.sh-point-container-td {
+  display: none;
+}
+.sh-point-container {
+    display: table-cell;
+    font-size: 13px;
+}
+
+.sh-point-flex-container {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  clear: both;
+}
+
+.sh-point-row-container {
+  width: 50%;
+}
+
+.sh-point-row-icon {
+  float: left;
+  padding-right: 5px;
+}
+#sh-point-info-box {
+  padding-top: 5px;
+}
+
+#sh-point-info-box div {
+  padding-bottom: 3px;
+}
+
+.sh-point-col-score {
+  float: left;
+  margin-bottom: 1em;
+  max-width: 50%;
+}
+
+.sh-point-col-transfer {
+  text-align: right;
+}
+
+.sh-point-col-transfer img {
+  height: 20px;
+  cursor: pointer;
+}
+
+.sh-point-row {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  padding-left: 0.6rem;
+  padding-bottom: 0.5rem;
+}
+
+.sh-point-row-container:nth-child(4n), .sh-point-row-container:nth-child(4n-1) {
+  background-color: #eee;
 }
 
 #stat-detail table{
@@ -111,4 +165,10 @@
 
 .point-stats{
   cursor:default; 
+  text-align: right;
+}
+
+.icon-credit {
+  text-align: center;
+  font-size: 10px;
 }
