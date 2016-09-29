@@ -7,11 +7,17 @@ var playerToBeAdded;
 
 
 var setTableHandlers = function(){
-  $(".benched tr.player-tr").click(function() {
+  $(".benched tr.player-tr").click(function(evt) {
+  	if (evt.target.className === 'point-stats') {
+  		return;
+  	}
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
   });
-  $(".active-roster tr.player-tr").click(function() {
+  $(".active-roster tr.player-tr").click(function(evt) {
+  	if (evt.target.className === 'point-stats') {
+  		return;
+  	}
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
   });
