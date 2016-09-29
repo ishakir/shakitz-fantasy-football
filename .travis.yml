@@ -4,5 +4,6 @@ rvm:
   - 2.1.1
 script:
   - rubocop -R
+  - rake db:migrate RAILS_ENV="test"
   - rake test
   - rake assets:precompile RAILS_ENV="production"
