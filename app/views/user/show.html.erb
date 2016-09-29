@@ -82,7 +82,7 @@
 					<th style="text-align:right;">Points</th>
 				</tr>
 				<% @user.team_for_game_week(@game_week).match_players_playing.sort_by{ |player| player_type_order.find_index(player.nfl_player.nfl_player_type.position_type)}.each do |match_player| %>
-				<tr id="<%= match_player.id %>Row">
+				<tr id="<%= match_player.id %>Row" class="player-tr">
 					<td id="<%= match_player.id %>" class="player-td-info">
 						<span class="player-name"><%= match_player.nfl_player.name %></span><br />
 						<span class="player-info">
@@ -110,7 +110,7 @@
 					<th style="text-align:right;">Points</th>
 				</tr>
 				<% @user.team_for_game_week(@game_week).match_players_benched.sort_by{ |player| player_type_order.find_index(player.nfl_player.nfl_player_type.position_type)}.each do |match_player| %>
-				<tr id="<%= match_player.id %>Row">
+				<tr id="<%= match_player.id %>Row" class="player-tr">
 					<td id="<%= match_player.id %>" class="player-td-info">
 						<span class="player-name"><%= match_player.nfl_player.name %></span><br />
 						<span class="player-info">

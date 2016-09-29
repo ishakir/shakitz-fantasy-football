@@ -153,13 +153,13 @@ var populateIdArrays = function(){
   var context = this;
   context.benchedId = [];
   context.playingId = [];
-  $('.active-roster tr').each(function(i, value){
+  $('.active-roster tr.player-tr').each(function(i, value){
     var sId = parseInt(value.id.replace('Row', ''));
     if(!isNaN(sId)){
       context.playingId.push(parseInt(sId));
     }
   });
-  $('.benched tr').each(function(i, value){
+  $('.benched tr.player-tr').each(function(i, value){
     var sId = parseInt(value.id.replace('Row', ''));
     if(!isNaN(sId)){
       context.benchedId.push(parseInt(sId));
