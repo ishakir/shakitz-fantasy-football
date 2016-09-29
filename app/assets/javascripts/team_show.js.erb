@@ -309,7 +309,7 @@ var selector = function() {
 
 var populateStats = function(){
 	$.each(stats, function(key, value){
-		var header = "<td id='"+value.id+"_stat_table' class='sh-point-container-td' colspan='2'><div class='sh-point-container'><div id='sh-point-info-box'>" + 
+		var header = "<td id='"+value.nfl_player_id+"_stat_table' class='sh-point-container-td' colspan='2'><div class='sh-point-container'><div id='sh-point-info-box'>" + 
 			"<div><div class='sh-point-col'><div class='sh-point-col-score'>Score breakdown</div>";
 		if (!isLoggedIn) {
 			header += "<div class='sh-point-col-transfer'>" + 
@@ -334,8 +334,8 @@ var populateStats = function(){
 		if(!hasStatInfo || !hasPointsAboveZero){
 			innerContent += "<div class='sh-point-row'>No data to show</div>";
 		}
-		$('#' + value.id + 'RowDetail').append(header + innerContent + "</div></div></td>");
-		$($('#' + value.id + '_stat_table').find('.sh-point-container')[0]).css('display', 'block');
+		$('#' + value.nfl_player_id + 'RowDetail').append(header + innerContent + "</div></div></td>");
+		$($('#' + value.nfl_player_id + '_stat_table').find('.sh-point-container')[0]).css('display', 'block');
 	});
 };
 
