@@ -57,7 +57,8 @@ class ApplicationController < ActionController::Base
   def return_nfl_player_and_team_data
     gameweek = WithGameWeek.current_game_week
     key = 'nfl_player_and_team_data_for_gw_' + gameweek.to_s
-    Rails.cache.fetch(key, expires_in: getCacheKeyExpiry()) do
+    expiry = cache_expiry
+    Rails.cache.fetch(key, expires_in: expiry) do
       players = NflPlayer.includes(:nfl_team)
       tmp = {}
       players.each do |player|
@@ -88,15 +89,11 @@ class ApplicationController < ActionController::Base
   def render_internal_server_error
     render file: "#{Rails.root}/public/500.html", layout: false, status: :exception
   end
-  
+
   # Cache generation methods
-  def getCacheKeyExpiry()
-    currentTime = Time.now
-    if currentTime.friday? and currentTime.hour > 00
-      15.minutes
-    elsif currentTime.sunday? and currentTime.hour > 17
-      15.minutes
-    elsif currentTime.tuesday? and currentTime.hour > 00 
+  def cache_expiry
+    time = Time.zone.now
+    if (time.friday? || time.tuesday?) && time.hour > 0o0 || time.sunday? && time.hour > 17
       15.minutes
     else
       1.day
