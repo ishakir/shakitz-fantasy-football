@@ -324,8 +324,9 @@ var populateStats = function(){
 		header +=	"</div> <div class='sh-point-col'></div></div>";
 		var hasStatInfo = false, hasPointsAboveZero = false;
 		var innerContent = "<div class='sh-point-flex-container'>";
+
 		$.each(value, function(k, v){
-			if(k.indexOf('id') > -1 || k.indexOf('_at') > -1 || k.indexOf('points') > -1){
+			if(k.indexOf('id') > -1 || k.indexOf('_at') > -1 || k === 'points'){
 				return; //don't show date or id stats or points
 			}
 			hasStatInfo = true;
