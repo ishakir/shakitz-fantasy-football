@@ -20,6 +20,7 @@ Shakitz is the open source implementation of a fantasy football league. Key feat
 * Default NFL points spreads + options to customize
 * Stats page including:
     * "Bench" stats
+    * Leading fantasy scorer stats
 * 'Smack Board' - where users can give each other some fighting talk
 
 Shakitz had an alpha run during the 2014 preseason, and the 2014 regular season. This helped us remedy a lot of issues. We're currently in a beta run for the 2015 preseson and hope to have it fully fleshed out by the end of the regular season. In it's current state it is definitely playable, it just lacks all of the features of its non open-sourced peers.
@@ -49,8 +50,6 @@ Highest Priority new features
   * List of bench fo the week weekly winners
   * Who won the most weeks overall?
   * Team stars (most points over all weeks for a user)
-* Visualizations
-  * Position graphs over time
 
 Setting up a development environment
 ====================================

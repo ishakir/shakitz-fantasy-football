@@ -2,12 +2,30 @@
 <script>
   var points = <%= raw @points.to_json %>
   var lastComment = <%= raw @last_comment %>;
+  
+  //Let us initialise the stats table, and show/hide the relevant content
+  $(document).ready(function() {
+  	$('#topScorers a').click(function (evt) {
+  		//Update table content
+  		var targetClass = '.' + evt.target.innerHTML.trim();
+  		$('#topScorersTable tbody tr').not(targetClass).hide()
+  		$('#topScorersTable tbody tr' + targetClass).show();
+  		
+  		//Update active position class
+  		var linkTargetClass = '.pos-' + evt.target.innerHTML.trim();
+  		$('.top-scorers-position-container a').not(linkTargetClass).removeClass('active-position');
+  		$('.top-scorers-position-container a' + linkTargetClass).addClass('active-position')
+  	});
+  });
 </script>
 <%= javascript_include_tag "stats" %>
 <div class="row">
   <div class="col-md-3 column">
     <ul class="nav nav-pills nav-stacked">
       <li role="presentation" class="active">
+      	<a href="#topScorers" data-toggle="tab">Top Points Scorers</a>
+      </li>
+      <li role="presentation">
         <a href="#pointsGraph" data-toggle="tab">Points Graph</a>
       </li>
       <!-- <li role="presentation">
@@ -24,7 +42,7 @@
   <div class="col-md-9 column">
     <div class="row">
       <div class="tab-content">
-        <div id="pointsGraph" class="tab-pane active">
+        <div id="pointsGraph" class="tab-pane">
           <div class="col-md-10 column">
             <canvas id="pointsChart" width="650" height="600"></canvas>
           </div>
@@ -104,6 +122,45 @@
                 <% end %>
               </div>
             </div>
+          </div>
+          <div id="topScorers" class="tab-pane active">
+          	<div class="row">
+          		<div class="col-md-12 column">
+          			<div class="top-scorers-position-container">
+          				<span class="top-scorers-position">Position:</span> 
+          				<a class="pos-QB active-position">QB</a>
+	          			<a class="pos-WR">WR</a>
+	          			<a class="pos-RB">RB</a>
+	          			<a class="pos-TE">TE</a>
+	          			<a class="pos-K">K</a>
+	          			<a class="pos-D">D</a>
+          			</div>
+          		</div>
+          	</div>
+          	<div class="row">
+          		<div class="col-md-12 column">
+          			<table class="table sortable" id="topScorersTable">
+          				<thead>
+          					<tr>
+          						<th class="top-scorers-col-name">Player Name</th>
+          						<th align="right">Total Points</th>
+          					</tr>
+      					</thead>
+      					<tbody>
+      						<% @top_stats.to_hash.each do |row, index| %>
+      							<% if row['position_type'] != 'QB' %>
+      							<tr class="<%= row['position_type'] %>" style="display:none;">
+      							<% else %>
+  								<tr class="<%= row['position_type'] %>">
+      							<% end %>
+      								<td><%= row['name'] %></td>
+      								<td><%= row['points'] %></td>
+      							</tr>
+      						<%end%>
+      					</tbody>
+  					</table>
+          		</div>
+          	</div>
           </div>
         </div>
       </div>
