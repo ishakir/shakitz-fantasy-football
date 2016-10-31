@@ -14,27 +14,27 @@
 						<a href="/">Home</a>
 					</li>
 					<% if session[:user_id] %>
-						<li class="<%=active?(user_path(:id)) %>">
+						<li class="<%= active?(user_path(:id)) %>">
 							<a href="/user/<%= session[:user_id] %>">My Team</a>
 						</li>
 					<% end %>
-					<li class="<%=active?(transfer_request_path) %>">
+					<li class="<%= active?(transfer_request_path) %>">
 						<a href="/transfer/status">Transfers
 							<% if @transfer_amount > 0 %>
 							<span class="badge"><%= @transfer_amount %></span>
 							<% end %>
 						</a>
 					</li>
-					<li class="<%=active?(waiver_wire_path) %>">
+					<li class="<%= active?(waiver_wire_path) %>">
 						<a href="/waiver_wire">Waiver Wire</a>
 					</li>
-					<li class="<%= active?("/game_day") %>">
+					<li class="<%= active?(game_day_path) %>">
 						<a href="/game_day">Game Day</a>
 					</li>
-					<li class="<% active?("/stats") %>">
+					<li class="<%= active?(stats_path) %>">
 						<a href="/stats">Stats</a>
 					</li>
-					<li class="<% active?("/comments") %>">
+					<li class="<%= active?(comments_path) %>">
 						<a href="/comments">Smack Board
 							<span class="badge smack-badge"></span>
 						</a>
