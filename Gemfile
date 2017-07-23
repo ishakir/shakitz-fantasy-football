@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.0'
+gem 'rails', '~> 4.1.16'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
@@ -33,6 +33,10 @@ gem 'jbuilder', '~> 1.2'
 #authentication gems
 gem 'bcrypt-ruby', :require => 'bcrypt'
 
+#Caching gems
+gem 'actionpack-page_caching'
+gem 'actionpack-action_caching'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -42,11 +46,11 @@ group :development do
   gem 'rails_layout'
 end
 
-gem 'rubocop'
+gem 'rubocop', '0.43.0'
 gem 'magic_encoding'
 gem 'rrschedule'
 gem 'rails_config', '0.4.2'
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.20'
 
 #third-party plugin to make select boxes nicer
 gem 'twitter-typeahead-rails'
@@ -60,7 +64,6 @@ gem 'rufus-scheduler'
 gem 'holidays', '2.2.0'
 
 gem 'descriptive_statistics'
-gem 'actionpack-page_caching'
 
 # gem 'simplecov'
 

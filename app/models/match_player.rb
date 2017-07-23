@@ -27,6 +27,15 @@ class MatchPlayer < ActiveRecord::Base
     end
   end
 
+  def self.top_overall_scorers
+    MatchPlayer.connection.select_all("select sum(mp.points) as points, np.name, npt.position_type
+      from match_players as mp, nfl_players as np, nfl_player_types as npt
+      where mp.nfl_player_id = np.id
+      and np.nfl_player_type_id = npt.id
+      group by np.id, np.name
+      order by nfl_player_type_id, points desc")
+  end
+
   private
 
   def fail_too_many_game_week_teams

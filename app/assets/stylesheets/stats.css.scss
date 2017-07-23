@@ -6,3 +6,25 @@
   font-size:20px; 
   margin-top: 50px;
 }
+
+.top-scorers-position-container {
+  margin-bottom: 30px;
+}
+.top-scorers-position-container a {
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+.top-scorers-position {
+  font-size: 16px;
+}
+
+.top-scorers-col-name {
+  min-width: 70%;
+  width: 70%;
+}
+
+.active-position {
+  border: 1px solid #9b59b6;
+  background-color: #ecf0f1;
+}

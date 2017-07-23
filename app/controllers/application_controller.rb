@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'illegal_state_error'
 require 'active_record/validations'
+
 class ApplicationController < ActionController::Base
   NotAuthorised = Class.new(StandardError)
 
@@ -54,14 +55,19 @@ class ApplicationController < ActionController::Base
   end
 
   def return_nfl_player_and_team_data
-    players = NflPlayer.includes(:nfl_team)
-    tmp = {}
-    players.each do |player|
-      player_tmp = { player: player }
-      name_tmp = { team: player.nfl_team.name }
-      tmp[player.id] = player_tmp.merge!(name_tmp)
+    gameweek = WithGameWeek.current_game_week
+    key = 'nfl_player_and_team_data_for_gw_' + gameweek.to_s
+    expiry = cache_expiry
+    Rails.cache.fetch(key, expires_in: expiry) do
+      players = NflPlayer.includes(:nfl_team)
+      tmp = {}
+      players.each do |player|
+        player_tmp = { player: player }
+        name_tmp = { team: player.nfl_team.name }
+        tmp[player.id] = player_tmp.merge!(name_tmp)
+      end
+      tmp.to_json
     end
-    tmp.to_json
   end
 
   def ok_response
@@ -82,6 +88,16 @@ class ApplicationController < ActionController::Base
   # Utility methods
   def render_internal_server_error
     render file: "#{Rails.root}/public/500.html", layout: false, status: :exception
+  end
+
+  # Cache generation methods
+  def cache_expiry
+    time = Time.zone.now
+    if (time.friday? || time.tuesday?) && time.hour > 0o0 || time.sunday? && time.hour > 17
+      15.minutes
+    else
+      1.day
+    end
   end
 
   # Stuff that's going to return a 422

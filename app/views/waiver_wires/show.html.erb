@@ -87,6 +87,7 @@
 				</thead>
 				<tbody>
 					<% @waiver_history.each_with_index do |waiver, index| %>
+						<% next if waiver[:status] == 'rejected' %>
 						<% if index%2 == 0%>
 						<tr class="active">
 						<% else %>

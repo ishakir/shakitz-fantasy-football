@@ -10,6 +10,7 @@ class StatsController < ApplicationController
     @rows = rows_for_bench_table(game_week_teams, current_game_week)
     @points = cumulative_points_hash(current_game_week_with_some_stats)
     @last_comment = timestamp_of_last_comment
+    @top_stats = MatchPlayer.top_overall_scorers
   end
 
   private

@@ -38,8 +38,8 @@ $(function() {
 		datasets: labels.map(function(username, index) {
 			return {
 				label: username,
-				fillColor : fillColor,
-	        	strokeColor : strokeColors[index],
+				backgroundColor : fillColor,
+	        	borderColor : strokeColors[index],
 	        	pointColor : pointColor,
 	        	pointStrokeColor : pointStrokeColor,
 	        	data: points[username]
@@ -47,16 +47,20 @@ $(function() {
 		}),
 	};
 
-	var pointsChart = new Chart($("#pointsChart").get(0).getContext("2d")).Line(
-		data,
-		{
+	var ctx = $("#pointsChart");
+	var pointsChart = new Chart(ctx, {
+		type: 'line',
+		data: data,
+		options: {
     		showTooltips : false,
       		bezierCurveTension: 0.1,
       		legendTemplate : legendTemplate,
       		responsive : true,
-      		pointDot : false
+      		pointDot : false,
+      		legend: {
+      			position: 'right'
+      		}
     	}
-	);
+	});
 
-	$('#pointsChartLegend').html(pointsChart.generateLegend());
 });

@@ -7,11 +7,17 @@ var playerToBeAdded;
 
 
 var setTableHandlers = function(){
-  $(".benched tr").click(function() {
+  $(".benched tr.player-tr").click(function(evt) {
+  	if (evt.target.className === 'point-stats') {
+  		return;
+  	}
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
   });
-  $(".active-roster tr").click(function() {
+  $(".active-roster tr.player-tr").click(function(evt) {
+  	if (evt.target.className === 'point-stats') {
+  		return;
+  	}
     $node = $(this);
     swapElements($node[0].innerHTML, $node[0].id);
   });
@@ -153,13 +159,13 @@ var populateIdArrays = function(){
   var context = this;
   context.benchedId = [];
   context.playingId = [];
-  $('.active-roster tr').each(function(i, value){
+  $('.active-roster tr.player-tr').each(function(i, value){
     var sId = parseInt(value.id.replace('Row', ''));
     if(!isNaN(sId)){
       context.playingId.push(parseInt(sId));
     }
   });
-  $('.benched tr').each(function(i, value){
+  $('.benched tr.player-tr').each(function(i, value){
     var sId = parseInt(value.id.replace('Row', ''));
     if(!isNaN(sId)){
       context.benchedId.push(parseInt(sId));
@@ -309,32 +315,81 @@ var selector = function() {
 
 var populateStats = function(){
 	$.each(stats, function(key, value){
-		var tableHeader = "<table id='"+value.nfl_player_id+"_stat_table' class='table table-striped table-condensed player-stat'><thead><tr><th>Play Type</th><th>Points</th></tr></thead>";
-		var innerTable = "";
-		var hasStatInfo = false;
+		var header = "<td id='"+value.nfl_player_id+"_stat_table' class='sh-point-container-td' colspan='2'><div class='sh-point-container'><div id='sh-point-info-box'>" + 
+			"<div><div class='sh-point-col'><div class='sh-point-col-score'>Score breakdown</div>";
+		if (isLoggedIn) {
+			header += "<div class='sh-point-col-transfer'>" + 
+				"<img src='<%= asset_path('swap.png') %>' alt='Submit transfer request'/>Transfer</div>";
+		} 
+		header +=	"</div> <div class='sh-point-col'></div></div>";
+		var hasStatInfo = false, hasPointsAboveZero = false;
+		var innerContent = "<div class='sh-point-flex-container'>";
+
 		$.each(value, function(k, v){
-			if(k.indexOf('id') > -1 || k.indexOf('_at') > -1 || v === 0){
-				return; //don't show date or id stats or 0 points
+			if(k.indexOf('id') > -1 || k.indexOf('_at') > -1 || k === 'points'){
+				return; //don't show date or id stats or points
 			}
 			hasStatInfo = true;
-			k = k.replace(/_/g, ' ');
-			innerTable += "<tr><td>" + k + "</td>";
-			innerTable += "<td>"+v+"</td></tr>";
+			var imgUrl = decideOnIcon(k);
+			var keySpaced = k.replace(/_/g, ' ');
+			if(v !== 0) {
+				innerContent += "<div class='sh-point-row-container'><div class='sh-point-row'><img src='"+imgUrl+
+					"' class='sh-point-row-icon' /><p>" + keySpaced + " - " + v + "</p></div></div>";	
+				hasPointsAboveZero = true;
+			}
 		});
-		if(!hasStatInfo){
-			innerTable += "<tr><td>Great pick "+userName+"!</td></tr>";
+		if(!hasStatInfo || !hasPointsAboveZero){
+			innerContent += "<div class='sh-point-row'>No data to show</div>";
 		}
-		$("#stat-detail").append(tableHeader + innerTable + "</table>");
+		$('#' + value.nfl_player_id + 'RowDetail').append(header + innerContent + "</div></div></td>");
+		$($('#' + value.nfl_player_id + '_stat_table').find('.sh-point-container')[0]).css('display', 'block');
 	});
 };
 
+var decideOnIcon = function (key) {
+	switch(key){
+		case 'defense_touchdowns':
+			return '<%= asset_path("icons/defense.png") %>';
+		case 'extra_points_kicked':
+			return '<%= asset_path("icons/extra-point.png") %>';
+		case 'field_goals_kicked':
+			return '<%= asset_path("icons/fg.png") %>';
+		case 'fumbles_lost':
+		case 'fumbles_won':
+			return '<%= asset_path("icons/fumble.png") %>';
+		case 'interceptions_caught':
+		case 'interceptions_thrown':
+			return '<%= asset_path("icons/interception.png") %>';
+		case 'receiving_tds':
+		case 'passing_tds':
+    	case 'rushing_tds':
+			return '<%= asset_path("icons/touchdown.png") %>';
+		case 'passing_yards':
+		case 'passing_twoptm':
+			return '<%= asset_path("icons/passing.png") %>';
+	    case 'receiving_yards':
+		case 'receiving_twoptm':
+			return '<%= asset_path("icons/receiving2pts.png") %>';
+		case 'points_conceded':
+	    	return '<%= asset_path("icons/points-conceded.png") %>';
+		case 'rushing_twoptm':
+		case 'rushing_yards':
+			return '<%= asset_path("icons/rush.png") %>';		
+		case 'sacks_made':
+		case 'times_sacked':
+			return '<%= asset_path("icons/sack.png") %>';
+		default:
+			return '<%= asset_path("icons/football.png") %>';
+	}
+};
+
 var setTableTransferRequestHandlers = function(){
-  $(".benched tr").click(function() {
-    $node = $(this);
+  $(".benched tr .sh-point-col-transfer").click(function() {
+    $node = $(this).closest('tr').prev();
     promptTransferRequest($($node[0]).find("span")[0].innerHTML);
   });
-  $(".active-roster tr").click(function() {
-    $node = $(this);
+  $(".active-roster tr .sh-point-col-transfer").click(function() {
+    $node = $(this).closest('tr').prev();	
     promptTransferRequest($($node[0]).find("span")[0].innerHTML);
   });
 };

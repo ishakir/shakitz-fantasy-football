@@ -101,17 +101,17 @@ class WaiverWireTest < ActiveSupport::TestCase
 
   # For week 2 user with id 2 has waiver priority
   test 'priority then points comparison works' do
-    user_1 = User.find(1)
-    user_2 = User.find(2)
-    user_1_priority_2 = create_waiver(user_1, NflPlayer.find(3), NflPlayer.find(8), 2)
-    user_1_priority_1 = create_waiver(user_1, NflPlayer.find(1), NflPlayer.find(6), 1)
-    user_2_priority_1 = create_waiver(user_2, NflPlayer.find(2), NflPlayer.find(7), 1)
+    user1 = User.find(1)
+    user2 = User.find(2)
+    user1priority2 = create_waiver(user1, NflPlayer.find(3), NflPlayer.find(8), 2)
+    user1priority1 = create_waiver(user1, NflPlayer.find(1), NflPlayer.find(6), 1)
+    user2priority1 = create_waiver(user2, NflPlayer.find(2), NflPlayer.find(7), 1)
 
     waiver_list = WaiverWire.waiver_list(4)
     assert_equal 3, waiver_list.length
-    assert_equal user_2_priority_1, waiver_list[0]
-    assert_equal user_1_priority_1, waiver_list[1]
-    assert_equal user_1_priority_2, waiver_list[2]
+    assert_equal user2priority1, waiver_list[0]
+    assert_equal user1priority1, waiver_list[1]
+    assert_equal user1priority2, waiver_list[2]
   end
 
   def assert_accepted(waiver)
@@ -183,21 +183,21 @@ class WaiverWireTest < ActiveSupport::TestCase
 
   test 'if both requests are legimite in series, both are executed' do
     user = User.find(1)
-    out_player_1 = NflPlayer.find(250)
-    out_player_2 = NflPlayer.find(253)
-    in_player_1 = NflPlayer.find(251)
-    in_player_2 = NflPlayer.find(252)
+    outplayer1 = NflPlayer.find(250)
+    outplayer2 = NflPlayer.find(253)
+    inplayer1 = NflPlayer.find(251)
+    inplayer2 = NflPlayer.find(252)
 
-    waiver_1 = create_waiver(user, out_player_1, in_player_1, 1)
-    waiver_2 = create_waiver(user, out_player_2, in_player_2, 2)
+    waiver1 = create_waiver(user, outplayer1, inplayer1, 1)
+    waiver2 = create_waiver(user, outplayer2, inplayer2, 2)
 
     WaiverWire.resolve(4)
 
-    assert_accepted waiver_1
-    assert_accepted waiver_2
-    assert_in_no_team out_player_1
-    assert_in_no_team out_player_2
-    assert_in_team_with_status user, in_player_1, false
-    assert_in_team_with_status user, in_player_2, true
+    assert_accepted waiver1
+    assert_accepted waiver2
+    assert_in_no_team outplayer1
+    assert_in_no_team outplayer2
+    assert_in_team_with_status user, inplayer1, false
+    assert_in_team_with_status user, inplayer2, true
   end
 end

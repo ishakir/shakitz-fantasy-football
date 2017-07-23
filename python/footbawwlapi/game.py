@@ -96,7 +96,7 @@ class DefencePlayer(Player):
     self.game = game
     self.game_week = game_week
     
-    self.name = "Defence"
+    self.name = team + " Defence"
     self.team = team
     self.type = 'D'
 
