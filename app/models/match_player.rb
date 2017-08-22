@@ -32,7 +32,7 @@ class MatchPlayer < ActiveRecord::Base
       from match_players as mp, nfl_players as np, nfl_player_types as npt
       where mp.nfl_player_id = np.id
       and np.nfl_player_type_id = npt.id
-      group by np.id, np.name
+      group by np.id, np.name, npt.position_type
       order by nfl_player_type_id, points desc")
   end
 
