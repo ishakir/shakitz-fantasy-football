@@ -29,9 +29,9 @@
 				<% if session[:user_id] == @user.id %>
 					<%= image_tag("edit.png", {:class => "edit_button", :alt => "Edit"}) %>
 				<% end %>
-        <h1 class="team-name"> <%= @user.name %> - <%= @user.team_name %> </h1>
 				</div>
-			</div>
+        <h1 class="team-name"> <%= @user.name %> - <%= @user.team_name %> </h1>
+      </div>
 			</div>
 			<h2 class="team-points"> <%= @user.points %> Points</h2>
 		</div>
