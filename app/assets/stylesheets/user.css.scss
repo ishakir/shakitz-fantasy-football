@@ -144,6 +144,12 @@
   background-color: #eee;
 }
 
+.standings-table table {
+  a {
+    text-transform: capitalize;
+  }
+}
+
 #stat-detail table{
   display:none;
   position:relative;
