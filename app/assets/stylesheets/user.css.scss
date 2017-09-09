@@ -193,19 +193,6 @@
   flex-direction: row;
 }
 
-.week-toggle {
-  display: flex;
-
-  .arrow-container {
-    display: inline-block;
-    padding: 0 60px;
-  }
-
-  .fixture-label {
-    display: inline-block;
-  }
-}
-
 @media (max-width: 540px) {
   .week-toggle-container {
     flex-direction: column;
