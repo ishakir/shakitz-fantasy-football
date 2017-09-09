@@ -38,11 +38,11 @@
 }
 
 .team-name{
-  margin-left:1.5em;
+  margin: 0;
 }
+
 .team-points{
-  margin-left:3em;
-  margin-bottom:2em;
+  margin-left:36px;
 }
 
 .week-points-label{
@@ -144,13 +144,18 @@
   background-color: #eee;
 }
 
+.standings-table table {
+  a {
+    text-transform: capitalize;
+  }
+}
+
 #stat-detail table{
   display:none;
   position:relative;
   border: 1px solid black;
   overflow:hidden;
   border-radius: 5px;    
-  border-radius: 5px; 
 }
 
 #stat-detail td{
@@ -170,4 +175,37 @@
 .icon-credit {
   text-align: center;
   font-size: 10px;
+}
+
+.user-header-container {
+  margin-bottom: 15px;
+}
+
+.user-header-info {
+  display: flex;
+  align-items: center;
+}
+
+.week-toggle-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.week-toggle {
+  display: flex;
+
+  .arrow-container {
+    display: inline-block;
+    padding: 0 60px;
+  }
+
+  .fixture-label {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 540px) {
+  .week-toggle-container {
+    flex-direction: column;
+  }
 }

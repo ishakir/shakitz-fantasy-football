@@ -42,8 +42,7 @@ header {
 
 .edit_button {
   height:16px;
-  margin-top: 2.2em;
-  margin-left: 4em;
+  padding-right: 2rem;
   cursor: pointer;
 }
 
