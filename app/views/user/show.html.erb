@@ -24,13 +24,13 @@
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
-			<div class="row">
-				<div class="col-xs-1 column">
+			<div class="row user-header-container">
+				<div class="user-header-info">
 				<% if session[:user_id] == @user.id %>
 					<%= image_tag("edit.png", {:class => "edit_button", :alt => "Edit"}) %>
 				<% end %>
+        <h1 class="team-name"> <%= @user.name %> - <%= @user.team_name %> </h1>
 				</div>
-					<h1 class="team-name"> <%= @user.name %> - <%= @user.team_name %> </h1>
 			</div>
 			</div>
 			<h2 class="team-points"> <%= @user.points %> Points</h2>
@@ -56,17 +56,19 @@
 	</div>
 	<% end %>
 	<div class="row clearfix">
-		<div class="col-md-12 column">
-			<div class="col-md-1 column">
-				<span id="prevWeekBtn" title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
-			</div>
-			<div class="col-md-3 column fixture-label">
-				<h3 id="week_label" title="Week " align="center">Week <%= @user.team_for_game_week(@game_week).game_week.number %></h3>
-			</div>
-			<% Rails.logger.info "Successfully rendered game week number" %>
-			<div class="col-md-1">
-				<span id="nextWeekBtn" title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
-			</div>
+		<div class="col-md-12 column week-toggle-container">
+      <div class="week-toggle">
+        <div class="arrow-container">
+          <span id="prevWeekBtn" title="View previous week" class="glyphicon glyphicon-arrow-left arrow"></span>
+        </div>
+        <div class="fixture-label">
+          <h3 id="week_label" title="Week " align="center">Week <%= @user.team_for_game_week(@game_week).game_week.number %></h3>
+        </div>
+        <% Rails.logger.info "Successfully rendered game week number" %>
+        <div class="arrow-container">
+          <span id="nextWeekBtn" title="View next week" class="glyphicon glyphicon-arrow-right arrow"></span>
+        </div>
+      </div>
 			<div>
 				<span class="week-points-label"><%= @user.team_for_game_week(@game_week).points %> Points</span>
 			</div>
