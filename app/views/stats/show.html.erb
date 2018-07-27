@@ -78,7 +78,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% @rows.each_with_index do |pair, index| %>
+                    <% @bench_rows.each_with_index do |pair, index| %>
                       <% if index == 0 %>
                         <tr class="success">
                       <% elsif index == @rows.size - 1 %>
@@ -120,6 +120,38 @@
                     <% end %>
                   </ul>
                 <% end %>
+              </div>
+            </div>
+          </div>
+          <div id="perfectTeam" class="tab-pane">
+            <div class="row">
+              <div class="col-md-12 column">
+                <table class="table sortable" id="perfectTeamTable">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Team Name</th>
+                      <th data-defaultsort="desc">Total Points for Perfect Team</th>
+                      <th data-firstsort="desc">Perfect Team wins</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @perfect_team_rows.each_with_index do |pair, index| %>
+                      <% if index == 0 %>
+                        <tr class="success">
+                      <% elsif index == @rows.size - 1 %>
+                        <tr class="danger">
+                      <% else %>
+                        <tr>
+                      <% end %>
+                        <td><%= link_to pair[0].name, controller: :user, action: :show, user_id: pair[0].id %></td>
+                        <td><%= pair[0].team_name %></td>
+                        <td><%= pair[1][:total_bench_points] %></td>
+                        <td><%= pair[1][:wins] %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

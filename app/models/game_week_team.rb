@@ -1,3 +1,5 @@
+require 'best_team'
+
 # -*- encoding : utf-8 -*-
 class GameWeekTeam < ActiveRecord::Base
   def self.find_unique_with(user_id, game_week)
@@ -52,6 +54,10 @@ class GameWeekTeam < ActiveRecord::Base
     gwt_players.map(&:match_player)
   end
 
+  def perfect_team_match_players
+    BestTeam.find_ten_best_players(match_players)
+  end
+
   def fixture
     # "Or" is not implemented yet :/
     fixtures = Fixture.where("home_team_id = #{id} or away_team_id = #{id}")
@@ -82,6 +88,12 @@ class GameWeekTeam < ActiveRecord::Base
 
   def bench_points
     match_players_benched.reduce(0) do |sum, player|
+      sum + player.points
+    end
+  end
+
+  def perfect_team_points
+    perfect_team_match_players.reduce(0) do |sum, player|
       sum + player.points
     end
   end

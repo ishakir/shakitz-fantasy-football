@@ -7,7 +7,8 @@ class StatsController < ApplicationController
 
     @bench_greater_than_team = bench_greater_than_team(without_current_week)
     @bench_greater_than_one_hundred = bench_greater_than_one_hundred(without_current_week)
-    @rows = rows_for_bench_table(game_week_teams, current_game_week)
+    @bench_rows = rows_for_bench_table(game_week_teams, current_game_week)
+    @perfect_team_rows = rows_for_perfect_team_table(game_week_teams, current_game_week)
     @points = cumulative_points_hash(current_game_week_with_some_stats)
     @last_comment = timestamp_of_last_comment
     @top_stats = MatchPlayer.top_overall_scorers
@@ -47,6 +48,27 @@ class StatsController < ApplicationController
       # index + 1 is the number of gameweeks up till now
       cumulative_points / (index + 1)
     end
+  end
+
+  def rows_for_perfect_team_table(all_game_week_teams, game_week)
+    rows = {}
+    all_game_week_teams.each do |game_week_teams|
+      rows[game_week_teams[0].user] = {
+        total_bench_points: game_week_teams.map(&:perfect_team_points),
+        wins: 0
+      }
+    end
+
+    add_perfect_team_wins(rows, game_week)
+  end
+
+  def add_perfect_team_wins(rows, game_week)
+    (1...game_week).each do |gw|
+      user = User.all.map { |u| u.team_for_game_week(gw) }.max_by(&:perfect_team_points).user
+      rows[user][:wins] = rows[user][:wins] + 1
+    end
+
+    rows
   end
 
   def rows_for_bench_table(all_game_week_teams, game_week)
