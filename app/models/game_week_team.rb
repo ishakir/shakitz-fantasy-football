@@ -58,7 +58,7 @@ class GameWeekTeam < ActiveRecord::Base
     players = match_players.map do |mp|
       [mp.nfl_player, mp.points]
     end
-    BestTeam.find_ten_best_players(players) do |nfl_player, _points|
+    BestTeam.find_ten_best_players(players).map do |nfl_player, _points|
       nfl_player.player_for_game_week(game_week.number)
     end
   end
@@ -99,6 +99,7 @@ class GameWeekTeam < ActiveRecord::Base
 
   def perfect_team_points
     perfect_team_match_players.reduce(0) do |sum, player|
+
       sum + player.points
     end
   end
