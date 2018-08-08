@@ -55,7 +55,10 @@ class GameWeekTeam < ActiveRecord::Base
   end
 
   def perfect_team_match_players
-    BestTeam.find_ten_best_players(match_players)
+    players = match_players.map do |mp|
+      [mp.nfl_player, mp.points]
+    end
+    BestTeam.find_ten_best_players(players)
   end
 
   def fixture
