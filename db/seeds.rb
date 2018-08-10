@@ -8,7 +8,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 [
   "LAC", "HOU", "WAS", "PHI", "NYG", "DAL", "SF" , "GB" ,
-  "STL", "ARI", "TEN", "PIT", "ATL", "NO" , "TB" , "NYJ",
+  "LA", "ARI", "TEN", "PIT", "ATL", "NO" , "TB" , "NYJ",
   "KC" , "JAX", "OAK", "IND", "MIN", "DET", "CLE", "MIA",
   "CHI", "CIN", "DEN", "BAL", "BUF", "NE" , "SEA", "CAR"
 ].each do |team|
