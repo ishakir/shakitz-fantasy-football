@@ -55,6 +55,7 @@ class GameWeekTeam < ActiveRecord::Base
   end
 
   def perfect_team_match_players
+    return [] if points + bench_points <= 0
     players = match_players.map do |mp|
       [mp.nfl_player, mp.points]
     end
@@ -99,7 +100,6 @@ class GameWeekTeam < ActiveRecord::Base
 
   def perfect_team_points
     perfect_team_match_players.reduce(0) do |sum, player|
-
       sum + player.points
     end
   end
