@@ -23,8 +23,15 @@
   background:#daf6b5;
 }
 
-.perfect-team {
-  background: rgba(149, 175, 192, 0.2);
+.perfect-team__star {
+  display: none;
+  width: 13px;
+  height: 13px;
+  margin-right: 6px;
+}
+
+.perfect-team .perfect-team__star{
+  display: block;
 }
 
 .second-select{
@@ -43,6 +50,7 @@
 
 .team-name{
   margin: 0;
+  word-break: break-word;
 }
 
 .team-points{
@@ -197,6 +205,16 @@
   flex-direction: row;
 }
 
+@media (max-width: 768px) {
+  #rosters {
+    display: flex;
+  }
+
+  #left-box,
+  #right-box {
+    width: auto;
+  }
+}
 @media (max-width: 540px) {
   .week-toggle-container {
     flex-direction: column;
