@@ -87,10 +87,7 @@
   margin-top:1em;
 }
 
-#left-Box{
-  margin-bottom:3em;
-}
-
+#left-Box,
 #right-Box{
   margin-bottom:3em;
 }
@@ -208,11 +205,23 @@
 @media (max-width: 768px) {
   #rosters {
     display: flex;
+    width: calc(100vw - 30px);
+    justify-content: space-around;
   }
 
-  #left-box,
-  #right-box {
+  #left-Box,
+  #right-Box {
+    margin-bottom:3em;
+    padding: 0;
     width: auto;
+  }
+
+  .player-name {
+    font-size: 14px;
+  }
+
+  .player-info {
+    font-size: 11px;
   }
 }
 @media (max-width: 540px) {
