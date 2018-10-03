@@ -54,7 +54,8 @@ class StatsController < ApplicationController
     rows = {}
     all_game_week_teams.each do |game_week_teams|
       rows[game_week_teams[0].user] = {
-        total_bench_points: game_week_teams.map(&:perfect_team_points).sum,
+        total_perfect_team_points: game_week_teams.map(&:perfect_team_points).sum,
+        points_dropped: game_week_teams.map { |gwt| gwt.perfect_team_points - gwt.points }.sum,
         wins: 0
       }
     end

@@ -134,7 +134,8 @@
                     <tr>
                       <th>User</th>
                       <th>Team Name</th>
-                      <th data-defaultsort="desc">Total Points for Perfect Team</th>
+                      <th data-firstsort="desc">Total Points for Perfect Team</th>
+                      <th data-defaultsort="desc">Points Dropped</th>
                       <th data-firstsort="desc">Perfect Team wins</th>
                     </tr>
                   </thead>
@@ -149,7 +150,8 @@
                       <% end %>
                         <td><%= link_to pair[0].name, controller: :user, action: :show, user_id: pair[0].id %></td>
                         <td><%= pair[0].team_name %></td>
-                        <td><%= pair[1][:total_bench_points] %></td>
+                        <td><%= pair[1][:total_perfect_team_points] %></td>
+                        <td><%= pair[1][:points_dropped] %></td>
                         <td><%= pair[1][:wins] %></td>
                       </tr>
                     <% end %>
